@@ -1,0 +1,150 @@
+name: CI Quality Gate
+
+# DORA 2025 (INSTAB-01): "Control systems must be proportionally stronger as AI increases change volume."
+# This workflow is the primary control system. It blocks merges, not just warns.
+# PR size limit: 400 lines (blocks without large-pr-approved label)
+# Targets: lint ✅, typecheck ✅, tests ✅, coverage ≥ 80%
+
+on:
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches: [main]
+
+jobs:
+
+  # ─────────────────────────────────────────────
+  # GATE 1: PR Size Check (DORA 2025 INSTAB-01)
+  # Blocks PRs > 400 changed lines unless human has applied large-pr-approved label
+  # ─────────────────────────────────────────────
+  pr-size-check:
+    name: "🔢 PR Size Gate"
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Check PR size
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { data: pr } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number,
+            });
+            
+            const changed = pr.additions + pr.deletions;
+            const limit = 400;
+            const hasOverrideLabel = pr.labels.some(l => l.name === 'large-pr-approved');
+            
+            if (changed > limit && !hasOverrideLabel) {
+              core.setFailed(
+                `❌ PR size: ${changed} lines changed (limit: ${limit}).\n` +
+                `Split this PR into smaller pieces, or ask a human reviewer to apply the 'large-pr-approved' label.\n` +
+                `DORA 2025: "AI consistently increases PR size by 154%. Larger PRs = more surface area for bugs."`
+              );
+            } else if (changed > limit) {
+              core.warning(`⚠️ Large PR override active: ${changed} lines changed. Human approved.`);
+            } else {
+              console.log(`✅ PR size: ${changed} lines (within ${limit} limit)`);
+            }
+
+  # ─────────────────────────────────────────────
+  # GATE 2: Lint
+  # ─────────────────────────────────────────────
+  lint:
+    name: "🔍 Lint"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm ci
+      - name: Run ESLint
+        run: |
+          npm run lint
+          echo "✅ Lint passed"
+
+  # ─────────────────────────────────────────────
+  # GATE 3: Type Check
+  # ─────────────────────────────────────────────
+  typecheck:
+    name: "🔷 TypeScript"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm ci
+      - name: Run TypeScript compiler
+        run: |
+          npm run typecheck
+          echo "✅ TypeScript passed"
+
+  # ─────────────────────────────────────────────
+  # GATE 4: Tests + Coverage
+  # ─────────────────────────────────────────────
+  test:
+    name: "🧪 Tests & Coverage"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm ci
+      - name: Run tests with coverage
+        run: |
+          npm run test:coverage
+          echo "✅ Tests passed"
+      - name: Check coverage threshold
+        run: |
+          # [PLACEHOLDER] — replace with your coverage tool's threshold check
+          # Example for Jest: configured in jest.config.js with coverageThreshold
+          # This step fails if coverage drops below 80%
+          echo "Coverage threshold: 80% (configured in jest.config.js)"
+
+  # ─────────────────────────────────────────────
+  # GATE 5: Architecture Boundary Check
+  # ESLint import rules enforce DORA ARCH-01 layer boundaries
+  # ─────────────────────────────────────────────
+  architecture:
+    name: "🏗️ Architecture Boundaries"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm ci
+      - name: Check architecture boundaries
+        run: |
+          # This runs the ESLint import boundary rules from eslint-plugin-import
+          # configured in .eslintrc.js with the layer boundary rules from ARCH-01
+          npm run lint:architecture
+          echo "✅ Architecture boundaries respected"
+
+  # ─────────────────────────────────────────────
+  # SUMMARY: All gates must pass for merge
+  # ─────────────────────────────────────────────
+  ci-summary:
+    name: "✅ CI Complete"
+    needs: [lint, typecheck, test, architecture]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Check all gates
+        run: |
+          if [ "${{ needs.lint.result }}" != "success" ] || \
+             [ "${{ needs.typecheck.result }}" != "success" ] || \
+             [ "${{ needs.test.result }}" != "success" ] || \
+             [ "${{ needs.architecture.result }}" != "success" ]; then
+            echo "❌ One or more CI gates failed"
+            exit 1
+          fi
+          echo "✅ All CI gates passed — ready for human review"
