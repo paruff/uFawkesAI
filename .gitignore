@@ -1,0 +1,6 @@
+node_modules/
+
+# Ensure agent instruction symlinks remain tracked
+!CLAUDE.md
+!.cursorrules
+!.github/copilot-instructions.md

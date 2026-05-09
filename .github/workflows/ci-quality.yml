@@ -11,7 +11,33 @@ on:
   push:
     branches: [main]
 
+permissions:
+  contents: read
+  pull-requests: read
+
 jobs:
+
+  # ─────────────────────────────────────────────
+  # GATE 0: Agent Symlink Check
+  # Ensures agent instruction symlinks resolve on fresh clone
+  # ─────────────────────────────────────────────
+  symlink-check:
+    name: "🔗 Agent Symlinks"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify symlinks
+        run: |
+          test -L CLAUDE.md
+          test -L .github/copilot-instructions.md
+          test -L .cursorrules
+          test -f CLAUDE.md
+          test -f .github/copilot-instructions.md
+          test -f .cursorrules
+          test "$(readlink CLAUDE.md)" = "AGENTS.md"
+          test "$(readlink .github/copilot-instructions.md)" = "../AGENTS.md"
+          test "$(readlink .cursorrules)" = "AGENTS.md"
+          echo "✅ Agent symlinks resolve correctly"
 
   # ─────────────────────────────────────────────
   # GATE 1: PR Size Check (DORA 2025 INSTAB-01)
@@ -134,13 +160,14 @@ jobs:
   # ─────────────────────────────────────────────
   ci-summary:
     name: "✅ CI Complete"
-    needs: [lint, typecheck, test, architecture]
+    needs: [symlink-check, lint, typecheck, test, architecture]
     runs-on: ubuntu-latest
     if: always()
     steps:
       - name: Check all gates
         run: |
-          if [ "${{ needs.lint.result }}" != "success" ] || \
+          if [ "${{ needs.symlink-check.result }}" != "success" ] || \
+             [ "${{ needs.lint.result }}" != "success" ] || \
              [ "${{ needs.typecheck.result }}" != "success" ] || \
              [ "${{ needs.test.result }}" != "success" ] || \
              [ "${{ needs.architecture.result }}" != "success" ]; then

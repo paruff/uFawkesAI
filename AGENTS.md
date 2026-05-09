@@ -189,7 +189,7 @@ Track monthly using `npm run metrics`:
 
 ## 10. See Also
 
-- `.github/copilot-instructions.md` — Copilot-specific rules (subset of this file)
+- `.github/copilot-instructions.md` — symlink to `AGENTS.md` for Copilot path compatibility
 - `.github/agents/` — Specialist agent profiles (`@docs-agent`, `@test-agent`, `@review-agent`, `@security-agent`)
 - `docs/GOLDEN_PATH.md` — The 10-step idea→deploy workflow (use this for every feature)
 - `docs/PROMPT_LIBRARY.md` — Tested, versioned prompts for every repeating task
