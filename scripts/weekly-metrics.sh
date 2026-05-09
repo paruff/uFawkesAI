@@ -13,16 +13,20 @@ for arg in "$@"; do
       ;;
     --days=*)
       DAYS="${arg#*=}"
-      ;;
-    ''|*[!0-9]*)
-      if [ "$arg" != "--dry-run" ]; then
+      if ! [[ "$DAYS" =~ ^[0-9]+$ ]]; then
         echo "Invalid argument: $arg"
         echo "Usage: bash scripts/weekly-metrics.sh [--dry-run] [--days=14]"
         exit 1
       fi
       ;;
     *)
-      DAYS="$arg"
+      if [[ "$arg" =~ ^[0-9]+$ ]]; then
+        DAYS="$arg"
+      else
+        echo "Invalid argument: $arg"
+        echo "Usage: bash scripts/weekly-metrics.sh [--dry-run] [--days=14]"
+        exit 1
+      fi
       ;;
   esac
 done

@@ -39,7 +39,7 @@ jobs:
           fi
 
       - name: Run weekly metrics script (dry-run)
-        run: bash scripts/weekly-metrics.sh --dry-run --days=7 > /dev/null
+        run: bash scripts/weekly-metrics.sh --dry-run --days=7
 
       - name: Validate JSON in .vscode
         run: |
@@ -54,11 +54,16 @@ jobs:
               content = re.sub(r"^\s*//.*$", "", content, flags=re.M)
               return content
 
-          files = sorted(pathlib.Path(".vscode").glob("*.json"))
+          vscode_dir = pathlib.Path(".vscode")
+          if not vscode_dir.is_dir():
+              print("Missing required .vscode directory")
+              sys.exit(1)
+
+          files = sorted(vscode_dir.glob("*.json"))
           for file in files:
               try:
                   json.loads(strip_jsonc(file.read_text(encoding="utf-8")))
-              except Exception as error:  # noqa: BLE001
+              except (json.JSONDecodeError, OSError) as error:
                   print(f"Invalid JSON in {file}: {error}")
                   sys.exit(1)
 
@@ -66,5 +71,11 @@ jobs:
           PY
 
       - name: Shellcheck scripts
+        shell: bash
         run: |
-          find scripts -type f -name '*.sh' -print0 | xargs -0 shellcheck
+          mapfile -d '' script_files < <(find scripts -type f -name '*.sh' -print0)
+          if [ "${#script_files[@]}" -eq 0 ]; then
+            echo "No shell scripts found in scripts/"
+            exit 0
+          fi
+          shellcheck "${script_files[@]}"
