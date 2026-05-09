@@ -1,0 +1,70 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  gitops-standards:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify symlinks resolve
+        run: test -L CLAUDE.md && test -f CLAUDE.md
+
+      - name: Validate AGENTS.md line count
+        run: |
+          lines="$(wc -l < AGENTS.md | tr -d ' ')"
+          if [ "$lines" -gt 300 ]; then
+            echo "AGENTS.md has $lines lines. Maximum allowed is 300."
+            exit 1
+          fi
+          if [ "$lines" -gt 250 ]; then
+            echo "::warning::AGENTS.md has $lines lines. Keep it under 250 recommended."
+          fi
+          echo "AGENTS.md line count: $lines"
+
+      - name: Ensure AGENTS.md has no [PLACEHOLDER] markers
+        run: |
+          if grep -n '\[PLACEHOLDER\]' AGENTS.md; then
+            echo "AGENTS.md contains [PLACEHOLDER]. Replace placeholders before merge."
+            exit 1
+          fi
+
+      - name: Run weekly metrics script (dry-run)
+        run: bash scripts/weekly-metrics.sh --dry-run --days=7 > /dev/null
+
+      - name: Validate JSON in .vscode
+        run: |
+          python3 - <<'PY'
+          import json
+          import pathlib
+          import re
+          import sys
+
+          def strip_jsonc(content: str) -> str:
+              content = re.sub(r"/\*.*?\*/", "", content, flags=re.S)
+              content = re.sub(r"^\s*//.*$", "", content, flags=re.M)
+              return content
+
+          files = sorted(pathlib.Path(".vscode").glob("*.json"))
+          for file in files:
+              try:
+                  json.loads(strip_jsonc(file.read_text(encoding="utf-8")))
+              except Exception as error:  # noqa: BLE001
+                  print(f"Invalid JSON in {file}: {error}")
+                  sys.exit(1)
+
+          print(f"Validated {len(files)} JSON file(s) in .vscode")
+          PY
+
+      - name: Shellcheck scripts
+        run: |
+          find scripts -type f -name '*.sh' -print0 | xargs -0 shellcheck
