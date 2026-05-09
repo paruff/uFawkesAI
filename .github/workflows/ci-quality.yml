@@ -28,9 +28,15 @@ jobs:
       - uses: actions/checkout@v4
       - name: Verify symlinks
         run: |
+          test -L CLAUDE.md
+          test -L .github/copilot-instructions.md
+          test -L .cursorrules
           test -f CLAUDE.md
           test -f .github/copilot-instructions.md
           test -f .cursorrules
+          test "$(readlink CLAUDE.md)" = "AGENTS.md"
+          test "$(readlink .github/copilot-instructions.md)" = "../AGENTS.md"
+          test "$(readlink .cursorrules)" = "AGENTS.md"
           echo "✅ Agent symlinks resolve correctly"
 
   # ─────────────────────────────────────────────
