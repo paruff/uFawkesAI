@@ -90,24 +90,6 @@ Requirements:
 Return only the test file content.
 ```
 
-### Generate integration test
-
-```
-Generate an integration test for this feature end-to-end.
-
-Feature: {{DESCRIBE_FEATURE}}
-Entry point: {{COMPONENT_OR_HOOK}}
-External dependencies: {{LIST — Firebase, API calls, etc.}}
-
-Requirements:
-1. Use a test double (emulator / mock server) — no real external calls
-2. Cover the happy path and at least one failure scenario
-3. Tests go in tests/integration/
-4. Arrange → Act → Assert structure
-
-Return only the test file content.
-```
-
 ## Anti-patterns — what NOT to test
 
 - ❌ **Implementation details** — do not assert on private methods, internal state, or internal call counts
@@ -115,15 +97,3 @@ Return only the test file content.
 - ❌ **Trivial accessors** — do not test a getter that returns a field with no logic
 - ❌ **Mock return values** — a test that only asserts a mock was called proves nothing about behaviour
 - ❌ **Type assertions** — TypeScript already checks types; do not write tests that only verify a type
-
-## Test file structure
-
-```
-tests/
-  unit/
-    utils/          # Pure function tests — no mocks needed
-    services/       # Service method tests — mock the Firebase SDK
-    hooks/          # Hook tests — use renderHook from @testing-library/react
-  integration/      # End-to-end feature tests with emulators or mock servers
-  e2e/              # Full UI tests with Playwright
-```

@@ -207,8 +207,8 @@ Function:
 
 ## Category: Using Agent Skills
 
-Agent Skills are loaded on demand by referencing their file path in your prompt.
-See `.github/skills/README.md` for the full list of available skills.
+Reference a skill's file path in your prompt to load it on demand.
+See `.github/skills/README.md` for invocation syntax per agent.
 
 ### Invoke the DORA Metrics skill
 
@@ -217,13 +217,9 @@ See `.github/skills/README.md` for the full list of available skills.
 ```
 Read .github/skills/dora-metrics/SKILL.md.
 
-Run `npm run metrics` (which executes `scripts/weekly-metrics.sh`) to get the
-current rework rate for this repository. Using the metric definitions in the skill,
-interpret the result and update the rework rate row in the Monthly Metrics Log table
-in docs/METRICS.md with today's date and the value you observed.
-
-Also note whether the rate is in the Healthy / Watch / Stop range and add a one-line
-trend note beneath the table.
+Run `npm run metrics` to get the current rework rate. Using the metric definitions
+in the skill, interpret the result and update the rework rate row in the Monthly
+Metrics Log in docs/METRICS.md with today's date and value, plus a trend note.
 ```
 
 **Expected output:** Updated `docs/METRICS.md` with rework rate and trend.

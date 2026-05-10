@@ -61,43 +61,17 @@ Add the skill path to the context panel, or reference it in your prompt:
 ### Gemini CLI / Codex
 
 ```
-Load .github/skills/dora-metrics/SKILL.md and explain how to calculate
-lead time for changes using our git history.
+Load .github/skills/dora-metrics/SKILL.md and interpret the output of `npm run metrics`.
 ```
 
 ---
 
 ## How to add a new Skill
 
-1. Create a new directory under `.github/skills/`:
-   ```
-   .github/skills/your-skill-name/
-   ```
-
-2. Create `SKILL.md` inside it. Use this structure:
-
-   ```markdown
-   # [Skill Name] Skill
-
-   ## When to activate
-   [Describe the situations where this skill should be loaded — be specific]
-
-   ## [Content section 1]
-   [Detailed guidance, patterns, checklists, or commands]
-
-   ## [Content section 2]
-   [Additional guidance]
-   ```
-
-3. Register the skill in `AGENTS.md` Section 10 (Agent Skills):
-   ```markdown
-   - `.github/skills/your-skill-name/` — [one-line description]
-   ```
-
-4. Add example prompts for the new skill to `docs/PROMPT_LIBRARY.md` under
-   "Using Agent Skills".
-
-5. Update this README's skills table.
+1. Create `.github/skills/your-skill-name/SKILL.md`. Use sections: `## When to activate`, then content sections with checklists, commands, or templates.
+2. Register in `AGENTS.md` Section 10: `- '.github/skills/your-skill-name/' — [one-line description]`
+3. Add example prompts to `docs/PROMPT_LIBRARY.md` under "Using Agent Skills".
+4. Update this README's skills table.
 
 ---
 
