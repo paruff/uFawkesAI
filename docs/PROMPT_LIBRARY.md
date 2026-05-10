@@ -205,8 +205,77 @@ Function:
 
 ---
 
+## Category: Using Agent Skills
+
+Reference a skill's file path in your prompt to load it on demand.
+See `.github/skills/README.md` for invocation syntax per agent.
+
+### Invoke the DORA Metrics skill
+
+**Context to open:** `scripts/weekly-metrics.sh`, `docs/METRICS.md`
+
+```
+Read .github/skills/dora-metrics/SKILL.md.
+
+Run `npm run metrics` to get the current rework rate. Using the metric definitions
+in the skill, interpret the result and update the rework rate row in the Monthly
+Metrics Log in docs/METRICS.md with today's date and value, plus a trend note.
+```
+
+**Expected output:** Updated `docs/METRICS.md` with rework rate and trend.
+
+---
+
+### Invoke the Security Review skill
+
+**Context to open:** The service file or PR diff
+
+```
+Read .github/skills/security-review/SKILL.md.
+
+Apply the pre-commit security checklist and OWASP Top 10 quick-check to this
+service function. Report each finding with: severity, file, line number, risk
+description, and corrected code.
+
+Function:
+{{PASTE_FUNCTION}}
+```
+
+**Expected output:** Structured findings list with severity levels and corrected code.
+
+**Red flags:**
+- Agent reports "no issues" on a function with unscoped DB operations → re-prompt, explicitly ask it to check the "All database operations are scoped to the authenticated `userId`" bullet in the Pre-commit security checklist section of the skill
+
+---
+
+### Invoke the Test Generation skill
+
+**Context to open:** The function file, `src/types/index.ts`
+
+```
+Read .github/skills/test-generation/SKILL.md.
+
+Generate unit tests for this function following the TDD pattern and naming
+conventions described in that skill. The tests should go in
+tests/unit/utils/{{FUNCTION_FILE_NAME}}.test.ts.
+
+Function:
+{{PASTE_FUNCTION}}
+```
+
+**Expected output:** A complete test file with describe/it blocks following the
+`when [condition], should [result]` naming convention, covering happy path,
+invalid input, and edge cases.
+
+**Red flags:**
+- Tests only assert mock calls → reject, ask for behaviour assertions
+- `describe` / `it` names don't follow convention → reject, ask for rename
+
+---
+
 ## Changelog
 
 | Date | Change | Reason |
 |---|---|------|
 | [PLACEHOLDER] | Initial library created | AIOPS-04 |
+| 2026-05-10 | Added "Using Agent Skills" section | AI-009 |
