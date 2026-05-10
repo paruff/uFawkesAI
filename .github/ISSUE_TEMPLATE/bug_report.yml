@@ -1,0 +1,41 @@
+name: Bug report
+description: Report an issue with agent behavior, instructions, or repository workflows
+title: "[BUG] "
+labels:
+  - bug
+body:
+  - type: dropdown
+    id: ai_agent
+    attributes:
+      label: Which AI agent were you using?
+      options:
+        - Copilot
+        - Claude Code
+        - Cursor
+        - Codex
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: agents_section
+    attributes:
+      label: Which section of AGENTS.md caused the problem?
+      description: Reference the section heading and line(s) if possible.
+      placeholder: "Example: 5. The PM–Agent Contract, lines 108-116"
+    validations:
+      required: true
+  - type: textarea
+    id: actual_vs_expected
+    attributes:
+      label: What did the agent do? What did you expect?
+      description: Include actual behavior, expected behavior, and impact.
+      placeholder: "Actual behavior:\nExpected behavior:\nImpact:"
+    validations:
+      required: true
+  - type: textarea
+    id: output
+    attributes:
+      label: Paste the agent's output (redact any secrets)
+      render: text
+    validations:
+      required: true

@@ -11,7 +11,7 @@ This template is for PMs, tech leads, and contributors who want AI agents (Copil
 1. Fork this repository.
 2. Customize placeholders in your fork, starting with `AGENTS.md`.
 3. Test your change with at least one real agent in a realistic workflow.
-4. Run `npm run preflight`.
+4. Run `npm run preflight` (currently a placeholder gate in this template until real lint/typecheck/test tooling is configured).
 5. Open a PR with a clear description of what changed and what agent testing you performed.
 
 ## What makes a good contribution
