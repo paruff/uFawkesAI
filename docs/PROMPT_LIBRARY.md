@@ -205,8 +205,79 @@ Function:
 
 ---
 
+## Category: Using Agent Skills
+
+Agent Skills are loaded on demand by referencing their file path in your prompt.
+See `.github/skills/README.md` for the full list of available skills.
+
+### Invoke the DORA Metrics skill
+
+**Context to open:** `scripts/weekly-metrics.sh`, `docs/METRICS.md`
+
+```
+Read .github/skills/dora-metrics/SKILL.md.
+
+Using the DORA metric definitions and implementation patterns in that skill,
+calculate the current rework rate for this repository from the last 30 days of
+merged PRs and write the result to docs/METRICS.md.
+
+Use the git history to identify PRs with title prefixes `fix:` or `revert:`.
+```
+
+**Expected output:** Updated `docs/METRICS.md` with rework rate and trend.
+
+---
+
+### Invoke the Security Review skill
+
+**Context to open:** The service file or PR diff
+
+```
+Read .github/skills/security-review/SKILL.md.
+
+Apply the pre-commit security checklist and OWASP Top 10 quick-check to this
+service function. Report each finding with: severity, file, line number, risk
+description, and corrected code.
+
+Function:
+{{PASTE_FUNCTION}}
+```
+
+**Expected output:** Structured findings list with severity levels and corrected code.
+
+**Red flags:**
+- Agent reports "no issues" on a function with unscoped DB operations → re-prompt, specify rule 6 from the skill
+
+---
+
+### Invoke the Test Generation skill
+
+**Context to open:** The function file, `src/types/index.ts`
+
+```
+Read .github/skills/test-generation/SKILL.md.
+
+Generate unit tests for this function following the TDD pattern and naming
+conventions described in that skill. The tests should go in
+tests/unit/utils/{{FUNCTION_FILE_NAME}}.test.ts.
+
+Function:
+{{PASTE_FUNCTION}}
+```
+
+**Expected output:** A complete test file with describe/it blocks following the
+`when [condition], should [result]` naming convention, covering happy path,
+invalid input, and edge cases.
+
+**Red flags:**
+- Tests only assert mock calls → reject, ask for behaviour assertions
+- `describe` / `it` names don't follow convention → reject, ask for rename
+
+---
+
 ## Changelog
 
 | Date | Change | Reason |
 |---|---|------|
 | [PLACEHOLDER] | Initial library created | AIOPS-04 |
+| 2026-05-10 | Added "Using Agent Skills" section | AI-009 |
