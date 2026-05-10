@@ -49,7 +49,7 @@ Testing and versioning requirements:
 
 Place new skills in:
 
-`/.github/skills/<skill-name>/SKILL.md`
+`.github/skills/<skill-name>/SKILL.md`
 
 Use the `SKILL.md` format already present in `.github/skills/`:
 
