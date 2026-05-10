@@ -220,6 +220,7 @@ Example prompt: `"Use the dora-metrics skill to add rework rate tracking to this
 - `.github/agents/` — Specialist agent profiles (`@docs-agent`, `@test-agent`, `@review-agent`, `@security-agent`)
 - `.github/skills/` — On-demand skills for metrics, security review, and test generation
 - `docs/GOLDEN_PATH.md` — The 10-step idea→deploy workflow (use this for every feature)
+- `docs/UFAWKES_INTEGRATION.md` — How uFawkesAI composes with uFawkesPipe, uFawkesObs, and uFawkesDORA
 - `docs/PROMPT_LIBRARY.md` — Tested, versioned prompts for every repeating task
 - `docs/AI_POLICY.md` — Full AI policy and psychological safety norms
 - `docs/TEAM_ARCHETYPE.md` — DORA archetype self-assessment (run before Phase 1)

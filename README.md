@@ -58,6 +58,8 @@ code AGENTS.md
 ## Part of the uFawkes family
 uFawkesAI is the AI plane in a five-stack delivery system: it sets policy, context, guardrails, and workflows so every other stack can move faster with less rework.
 
+Integration entry point: [`docs/UFAWKES_INTEGRATION.md`](./docs/UFAWKES_INTEGRATION.md)
+
 | Stack | Role | Link |
 |---|---|---|
 | uFawkesAI | AI plane (agent policy, context, controls) | [paruff/uFawkesAI](https://github.com/paruff/uFawkesAI) |
@@ -65,6 +67,11 @@ uFawkesAI is the AI plane in a five-stack delivery system: it sets policy, conte
 | uFawkesObs | Observability and reliability plane | [paruff/uFawkesObs](https://github.com/paruff/uFawkesObs) |
 | uFawkesApp | Product application plane | [uFawkesApp (planned)](https://github.com/paruff/uFawkesAI/issues) |
 | uFawkesData | Data and analytics plane | [uFawkesData (planned)](https://github.com/paruff/uFawkesAI/issues) |
+
+Quick integration hooks:
+- **uFawkesObs:** set `OTEL_EXPORTER_OTLP_ENDPOINT` to export OTEL telemetry and view latency/token traces in Grafana.
+- **uFawkesDORA:** provide `GITHUB_TOKEN`, `GITHUB_OWNER`, and `GITHUB_REPO` so `npm run metrics` can summarize delivery performance from your repo activity.
+- **uFawkesPipe:** run the Golden Path (`docs/GOLDEN_PATH.md`) so AI-authored PRs flow through the `deliveryd` CI contract.
 
 ## Rework rate
 > DORA 2025 added rework rate as a new core metric. It is the earliest signal that
