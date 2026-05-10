@@ -1,0 +1,82 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  gitops-standards:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify symlinks resolve
+        run: test -L CLAUDE.md && test -f CLAUDE.md
+
+      - name: Validate AGENTS.md line count
+        run: |
+          lines="$(wc -l < AGENTS.md | tr -d ' ')"
+          if [ "$lines" -gt 300 ]; then
+            echo "AGENTS.md has $lines lines. Maximum allowed is 300."
+            exit 1
+          fi
+          if [ "$lines" -gt 250 ]; then
+            echo "::warning::AGENTS.md has $lines lines. Keep it under 250 recommended."
+          fi
+          echo "AGENTS.md line count: $lines"
+
+      - name: Ensure AGENTS.md has no [PLACEHOLDER] markers
+        run: |
+          placeholder_lines="$(grep -n '\[PLACEHOLDER\]' AGENTS.md || true)"
+          if [ -n "$placeholder_lines" ]; then
+            echo "$placeholder_lines"
+            echo "::warning::AGENTS.md contains [PLACEHOLDER] markers at the line(s) above. Replace placeholders before enabling strict enforcement."
+          fi
+
+      - name: Run weekly metrics script (dry-run)
+        run: bash scripts/weekly-metrics.sh --dry-run --days=7
+
+      - name: Validate JSON in .vscode
+        run: |
+          python3 - <<'PY'
+          import json
+          import pathlib
+          import re
+          import sys
+
+          def strip_jsonc(content: str) -> str:
+              content = re.sub(r"/\*.*?\*/", "", content, flags=re.S)
+              content = re.sub(r"^\s*//.*$", "", content, flags=re.M)
+              return content
+
+          vscode_dir = pathlib.Path(".vscode")
+          if not vscode_dir.is_dir():
+              print("Missing required .vscode directory")
+              sys.exit(1)
+
+          files = sorted(vscode_dir.glob("*.json"))
+          for file in files:
+              try:
+                  json.loads(strip_jsonc(file.read_text(encoding="utf-8")))
+              except (json.JSONDecodeError, OSError) as error:
+                  print(f"Invalid JSON in {file}: {error}")
+                  sys.exit(1)
+
+          print(f"Validated {len(files)} JSON file(s) in .vscode")
+          PY
+
+      - name: Shellcheck scripts
+        shell: bash
+        run: |
+          mapfile -d '' script_files < <(find scripts -type f -name '*.sh' -print0)
+          if [ "${#script_files[@]}" -eq 0 ]; then
+            echo "No shell scripts found in scripts/"
+            exit 0
+          fi
+          shellcheck "${script_files[@]}"
