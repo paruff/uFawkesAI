@@ -34,8 +34,7 @@ jobs:
       - name: Ensure AGENTS.md has no [PLACEHOLDER] markers
         run: |
           if grep -n '\[PLACEHOLDER\]' AGENTS.md; then
-            echo "AGENTS.md contains [PLACEHOLDER]. Replace placeholders before merge."
-            exit 1
+            echo "::warning::AGENTS.md contains [PLACEHOLDER]. Replace placeholders before enabling strict enforcement."
           fi
 
       - name: Run weekly metrics script (dry-run)

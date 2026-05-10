@@ -85,13 +85,7 @@ echo -e " ${GREEN}✅${NC} PRs merged:           ${PRS_MERGED}"
 # Test coverage (reads from last coverage run)
 # ─────────────────────────────────────────
 if [ -f "coverage/coverage-summary.json" ]; then
-  COVERAGE=$(python3 -c "
-import json, sys
-data = json.load(sys.stdin)
-total = data.get('total', {})
-lines = total.get('lines', {}).get('pct', 0)
-print(f'{lines:.0f}')
-" < coverage/coverage-summary.json 2>/dev/null || echo "?")
+  COVERAGE=$(python3 -c "import json,sys; data=json.load(sys.stdin); total=data.get('total', {}); lines=total.get('lines', {}).get('pct', 0); print(f'{lines:.0f}')" < coverage/coverage-summary.json 2>/dev/null || echo "?")
   
   if [ "$COVERAGE" != "?" ] && [ "$COVERAGE" -lt 80 ]; then
     echo -e " ${YELLOW}⚠️ ${NC} Test coverage:        ${COVERAGE}%  [target: ≥80%]"
