@@ -1,0 +1,36 @@
+name: New prompt
+description: Propose a new Prompt Library entry
+title: "[PROMPT] "
+labels:
+  - docs
+body:
+  - type: input
+    id: task_type
+    attributes:
+      label: Task type
+      description: What task is this prompt for?
+      placeholder: "Example: debugging, code review, feature implementation"
+    validations:
+      required: true
+  - type: input
+    id: target_agent
+    attributes:
+      label: Target agent
+      description: Which agent is this prompt designed for?
+      placeholder: "Example: Copilot"
+    validations:
+      required: true
+  - type: textarea
+    id: tested_output
+    attributes:
+      label: Tested output
+      description: Describe real test run(s), including repository/task context, output quality, and any failure modes.
+    validations:
+      required: true
+  - type: textarea
+    id: dora_capability
+    attributes:
+      label: DORA AI Capability addressed
+      description: Which capability does this prompt improve, and how?
+    validations:
+      required: true
