@@ -2,6 +2,7 @@
 > Configure your AI agent to work the way DORA research proves high-performing teams work. One template. Every agent. DORA AI Capabilities built in from line one.
 [![DORA AI Capabilities](https://img.shields.io/badge/DORA%20AI%20Capabilities-Built%20In-0A66C2?style=flat-square)](https://github.com/paruff/uFawkesAI) [![MIT License](https://img.shields.io/badge/License-MIT-2EA44F?style=flat-square)](./LICENSE) [![uFawkes Family](https://img.shields.io/badge/uFawkes-Family-6F42C1?style=flat-square)](https://github.com/paruff/uFawkesAI)
 [![Works with Copilot](https://img.shields.io/badge/Works%20with-Copilot-24292F?style=flat-square)](https://docs.github.com/en/copilot/how-tos/custom-instructions/adding-custom-instructions-for-github-copilot) [![Works with Claude Code](https://img.shields.io/badge/Works%20with-Claude%20Code-D97706?style=flat-square)](https://docs.anthropic.com/en/docs/claude-code) [![Works with Cursor](https://img.shields.io/badge/Works%20with-Cursor-1F6FEB?style=flat-square)](https://docs.cursor.com/context/rules-for-ai)
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/paruff/uFawkesAI)
 
 ## The problem
 AI agents start every session blank. They do not know your conventions, architecture, or the research-backed practices that improve delivery performance. This template fixes both problems simultaneously.
