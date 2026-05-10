@@ -6,6 +6,9 @@
 > Research sources:
 > - **DORA 2025** — *State of AI-assisted Software Development* (2025)
 > - **DORA AI Cap** — *AI Capabilities Model* companion report (Dec 2025)
+> - **DORA ROI 2026** — *ROI of AI-Assisted Software Development* (2026)
+> - **AAIF** — *AGENTS.md standard* — Linux Foundation Agentic AI Foundation (2025)
+> - **Faros AI 2026** — *AI Engineering Report 2026* (22,000 developer telemetry study)
 > - **GitHub Docs** — *Best practices for Copilot coding agent* (2025–2026)
 > - **GitHub Blog** — *How to write a great agents.md: Lessons from 2,500+ repos* (Nov 2025)
 
@@ -20,14 +23,23 @@
 This is the founding constraint of the entire template. Every file exists to either
 **accelerate** AI output or **control** AI output. Neither alone is sufficient.
 
+2026 empirical confirmation: Faros AI's telemetry study of 22,000 developers found
+median PR review time up 441% after AI adoption, and 31% of PRs merging with no review.
+The productivity gains are real; the oversight failures are equally real.
+The J-Curve of AI value realization (DORA ROI 2026) shows organizations must explicitly
+budget for the learning phase — and these control systems are that budget.
+
 ---
 
 ## Template File Map
 
-| File | DORA Capability | What It Does |
+| File | Capability / Standard Link | What It Does |
 |---|---|---|
 | `AGENTS.md` | AI Cap 3 — Context Engineering | Universal agent instruction file; loaded by all agents |
-| `.github/copilot-instructions.md` | AI Cap 3 | Copilot-specific context index; auto-loaded by VS Code |
+| `.github/copilot-instructions.md` | AI Cap 3 | Copilot path-compatibility symlink to `AGENTS.md` |
+| `.github/skills/` | Agent Skills standard | On-demand modular capabilities |
+| `CLAUDE.md` | Claude Code — primary config file | Symlink to AGENTS.md |
+| `.cursorrules` | Cursor — primary config file | Symlink to AGENTS.md |
 | `.github/agents/docs-agent.md` | AI Cap 2 — Prompt Engineering | Specialist for documentation generation |
 | `.github/agents/test-agent.md` | AI Cap 2 | Specialist for test generation |
 | `.github/agents/review-agent.md` | DORA 2025 — Review Speed | Specialist for code review (REVIEW-01) |
@@ -54,7 +66,7 @@ This is the founding constraint of the entire template. Every file exists to eit
 
 ---
 
-## The Seven DORA AI Capabilities (and how this template addresses each)
+## The Capability Model in This Template (Seven DORA + Agent Skills)
 
 ### Capability 1 — Clarify AI Policies
 **Finding:** Ambiguity around AI use harms both adoption and psychological safety.
@@ -84,6 +96,15 @@ This is the founding constraint of the entire template. Every file exists to eit
 **Finding:** "Developer independence resulted in 5% productivity improvement."
 **Template response:** `docs/GOLDEN_PATH.md` (one route from idea to deploy), `npm run pr-ready`, `npm run metrics`, agent specialists that reduce interruption.
 
+### Capability 8 — Agent Skills (On-Demand Context)
+**Finding:** This extends DORA's seven-capability model with an implementation pattern.
+As AGENTS.md becomes the universal standard (60,000+ open-source projects,
+Linux Foundation), a second layer of modular, on-demand capabilities has emerged —
+Agent Skills (SKILL.md files). Unlike AGENTS.md which is always loaded, Skills load
+only when explicitly referenced, preserving the agent's limited instruction budget.
+**Template response:** `.github/skills/` directory with three starter skills:
+dora-metrics, security-review, and test-generation.
+
 ---
 
 ## The Three Sequencing Rules (DORA 2025)
@@ -98,6 +119,11 @@ Phase 4: Fortify safety nets → feature flags, rollback, rework rate tracking
 Phase 5: Invest in platform → GOLDEN_PATH.md, agents, prompt library
 Phase 6: Focus on end-users → features, then iterate
 ```
+
+Phase 0 (new): Before Phase 1 — assess team archetype using DORA 2025's seven profiles
+(not the legacy low/medium/high/elite tiers). Different archetypes need different Phase 1
+priorities. A "legacy bottleneck" team needs Phase 3 first; a "harmonious high-achiever"
+team can start at Phase 4.
 
 ---
 
