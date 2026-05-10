@@ -33,8 +33,9 @@ Agent Skills are supported by:
 Reference the skill file path in your prompt:
 
 ```
-Use the skill at .github/skills/dora-metrics/SKILL.md to add rework rate tracking
-to scripts/weekly-metrics.sh.
+Use the skill at .github/skills/dora-metrics/SKILL.md to interpret the output
+of `npm run metrics` and update the Monthly Metrics Log in docs/METRICS.md
+with today's values and a trend note.
 ```
 
 ```

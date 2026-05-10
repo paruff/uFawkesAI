@@ -10,8 +10,11 @@ or rework rate.
 **Deployment Frequency** — How often the team deploys to production.
 Elite: on-demand (multiple times/day). High: daily to weekly.
 
-**Lead Time for Changes** — Time from first commit to production deployment.
+**Lead Time for Changes** — DORA definition: time from first commit to production deployment.
 Elite: < 1 hour. High: < 1 day.
+Note: this template tracks lead time as **issue → deploy** (time from issue creation to
+production merge), which is documented in `docs/METRICS.md` as "Lead time (issue → deploy)",
+target < 3 days. Use the template's definition when updating `docs/METRICS.md`.
 
 **Change Failure Rate** — % of deployments causing incidents requiring hotfix.
 Elite: 0–5%. High: 5–10%.
@@ -27,8 +30,11 @@ Monitor: change failure rate trend over 90 days of AI adoption.
 
 ## Implementation patterns
 - Calculate deployment frequency from git tags or CI deployment events, not commit frequency
-- Lead time: from branch creation (not first commit) to production merge
-- Rework rate: PRs with title prefix `fix:` or `revert:` / total PRs, rolling 30 days
+- Lead time (template definition): measure issue creation → production merge using GitHub
+  Projects/Issues; not reliably derivable from local git history alone
+- Rework rate: this template measures lines substantially changed or reverted within the
+  period as a % of total lines authored, using `git log --numstat` (see
+  `scripts/weekly-metrics.sh`). Run `npm run metrics` to get the current value.
 - FDRT: time from incident label on issue to `resolved` label, rolling average
 
 ## Connecting to uFawkesObs

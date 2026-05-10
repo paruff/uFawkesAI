@@ -217,11 +217,13 @@ See `.github/skills/README.md` for the full list of available skills.
 ```
 Read .github/skills/dora-metrics/SKILL.md.
 
-Using the DORA metric definitions and implementation patterns in that skill,
-calculate the current rework rate for this repository from the last 30 days of
-merged PRs and write the result to docs/METRICS.md.
+Run `npm run metrics` (which executes `scripts/weekly-metrics.sh`) to get the
+current rework rate for this repository. Using the metric definitions in the skill,
+interpret the result and update the rework rate row in the Monthly Metrics Log table
+in docs/METRICS.md with today's date and the value you observed.
 
-Use the git history to identify PRs with title prefixes `fix:` or `revert:`.
+Also note whether the rate is in the Healthy / Watch / Stop range and add a one-line
+trend note beneath the table.
 ```
 
 **Expected output:** Updated `docs/METRICS.md` with rework rate and trend.
@@ -246,7 +248,7 @@ Function:
 **Expected output:** Structured findings list with severity levels and corrected code.
 
 **Red flags:**
-- Agent reports "no issues" on a function with unscoped DB operations → re-prompt, specify rule 6 from the skill
+- Agent reports "no issues" on a function with unscoped DB operations → re-prompt, explicitly ask it to check the "All database operations are scoped to the authenticated `userId`" bullet in the Pre-commit security checklist section of the skill
 
 ---
 

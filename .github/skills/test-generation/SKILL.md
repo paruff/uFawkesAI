@@ -45,9 +45,9 @@ describe('calculateReworkRate', () => {
 
 - **`src/utils/`** — 80% line coverage minimum
 - **`src/services/`** — 80% line coverage minimum
-- **`src/hooks/`** — 60% line coverage minimum
 
-Run coverage check:
+Run coverage check (note: `npm run test:coverage` is a placeholder in this template —
+replace it with your actual test runner command once the test infrastructure is set up):
 ```bash
 npm run test:coverage
 ```
