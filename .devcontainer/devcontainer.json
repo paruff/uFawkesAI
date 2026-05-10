@@ -4,15 +4,12 @@
   "features": {
     "ghcr.io/devcontainers/features/git:1": {},
     "ghcr.io/devcontainers/features/github-cli:1": {},
-    "ghcr.io/devcontainers/features/node:1": {
-      "version": "22"
-    },
     "ghcr.io/devcontainers/features/common-utils:2": {
       "installZsh": true,
       "installOhMyZsh": true
     }
   },
-  "postCreateCommand": "npm install && ./scripts/setup.sh",
+  "postCreateCommand": "npm ci && ./scripts/setup.sh",
   "customizations": {
     "vscode": {
       "extensions": [

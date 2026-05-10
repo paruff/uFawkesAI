@@ -9,11 +9,12 @@ with a consistent environment and no manual machine setup.
 ## What the dev container provides
 
 - Base image: `mcr.microsoft.com/devcontainers/javascript-node:22`
-- Node.js 22 and GitHub CLI preinstalled via Dev Container features
+- Node.js 22 from the base image
+- GitHub CLI preinstalled via Dev Container features
 - Zsh + Oh My Zsh enabled for a ready-to-use shell experience
 - Opinionated VS Code extension set for Copilot, PR review, linting, and formatting
 - `postCreateCommand` that runs:
-  - `npm install`
+  - `npm ci`
   - `./scripts/setup.sh` (symlink and local setup bootstrap)
 
 This gives every contributor the same starting state for local development.
