@@ -69,9 +69,9 @@ Integration entry point: [`docs/UFAWKES_INTEGRATION.md`](./docs/UFAWKES_INTEGRAT
 | uFawkesData | Data and analytics plane | [uFawkesData (planned)](https://github.com/paruff/uFawkesAI/issues) |
 
 Quick integration hooks:
-- **uFawkesObs:** set `OTEL_EXPORTER_OTLP_ENDPOINT` to export OTEL telemetry and view latency/token traces in Grafana.
-- **uFawkesDORA:** provide `GITHUB_TOKEN`, `GITHUB_OWNER`, and `GITHUB_REPO` so `npm run metrics` can summarize delivery performance from your repo activity.
-- **uFawkesPipe:** run the Golden Path (`docs/GOLDEN_PATH.md`) so AI-authored PRs flow through the `deliveryd` CI contract.
+- **uFawkesObs:** set `OTEL_EXPORTER_OTLP_ENDPOINT` and `OTEL_SERVICE_NAME` in the instrumented runtime/service that uses this template; this repository does not emit OTEL spans by itself.
+- **uFawkesDORA:** `npm run metrics` currently summarizes local git/coverage signals; `GITHUB_TOKEN`, `GITHUB_OWNER`, and `GITHUB_REPO` are for external/future GitHub API-backed DORA collectors.
+- **uFawkesPipe:** run the Golden Path (`docs/GOLDEN_PATH.md`) so AI-authored PRs flow through the `deliveryd` CI contract (uFawkesPipe pipeline contract: [paruff/uFawkesPipe](https://github.com/paruff/uFawkesPipe)).
 
 ## Rework rate
 > DORA 2025 added rework rate as a new core metric. It is the earliest signal that
