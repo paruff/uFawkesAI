@@ -33,10 +33,10 @@ budget for the learning phase — and these control systems are that budget.
 
 ## Template File Map
 
-| File | DORA Capability | What It Does |
+| File | Capability / Standard Link | What It Does |
 |---|---|---|
 | `AGENTS.md` | AI Cap 3 — Context Engineering | Universal agent instruction file; loaded by all agents |
-| `.github/copilot-instructions.md` | AI Cap 3 | Copilot-specific context index; auto-loaded by VS Code |
+| `.github/copilot-instructions.md` | AI Cap 3 | Copilot path-compatibility symlink to `AGENTS.md` |
 | `.github/skills/` | Agent Skills standard | On-demand modular capabilities |
 | `CLAUDE.md` | Claude Code — primary config file | Symlink to AGENTS.md |
 | `.cursorrules` | Cursor — primary config file | Symlink to AGENTS.md |
@@ -66,7 +66,7 @@ budget for the learning phase — and these control systems are that budget.
 
 ---
 
-## The Seven DORA AI Capabilities (and how this template addresses each)
+## The Capability Model in This Template (Seven DORA + Agent Skills)
 
 ### Capability 1 — Clarify AI Policies
 **Finding:** Ambiguity around AI use harms both adoption and psychological safety.
@@ -97,7 +97,8 @@ budget for the learning phase — and these control systems are that budget.
 **Template response:** `docs/GOLDEN_PATH.md` (one route from idea to deploy), `npm run pr-ready`, `npm run metrics`, agent specialists that reduce interruption.
 
 ### Capability 8 — Agent Skills (On-Demand Context)
-**Finding:** As AGENTS.md becomes the universal standard (60,000+ open-source projects,
+**Finding:** This extends DORA's seven-capability model with an implementation pattern.
+As AGENTS.md becomes the universal standard (60,000+ open-source projects,
 Linux Foundation), a second layer of modular, on-demand capabilities has emerged —
 Agent Skills (SKILL.md files). Unlike AGENTS.md which is always loaded, Skills load
 only when explicitly referenced, preserving the agent's limited instruction budget.
