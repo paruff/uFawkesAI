@@ -13,9 +13,8 @@
 
 | Date | Change | Author |
 |------|--------|--------|
-| [PLACEHOLDER] | Initial library created | @paruff |
 | 2026-05-10 | Added "Using Agent Skills" section | @paruff |
-| 2026-05-10 | Added DORA AI Capabilities and multi-agent sections | @paruff |
+| 2026-05-10 | Added DORA AI Capabilities, Multi-agent orchestration, Agent Skills invocation sections | @paruff |
 
 ---
 
@@ -289,7 +288,7 @@ Prompts for measuring and improving DORA metrics using AI assistance.
 
 ### Run DORA Archetype Self-Assessment
 
-**Context to open:** `docs/TEAM_ARCHETYPE.md`, `docs/METRICS.md`
+**Context to open:** `docs/TEAM_ARCHETYPE.md`, `docs/METRICS.md`, `.github/skills/dora-metrics/SKILL.md`
 
 ```
 Read docs/TEAM_ARCHETYPE.md and .github/skills/dora-metrics/SKILL.md.
@@ -329,7 +328,10 @@ Run `npm run metrics` to calculate the current rework rate.
 Using the output:
 1. State the rework rate percentage
 2. Classify it: Healthy (0–10%), Watch (10–20%), or Stop-features (>20%)
-3. If Watch or Stop-features: identify the top 3 files with the most rework churn
+3. If Watch or Stop-features: run the following command to identify the top 5 files
+   with the most churn and include the output in your report:
+   git log --diff-filter=M --name-only --pretty=format: --since="14 days ago" \
+     | sort | uniq -c | sort -rn | head -5
 4. Suggest one prompt-engineering fix if rework > 10%
 
 Update the rework rate row in the Monthly Metrics Log in docs/METRICS.md with
@@ -337,12 +339,14 @@ today's date, the rework rate value, and a one-line trend note.
 ```
 
 **Expected output:** Updated `docs/METRICS.md` row plus a console summary with
-classification and (if needed) churn file list.
+classification and (if needed) per-file churn counts from git.
 
 **Red flags:**
 - Agent updates METRICS.md without running `npm run metrics` → reject, ask it to run
   the script first
-- Rework > 20% but no fix suggested → re-prompt asking for a specific AGENTS.md update
+- Rework > 20% but no fix suggested → re-prompt asking it to recommend a specific
+  change to AGENTS.md or PROMPT_LIBRARY.md for a human to apply, or to open a GitHub
+  issue describing the needed update (agents must not modify AGENTS.md directly)
 
 **Version:** 1.0
 **Tested with:** Claude Code (Sonnet 4.6), GitHub Copilot (GPT-5.1)
@@ -545,15 +549,16 @@ See `.github/skills/README.md` for the full skill reference.
 ### Invoke the DORA Metrics skill to add rework rate tracking
 
 ```
-Use the dora-metrics skill to add rework rate tracking to {{SERVICE_OR_FILE}}.
+Use the dora-metrics skill to add rework rate tracking for {{SERVICE_OR_FILE}}.
 
-Read .github/skills/dora-metrics/SKILL.md, then instrument {{SERVICE_OR_FILE}} so
-that git churn on it is visible in the next `npm run metrics` report. Update
-docs/METRICS.md with the new tracking note.
+Read .github/skills/dora-metrics/SKILL.md, then update docs/METRICS.md to add a
+tracking note for {{SERVICE_OR_FILE}} — noting it as a file to watch for churn in
+the next `npm run metrics` report. No code changes are needed; rework rate is
+derived automatically from git history.
 ```
 
-**Expected output:** Code changes to `{{SERVICE_OR_FILE}}` (if instrumentation is
-needed) plus an updated `docs/METRICS.md` tracking note.
+**Expected output:** An updated `docs/METRICS.md` tracking note for the specified
+file, explaining why it is being monitored.
 
 **Version:** 1.0
 **Tested with:** Claude Code (Sonnet 4.6), GitHub Copilot (GPT-5.1)
@@ -600,8 +605,11 @@ Read .github/skills/test-generation/SKILL.md, then generate a complete test file
 for {{FUNCTION_NAME}} in {{FUNCTION_FILE_PATH}}, following the TDD patterns and
 naming conventions in that skill.
 
-The test file should go in tests/unit/{{MODULE}}/{{FUNCTION_FILE_NAME}}.test.ts
-and must cover: happy path, invalid input, and at least two edge cases.
+Place the test file in:
+- tests/unit/utils/{{FUNCTION_FILE_NAME}}.test.ts  — for utility functions
+- tests/unit/services/{{FUNCTION_FILE_NAME}}.test.ts  — for service methods
+
+The test file must cover: happy path, invalid input, and at least two edge cases.
 ```
 
 **Expected output:** A complete, runnable test file that fails before the
@@ -619,11 +627,3 @@ implementation is written and passes after.
 using a different test runner.
 
 ---
-
-## Changelog
-
-| Date | Change | Reason |
-|---|---|------|
-| [PLACEHOLDER] | Initial library created | AIOPS-04 |
-| 2026-05-10 | Added "Using Agent Skills" section | AI-009 |
-| 2026-05-10 | Added DORA AI Capabilities, Multi-agent orchestration, Agent Skills invocation sections | AI-011 |
