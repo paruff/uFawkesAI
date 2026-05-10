@@ -17,6 +17,9 @@
 > DORA finding: "A clear AI stance provides psychological safety for experimentation.
 > Ambiguity around AI use creates friction, reduces adoption, and harms team morale."
 
+This policy applies to all agents: GitHub Copilot, Claude Code, Cursor, Codex, Gemini CLI,
+Windsurf, and any agentic tool with access to this repository.
+
 **Our AI stance:**
 - AI agents implement. Humans decide.
 - No AI-generated code merges without human review and approval.
@@ -166,31 +169,56 @@ Every PR opened by an agent must include in the description:
 
 > DORA 2025: "AI consistently increases PR size. Larger PRs = more surface area for bugs.
 > Control systems must be proportionally stronger."
+>
+> 2026 empirical finding (Faros AI, *AI Engineering Report 2026: The AI Acceleration
+> Whiplash*): AI coding tools boost individual PR output by 98% but increase median PR
+> review time by 441%. 31% more PRs are merging with zero review. This template's PR
+> size limit and review requirements directly counteract these measured failure modes.
+> Source: https://www.faros.ai/blog/ai-acceleration-whiplash-takeaways
 
 - **PR size limit:** 400 changed lines before CI blocks (not warns). Override requires `large-pr-approved` label from a human.
 - **Feature flags:** New features go behind a feature flag in `src/config/featureFlags.ts`.
 - **Rollback:** See `docs/RUNBOOKS.md` — Emergency Rollback procedure.
 - **Rework rate > 10%:** Stop adding features. Update `AGENTS.md` / `copilot-instructions.md` first.
+- **Multi-agent cognitive load:** When running multiple agents in parallel, the oversight burden scales non-linearly. Limit concurrent agent tasks to 3. Each parallel agent task must have a separate branch. No agent merges another agent's PR.
 
 ---
 
-## 9. Metrics That Matter (DORA 2025 — Rework Rate)
+## 9. Metrics That Matter (DORA 2025/2026)
 
-> DORA 2025 added rework rate as a new core metric. It is the earliest signal that
-> AI output quality is degrading or that instructions need updating.
+> DORA 2025 added rework rate as a sixth metric and replaced the old performance tiers
+> with seven team archetypes. Use `docs/TEAM_ARCHETYPE.md` for the current model.
 
-Track monthly using `npm run metrics`:
-- **Rework rate** — target < 10%. > 20% = stop features, fix instructions.
+Track monthly using `npm run metrics` and `docs/METRICS.md`:
+- **Rework rate** — target < 10%. In this template, measure it as lines substantially changed or reverted within 14 days of being authored, as documented in `docs/METRICS.md`. > 20% = stop features, fix instructions.
+- **Failed Deployment Recovery Time (FDRT)** — track time to restore service after a failed deployment.
+- **Reliability** — DORA 2025 quasi-metric: system stability under AI-accelerated delivery cadence. Monitor the change failure rate trend over 90 days of AI adoption.
 - **PR revision rate** — target < 25%.
 - **CI cycle time** — target < 4 min.
 - **Review turnaround** — target < 24h.
+- **Archetype review** — use `docs/TEAM_ARCHETYPE.md`; do not use elite/high/medium/low tier labels.
 
 ---
 
-## 10. See Also
+## 10. Agent Skills (On-Demand Capabilities)
+
+This template supports the Agent Skills standard (`.github/skills/`).
+Skills are modular `SKILL.md` files that load on demand — not always in context.
+Available skills in this template:
+- `.github/skills/dora-metrics/` — DORA metric calculation and interpretation
+- `.github/skills/security-review/` — Security checklist for PRs
+- `.github/skills/test-generation/` — TDD patterns for this stack
+
+To use a skill: reference it explicitly in your prompt.
+Example prompt: `"Use the dora-metrics skill to add rework rate tracking to this service."`
+
+---
+
+## 11. See Also
 
 - `.github/copilot-instructions.md` — symlink to `AGENTS.md` for Copilot path compatibility
 - `.github/agents/` — Specialist agent profiles (`@docs-agent`, `@test-agent`, `@review-agent`, `@security-agent`)
+- `.github/skills/` — On-demand skills for metrics, security review, and test generation
 - `docs/GOLDEN_PATH.md` — The 10-step idea→deploy workflow (use this for every feature)
 - `docs/PROMPT_LIBRARY.md` — Tested, versioned prompts for every repeating task
 - `docs/AI_POLICY.md` — Full AI policy and psychological safety norms
