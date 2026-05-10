@@ -170,10 +170,11 @@ Every PR opened by an agent must include in the description:
 > DORA 2025: "AI consistently increases PR size. Larger PRs = more surface area for bugs.
 > Control systems must be proportionally stronger."
 >
-> 2026 empirical finding (Faros AI, 22,000 developers): AI coding tools boost individual
-> PR output by 98% but increase median PR review time by 441%. 31% more PRs are merging
-> with zero review. This template's PR size limit and review requirements directly
-> counteract these measured failure modes.
+> 2026 empirical finding (Faros AI, *AI Engineering Report 2026: The AI Acceleration
+> Whiplash*): AI coding tools boost individual PR output by 98% but increase median PR
+> review time by 441%. 31% more PRs are merging with zero review. This template's PR
+> size limit and review requirements directly counteract these measured failure modes.
+> Source: https://www.faros.ai/blog/ai-acceleration-whiplash-takeaways
 
 - **PR size limit:** 400 changed lines before CI blocks (not warns). Override requires `large-pr-approved` label from a human.
 - **Feature flags:** New features go behind a feature flag in `src/config/featureFlags.ts`.
@@ -188,8 +189,8 @@ Every PR opened by an agent must include in the description:
 > DORA 2025 added rework rate as a sixth metric and replaced the old performance tiers
 > with seven team archetypes. Use `docs/TEAM_ARCHETYPE.md` for the current model.
 
-Track monthly using `npm run metrics`:
-- **Rework rate** — target < 10%. DORA 2025 definition: % of work that is unplanned fixes to work previously completed — not just bug fixes, but any re-do. > 20% = stop features, fix instructions.
+Track monthly using `npm run metrics` and `docs/METRICS.md`:
+- **Rework rate** — target < 10%. In this template, measure it as lines substantially changed or reverted within 14 days of being authored, as documented in `docs/METRICS.md`. > 20% = stop features, fix instructions.
 - **Failed Deployment Recovery Time (FDRT)** — track time to restore service after a failed deployment.
 - **Reliability** — DORA 2025 quasi-metric: system stability under AI-accelerated delivery cadence. Monitor the change failure rate trend over 90 days of AI adoption.
 - **PR revision rate** — target < 25%.
@@ -199,7 +200,7 @@ Track monthly using `npm run metrics`:
 
 ---
 
-## 11. Agent Skills (On-Demand Capabilities)
+## 10. Agent Skills (On-Demand Capabilities)
 
 This template supports the Agent Skills standard (`.github/skills/`).
 Skills are modular `SKILL.md` files that load on demand — not always in context.
@@ -213,7 +214,7 @@ Example prompt: `"Use the dora-metrics skill to add rework rate tracking to this
 
 ---
 
-## 12. See Also
+## 11. See Also
 
 - `.github/copilot-instructions.md` — symlink to `AGENTS.md` for Copilot path compatibility
 - `.github/agents/` — Specialist agent profiles (`@docs-agent`, `@test-agent`, `@review-agent`, `@security-agent`)
