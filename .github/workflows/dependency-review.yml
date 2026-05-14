@@ -1,0 +1,51 @@
+name: Dependency Review
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  dependency-review:
+    name: "📦 Dependency Review"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check dependency graph availability
+        id: dependency-graph
+        uses: actions/github-script@v7
+        with:
+          script: |
+            try {
+              const response = await github.request('GET /repos/{owner}/{repo}/dependency-graph/sbom', {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+              });
+
+              core.setOutput('enabled', 'true');
+              console.log(`✅ Dependency graph is available (HTTP ${response.status})`);
+            } catch (error) {
+              const rawStatus = error.status;
+              const status = Number.isFinite(Number(rawStatus)) ? Number(rawStatus) : null;
+              const apiMessage = error.response?.data?.message;
+              const runtimeMessage = error.message;
+              const message = apiMessage ?? runtimeMessage ?? 'No error message provided.';
+
+              if (status === 403 || status === 404) {
+                core.warning(
+                  `Dependency graph is not enabled for ${context.repo.owner}/${context.repo.repo}; skipping dependency review (status: ${status}, message: ${message}).`
+                );
+                core.setOutput('enabled', 'false');
+                return;
+              }
+
+              throw error;
+            }
+      - name: Review dependencies
+        if: steps.dependency-graph.outputs.enabled == 'true'
+        uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: high
