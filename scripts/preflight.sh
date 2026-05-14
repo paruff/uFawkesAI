@@ -36,7 +36,15 @@ echo ""
 if ! command -v shellcheck >/dev/null 2>&1; then
   fail "shellcheck is required but not installed. Install shellcheck and re-run npm run preflight."
 else
-  mapfile -d '' shell_files < <(find . -type f -name '*.sh' -not -path './.git/*' -print0)
+  mapfile -d '' shell_files < <(
+    find . -type f -name '*.sh' \
+      -not -path './.git/*' \
+      -not -path './node_modules/*' \
+      -not -path './vendor/*' \
+      -not -path './build/*' \
+      -not -path './dist/*' \
+      -print0
+  )
   if [ "${#shell_files[@]}" -eq 0 ]; then
     warn "No shell scripts found."
   elif shellcheck "${shell_files[@]}"; then
@@ -50,7 +58,7 @@ fi
 if [ ! -f AGENTS.md ]; then
   fail "AGENTS.md is missing. This template requires AGENTS.md at the repository root."
 else
-  placeholder_lines="$(grep -n '\[PLACEHOLDER\]' AGENTS.md || true)"
+  placeholder_lines="$(grep -n '\[PLACEHOLDER[^]]*\]' AGENTS.md || true)"
   if [ -n "${placeholder_lines}" ]; then
     echo "${placeholder_lines}"
     fail "AGENTS.md contains unfilled [PLACEHOLDER] markers."
