@@ -177,6 +177,7 @@ Every PR opened by an agent must include in the description:
 > Source: https://www.faros.ai/blog/ai-acceleration-whiplash-takeaways
 
 - **PR size limit:** 400 changed lines before CI blocks (not warns). Override requires `large-pr-approved` label from a human.
+- **Secret scanning:** `.github/workflows/secret-scan.yml` runs gitleaks on every PR and push to `main`, and verifies `.env.example` has no concrete secret values.
 - **Feature flags:** New features go behind a feature flag in `src/config/featureFlags.ts`.
 - **Rollback:** See `docs/RUNBOOKS.md` — Emergency Rollback procedure.
 - **Rework rate > 10%:** Stop adding features. Update `AGENTS.md` / `copilot-instructions.md` first.
