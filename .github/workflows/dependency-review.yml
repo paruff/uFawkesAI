@@ -14,7 +14,37 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Check dependency graph availability
+        id: dependency-graph
+        uses: actions/github-script@v7
+        with:
+          script: |
+            try {
+              const response = await github.request('GET /repos/{owner}/{repo}/dependency-graph/sbom', {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+              });
+
+              core.setOutput('enabled', 'true');
+              console.log(`✅ Dependency graph is available (HTTP ${response.status})`);
+            } catch (error) {
+              const status = error.status ?? 'unknown';
+
+              if (status === 403 || status === 404) {
+                core.warning(
+                  `Dependency graph is not enabled for ${context.repo.owner}/${context.repo.repo}; skipping dependency review.`
+                );
+                core.setOutput('enabled', 'false');
+                return;
+              }
+
+              throw error;
+            }
       - name: Review dependencies
+        if: steps.dependency-graph.outputs.enabled == 'true'
         uses: actions/dependency-review-action@v4
         with:
           fail-on-severity: high
+      - name: Report skipped dependency review
+        if: steps.dependency-graph.outputs.enabled != 'true'
+        run: echo "Dependency graph is not enabled for this repository; dependency review was skipped."
