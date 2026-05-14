@@ -10,7 +10,7 @@ body:
       value: |
         > **What is a Dojo module?**
         > A Dojo module is a short, hands-on learning exercise — typically 30–90 minutes — that a team completes
-        > together to build capability in one specific DORA practice. Each module produces a concrete repo artifact
+        > together to build capability in one specific DORA practice. Each module produces a concrete repository artifact
         > (a test, a metric snapshot, an AGENTS.md update) so that learning translates directly into delivery improvement.
         >
         > **How this bridges to the repo:** Every module references actual files in this repository so learners

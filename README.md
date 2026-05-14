@@ -59,6 +59,10 @@ Use the **Feature — Assign to Agent** issue template (`.github/ISSUE_TEMPLATE/
 - `docs/METRICS.md` — target file for snapshot output
 - `AGENTS.md` §9 — rework rate definition and target thresholds
 
+**Constraints and Out of Scope:**
+- Do not modify existing `scripts/setup.sh`
+- Do not add new npm dependencies
+
 **Definition of Done:**
 - [ ] All acceptance criteria met
 - [ ] Failing tests written before implementation
