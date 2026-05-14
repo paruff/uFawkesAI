@@ -1,0 +1,128 @@
+name: "Bug — Assign to Agent"
+description: "A product defect to investigate and fix. Assign to Copilot or another AI agent after filling in all sections."
+title: "[BUG] "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        > **PM/Reporter instructions:** Fill in every section before assigning this issue to an agent.
+        > The more specific the reproduction steps and expected behavior, the faster the agent can find and fix the root cause.
+        >
+        > When ready: assign this issue to **Copilot** (or your AI agent of choice) via the Assignees panel.
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      description: How bad is the impact? This sets the priority label.
+      options:
+        - "Critical — data loss, security issue, or system down"
+        - "High — major feature broken with no workaround"
+        - "Medium — feature degraded but a workaround exists"
+        - "Low — minor issue or cosmetic defect"
+    validations:
+      required: true
+
+  - type: textarea
+    id: current_behavior
+    attributes:
+      label: Current Behavior
+      description: What actually happens? Be specific — include error messages, stack traces, or screenshots.
+      placeholder: |
+        When I [do X], the system [does Y].
+        Error message / stack trace (if any):
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected_behavior
+    attributes:
+      label: Expected Behavior
+      description: What should happen instead?
+      placeholder: |
+        When I [do X], the system should [do Z].
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction_steps
+    attributes:
+      label: Steps to Reproduce
+      description: Exact steps that reliably trigger the bug.
+      placeholder: |
+        1. 
+        2. 
+        3. 
+
+        **Environment:** [OS, browser/runtime version, branch, commit SHA]
+    validations:
+      required: true
+
+  - type: textarea
+    id: affected_files
+    attributes:
+      label: Affected Files
+      description: Which files do you suspect are involved? Helps the agent focus its investigation.
+      placeholder: |
+        - src/services/[name].ts — likely root cause area
+        - src/types/index.ts — if a type constraint is wrong
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: Additional Context
+      description: Logs, screenshots, related issues, or anything else the agent should know.
+    validations:
+      required: false
+
+  - type: textarea
+    id: pr_review_block
+    attributes:
+      label: "AI-Assisted Review Block — paste into the draft PR body (AGENTS.md §7)"
+      description: >
+        Agent: copy this block verbatim into your draft PR description and fill it in
+        before requesting human review. This is required by the PM–Agent Contract (AGENTS.md §7).
+      value: |
+        ## AI-Assisted Review Block
+
+        **What does this PR do?**
+        <!-- One sentence describing the fix. -->
+
+
+        **What could go wrong?**
+        <!-- Top 2–3 regression risks the reviewer should look for. -->
+
+
+        **What tests cover this change?**
+        <!-- List test files. If none: explain why. -->
+
+
+        **Architecture check:**
+        <!-- Confirm no layer boundary violations — or list any that exist. -->
+        - [ ] No layer boundary violations (AGENTS.md §4)
+        - [ ] No inline type definitions (all types in `src/types/index.ts`)
+        - [ ] No `any` in catch blocks
+
+
+        **Root cause identified:**
+        <!-- One sentence: what was the actual bug? -->
+
+
+        **What I was NOT sure about (flag for human review):**
+        <!-- Any judgment call, ambiguous requirement, or deferred edge case. -->
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: assign_to_agent
+    attributes:
+      label: Assign to Agent
+      description: >
+        When this issue is fully specified and ready for investigation,
+        check the box and assign via the **Assignees** panel (select **Copilot** or your agent).
+      options:
+        - label: "This issue is fully specified and ready to assign to Copilot / Claude Code / AI agent"

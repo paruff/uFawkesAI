@@ -36,6 +36,45 @@ code AGENTS.md
 # Your agent now knows your project from session one
 ```
 
+## Writing your first agent-ready issue
+
+Use the **Feature — Assign to Agent** issue template (`.github/ISSUE_TEMPLATE/feature.yml`). Here is an example of a well-formed feature issue that Copilot can implement immediately:
+
+---
+
+**Title:** `[FEAT] Add weekly rework rate summary to docs/METRICS.md`
+
+**User Story:**
+> As a team lead, I want to run `npm run metrics` and see my rework rate for the past 30 days, so that I know immediately whether AI output quality is improving or degrading.
+
+**Acceptance Criteria:**
+- [ ] AC1: `npm run metrics` outputs a rework rate percentage calculated from the last 30 days of git history
+- [ ] AC2: The output is appended as a dated snapshot block in `docs/METRICS.md`
+- [ ] AC3: If rework rate exceeds 20%, the script prints a warning: `⚠ Rework rate > 20% — stop features, fix AGENTS.md first`
+
+**DORA AI Capability:** Rework rate / DORA metrics
+
+**Context Files to Read:**
+- `scripts/weekly-metrics.sh` — existing metrics script to extend
+- `docs/METRICS.md` — target file for snapshot output
+- `AGENTS.md` §9 — rework rate definition and target thresholds
+
+**Definition of Done:**
+- [ ] All acceptance criteria met
+- [ ] Failing tests written before implementation
+- [ ] `npm run preflight` passes
+- [ ] AI-Assisted Review Block completed in PR
+
+**Assign to:** Copilot ✓
+
+---
+
+> **What makes this issue agent-ready?**
+> - Acceptance criteria are testable (each maps to a specific assertion)
+> - Context files are listed so the agent reads the right code first
+> - Out-of-scope constraints are explicit (preventing unwanted changes)
+> - The Definition of Done gives the agent a self-check before opening the PR
+
 ## DORA AI Capabilities implemented
 | DORA AI Capability | File(s) in this template |
 |---|---|

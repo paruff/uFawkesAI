@@ -1,0 +1,171 @@
+name: "Dojo Module — Learning Path Contribution"
+description: "Propose or contribute a DevOps/AI Dojo learning module that bridges hands-on practice back to this repository's workflows."
+title: "[DOJO] "
+labels:
+  - docs
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        > **What is a Dojo module?**
+        > A Dojo module is a short, hands-on learning exercise — typically 30–90 minutes — that a team completes
+        > together to build capability in one specific DORA practice. Each module produces a concrete repo artifact
+        > (a test, a metric snapshot, an AGENTS.md update) so that learning translates directly into delivery improvement.
+        >
+        > **How this bridges to the repo:** Every module references actual files in this repository so learners
+        > can immediately apply what they learn to their own project.
+        >
+        > When ready: assign this issue to **Copilot** or another agent to scaffold the module content.
+
+  - type: input
+    id: module_title
+    attributes:
+      label: Module Title
+      description: A short, action-oriented title (e.g. "Write your first agent-ready issue").
+      placeholder: "Example: Measure your team's rework rate with scripts/weekly-metrics.sh"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: dora_capability
+    attributes:
+      label: DORA AI Capability or Practice
+      description: Which DORA AI capability or delivery practice does this module build?
+      options:
+        - "Clear and communicated AI stance"
+        - "Healthy data ecosystems"
+        - "AI-accessible internal data"
+        - "Strong version control practices"
+        - "Working in small batches"
+        - "User-centric focus"
+        - "Quality internal platforms"
+        - "Rework rate / DORA metrics"
+        - "Code review speed and quality"
+        - "Continuous integration and testing"
+        - "Other"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: duration
+    attributes:
+      label: Estimated Duration
+      options:
+        - "Short (< 30 minutes)"
+        - "Standard (30–60 minutes)"
+        - "Deep-dive (60–90 minutes)"
+        - "Workshop (half-day)"
+    validations:
+      required: true
+
+  - type: textarea
+    id: learning_objectives
+    attributes:
+      label: Learning Objectives
+      description: What will the learner be able to do after completing this module? Use action verbs.
+      placeholder: |
+        After completing this module, the learner will be able to:
+        1. [Verb] [outcome]
+        2. [Verb] [outcome]
+        3. [Verb] [outcome]
+    validations:
+      required: true
+
+  - type: textarea
+    id: prerequisite
+    attributes:
+      label: Prerequisites
+      description: What must the learner already know or have set up?
+      placeholder: |
+        - Completed scripts/setup.sh
+        - Basic familiarity with git
+        - [Other prerequisite]
+    validations:
+      required: false
+
+  - type: textarea
+    id: hands_on_exercise
+    attributes:
+      label: Hands-On Exercise (the Kata)
+      description: |
+        Describe the concrete exercise. Reference real files in this repo.
+        A good kata has a clear start state, a challenge, and a measurable done state.
+      placeholder: |
+        **Setup:** [what the learner starts with]
+
+        **Challenge:**
+        1. Open [file] and [do X]
+        2. Run `[command]` and observe [output]
+        3. Make [specific change] so that [criterion]
+
+        **Done when:** [observable, measurable outcome]
+    validations:
+      required: true
+
+  - type: textarea
+    id: repo_artifact
+    attributes:
+      label: Repository Artifact Produced
+      description: What concrete file or change does the learner commit to the repo as proof of completion?
+      placeholder: |
+        Example: An updated docs/METRICS.md with a new weekly snapshot block.
+        Example: A new entry in docs/PROMPT_LIBRARY.md.
+        Example: A passing test in tests/ that covers [feature].
+    validations:
+      required: true
+
+  - type: textarea
+    id: facilitation_notes
+    attributes:
+      label: Facilitation Notes (optional)
+      description: Tips for the coach or team lead running this module.
+      placeholder: |
+        - Common sticking points: ...
+        - Discussion questions: ...
+        - Remote vs. in-person adjustments: ...
+    validations:
+      required: false
+
+  - type: textarea
+    id: pr_review_block
+    attributes:
+      label: "AI-Assisted Review Block — paste into the draft PR body (AGENTS.md §7)"
+      description: >
+        Agent: copy this block verbatim into your draft PR description and fill it in
+        before requesting human review. This is required by the PM–Agent Contract (AGENTS.md §7).
+      value: |
+        ## AI-Assisted Review Block
+
+        **What does this PR do?**
+        <!-- One sentence: which Dojo module does this add or update? -->
+
+
+        **What could go wrong?**
+        <!-- Top 2–3 issues: inaccurate instructions, broken commands, unclear objectives? -->
+
+
+        **What tests cover this change?**
+        <!-- Documentation PRs: confirm all commands in the module were tested manually. -->
+
+
+        **Architecture check:**
+        - [ ] Module references real, current files in this repository
+        - [ ] All shell commands were tested and produce the documented output
+        - [ ] Learning objectives are measurable and achievable in the stated duration
+
+
+        **What I was NOT sure about (flag for human review):**
+        <!-- Any judgment call about content accuracy, scope, or prerequisites. -->
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: assign_to_agent
+    attributes:
+      label: Assign to Agent
+      description: >
+        An agent can scaffold the module structure, draft the kata steps, and verify that
+        referenced commands work. Check the box and assign when this issue is fully specified.
+      options:
+        - label: "This module proposal is fully specified and ready to assign to Copilot / Claude Code / AI agent"
