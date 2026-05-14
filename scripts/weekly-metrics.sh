@@ -167,6 +167,11 @@ if [ ! -f "${METRICS_DOC}" ]; then
 fi
 
 tmp_file="$(mktemp)"
+if ! command -v python3 >/dev/null 2>&1; then
+  echo "python3 is required to update ${METRICS_DOC}. Please install python3 and re-run npm run metrics."
+  exit 1
+fi
+
 AUTO_BLOCK="${AUTO_BLOCK}" python3 - "${METRICS_DOC}" <<'PY' >"${tmp_file}"
 import os
 import pathlib

@@ -58,7 +58,7 @@ fi
 if [ ! -f AGENTS.md ]; then
   fail "AGENTS.md is missing. This template requires AGENTS.md at the repository root."
 else
-  placeholder_lines="$(grep -n '\[PLACEHOLDER[^]]*\]' AGENTS.md || true)"
+  placeholder_lines="$(grep -nE '\[PLACEHOLDER[^]]*\]' AGENTS.md || true)"
   if [ -n "${placeholder_lines}" ]; then
     echo "${placeholder_lines}"
     fail "AGENTS.md contains unfilled [PLACEHOLDER] markers."
