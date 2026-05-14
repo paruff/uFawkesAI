@@ -7,7 +7,7 @@
 set -euo pipefail
 
 echo ""
-echo "  🔍  Running preflight checks before push…"
+echo "  🔍  Running preflight checks before push..."
 echo ""
 
 npm run preflight
