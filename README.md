@@ -45,10 +45,10 @@ Use the **Feature — Assign to Agent** issue template (`.github/ISSUE_TEMPLATE/
 **Title:** `[FEAT] Add weekly rework rate summary to docs/METRICS.md`
 
 **User Story:**
-> As a team lead, I want to run `npm run metrics` and see my rework rate for the past 30 days, so that I know immediately whether AI output quality is improving or degrading.
+> As a team lead, I want to run `npm run metrics` and see my rework rate for the past 14 days, so that I know immediately whether AI output quality is improving or degrading.
 
 **Acceptance Criteria:**
-- [ ] AC1: `npm run metrics` outputs a rework rate percentage calculated from the last 30 days of git history
+- [ ] AC1: `npm run metrics` outputs a rework rate percentage calculated from the last 14 days of git history
 - [ ] AC2: The output is appended as a dated snapshot block in `docs/METRICS.md`
 - [ ] AC3: If rework rate exceeds 20%, the script prints a warning: `⚠ Rework rate > 20% — stop features, fix AGENTS.md first`
 

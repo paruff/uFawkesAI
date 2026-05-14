@@ -49,6 +49,7 @@ body:
       options:
         - "Clear and communicated AI stance"
         - "Healthy data ecosystems"
+        - "Rework rate / DORA metrics"
         - "AI-accessible internal data"
         - "Strong version control practices"
         - "Working in small batches"

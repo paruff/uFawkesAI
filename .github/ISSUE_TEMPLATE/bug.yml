@@ -16,7 +16,7 @@ body:
     id: severity
     attributes:
       label: Severity
-      description: How bad is the impact? This sets the priority label.
+      description: How bad is the impact? This helps determine the priority label.
       options:
         - "Critical — data loss, security issue, or system down"
         - "High — major feature broken with no workaround"
