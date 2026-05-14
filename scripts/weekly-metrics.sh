@@ -172,6 +172,7 @@ if ! command -v python3 >/dev/null 2>&1; then
   exit 1
 fi
 
+# AUTO_BLOCK is composed in this script from trusted local values.
 AUTO_BLOCK="${AUTO_BLOCK}" python3 - "${METRICS_DOC}" <<'PY' >"${tmp_file}"
 import os
 import pathlib

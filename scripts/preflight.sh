@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # preflight.sh — real preflight gate for template repositories
 # Run: npm run preflight
+# Requires bash 4+ (uses mapfile)
 
 set -euo pipefail
 
