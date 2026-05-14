@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# pre-push — Runs npm run preflight before every push
+# Installed by scripts/setup.sh into .git/hooks/pre-push
+#
+# Aborts the push if lint, typecheck, or tests fail.
+
+set -euo pipefail
+
+echo ""
+echo "  🔍  Running preflight checks before push…"
+echo ""
+
+npm run preflight
+
+echo ""
+echo "  ✅  Preflight passed — proceeding with push."
+echo ""

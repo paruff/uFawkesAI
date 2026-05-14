@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# commit-msg — Conventional Commits format enforcer
+# Installed by scripts/setup.sh into .git/hooks/commit-msg
+#
+# Enforces the Conventional Commits spec: https://www.conventionalcommits.org/
+# Pattern: type(optional-scope)!?: description
+
+COMMIT_MSG_FILE="$1"
+COMMIT_MSG=$(cat "$COMMIT_MSG_FILE")
+
+# Skip merge commits, revert commits, fixup/squash commits, and empty messages
+if echo "$COMMIT_MSG" | grep -qE "^(Merge|Revert|fixup!|squash!)"; then
+  exit 0
+fi
+
+PATTERN="^(feat|fix|docs|style|refactor|test|chore|build|ci|perf|revert)(\(.+\))?!?: .{1,}"
+
+if ! echo "$COMMIT_MSG" | grep -qE "$PATTERN"; then
+  echo ""
+  echo "  ❌  Commit rejected: message does not follow Conventional Commits format."
+  echo ""
+  echo "     Expected:  type(optional-scope): description"
+  echo "     Example:   feat(auth): add login screen"
+  echo ""
+  echo "     Valid types: feat, fix, docs, style, refactor, test, chore, build, ci, perf, revert"
+  echo ""
+  echo "     Your message: $COMMIT_MSG"
+  echo ""
+  exit 1
+fi
+
+exit 0
