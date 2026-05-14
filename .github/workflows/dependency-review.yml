@@ -29,10 +29,11 @@ jobs:
               console.log(`✅ Dependency graph is available (HTTP ${response.status})`);
             } catch (error) {
               const status = error.status ?? 'unknown';
+              const message = error.message ?? 'No error message provided.';
 
               if (status === 403 || status === 404) {
                 core.warning(
-                  `Dependency graph is not enabled for ${context.repo.owner}/${context.repo.repo}; skipping dependency review.`
+                  `Dependency graph is not enabled for ${context.repo.owner}/${context.repo.repo}; skipping dependency review (status: ${status}, message: ${message}).`
                 );
                 core.setOutput('enabled', 'false');
                 return;
@@ -45,6 +46,3 @@ jobs:
         uses: actions/dependency-review-action@v4
         with:
           fail-on-severity: high
-      - name: Report skipped dependency review
-        if: steps.dependency-graph.outputs.enabled != 'true'
-        run: echo "Dependency graph is not enabled for this repository; dependency review was skipped."
