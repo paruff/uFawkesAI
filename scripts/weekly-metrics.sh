@@ -41,7 +41,7 @@ METRICS_DOC="${REPO_ROOT}/docs/METRICS.md"
 SNAPSHOT_UTC="$(date -u +"%Y-%m-%d %H:%M:%SZ")"
 
 if ! git -C "${REPO_ROOT}" rev-parse --git-dir >/dev/null 2>&1; then
-  echo "This script must run inside a git repository."
+  echo "This script must run inside a git repository. Checked path: ${REPO_ROOT}"
   exit 1
 fi
 
@@ -162,6 +162,7 @@ fi
 
 if [ ! -f "${METRICS_DOC}" ]; then
   echo "Missing metrics doc: ${METRICS_DOC}"
+  echo "Create or restore docs/METRICS.md before running npm run metrics."
   exit 1
 fi
 

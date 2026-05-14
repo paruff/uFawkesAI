@@ -34,7 +34,7 @@ echo ""
 
 # 1) Shellcheck all shell scripts in the repository
 if ! command -v shellcheck >/dev/null 2>&1; then
-  fail "shellcheck is required but not installed."
+  fail "shellcheck is required but not installed. Install shellcheck and re-run npm run preflight."
 else
   mapfile -d '' shell_files < <(find . -type f -name '*.sh' -not -path './.git/*' -print0)
   if [ "${#shell_files[@]}" -eq 0 ]; then
@@ -48,7 +48,7 @@ fi
 
 # 2) AGENTS.md must have no unfilled placeholders
 if [ ! -f AGENTS.md ]; then
-  fail "AGENTS.md is missing."
+  fail "AGENTS.md is missing. This template requires AGENTS.md at the repository root."
 else
   placeholder_lines="$(grep -n '\[PLACEHOLDER\]' AGENTS.md || true)"
   if [ -n "${placeholder_lines}" ]; then
