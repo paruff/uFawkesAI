@@ -10,6 +10,6 @@
     "test:coverage": "echo \"No tests configured yet; passing placeholder test step.\"",
     "lint:architecture": "echo \"No architecture lint rules configured yet; passing placeholder boundary step.\"",
     "metrics": "bash scripts/weekly-metrics.sh",
-    "preflight": "npm run lint && npm run typecheck && npm run test:coverage"
+    "preflight": "bash scripts/preflight.sh"
   }
 }
