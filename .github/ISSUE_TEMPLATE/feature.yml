@@ -1,0 +1,161 @@
+name: "Feature — Assign to Agent"
+description: "Product feature to be implemented by a Copilot or Claude Code agent, directed by a PM. Follows the PM–Agent Contract in AGENTS.md §5."
+title: "[FEAT] "
+labels:
+  - enhancement
+  - effort-medium
+body:
+  - type: markdown
+    attributes:
+      value: |
+        > **PM instructions:** Fill in every section before assigning this issue to an agent.
+        > Vague issues produce vague code. The more specific the acceptance criteria, the better the agent output.
+        > Each acceptance criterion should be specific enough to become a unit test or BDD scenario.
+        >
+        > When ready: assign this issue to **Copilot** (or your AI agent of choice) via the Assignees panel.
+
+  - type: textarea
+    id: user_story
+    attributes:
+      label: User Story
+      description: Who needs this feature, what do they need, and why?
+      placeholder: |
+        As a [type of user]
+        I want to [do something]
+        So that [I achieve a benefit]
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance_criteria
+    attributes:
+      label: Acceptance Criteria
+      description: |
+        Each criterion must be specific enough to become a test or BDD scenario.
+        Use: "Given / When / Then" or "The system [does X] when [condition Y]".
+        If you cannot write a test for an AC, the AC is too vague — rewrite it.
+      placeholder: |
+        - [ ] AC1: Given [context], when [action], then [outcome]
+        - [ ] AC2: Given [context], when [action], then [outcome]
+        - [ ] AC3: Given [context], when [action], then [outcome]
+    validations:
+      required: true
+
+  - type: dropdown
+    id: dora_capability
+    attributes:
+      label: DORA AI Capability Addressed
+      description: Which DORA AI capability does this feature advance? See AGENTS.md §1 and docs/TEAM_ARCHETYPE.md.
+      options:
+        - "Clear and communicated AI stance"
+        - "Healthy data ecosystems"
+        - "Rework rate / DORA metrics"
+        - "AI-accessible internal data"
+        - "Strong version control practices"
+        - "Working in small batches"
+        - "User-centric focus"
+        - "Quality internal platforms"
+        - "Not applicable / Other"
+    validations:
+      required: true
+
+  - type: textarea
+    id: context_files
+    attributes:
+      label: Context Files to Read
+      description: |
+        List the files the agent MUST read before implementing (see AGENTS.md §3 context index).
+        Be specific — this reduces agent hallucination and architecture violations.
+      placeholder: |
+        - src/types/index.ts — all data shapes
+        - docs/ARCHITECTURE.md — layer boundaries
+        - docs/API_SURFACE.md — existing public functions
+        - [add any feature-specific files here]
+    validations:
+      required: false
+
+  - type: textarea
+    id: constraints
+    attributes:
+      label: Constraints and Out of Scope
+      description: What must the agent NOT do? Prevents scope creep and unexpected side-effects.
+      placeholder: |
+        Out of scope:
+        - Do not modify [file/system]
+        - Do not change [behaviour]
+
+        Constraints:
+        - Must follow [pattern from AGENTS.md §4]
+        - Do not add new dependencies without PM sign-off
+    validations:
+      required: false
+
+  - type: dropdown
+    id: effort
+    attributes:
+      label: Effort Estimate
+      description: Update the issue label to match after selecting.
+      options:
+        - "Small (< 2 hours / < 100 lines)"
+        - "Medium (2–8 hours / 100–300 lines)"
+        - "Large (> 8 hours / > 300 lines — requires large-pr-approved label)"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: definition_of_done
+    attributes:
+      label: Definition of Done
+      description: The agent must confirm all applicable items before requesting review.
+      options:
+        - label: All acceptance criteria met
+        - label: Failing tests written before implementation (TDD — RED then GREEN)
+        - label: "`npm run preflight` passes (lint + typecheck + tests)"
+        - label: AI-Assisted Review Block completed in the draft PR
+        - label: No architecture boundary violations (see AGENTS.md §4)
+        - label: "`docs/API_SURFACE.md` updated if new public functions were added"
+        - label: New end-user feature is behind a feature flag
+
+  - type: textarea
+    id: pr_review_block
+    attributes:
+      label: "AI-Assisted Review Block — paste into the draft PR body (AGENTS.md §7)"
+      description: >
+        Agent: copy this block verbatim into your draft PR description and fill it in
+        before requesting human review. This is required by the PM–Agent Contract (AGENTS.md §7).
+      value: |
+        ## AI-Assisted Review Block
+
+        **What does this PR do?**
+        <!-- One sentence. -->
+
+
+        **What could go wrong?**
+        <!-- Top 2–3 failure modes the reviewer should look for. -->
+
+
+        **What tests cover this change?**
+        <!-- List test files. If none: explain why. -->
+
+
+        **Architecture check:**
+        <!-- Confirm no layer boundary violations — or list any that exist. -->
+        - [ ] No layer boundary violations (AGENTS.md §4)
+        - [ ] No inline type definitions (all types in `src/types/index.ts`)
+        - [ ] No `any` in catch blocks
+
+
+        **What I was NOT sure about (flag for human review):**
+        <!-- Any judgment call, ambiguous requirement, or deferred edge case. -->
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: assign_to_agent
+    attributes:
+      label: Assign to Agent
+      description: >
+        When this issue is fully specified and ready for implementation,
+        check the box and assign via the **Assignees** panel (select **Copilot** or your agent).
+      options:
+        - label: "This issue is fully specified and ready to assign to Copilot / Claude Code / AI agent"
