@@ -28,8 +28,8 @@ jobs:
               core.setOutput('enabled', 'true');
               console.log(`✅ Dependency graph is available (HTTP ${response.status})`);
             } catch (error) {
-              const status = error.status ?? 'unknown';
-              const message = error.message ?? 'No error message provided.';
+              const status = Number(error.status);
+              const message = error.response?.data?.message ?? error.message ?? 'No error message provided.';
 
               if (status === 403 || status === 404) {
                 core.warning(
