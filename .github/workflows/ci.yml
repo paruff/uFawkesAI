@@ -16,6 +16,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+
+      - name: Run preflight checks
+        run: npm run preflight
+
       - name: Verify symlinks resolve
         run: test -L CLAUDE.md && test -f CLAUDE.md
 
@@ -70,13 +77,3 @@ jobs:
 
           print(f"Validated {len(files)} JSON file(s) in .vscode")
           PY
-
-      - name: Shellcheck scripts
-        shell: bash
-        run: |
-          mapfile -d '' script_files < <(find scripts -type f -name '*.sh' -print0)
-          if [ "${#script_files[@]}" -eq 0 ]; then
-            echo "No shell scripts found in scripts/"
-            exit 0
-          fi
-          shellcheck "${script_files[@]}"
