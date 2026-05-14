@@ -113,7 +113,7 @@ else
 fi
 
 if [ "${PRS_MERGED}" -eq 0 ]; then
-  PR_NOTE="No merged PRs found in the window."
+  PR_NOTE="No merge commits found in this window; squash/rebase merges are not counted by this proxy."
 elif awk -v v="${PR_REVISION_RATE}" 'BEGIN { exit !(v > 40.0) }'; then
   PR_NOTE="❌ High revision load; tighten issue specs and acceptance criteria."
 elif awk -v v="${PR_REVISION_RATE}" 'BEGIN { exit !(v > 25.0) }'; then

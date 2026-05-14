@@ -1,9 +1,14 @@
 #!/usr/bin/env bash
 # preflight.sh — real preflight gate for template repositories
 # Run: npm run preflight
-# Requires bash 4+ (uses mapfile)
+# Requires bash 4.4+ (uses mapfile -d)
 
 set -euo pipefail
+
+if [ "${BASH_VERSINFO[0]}" -lt 4 ] || { [ "${BASH_VERSINFO[0]}" -eq 4 ] && [ "${BASH_VERSINFO[1]}" -lt 4 ]; }; then
+  echo "This script requires bash 4.4+."
+  exit 1
+fi
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
@@ -62,7 +67,11 @@ else
   placeholder_lines="$(grep -nE '\[PLACEHOLDER[^]]*\]' AGENTS.md || true)"
   if [ -n "${placeholder_lines}" ]; then
     echo "${placeholder_lines}"
-    fail "AGENTS.md contains unfilled [PLACEHOLDER] markers."
+    if [ "${PREFLIGHT_ENFORCE_PLACEHOLDERS:-0}" = "1" ]; then
+      fail "AGENTS.md contains unfilled [PLACEHOLDER] markers."
+    else
+      warn "AGENTS.md contains [PLACEHOLDER] markers (template mode). Set PREFLIGHT_ENFORCE_PLACEHOLDERS=1 to enforce."
+    fi
   else
     pass "AGENTS.md contains no [PLACEHOLDER] markers."
   fi

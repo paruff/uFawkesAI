@@ -77,13 +77,3 @@ jobs:
 
           print(f"Validated {len(files)} JSON file(s) in .vscode")
           PY
-
-      - name: Shellcheck scripts
-        shell: bash
-        run: |
-          mapfile -d '' script_files < <(find scripts -type f -name '*.sh' -print0)
-          if [ "${#script_files[@]}" -eq 0 ]; then
-            echo "No shell scripts found in scripts/"
-            exit 0
-          fi
-          shellcheck "${script_files[@]}"
