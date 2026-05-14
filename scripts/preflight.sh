@@ -6,7 +6,7 @@
 set -euo pipefail
 
 if [ "${BASH_VERSINFO[0]}" -lt 4 ] || { [ "${BASH_VERSINFO[0]}" -eq 4 ] && [ "${BASH_VERSINFO[1]}" -lt 4 ]; }; then
-  echo "This script requires bash 4.4+."
+  echo "This script requires bash 4.4+. Detected: ${BASH_VERSION}" >&2
   exit 1
 fi
 

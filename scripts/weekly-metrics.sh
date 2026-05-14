@@ -91,6 +91,8 @@ else
   REWORK_NOTE="✅ Healthy; rework is inside target."
 fi
 
+# This proxy intentionally keys off merge commits only; squash/rebase merges are
+# flattened in history and therefore not identifiable via this local git heuristic.
 MERGE_COMMITS="$(git -C "${REPO_ROOT}" log --since="${DAYS} days ago" --merges --pretty=format:'%H')"
 PRS_MERGED=0
 PRS_WITH_REVISION=0
