@@ -1,156 +1,149 @@
-# Metrics — [PROJECT NAME]
+# Metrics
 
-> DORA 2025 (METRICS-02): Rework rate added as a new core metric alongside the
-> traditional four. "AI-assisted teams that don't track rework see throughput gains
-> consumed by hidden instability."
->
-> Run `npm run metrics` for the weekly snapshot. Update this doc monthly.
+> Run monthly: `npm run metrics && npm run token-audit --save`
+> DORA 2025 basis: rework rate is the earliest signal that AI output quality is degrading.
 
 ---
 
-## The Five Metrics We Track
+## The Seven Metrics
 
-| Metric | Target | ⚠️ Warning | ❌ Stop | Tool |
-|---|---|---|---|---|
-| **Rework rate** | < 10% | 10–20% | > 20% | `scripts/weekly-metrics.sh` |
-| **Change failure rate** | < 5% | 5–15% | > 15% | Error monitoring |
-| **PR revision rate** | < 25% | 25–40% | > 40% | GitHub Insights |
-| **Lead time (issue → deploy)** | < 3 days | 3–7 days | > 7 days | GitHub Projects |
-| **CI cycle time** | < 4 min | 4–8 min | > 8 min | GitHub Actions |
+### 1. Rework Rate (DORA 2025 Core)
 
----
+**Formula:** `(lines substantially changed within 14 days of authoring / total lines authored) × 100`
 
-## Rework Rate (New in DORA 2025)
-
-**Definition:** Lines substantially changed or reverted within 14 days of being authored,
-as a percentage of total lines authored in the period.
-
-**Why it matters:** Rework rate is the earliest signal that AI output quality is degrading
-or that `AGENTS.md` / `copilot-instructions.md` needs updating.
-
-**Response protocol:**
-- **0–10%:** Healthy. Copilot output is landing well.
-- **10–20%:** Watch. Check for prompt pattern drift. Run a PROCESS tuning session.
-- **> 20%:** Stop adding features. Fix the instructions first. Review `docs/PROMPT_LIBRARY.md` changelog.
+**Targets:** < 10% ✅ | 10–20% ⚠️ | > 20% 🛑 Stop features, fix `AGENTS.md` first
 
 **Measurement:**
 ```bash
-npm run metrics  # includes rework rate from scripts/weekly-metrics.sh
+npm run metrics
+# Or manually:
+git log --since="28 days ago" --format="%H %ae %s" | head -50
+```
+
+**What counts as rework:** lines reverted, substantially rewritten, or rolled back within 14 days of the original commit. Rebases and force-pushes are excluded.
+
+---
+
+### 2. PR Revision Rate
+
+**Formula:** `(PRs requiring more than 2 review cycles / total PRs merged) × 100`
+
+**Targets:** < 25% ✅ | 25–40% ⚠️ | > 40% 🛑
+
+**Measurement:** `npm run metrics`
+
+**If high:** Check issue template quality — are specs clear enough for agents to implement correctly first time?
+
+---
+
+### 3. CI Cycle Time
+
+**Formula:** `median time from PR open to CI green`
+
+**Targets:** < 4 min ✅ | 4–10 min ⚠️ | > 10 min 🛑
+
+**Measurement:** GitHub Actions → workflow run durations
+
+---
+
+### 4. Review Turnaround
+
+**Formula:** `median time from PR open to first human review`
+
+**Targets:** < 24h ✅ | 24–72h ⚠️ | > 72h 🛑
+
+**DORA finding:** "Teams with shorter code review times have 50% better delivery performance."
+
+---
+
+### 5. Failed Deployment Recovery Time (FDRT)
+
+**Formula:** `time from failed deployment detection to service restoration`
+
+**Targets:** < 1h ✅ | 1–4h ⚠️ | > 4h 🛑
+
+**Measurement:** Manual — record in incidents log when deployments fail
+
+---
+
+### 6. Reliability (Change Failure Rate Trend)
+
+**Formula:** `(deployments causing incidents / total deployments) × 100, tracked over 90 days`
+
+**Targets:** declining trend ✅ | flat ⚠️ | increasing 🛑
+
+**Note:** DORA 2025 quasi-metric — track as a trend, not an absolute.
+
+---
+
+### 7. AI Credit Burn Rate *(New — June 2026)*
+
+**Formula:** `total Copilot AI Credits consumed / merged PRs in the period`
+
+**Targets:** Decreasing trend ✅ | Flat ⚠️ | Increasing 🛑
+
+**Measurement:** GitHub billing dashboard → Copilot usage → export to CSV
+
+**What increasing burn rate signals:**
+- `AGENTS.md` growing too large (run `npm run token-audit`)
+- Developers using Agent Mode for questions (see `docs/MODEL_ROUTING_GUIDE.md`)
+- Vague prompts causing multi-turn retry loops
+- Wrong model selection (Opus for tasks Sonnet handles fine)
+
+**Correlation insight:** If rework rate and credit burn rate both increase together,
+the root cause is almost always `AGENTS.md` quality or team prompt discipline.
+Fix `AGENTS.md` first.
+
+---
+
+## Monthly Review Ritual (15 minutes)
+
+```bash
+# 1. Run metrics
+npm run metrics
+
+# 2. Run token audit and save
+npm run token-audit --save
+
+# 3. Review the dashboard
+open https://github.com/settings/billing/copilot_usage   # individual
+# or: github.com/orgs/[ORG]/settings/copilot/seat_management (org admin)
+
+# 4. Record below
 ```
 
 ---
 
-## Change Failure Rate
+## Monthly Records
 
-**Definition:** Percentage of deploys that cause a user-visible bug, crash, or required rollback.
-
-**Response protocol:**
-1. Deploy causes error spike → automated alert fires
-2. Follow `docs/RUNBOOKS.md` → Change Failure Response runbook
-3. Root cause: Was it a Copilot pattern failure? Update `AGENTS.md`.
-4. Root cause: Was it an untested edge case? Add regression test.
-
----
-
-## PR Revision Rate
-
-**Definition:** Percentage of PRs requiring at least one revision request before merge.
-
-A rising PR revision rate means one of:
-- Issues are too vague (PMs need to write better specs)
-- Copilot is not following architecture rules (update `AGENTS.md`)
-- Review is inconsistent (update `docs/RUNBOOKS.md` review checklist)
-
----
-
-## Developer Experience (DevEx) Score
-
-> DORA 2025: "The platform capability most correlated with positive developer experience
-> is giving clear feedback on the outcome of tasks."
-
-Track monthly in `docs/DEVEX_LOG.md`. Five dimensions, scored 1–5:
-
-| Dimension | Question | Target |
-|---|---|---|
-| Flow | How often do I reach flow state? | ≥ 4 |
-| Feedback Speed | How fast does the system tell me when something is wrong? | ≥ 4 |
-| Cognitive Load | How much mental effort does the codebase require? | ≤ 3 |
-| AI Trust | How often do I accept Copilot output with confidence? | ≥ 3 |
-| Tooling Friction | How often does a tool block my work? | ≤ 2 |
-
-**Trigger:** Any dimension < 3 for two consecutive months → file an improvement issue.
-
----
-
-## Monthly Metrics Log
-
-| Month | Rework Rate | Change Failure | PR Revision | Lead Time | CI Time | DevEx Avg |
+| Month | Rework % | PR Revision % | CI Time | Review Time | Credit Burn/PR | Notes |
 |---|---|---|---|---|---|---|
-| [PLACEHOLDER] | — | — | — | — | — | — |
+| 2026-06 | — | — | — | — | — | Baseline month |
 
 ---
 
-## Automation Commands
+## Archetype Review
 
-### `npm run preflight`
+Run `docs/TEAM_ARCHETYPE.md` self-assessment quarterly.
+Current archetype: [PLACEHOLDER]
+Last assessed: [PLACEHOLDER]
 
-Runs the repository quality gates used in local and CI checks:
+Do NOT use elite/high/medium/low tier labels. Use DORA 2025 archetype names.
 
-- Shellcheck on every `.sh` file in the repository
-- `AGENTS.md` placeholder detection (warning by default in template mode; set `PREFLIGHT_ENFORCE_PLACEHOLDERS=1` to fail)
-- Symlink integrity checks for setup-managed links
+---
 
-Sample output:
+## If Rework Rate > 10%
 
-```text
-$ npm run preflight
-Running preflight checks...
-✅ shellcheck passed for 2 script(s).
-⚠️ AGENTS.md contains [PLACEHOLDER] markers (template mode). Set PREFLIGHT_ENFORCE_PLACEHOLDERS=1 to enforce.
-✅ CLAUDE.md exists and resolves.
-✅ .github/copilot-instructions.md exists and resolves.
-✅ .cursorrules exists and resolves.
-✅ .cursor/rules/AGENTS.md exists and resolves.
-Preflight passed.
-```
+1. Stop adding features
+2. Run `npm run token-audit` — is `AGENTS.md` too large?
+3. Review last 10 PRs — what patterns caused rework?
+4. Update `AGENTS.md` accordingly (keep it lean — move details to skills)
+5. Review `docs/MODEL_ROUTING_GUIDE.md` with the team
+6. Resume features only after one week below 10%
 
-### `npm run metrics`
+## If Credit Burn Rate is Increasing
 
-Calculates and writes a markdown snapshot to this file with:
-
-- Rework rate (churn changed again within 14 days of first touch in the window)
-- PR revision rate proxy from merge history
-- CI cycle time integration stub and next-step instructions
-
-Sample output:
-
-```text
-$ npm run metrics
-═══════════════════════════════════════════
-  [PROJECT NAME] Weekly Metrics
-  Period: last 14 days
-═══════════════════════════════════════════
- Rework rate: 8.3% (42/504)
- PR revision rate: 33.3% (1/3)
- CI cycle time: stub (see docs/METRICS.md instructions)
-Updated /path/to/docs/METRICS.md with latest markdown summary.
-═══════════════════════════════════════════
-```
-
-<!-- METRICS_AUTO:START -->
-## Latest Automated Snapshot
-
-Generated by `npm run metrics` on **2026-05-14 11:14:59Z** for the last **14 days**.
-
-| Metric | Value | Notes |
-|---|---:|---|
-| Rework rate | 4.5% (311/6882 changed lines) | ✅ Healthy; rework is inside target. |
-| PR revision rate | 0.0% (0/0 merged PRs revised) | No merge commits found in this window; squash/rebase merges are not counted by this proxy. |
-| CI cycle time | _stub_ | Add GitHub Actions duration export, then replace this row with p50/p95 minutes. |
-
-### CI cycle time stub instructions
-
-1. Export workflow durations from GitHub Actions (for example via `gh run list --json createdAt,updatedAt`).
-2. Compute p50 and p95 run duration for the same 14-day window.
-3. Replace the CI row above with measured values and trend notes.
-<!-- METRICS_AUTO:END -->
+1. Run `npm run token-audit` — check always-on context size
+2. Review team's Agent Mode usage patterns
+3. Run a 30-min model routing workshop using `docs/MODEL_ROUTING_GUIDE.md`
+4. Check `.github/copilot-budget.md` — are admin controls configured?
