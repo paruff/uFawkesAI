@@ -1,62 +1,131 @@
-# Build artifacts — never useful context
+# .copilotignore
+#
+# TOKEN COST: Each excluded file reduces context size on EVERY Copilot request.
+# Files listed here are completely removed from Copilot's context.
+# Review quarterly and add your project's generated/build files.
+#
+# Impact: a well-configured .copilotignore can cut context by 30-60%
+# for repos with significant build artifacts or generated code.
+#
+# Format: same as .gitignore
+
+# ── Dependencies ──────────────────────────────────────────────────────────────
+node_modules/
+vendor/
+.venv/
+venv/
+__pycache__/
+*.pyc
+.bundle/
+Pods/
+
+# ── Lock files (high token count, zero AI value) ──────────────────────────────
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+Gemfile.lock
+poetry.lock
+Cargo.lock
+go.sum
+composer.lock
+
+# ── Build outputs ─────────────────────────────────────────────────────────────
 dist/
 build/
 out/
 .next/
-coverage/
+.nuxt/
+.output/
+target/
+bin/
+obj/
+*.class
+*.jar
+*.war
+*.o
+*.a
+*.so
+*.dylib
+*.exe
+
+# ── Generated files ───────────────────────────────────────────────────────────
+*.generated.ts
+*.generated.js
+*.pb.go
+*.pb.ts
+generated/
+auto-generated/
+__generated__/
 *.min.js
 *.min.css
 *.bundle.js
+*.chunk.js
 
-# Dependencies — high token cost, zero signal
-node_modules/
-.pnp/
-vendor/
-venv/
-.venv/
-__pycache__/
+# ── Coverage and test artifacts ───────────────────────────────────────────────
+coverage/
+.nyc_output/
+*.lcov
+test-results/
+playwright-report/
 
-# Generated files
-*.lock
-package-lock.json
-yarn.lock
-pnpm-lock.yaml
-*.map
-*.d.ts.map
+# ── IDE and tooling ───────────────────────────────────────────────────────────
+.idea/
+*.iml
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.vscode/extensions.json
 
-# Secrets and environment — never send these
+# ── Logs ─────────────────────────────────────────────────────────────────────
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ── Media and assets (not useful as code context) ─────────────────────────────
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.ico
+*.svg
+*.woff
+*.woff2
+*.ttf
+*.eot
+*.mp4
+*.mp3
+*.pdf
+
+# ── Data files (often large, rarely useful context) ───────────────────────────
+*.csv
+*.tsv
+*.json.bak
+fixtures/
+seeds/
+migrations/*.sql
+
+# ── Infrastructure as Code (state files) ──────────────────────────────────────
+*.tfstate
+*.tfstate.backup
+.terraform/
+.terragrunt-cache/
+
+# ── Secrets and environment ────────────────────────────────────────────────────
 .env
-.env.*
-!.env.example
+.env.local
+.env.*.local
 *.pem
 *.key
 *.cert
-secrets/
 
-# Large data and media
-*.csv
-*.json.gz
-*.parquet
-fixtures/
-testdata/
-*.png
-*.jpg
-*.gif
-*.mp4
+# ── Docs that aren't useful as code context ───────────────────────────────────
+# (Comment this out if you want Copilot to reference your docs)
+# docs/
 
-# Logs and temp
-*.log
-logs/
-tmp/
-.tmp/
-.cache/
-
-# IDE and OS noise
-.DS_Store
-Thumbs.db
-.idea/
-*.swp
-
-# Docker volumes and generated compose state
-.docker/
-docker-volumes/
+# ── Project-specific additions ────────────────────────────────────────────────
+# Add your project's generated/build files below this line:
+#
+# [PLACEHOLDER — e.g. "src/generated/", "proto/", "storybook-static/"]
