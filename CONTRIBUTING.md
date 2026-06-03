@@ -1,69 +1,99 @@
 # Contributing to uFawkesAI
 
-Thank you for helping improve uFawkesAI.
+Welcome to the uFawkesAI open-source project! We are thrilled to have you contribute.
 
-## Who this template is for
+This repository is an AI agent starter template. Our core philosophy is that contributions must work with real, functional agents, not just pass automated CI checks. We rely on human expertise and rigorous testing to maintain quality.
 
-This template is for PMs, tech leads, and contributors who want AI agents (Copilot, Claude Code, Cursor, Codex, and others) to produce reliable, reviewable output aligned with DORA AI Capabilities.
+## Prerequisites
 
-## How to contribute
+Before you begin, ensure you have the following tools installed:
 
-1. Fork this repository.
-2. Customize placeholders in your fork, starting with `AGENTS.md`.
-3. Test your change with at least one real agent in a realistic workflow.
-4. Run `npm run preflight` (currently a placeholder gate in this template until real lint/typecheck/test tooling is configured).
-5. Open a PR with a clear description of what changed and what agent testing you performed.
+*   **Git**: For version control.
+*   **Node.js 20+**: The required runtime environment.
+*   **bash 4.4+**: The shell environment. (Note: macOS ships with bash 3.2, so please use `brew install bash` to update.)
+*   **shellcheck**: A linter for shell scripts. (`brew install shellcheck` or `apt install shellcheck`)
+*   **An AI agent**: We recommend using GitHub Copilot, Claude Code, Cursor, or Codex for development assistance.
 
-## What makes a good contribution
+## Local Setup
 
-A good contribution:
+Follow these steps to get your local environment running:
 
-- References at least one DORA AI Capability and explains why it matters.
-- Is tested with at least one real agent, and states:
-  - which agent you used, and
-  - what you tested.
-- Does not increase `AGENTS.md` line count unless equivalent content is moved to `docs/`.
-- Keeps changes small, reviewable, and aligned with existing structure.
+1.  **Fork and Clone**: Fork the repository to your GitHub account and clone it locally.
+2.  **Run Setup Script**: Execute `./scripts/setup.sh`. This script is crucial as it creates necessary symlinks (e.g., `CLAUDE.md`, `.github/copilot-instructions.md`, `.cursorrules`, `.cursor/rules/AGENTS.md`) and installs git hooks from the `.github/hooks/` directory.
+3.  **Run Preflight Check**: Execute `npm run preflight`. This command performs several critical checks:
+    *   `shellcheck` runs on all `.sh` files to catch scripting errors.
+    *   It verifies that `AGENTS.md` contains no `[PLACEHOLDER]` markers (it will warn only in template mode; set `PREFLIGHT_ENFORCE_PLACEHOLDERS=1` to enforce).
+    *   It confirms that all required symlinks exist and resolve correctly.
+4.  **Customize Agents**: Replace all `[PLACEHOLDER]` sections within `AGENTS.md` with your project's specific details.
 
-## How to add a prompt to the Prompt Library
+**Dry Run Example:**
+To see what the setup script will do without making any changes, run:
+`./scripts/setup.sh --dry-run`
 
-Update `docs/PROMPT_LIBRARY.md` using the existing category structure and style.
+## Test Your Contribution With an AI Agent
 
-For each prompt, include:
+We strongly encourage using an AI agent to review your own changes before submitting a Pull Request (PR).
 
-- Task type (for example: code review, debugging, security review).
-- Target agent(s).
-- Required context files to open.
-- Prompt template with placeholders.
-- Expected output.
-- Red flags / failure signals.
-- DORA AI Capability addressed.
+**Example Workflow (using Claude Code):**
+1.  Open `AGENTS.md` and the specific file you modified (e.g., `src/utils/auth.ts`) in your editor.
+2.  Run the prompt: `"Review my changes to src/utils/auth.ts against the acceptance criteria in AGENTS.md"`
+3.  **Good Output:** The agent provides specific, actionable feedback, pointing out potential race conditions or missing type guards, and suggests code improvements.
+4.  **Red Flags:** The agent ignores parts of the code or gives vague, high-level advice.
 
-Testing and versioning requirements:
+**Rule:** Every PR must include a description stating which AI agent was used for testing and what specific criteria were tested.
 
-1. Test the prompt with at least one real agent and a real task.
-2. Record what you tested and whether output matched expectations.
-3. Update the Prompt Library changelog table with date, change, and reason.
+## PR Lifecycle
 
-## How to add an Agent Skill
+The contribution process is designed to be highly automated and quality-gated.
 
-Place new skills in:
-
-`.github/skills/<skill-name>/SKILL.md`
-
-Use the `SKILL.md` format already present in `.github/skills/`:
-
-```md
-# <skill-name>
-
-Use this skill for <purpose>.
-
-Status: <state>.
+```
+  fork → branch → change → npm run preflight → commit → PR → CI gates → human review → merge
 ```
 
-Keep skill instructions concise, specific, and reusable.
+**CI Gate Explanations:**
 
-## Code of conduct
+*   🔗 **Agent Symlinks**: The CI system verifies that all necessary symlinks resolve correctly on a fresh clone.
+*   🔢 **PR Size Gate**: PRs are limited to a maximum of 400 changed lines. If the change is genuinely atomic and cannot be split, a human maintainer must apply the `large-pr-approved` label. You cannot self-approve this.
+*   🔍 **Lint**: `npm run lint` checks for stylistic and structural code consistency.
+*   🔷 **TypeScript**: `npm run typecheck` ensures type safety across the entire codebase.
+*   🧪 **Tests & Coverage**: `npm run test:coverage` runs all unit and integration tests. The minimum required coverage threshold is 80%.
+*   🏗️ **Architecture Boundaries**: `npm run lint:architecture` enforces adherence to defined architectural layers and boundaries.
 
-This project follows the Contributor Covenant Code of Conduct:
-https://www.contributor-covenant.org/version/2/1/code_of_conduct/
+**Note:** The `ci.yml` file also validates that `AGENTS.md` does not exceed 300 lines (it issues a warning at 250 lines).
+
+## Contribution Areas → Dojo Module Map
+
+Use this map to guide your learning path.
+
+| Contribution Area | Recommended Dojo Module | Belt | URL |
+| :--- | :--- | :--- | :--- |
+| AGENTS.md / agent instructions | Module 1: Internal Delivery Platforms | ⚪ White | https://paruff.github.io/fawkes/dojo/modules/white-belt/module-01-what-is-idp/ |
+| DORA metrics / docs/METRICS.md | Module 2: DORA Metrics | ⚪ White | https://paruff.github.io/fawkes/dojo/modules/white-belt/module-02-dora-metrics/ |
+| CI workflows / .github/workflows/ | Module 5: CI Fundamentals | 🟡 Yellow | https://paruff.github.io/fawkes/dojo/modules/yellow-belt/module-05-ci-fundamentals/ |
+| Security scanning / SECURITY.md | Module 7: Security & Quality Gates | 🟡 Yellow | https://paruff.github.io/fawkes/dojo/modules/yellow-belt/module-07-security-quality-gates/ |
+| Observability / scripts/weekly-metrics.sh | Module 13: Metrics, Logs & Traces | 🟤 Brown | https://paruff.github.io/fawkes/dojo/modules/brown-belt/module-13-metrics-logs-traces/ |
+| DORA deep dive / docs/METRICS.md advanced | Module 14: DORA Deep Dive | 🟤 Brown | https://paruff.github.io/fawkes/dojo/modules/brown-belt/module-14-dora-deep-dive/ |
+| Architecture / .github/skills/architecture/ | Module 17: Platform as a Product | ⚫ Black | https://paruff.github.io/fawkes/dojo/modules/black-belt/module-17-platform-as-product/ |
+
+You don't need to complete a module before contributing — but the module will help you understand the intent behind the code you're changing.
+
+## FAQ: Why Is My PR Blocked?
+
+**The PR Size Gate failed.**
+Your PR changed more than 400 lines. Split it into smaller PRs. If the change is genuinely atomic and cannot be split, ask a maintainer to apply the `large-pr-approved` label. You cannot apply this label yourself.
+
+**Preflight failed on shellcheck.**
+Run `shellcheck scripts/<your-script>.sh` locally. Fix all warnings before pushing. The CI gate is not lenient.
+
+**AGENTS.md line count warning.**
+`ci.yml` warns at 250 lines and blocks at 300. Move content to a skill file in `.github/skills/` and load it on demand instead.
+
+**Symlink check failed.**
+Run `./scripts/setup.sh` to recreate symlinks. This usually means you cloned without running setup.
+
+**I didn't test with a real agent.**
+PR descriptions must state which agent you used and what you tested. PRs without this will be returned for revision.
+
+## Code of Conduct
+
+We are committed to providing a safe and welcoming environment for all contributors. Please read and adhere to the [Contributor Covenant 2.1](https://www.contributor-covenant.org/version/2/1/code_of_conduct/).
