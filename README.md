@@ -36,6 +36,22 @@ This template is pre-optimized for the new cost model:
 
 Run `npm run token-audit` after setup to see your baseline.
 
+## Copilot Billing Retrofit Prompts
+
+Two ready-to-use prompts let you apply uFawkesAI's token optimization
+to **any existing repo** — not just new projects.
+
+| Prompt | Tool | What it produces | Cost |
+|---|---|---|---|
+| `docs/COPILOT_BILLING_HANDOFF_PROMPT_LOCAL.md` | Ollama + Gemma 4 E4B | AGENTS.md, 4 skill files, .copilotignore, 2 cost guides | Free |
+| `docs/COPILOT_BILLING_HANDOFF_PROMPT_SCRIPTS.md` | Copilot / Claude Code | token-audit.sh, setup.sh hardening, CI placeholder check | ~$0.50 |
+
+Run the local prompt first (zero cost), then the scripts prompt for the bash work.
+Together they take about 90 minutes and reduce always-on context by 40–60%.
+
+See `docs/COPILOT_BILLING_HANDOFF_PROMPT_LOCAL.md` to get started.
+
+
 ## 5-minute quick start
 ```bash
 # 1. Use this template (click "Use this template" on GitHub) or clone
