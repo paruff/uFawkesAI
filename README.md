@@ -19,6 +19,23 @@ AI agents start every session blank. They do not know your conventions, architec
 - CI workflow with PR size blocking (400 lines), doc freshness monitoring
 - `scripts/weekly-metrics.sh` — rework rate, PR revision rate, CI cycle time in one view
 
+
+## June 2026: Built for the New Token Billing Model
+
+GitHub Copilot moved to token-based billing on June 1, 2026.
+This template is pre-optimized for the new cost model:
+
+| File | What it saves |
+|---|---|
+| `AGENTS.md` (88 lines) | ~61% always-on context vs. typical 226-line files |
+| `.github/skills/` | On-demand only — zero cost until referenced |
+| `.copilotignore` | Excludes lock files, build artifacts, generated code |
+| `scripts/token-audit.sh` | Shows your token footprint before the bill arrives |
+| `docs/COPILOT_COST_GUIDE.md` | Billing model explained for developers |
+| `docs/MODEL_ROUTING_GUIDE.md` | Which mode and model saves the most |
+
+Run `npm run token-audit` after setup to see your baseline.
+
 ## 5-minute quick start
 ```bash
 # 1. Use this template (click "Use this template" on GitHub) or clone
