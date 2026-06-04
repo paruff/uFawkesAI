@@ -1,5 +1,5 @@
 name: Bug report
-description: Report an issue with agent behavior, instructions, or repository workflows
+description: Something wrong with this template? Report a problem with AGENTS.md, docs, or CI workflows.
 title: "[BUG] "
 labels:
   - bug
