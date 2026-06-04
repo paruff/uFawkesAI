@@ -1,85 +1,90 @@
-#!/usr/bin/env bash
-  # preflight.sh — real preflight gate for template repositories
-  
-  # Run: npm run preflight
+name: Documentation Freshness
+# DORA 2025 (DOCS-02): Reminds contributors to update living docs
+# when agent instructions, scripts, or skill files change.
+# Does not block merges — prompts @docs-agent to run.
+on:
+  pull_request:
+    branches: [main, develop]
 
-  set -euo pipefail
-  SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-  REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
-  cd "${REPO_ROOT}"
-  RED='\033[0;31m'
-  GREEN='\033[0;32m'
-  YELLOW='\033[1;33m'
-  NC='\033[0m'
-  failures=0
-  pass() { printf "%b\n" "${GREEN}✅${NC} $"; }
-  warn() { printf "%b\n" "${YELLOW}⚠️  ${NC} $"; }
-  fail() { printf "%b\n" "${RED}❌${NC} $*"; failures=$((failures + 1)); }
-  echo ""
-  echo "Running preflight checks..."
-  echo ""
-  # 1) Shellcheck all shell scripts
-  
-  if ! command -v shellcheck >/dev/null 2>&1; then
-    fail "shellcheck is required but not installed. Install shellcheck and re-run npm run preflight."
-  else
-    shell_files=()
-    while IFS= read -r -d '' f; do
-      shell_files+=("$f")
-    done < <(find . -type f -name '.sh'  
-      -not -path './.git/' 
-      -not -path './node_modules/'  
-      -not -path './vendor/' 
-      -not -path './build/'  
-      -not -path './dist/' 
-      -print0)
-    if [ "${#shell_files[@]}" -eq 0 ]; then
-      warn "No shell scripts found."
-    elif shellcheck "${shell_files[@]}"; then
-      pass "shellcheck passed for ${#shell_files[@]} script(s)."
-    else
-      fail "shellcheck reported issues."
-    fi
-  fi
-  # 2) AGENTS.md must have no unfilled placeholders
-  
-  if [ ! -f AGENTS.md ]; then
-    fail "AGENTS.md is missing."
-  else
-    placeholder_lines="$(grep -nE '[PLACEHOLDER[^]]*]' AGENTS.md || true)"
-    if [ -n "${placeholder_lines}" ]; then
-      echo "${placeholder_lines}"
-      if [ "${PREFLIGHT_ENFORCE_PLACEHOLDERS:-0}" = "1" ]; then
-        fail "AGENTS.md contains unfilled [PLACEHOLDER] markers."
-      else
-        warn "AGENTS.md contains [PLACEHOLDER] markers (template mode). Set PREFLIGHT_ENFORCE_PLACEHOLDERS=1 to enforce."
-      fi
-    else
-      pass "AGENTS.md contains no [PLACEHOLDER] markers."
-    fi
-  fi
-  # 3) Required symlinks must exist and resolve
-  
-  required_symlinks=(
-    "CLAUDE.md"
-    ".github/copilot-instructions.md"
-    ".cursorrules"
-    ".cursor/rules/AGENTS.md"
-  )
-  for link_path in "${required_symlinks[@]}"; do
-    if [ ! -L "${link_path}" ]; then
-      fail "${link_path} is missing or is not a symlink."
-      continue
-    fi
-    if [ -e "${link_path}" ]; then
-      pass "${link_path} exists and resolves."
-    else
-      fail "${link_path} is a broken symlink."
-    fi
-  done
-  echo ""
-  if [ "${failures}" -gt 0 ]; then
-    echo "Preflight failed with ${failures} issue(s)."
-    exit 1
-  fi
-  echo "Preflight passed."
+jobs:
+  doc-freshness-check:
+    name: "📄 Documentation Freshness"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check if docs were updated alongside code
+        uses: actions/github-script@v7
+        with:
+          # BUG FIX: triple backticks inside a YAML multiline string cause a
+          # parse error. Solution: build the comment body in a JS variable
+          # rather than embedding backtick fences directly in the YAML block.
+          script: |
+            const { data: files } = await github.rest.pulls.listFiles({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+            });
+
+            const changedPaths = files.map(f => f.filename);
+
+            const instructionsChanged = changedPaths.some(f =>
+              f === 'AGENTS.md' ||
+              f.startsWith('.github/skills/') ||
+              f.startsWith('.github/instructions/') ||
+              f.startsWith('.github/agents/') ||
+              f.startsWith('scripts/')
+            );
+
+            const docsUpdated = changedPaths.some(f =>
+              f.startsWith('docs/')
+            );
+
+            if (instructionsChanged && !docsUpdated) {
+              const changedInstructions = changedPaths
+                .filter(f =>
+                  f === 'AGENTS.md' ||
+                  f.startsWith('.github/') ||
+                  f.startsWith('scripts/')
+                )
+                .join(', ');
+
+              // Build body in JS to avoid YAML backtick collision
+              const fence = '```';
+              const body = [
+                '## 📄 Documentation Freshness Reminder',
+                '',
+                'This PR changes agent instructions or scripts but does not update `docs/`.',
+                '',
+                '**If agent behaviour, costs, or workflows changed:**',
+                'Run `@docs-agent` with this prompt:',
+                '',
+                `${fence}`,
+                `@docs-agent The following files changed in this PR: ${changedInstructions}`,
+                'Please update docs/COPILOT_COST_GUIDE.md, docs/MODEL_ROUTING_GUIDE.md,',
+                'or docs/METRICS.md to reflect any changes to agent behaviour or token costs.',
+                `${fence}`,
+                '',
+                '**If no user-facing behaviour changed** (internal refactor only):',
+                'Add a comment: "No doc-impacting changes — freshness check N/A"',
+                '',
+                '_DORA 2025: Undocumented agent instruction changes force every contributor_',
+                '_to reverse-engineer intent from AGENTS.md._',
+              ].join('\n');
+
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.pull_request.number,
+                body,
+              });
+
+              console.log('📄 Documentation reminder posted');
+
+            } else if (instructionsChanged && docsUpdated) {
+              console.log('✅ Documentation updated alongside instruction changes');
+            } else {
+              console.log('ℹ️ No instruction or script changes detected — skipping');
+            }
