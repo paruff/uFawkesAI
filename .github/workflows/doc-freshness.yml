@@ -1,17 +1,10 @@
 name: Documentation Freshness
-
-# DORA 2025 (DOCS-02): "Documentation is the least-used AI capability despite being high-value."
-# This workflow posts a reminder comment when service or utility files change
-# without a corresponding update to docs/API_SURFACE.md.
-# It does not block merges — it prompts @docs-agent to run.
-
+# DORA 2025 (DOCS-02): Reminds contributors to update living docs
+# when agent instructions, scripts, or skill files change.
+# Does not block merges — prompts @docs-agent to run.
 on:
   pull_request:
     branches: [main, develop]
-    paths:
-      - 'src/services/**'
-      - 'src/utils/**'
-      - 'src/types/**'
 
 jobs:
   doc-freshness-check:
@@ -29,45 +22,54 @@ jobs:
             const { data: files } = await github.rest.pulls.listFiles({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              pull_number: context.issue.number,
+              pull_number: context.payload.pull_request.number,
             });
-            
+
             const changedPaths = files.map(f => f.filename);
-            
-            const codeChanged = changedPaths.some(f =>
-              f.startsWith('src/services/') ||
-              f.startsWith('src/utils/') ||
-              f.startsWith('src/types/')
+
+            const instructionsChanged = changedPaths.some(f =>
+              f === 'AGENTS.md' ||
+              f.startsWith('.github/skills/') ||
+              f.startsWith('.github/instructions/') ||
+              f.startsWith('.github/agents/') ||
+              f.startsWith('scripts/')
             );
-            
+
             const docsUpdated = changedPaths.some(f =>
-              f === 'docs/API_SURFACE.md' ||
-              f === 'docs/CHANGE_IMPACT_MAP.md' ||
-              f === 'docs/DATA_MODEL.md'
+              f.startsWith('docs/')
             );
-            
-            if (codeChanged && !docsUpdated) {
+
+            if (instructionsChanged && !docsUpdated) {
+              const changedInstructions = changedPaths.filter(f =>
+                f === 'AGENTS.md' ||
+                f.startsWith('.github/') ||
+                f.startsWith('scripts/')
+              ).join(', ');
+
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                issue_number: context.issue.number,
+                issue_number: context.payload.pull_request.number,
                 body: `## 📄 Documentation Freshness Reminder
-                
-This PR changes \`src/services/\`, \`src/utils/\`, or \`src/types/\` but does not update the living documentation.
 
-**If any public functions were added, removed, or changed:**
+This PR changes agent instructions or scripts but does not update \`docs/\`.
+
+**If agent behaviour, costs, or workflows changed:**
 Run \`@docs-agent\` with this prompt:
 \`\`\`
-@docs-agent The following files changed in this PR: ${changedPaths.filter(f => f.startsWith('src/')).join(', ')}
-Please update docs/API_SURFACE.md and docs/CHANGE_IMPACT_MAP.md to reflect the changes.
+@docs-agent The following files changed in this PR: ${changedInstructions}
+Please update docs/COPILOT_COST_GUIDE.md, docs/MODEL_ROUTING_GUIDE.md,
+or docs/METRICS.md to reflect any changes to agent behaviour or token costs.
 \`\`\`
 
-**If no public API changed** (internal refactor only):
-Add a comment below: "No public API changes — docs freshness N/A"
+**If no user-facing behaviour changed** (internal refactor only):
+Add a comment: "No doc-impacting changes — freshness check N/A"
 
-_DORA 2025: Undocumented APIs force every agent to reverse-engineer intent from implementation._`
+_DORA 2025: Undocumented agent instruction changes force every contributor to reverse-engineer intent from AGENTS.md._`
               });
               console.log('📄 Documentation reminder posted');
-            } else if (codeChanged && docsUpdated) {
-              console.log('✅ Documentation updated alongside code changes');
+            } else if (instructionsChanged && docsUpdated) {
+              console.log('✅ Documentation updated alongside instruction changes');
+            } else {
+              console.log('ℹ️ No instruction or script changes detected — skipping');
             }
