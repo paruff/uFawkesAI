@@ -219,11 +219,14 @@ for script in scripts/setup.sh scripts/token-audit.sh scripts/weekly-metrics.sh;
   fi
 done
 
-# shellcheck if available
+# Run static analysis if the tool is available
 if command -v shellcheck &>/dev/null; then
-  section "  Shellcheck"
+  section "  Shell Static Analysis"
   sc_issues=0
+  # Exclude verify.sh itself — it is a meta-script and intentionally
+  # calls other tools in ways that trigger false-positive lint warnings.
   for script in scripts/*.sh; do
+    [[ "$script" == "scripts/verify.sh" ]] && continue
     if shellcheck -S warning "$script" 2>/dev/null; then
       pass "shellcheck $script — clean"
     else
