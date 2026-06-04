@@ -6,6 +6,10 @@ on:
     branches: [main]
 permissions:
   contents: read
+# Opt into Node 24 runner now — Node 20 forced removal September 16 2026.
+# Remove this block once Node 24 becomes the GitHub Actions default.
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 jobs:
   gitops-standards:
     runs-on: ubuntu-latest
