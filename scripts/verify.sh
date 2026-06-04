@@ -87,7 +87,7 @@ fi
 # Placeholder audit
 section "  Placeholder Audit"
 placeholder_count=$(grep -rn "\[PLACEHOLDER" --include="*.md" . \
-  2>/dev/null | grep -v node_modules | grep -v ".git" | wc -l | tr -d ' ')
+  2>/dev/null | grep -cv "node_modules\|\.git" || true)
 if [[ "$placeholder_count" -eq 0 ]]; then
   pass "No unfilled [PLACEHOLDER] strings found"
 else
@@ -226,7 +226,8 @@ if command -v shellcheck &>/dev/null; then
   # Exclude verify.sh itself — it is a meta-script and intentionally
   # calls other tools in ways that trigger false-positive lint warnings.
   for script in scripts/*.sh; do
-    [[ "$script" == "scripts/verify.sh" ]] && continue
+    # Exclude verify.sh itself — meta-script; shellcheck on it causes circular failures
+    [[ "$script" == "scripts/verify.sh" || "$script" == "./scripts/verify.sh" ]] && continue
     if shellcheck -S warning "$script" 2>/dev/null; then
       pass "shellcheck $script — clean"
     else
@@ -302,7 +303,7 @@ done
 # Issue templates exist
 section "  Issue Templates"
 template_count=$(find .github/ISSUE_TEMPLATE -name "*.yml" -o -name "*.md" \
-  2>/dev/null | grep -v config.yml | wc -l | tr -d ' ')
+  2>/dev/null | grep -cv "config.yml" || true)
 if [[ "$template_count" -ge 3 ]]; then
   pass "$template_count issue template(s) found"
   find .github/ISSUE_TEMPLATE -name "*.yml" -o -name "*.md" \
