@@ -1,5 +1,5 @@
 name: "Bug — Assign to Agent"
-description: "A product defect to investigate and fix. Assign to Copilot or another AI agent after filling in all sections."
+description: "Bug in your project? Have Copilot or Claude Code investigate and fix it."
 title: "[BUG] "
 labels:
   - bug
