@@ -55,14 +55,20 @@ echo -e "${BOLD}── Always-On Context (billed on every request) ────�
 echo ""
 
 TOTAL_ALWAYS_ON=0
-declare -A ALWAYS_ON_FILES=(
-  ["AGENTS.md"]="AGENTS.md"
-  [".github/copilot-instructions.md"]=".github/copilot-instructions.md"
-  ["CLAUDE.md"]="CLAUDE.md"
+ALWAYS_ON_LABELS=(
+  "AGENTS.md"
+  ".github/copilot-instructions.md"
+  "CLAUDE.md"
+)
+ALWAYS_ON_PATHS=(
+  "AGENTS.md"
+  ".github/copilot-instructions.md"
+  "CLAUDE.md"
 )
 
-for label in "${!ALWAYS_ON_FILES[@]}"; do
-  file="${ALWAYS_ON_FILES[$label]}"
+for i in "${!ALWAYS_ON_LABELS[@]}"; do
+  label="${ALWAYS_ON_LABELS[$i]}"
+  file="${ALWAYS_ON_PATHS[$i]}"
   tokens=$(estimate_tokens "$file")
   TOTAL_ALWAYS_ON=$(( TOTAL_ALWAYS_ON + tokens ))
   lines=0
@@ -176,8 +182,9 @@ if $SAVE_TO_METRICS; then
     echo ""
     echo "| File | Tokens | Lines |"
     echo "|---|---|---|"
-    for label in "${!ALWAYS_ON_FILES[@]}"; do
-      file="${ALWAYS_ON_FILES[$label]}"
+    for i in "${!ALWAYS_ON_LABELS[@]}"; do
+      label="${ALWAYS_ON_LABELS[$i]}"
+      file="${ALWAYS_ON_PATHS[$i]}"
       tokens=$(estimate_tokens "$file")
       lines=0; [[ -f "$file" ]] && lines=$(wc -l < "$file")
       echo "| $label | $tokens | $lines |"
