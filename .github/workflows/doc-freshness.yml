@@ -18,6 +18,9 @@ jobs:
       - name: Check if docs were updated alongside code
         uses: actions/github-script@v7
         with:
+          # BUG FIX: triple backticks inside a YAML multiline string cause a
+          # parse error. Solution: build the comment body in a JS variable
+          # rather than embedding backtick fences directly in the YAML block.
           script: |
             const { data: files } = await github.rest.pulls.listFiles({
               owner: context.repo.owner,
@@ -40,34 +43,46 @@ jobs:
             );
 
             if (instructionsChanged && !docsUpdated) {
-              const changedInstructions = changedPaths.filter(f =>
-                f === 'AGENTS.md' ||
-                f.startsWith('.github/') ||
-                f.startsWith('scripts/')
-              ).join(', ');
+              const changedInstructions = changedPaths
+                .filter(f =>
+                  f === 'AGENTS.md' ||
+                  f.startsWith('.github/') ||
+                  f.startsWith('scripts/')
+                )
+                .join(', ');
+
+              // Build body in JS to avoid YAML backtick collision
+              const fence = '```';
+              const body = [
+                '## 📄 Documentation Freshness Reminder',
+                '',
+                'This PR changes agent instructions or scripts but does not update `docs/`.',
+                '',
+                '**If agent behaviour, costs, or workflows changed:**',
+                'Run `@docs-agent` with this prompt:',
+                '',
+                `${fence}`,
+                `@docs-agent The following files changed in this PR: ${changedInstructions}`,
+                'Please update docs/COPILOT_COST_GUIDE.md, docs/MODEL_ROUTING_GUIDE.md,',
+                'or docs/METRICS.md to reflect any changes to agent behaviour or token costs.',
+                `${fence}`,
+                '',
+                '**If no user-facing behaviour changed** (internal refactor only):',
+                'Add a comment: "No doc-impacting changes — freshness check N/A"',
+                '',
+                '_DORA 2025: Undocumented agent instruction changes force every contributor_',
+                '_to reverse-engineer intent from AGENTS.md._',
+              ].join('\n');
 
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: context.payload.pull_request.number,
-                body: `## 📄 Documentation Freshness Reminder
-
-This PR changes agent instructions or scripts but does not update \`docs/\`.
-
-**If agent behaviour, costs, or workflows changed:**
-Run \`@docs-agent\` with this prompt:
-\`\`\`
-@docs-agent The following files changed in this PR: ${changedInstructions}
-Please update docs/COPILOT_COST_GUIDE.md, docs/MODEL_ROUTING_GUIDE.md,
-or docs/METRICS.md to reflect any changes to agent behaviour or token costs.
-\`\`\`
-
-**If no user-facing behaviour changed** (internal refactor only):
-Add a comment: "No doc-impacting changes — freshness check N/A"
-
-_DORA 2025: Undocumented agent instruction changes force every contributor to reverse-engineer intent from AGENTS.md._`
+                body,
               });
+
               console.log('📄 Documentation reminder posted');
+
             } else if (instructionsChanged && docsUpdated) {
               console.log('✅ Documentation updated alongside instruction changes');
             } else {
