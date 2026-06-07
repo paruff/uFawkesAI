@@ -25,7 +25,7 @@ jobs:
     name: "🔗 Agent Symlinks"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Verify symlinks
         run: |
           test -L CLAUDE.md
@@ -81,7 +81,7 @@ jobs:
     name: "🔍 Lint"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version: '20'
@@ -99,7 +99,7 @@ jobs:
     name: "🔷 TypeScript"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version: '20'
@@ -117,7 +117,7 @@ jobs:
     name: "🧪 Tests & Coverage"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version: '20'
@@ -142,7 +142,7 @@ jobs:
     name: "🏗️ Architecture Boundaries"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version: '20'
