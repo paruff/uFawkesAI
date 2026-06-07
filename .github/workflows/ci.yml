@@ -19,7 +19,7 @@ jobs:
       # actions/checkout@v4 and actions/setup-node@v4 float to Node 20 builds
       # which are deprecated and removed September 16 2026
       - uses: actions/checkout@v4.2.2
-      - uses: actions/setup-node@v4.4.0
+      - uses: actions/setup-node@v6
         with:
           # FIX: bump from 20.x to 22.x — Node 20 EOL April 2026,
           # Node 22 is Active LTS and supported on all current runners
