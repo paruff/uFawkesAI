@@ -16,7 +16,7 @@ jobs:
           fetch-depth: 0
 
       - name: Check if docs were updated alongside code
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           # BUG FIX: triple backticks inside a YAML multiline string cause a
           # parse error. Solution: build the comment body in a JS variable
