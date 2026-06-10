@@ -1,3 +1,13 @@
+---
+name: lang-python
+description: "Python toolchain: ruff, mypy, pytest, pytest-cov, uv/pip. CI gate commands, file layout, pyproject.toml config. Use when working on a Python project."
+license: MIT
+compatibility: Claude Code, GitHub Copilot, OpenCode, Cursor, Codex, Gemini CLI
+metadata:
+  author: paruff
+  suite: uFawkesAI
+---
+
 # Skill: Language — Python
 
 > **Load trigger:** `"load lang-python skill"`

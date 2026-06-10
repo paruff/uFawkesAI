@@ -1,3 +1,13 @@
+---
+name: security-review
+description: "Pre-merge security checklist covering secrets, dependencies, auth, data handling, and fawkes suite gates. Use when reviewing a PR for security issues or hardening a change before merge."
+license: MIT
+compatibility: Claude Code, GitHub Copilot, OpenCode, Cursor, Codex, Gemini CLI
+metadata:
+  author: paruff
+  suite: uFawkesAI
+---
+
 # Skill: Security Review
 
 > **Load trigger:** `"load security-review skill"`

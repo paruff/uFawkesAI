@@ -1,3 +1,13 @@
+---
+name: token-budget
+description: "Context footprint audit and cost control strategies for agent sessions. Use when optimising token usage, auditing session costs, or choosing which model to use for a task."
+license: MIT
+compatibility: Claude Code, GitHub Copilot, OpenCode, Cursor, Codex, Gemini CLI
+metadata:
+  author: paruff
+  suite: uFawkesAI
+---
+
 # Skill: Token Budget
 
 > **Load trigger:** `"load token-budget skill"`

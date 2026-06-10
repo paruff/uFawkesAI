@@ -1,3 +1,13 @@
+---
+name: adr-writer
+description: "Architecture Decision Record template and quality checklist with DORA capability linkage. Use when documenting an architectural decision that agents must follow going forward."
+license: MIT
+compatibility: Claude Code, GitHub Copilot, OpenCode, Cursor, Codex, Gemini CLI
+metadata:
+  author: paruff
+  suite: uFawkesAI
+---
+
 # Skill: ADR Writer
 
 > **Load trigger:** `"load adr-writer skill"`

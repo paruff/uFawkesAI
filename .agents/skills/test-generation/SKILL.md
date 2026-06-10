@@ -1,3 +1,13 @@
+---
+name: test-generation
+description: "TDD patterns and language-specific test examples for TypeScript/Jest, Python/pytest, and Go. Use when writing tests, increasing coverage, or implementing test-driven development."
+license: MIT
+compatibility: Claude Code, GitHub Copilot, OpenCode, Cursor, Codex, Gemini CLI
+metadata:
+  author: paruff
+  suite: uFawkesAI
+---
+
 # Skill: Test Generation
 
 > **Load trigger:** `"load test-generation skill"`

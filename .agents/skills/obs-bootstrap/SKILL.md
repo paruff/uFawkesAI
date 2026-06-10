@@ -1,3 +1,13 @@
+---
+name: obs-bootstrap
+description: "Step-by-step OpenTelemetry and uFawkesObs setup: SDK init patterns for TypeScript, Python, Go; DORA metric spans; Grafana dashboard spec. Use when adding observability to a service."
+license: MIT
+compatibility: Claude Code, GitHub Copilot, OpenCode, Cursor, Codex, Gemini CLI
+metadata:
+  author: paruff
+  suite: uFawkesAI
+---
+
 # Skill: Observability Bootstrap
 
 > **Load trigger:** `"load obs-bootstrap skill"`

@@ -1,3 +1,13 @@
+---
+name: lang-go
+description: "Go toolchain: golangci-lint, go vet, go test, go mod. CI gate commands, file layout, interface patterns. Use when working on a Go project."
+license: MIT
+compatibility: Claude Code, GitHub Copilot, OpenCode, Cursor, Codex, Gemini CLI
+metadata:
+  author: paruff
+  suite: uFawkesAI
+---
+
 # Skill: Language — Go
 
 > **Load trigger:** `"load lang-go skill"`

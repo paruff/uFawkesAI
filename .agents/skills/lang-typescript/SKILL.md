@@ -1,3 +1,13 @@
+---
+name: lang-typescript
+description: "TypeScript toolchain: ESLint, tsc, Jest/Vitest, npm. CI gate commands, file layout, type standards, Node 20. Use when working on a TypeScript or JavaScript project."
+license: MIT
+compatibility: Claude Code, GitHub Copilot, OpenCode, Cursor, Codex, Gemini CLI
+metadata:
+  author: paruff
+  suite: uFawkesAI
+---
+
 # Skill: Language — TypeScript
 
 > **Load trigger:** `"load lang-typescript skill"`

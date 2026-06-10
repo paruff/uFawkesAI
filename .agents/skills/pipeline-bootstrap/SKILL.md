@@ -1,3 +1,13 @@
+---
+name: pipeline-bootstrap
+description: "Step-by-step guide to connect a uFawkesAI project to uFawkesPipe and fawkes platform: Dockerfile, ArgoCD manifest, DORA deployment spans. Use when setting up CI/CD for a new service."
+license: MIT
+compatibility: Claude Code, GitHub Copilot, OpenCode, Cursor, Codex, Gemini CLI
+metadata:
+  author: paruff
+  suite: uFawkesAI
+---
+
 # Skill: Pipeline Bootstrap
 
 > **Load trigger:** `"load pipeline-bootstrap skill"`
