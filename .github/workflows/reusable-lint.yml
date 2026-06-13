@@ -32,10 +32,6 @@ permissions:
   contents: read
   pull-requests: read
 
-concurrency:
-  group: lint-${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
   # ════════════════════════════════════════════════════════════════════════════
   # File Change Detection

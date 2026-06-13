@@ -16,6 +16,10 @@ permissions:
   contents: read
   pull-requests: read
 
+concurrency:
+  group: ci-quality-${{ github.ref }}
+  cancel-in-progress: true
+
 # Opt into Node 24 runner now — Node 20 forced removal September 16 2026.
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true

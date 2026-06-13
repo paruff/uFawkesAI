@@ -11,6 +11,10 @@ permissions:
   contents: read
   pull-requests: read
 
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 # Opt into Node 24 runner now — Node 20 forced removal September 16 2026.
 # Remove this block once Node 24 becomes the GitHub Actions default.
 env:

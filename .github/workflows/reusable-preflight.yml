@@ -27,10 +27,6 @@ permissions:
   contents: read
   pull-requests: read
 
-concurrency:
-  group: preflight-${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
   preflight:
     name: Pre-flight Checks
