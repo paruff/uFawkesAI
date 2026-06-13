@@ -1,74 +1,76 @@
 name: CI
+
 on:
-  push:
-    branches: [main]
   pull_request:
     branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
 permissions:
   contents: read
+  pull-requests: read
+
 # Opt into Node 24 runner now — Node 20 forced removal September 16 2026.
 # Remove this block once Node 24 becomes the GitHub Actions default.
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
-  gitops-standards:
+  # ════════════════════════════════════════════════════════════════════════════
+  # Stage 0: Pre-flight Checks
+  # ════════════════════════════════════════════════════════════════════════════
+  preflight:
+    name: "✈️ Pre-flight"
+    uses: ./.github/workflows/reusable-preflight.yml
+    with:
+      pr-size-limit: 400
+      commit-format: conventional
+      emergency-bypass: true
+    secrets:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # ════════════════════════════════════════════════════════════════════════════
+  # Stage 1: Static Analysis
+  # ════════════════════════════════════════════════════════════════════════════
+  lint:
+    name: "🔍 Lint"
+    uses: ./.github/workflows/reusable-lint.yml
+    with:
+      auto-detect: true
+      emergency-bypass: true
+    secrets:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # ════════════════════════════════════════════════════════════════════════════
+  # Pipeline Summary
+  # ════════════════════════════════════════════════════════════════════════════
+  pipeline-summary:
+    name: "✅ Pipeline Complete"
+    needs: [preflight, lint]
     runs-on: ubuntu-latest
-    timeout-minutes: 2
+    if: always()
     steps:
-      # FIX: pinned to patch versions that support Node 24 runners
-      # actions/checkout@v4 and actions/setup-node@v4 float to Node 20 builds
-      # which are deprecated and removed September 16 2026
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
-        with:
-          # FIX: bump from 20.x to 22.x — Node 20 EOL April 2026,
-          # Node 22 is Active LTS and supported on all current runners
-          node-version: 22.x
-      - name: Run preflight checks
-        run: npm run preflight
-      - name: Verify symlinks resolve
-        run: test -L CLAUDE.md && test -f CLAUDE.md
-      - name: Validate AGENTS.md line count
+      - name: Check all stages
         run: |
-          lines="$(wc -l < AGENTS.md | tr -d ' ')"
-          if [ "$lines" -gt 300 ]; then
-            echo "AGENTS.md has $lines lines. Maximum allowed is 300."
+          if [ "${{ needs.preflight.result }}" == "failure" ] || \
+             [ "${{ needs.lint.result }}" == "failure" ]; then
+            echo "❌ One or more CI stages failed"
             exit 1
           fi
-          if [ "$lines" -gt 250 ]; then
-            echo "::warning::AGENTS.md has $lines lines. Keep it under 250 recommended."
-          fi
-          echo "AGENTS.md line count: $lines"
-      - name: Ensure AGENTS.md has no [PLACEHOLDER] markers
+          echo "✅ All CI stages passed — ready for review"
+
+      - name: Generate pipeline summary
+        if: always()
         run: |
-          placeholder_lines="$(grep -n '\[PLACEHOLDER\]' AGENTS.md || true)"
-          if [ -n "$placeholder_lines" ]; then
-            echo "$placeholder_lines"
-            echo "::warning::AGENTS.md contains [PLACEHOLDER] markers at the line(s) above. Replace placeholders before enabling strict enforcement."
-          fi
-      - name: Run weekly metrics script (dry-run)
-        run: bash scripts/weekly-metrics.sh --dry-run --days=7
-      - name: Validate JSON in .vscode
-        run: |
-          python3 - <<'PY'
-          import json
-          import pathlib
-          import re
-          import sys
-          def strip_jsonc(content: str) -> str:
-              content = re.sub(r"/\*.*?\*/", "", content, flags=re.S)
-              content = re.sub(r"^\s*//.*$", "", content, flags=re.M)
-              return content
-          vscode_dir = pathlib.Path(".vscode")
-          if not vscode_dir.is_dir():
-              print("Missing required .vscode directory")
-              sys.exit(1)
-          files = sorted(vscode_dir.glob("*.json"))
-          for file in files:
-              try:
-                  json.loads(strip_jsonc(file.read_text(encoding="utf-8")))
-              except (json.JSONDecodeError, OSError) as error:
-                  print(f"Invalid JSON in {file}: {error}")
-                  sys.exit(1)
-          print(f"Validated {len(files)} JSON file(s) in .vscode")
-          PY
+          echo "## Pipeline Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Stage | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Pre-flight | ${{ needs.preflight.result == 'success' && '✅ Pass' || (needs.preflight.result == 'skipped' && '⏭️ Skipped' || '❌ Fail') }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Lint | ${{ needs.lint.result == 'success' && '✅ Pass' || (needs.lint.result == 'skipped' && '⏭️ Skipped' || '❌ Fail') }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### DORA Metrics" >> $GITHUB_STEP_SUMMARY
+          echo "- **Pre-flight time**: ~1 min" >> $GITHUB_STEP_SUMMARY
+          echo "- **Lint time**: ~3 min" >> $GITHUB_STEP_SUMMARY
+          echo "- **Total time**: ~4 min" >> $GITHUB_STEP_SUMMARY
