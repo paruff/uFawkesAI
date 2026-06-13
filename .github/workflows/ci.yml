@@ -27,8 +27,6 @@ jobs:
       pr-size-limit: 400
       commit-format: conventional
       emergency-bypass: true
-    secrets:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   # ════════════════════════════════════════════════════════════════════════════
   # Stage 1: Static Analysis
@@ -39,8 +37,6 @@ jobs:
     with:
       auto-detect: true
       emergency-bypass: true
-    secrets:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   # ════════════════════════════════════════════════════════════════════════════
   # Pipeline Summary

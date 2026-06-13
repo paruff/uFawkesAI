@@ -22,9 +22,6 @@ on:
       result:
         description: 'Preflight result (pass/fail)'
         value: ${{ jobs.preflight.outputs.result }}
-    secrets:
-      GITHUB_TOKEN:
-        required: true
 
 permissions:
   contents: read

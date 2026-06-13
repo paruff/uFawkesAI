@@ -27,9 +27,6 @@ on:
       result:
         description: 'Lint result (pass/fail)'
         value: ${{ jobs.lint-summary.outputs.result }}
-    secrets:
-      GITHUB_TOKEN:
-        required: true
 
 permissions:
   contents: read
