@@ -41,9 +41,9 @@ stages:
   # Stage 3: Security scanning
   security:
     <<: *defaults
-    sca: true      # Trivy dependency scanning
-    sast: true     # CodeQL static analysis
-    container-scan: false  # No Dockerfiles in template
+    sca: true # Trivy dependency scanning
+    sast: true # CodeQL static analysis
+    container-scan: false # No Dockerfiles in template
     policy-enforcement: false
 
   # Stage 4: Tests (disabled for template - placeholders only)

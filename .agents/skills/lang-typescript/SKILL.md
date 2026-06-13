@@ -10,8 +10,7 @@ metadata:
 
 # Skill: Language — TypeScript
 
-> **Load trigger:** `"load lang-typescript skill"`
-> **Stack:** TypeScript, Node.js, ESLint, tsc, Jest/Vitest, npm
+> **Load trigger:** `"load lang-typescript skill"` > **Stack:** TypeScript, Node.js, ESLint, tsc, Jest/Vitest, npm
 > **Token cost:** Low
 
 ## Toolchain Reference

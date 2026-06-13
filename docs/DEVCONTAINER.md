@@ -24,11 +24,13 @@ This gives every contributor the same starting state for local development.
 ## How to use it
 
 ### GitHub Codespaces
+
 1. Click the "Open in GitHub Codespaces" badge in `README.md`.
 2. Wait for the environment to build.
 3. Start working immediately.
 
 ### VS Code Dev Containers
+
 1. Install the "Dev Containers" extension in VS Code.
 2. Open the repository folder.
 3. Run: **Dev Containers: Reopen in Container**.

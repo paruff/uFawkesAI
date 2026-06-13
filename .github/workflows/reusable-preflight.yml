@@ -4,23 +4,23 @@ on:
   workflow_call:
     inputs:
       pr-size-limit:
-        description: 'Maximum lines changed in PR (0 = no limit)'
+        description: "Maximum lines changed in PR (0 = no limit)"
         required: false
         type: number
         default: 400
       commit-format:
-        description: 'Enforce commit message format (conventional)'
+        description: "Enforce commit message format (conventional)"
         required: false
         type: string
-        default: 'conventional'
+        default: "conventional"
       emergency-bypass:
-        description: 'Skip this stage (emergency bypass label detected)'
+        description: "Skip this stage (emergency bypass label detected)"
         required: false
         type: boolean
         default: false
     outputs:
       result:
-        description: 'Preflight result (pass/fail)'
+        description: "Preflight result (pass/fail)"
         value: ${{ jobs.preflight.outputs.result }}
 
 permissions:
@@ -70,7 +70,7 @@ jobs:
         if: steps.bypass.outputs.skipped != 'true'
         uses: actions/setup-python@v6
         with:
-          python-version: '3.11'
+          python-version: "3.11"
 
       - name: Install pre-commit
         if: steps.bypass.outputs.skipped != 'true'
@@ -103,17 +103,17 @@ jobs:
               repo: context.repo.repo,
               pull_number: context.issue.number,
             });
-            
+
             const changed = pr.additions + pr.deletions;
             const limit = ${{ inputs.pr-size-limit }};
             const hasOverrideLabel = pr.labels.some(l => l.name === 'large-pr-approved');
             const hasBypassLabel = pr.labels.some(l => l.name === 'emergency-bypass');
-            
+
             if (hasBypassLabel) {
               console.log(`⚠️ Emergency bypass active: ${changed} lines changed`);
               return;
             }
-            
+
             if (changed > limit && !hasOverrideLabel) {
               core.setFailed(
                 `❌ PR size: ${changed} lines changed (limit: ${limit}).\n` +
@@ -135,7 +135,7 @@ jobs:
           script: |
             const conventionalRegex = /^(feat|fix|docs|style|refactor|test|chore|ci|perf|build|revert)(\(.+\))?: .{1,72}$/;
             const mergeCommitRegex = /^Merge /;
-            
+
             let commits;
             if (context.eventName === 'pull_request') {
               const { data: prCommits } = await github.rest.pulls.listCommits({
@@ -154,7 +154,7 @@ jobs:
               });
               commits = pushCommits.map(c => ({ message: c.commit.message.split('\n')[0], sha: c.sha }));
             }
-            
+
             let failures = 0;
             for (const commit of commits) {
               if (mergeCommitRegex.test(commit.message)) continue;
@@ -163,7 +163,7 @@ jobs:
                 failures++;
               }
             }
-            
+
             if (failures > 0) {
               core.setFailed(
                 `❌ ${failures} commit(s) don't follow Conventional Commits format.\n` +
@@ -179,25 +179,25 @@ jobs:
         if: steps.bypass.outputs.skipped != 'true'
         run: |
           set -euo pipefail
-          
+
           if [ ! -f .env.example ]; then
             echo "ℹ️ No .env.example found — skipping"
             exit 0
           fi
-          
+
           sensitive_key_regex='(SECRET|TOKEN|PASSWORD|PRIVATE_KEY|ACCESS_KEY|API_KEY|DATABASE_URL|CONN_STRING|DSN)'
           placeholder_value_regex='^(|<.*>|REDACTED|CHANGEME|changeme|example|your_.*)$'
-          
+
           while IFS= read -r line || [ -n "$line" ]; do
             trimmed="$(printf '%s' "$line" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
             [ -z "$trimmed" ] && continue
             case "$trimmed" in
               \#*) continue ;;
             esac
-            
+
             key="${trimmed%%=*}"
             value="${trimmed#*=}"
-            
+
             if printf '%s\n' "$key" | grep -Eiq "$sensitive_key_regex"; then
               if ! printf '%s\n' "$value" | grep -Eq "$placeholder_value_regex"; then
                 echo "❌ Concrete value detected for sensitive key '$key' in .env.example"
@@ -205,7 +205,7 @@ jobs:
               fi
             fi
           done < .env.example
-          
+
           echo "✅ .env.example secret-placeholder check passed"
 
       - name: Run gitleaks

@@ -76,8 +76,8 @@ jobs:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
-          node-version: '22.x'
-          cache: 'npm'
+          node-version: "22.x"
+          cache: "npm"
       - run: npm ci
       - name: Run ESLint placeholder
         run: |
@@ -95,8 +95,8 @@ jobs:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
-          node-version: '22.x'
-          cache: 'npm'
+          node-version: "22.x"
+          cache: "npm"
       - run: npm ci
       - name: Run TypeScript compiler placeholder
         run: |
@@ -114,8 +114,8 @@ jobs:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
-          node-version: '22.x'
-          cache: 'npm'
+          node-version: "22.x"
+          cache: "npm"
       - run: npm ci
       - name: Run tests with coverage placeholder
         run: |
@@ -139,8 +139,8 @@ jobs:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
-          node-version: '22.x'
-          cache: 'npm'
+          node-version: "22.x"
+          cache: "npm"
       - run: npm ci
       - name: Check architecture boundaries placeholder
         run: |
@@ -152,7 +152,16 @@ jobs:
   # ════════════════════════════════════════════════════════════════════════════
   ci-summary:
     name: "✅ CI Complete"
-    needs: [preflight, lint, symlink-check, lint-placeholder, typecheck, test, architecture]
+    needs:
+      [
+        preflight,
+        lint,
+        symlink-check,
+        lint-placeholder,
+        typecheck,
+        test,
+        architecture,
+      ]
     runs-on: ubuntu-latest
     if: always()
     steps:

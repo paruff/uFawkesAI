@@ -7,11 +7,11 @@ Why agents read this: This document defines the public contract for all services
 2.  **Version Before Breaking:** If a change is breaking, it must be versioned (e.g., `/v2/users`) and the old endpoint must remain active for a minimum of two major versions.
 3.  **Validation is Mandatory:** All inputs must pass through defined validation schemas before being processed to prevent runtime errors.
 
-| Endpoint | Description | Request Body Schema | Response Schema |
-| :--- | :--- | :--- | :--- |
-| `/users/get` | Retrieves user details by ID. | `{ "userId": string }` | `{ "id": string, "name": string, "email": string }` |
-| `/products/create` | Creates a new product entry. | `{ "name": string, "price": number }` | `{ "success": boolean, "productId": string }` |
-| `/auth/login` | Authenticates user credentials. | `{ "email": string, "password": string }` | `{ "token": string }` |
+| Endpoint           | Description                     | Request Body Schema                       | Response Schema                                     |
+| :----------------- | :------------------------------ | :---------------------------------------- | :-------------------------------------------------- |
+| `/users/get`       | Retrieves user details by ID.   | `{ "userId": string }`                    | `{ "id": string, "name": string, "email": string }` |
+| `/products/create` | Creates a new product entry.    | `{ "name": string, "price": number }`     | `{ "success": boolean, "productId": string }`       |
+| `/auth/login`      | Authenticates user credentials. | `{ "email": string, "password": string }` | `{ "token": string }`                               |
 
 ## Usage Examples
 

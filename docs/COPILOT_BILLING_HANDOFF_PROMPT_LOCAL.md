@@ -1,19 +1,34 @@
 # Copilot Billing Handoff — Local Model Prompt (Gemma 4 E4B / Ollama)
+
 #
+
 # USE THIS WHEN: running Claude Code with Ollama + Gemma 4 E4B locally
+
 # DOES NOT NEED: Copilot credits, internet connection, API keys
-# PAIRS WITH:   COPILOT_BILLING_HANDOFF_PROMPT_SCRIPTS.md (run that with Copilot for the bash scripts)
+
+# PAIRS WITH: COPILOT_BILLING_HANDOFF_PROMPT_SCRIPTS.md (run that with Copilot for the bash scripts)
+
 #
-# SETUP FIRST (one time):
-#   ollama run gemma4:e4b
-#   /set parameter num_ctx 32768
-#   /save gemma4:e4b-32k
-#   /bye
+
+# SETUP FIRST (one time)
+
+# ollama run gemma4:e4b
+
+# /set parameter num_ctx 32768
+
+# /save gemma4:e4b-32k
+
+# /bye
+
 #
-# THEN RUN:
-#   OLLAMA_MODEL=gemma4:e4b-32k claude   # Claude Code pointed at local Ollama
-#   # or open Continue.dev in VS Code with gemma4:e4b-32k configured
-#   # Paste the prompt below
+
+# THEN RUN
+
+# OLLAMA_MODEL=gemma4:e4b-32k claude # Claude Code pointed at local Ollama
+
+# # or open Continue.dev in VS Code with gemma4:e4b-32k configured
+
+# # Paste the prompt below
 
 ---
 
@@ -23,7 +38,7 @@
 Read these files and report only — do not write anything yet:
 
 1. AGENTS.md (if exists)
-2. .github/copilot-instructions.md (if exists)  
+2. .github/copilot-instructions.md (if exists)
 3. CLAUDE.md (if exists)
 4. .copilotignore (if exists)
 5. package.json scripts section (if exists)
@@ -76,6 +91,7 @@ Write the new AGENTS.md content only. No explanation.
 ## PROMPT — PART C: SKILL FILES (run once per skill — four separate tasks)
 
 ### C1 — Architecture Skill
+
 ```
 Create the file .github/skills/architecture/SKILL.md
 
@@ -100,6 +116,7 @@ Maximum 60 lines. Write the file content only. No explanation.
 ```
 
 ### C2 — PR Contract Skill
+
 ```
 Create the file .github/skills/pr-contract/SKILL.md
 
@@ -116,7 +133,7 @@ Include these sections:
   what tests cover this, architecture check, what I was not sure about,
   token cost note)
 - What Agents MAY Do Without Asking: bullet list of 5-6 items
-- What Agents MUST Ask Before Doing: bullet list of 5-6 items  
+- What Agents MUST Ask Before Doing: bullet list of 5-6 items
 - What Agents Must NEVER Do: bullet list of 5-6 items
 - Coding Standards: 4-5 bullets (infer from existing AGENTS.md or use [PLACEHOLDER])
 
@@ -124,6 +141,7 @@ Maximum 90 lines. Write the file content only. No explanation.
 ```
 
 ### C3 — Metrics Skill
+
 ```
 Create the file .github/skills/metrics/SKILL.md
 
@@ -146,6 +164,7 @@ Maximum 70 lines. Write the file content only. No explanation.
 ```
 
 ### C4 — Model Routing Skill
+
 ```
 Create the file .github/skills/model-routing/SKILL.md
 
@@ -309,7 +328,7 @@ File | Status | Line count | [PLACEHOLDER] count | Notes
 
 Then answer:
 1. What is the new estimated always-on token count? (AGENTS.md only)
-2. What was it before? 
+2. What was it before?
 3. Estimated % reduction in per-request context cost?
 4. Which [PLACEHOLDER] values does the human need to fill in before committing?
 5. Which bash scripts still need to be created? (flag for the Copilot scripts prompt)
@@ -322,6 +341,7 @@ Format as a clean markdown report. Nothing else.
 ## USAGE NOTES
 
 ### Run order (each is a separate Claude Code / Ollama session to stay within context)
+
 1. Part A — Audit (5 min, read-only)
 2. Part B — AGENTS.md (10 min)
 3. Part C1 through C4 — one skill per session (5 min each)
@@ -333,19 +353,22 @@ Format as a clean markdown report. Nothing else.
 **Total: ~60 min, zero Copilot credits**
 
 ### Why separate sessions?
+
 Gemma 4 E4B on 16 GB degrades after ~6K tokens of generation.
 Each part above stays well under that limit.
 Running them separately also means a bad generation in one part
 does not corrupt the others.
 
-### After running all parts locally, use the scripts prompt:
+### After running all parts locally, use the scripts prompt
+
 See: docs/COPILOT_BILLING_HANDOFF_PROMPT_SCRIPTS.md
 That prompt handles: scripts/token-audit.sh, scripts/setup.sh hardening,
 .github/workflows/placeholder-audit.yml, npm run preflight
 Those require Copilot or Claude Code via API — not local Gemma 4.
 
 ### Validating output
+
 After each part, run:
-  wc -l <filename>          # check line count target was met
-  grep -c PLACEHOLDER <filename>  # count unfilled placeholders
-  bash -n scripts/*.sh      # syntax check any bash files
+wc -l <filename> # check line count target was met
+grep -c PLACEHOLDER <filename> # count unfilled placeholders
+bash -n scripts/\*.sh # syntax check any bash files

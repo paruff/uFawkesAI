@@ -10,8 +10,7 @@ metadata:
 
 # Skill: Token Budget
 
-> **Load trigger:** `"load token-budget skill"`
-> **DORA:** Cap 3 (Context Engineering)
+> **Load trigger:** `"load token-budget skill"` > **DORA:** Cap 3 (Context Engineering)
 > **Token cost:** Low (meta: about token cost itself)
 
 ## Purpose

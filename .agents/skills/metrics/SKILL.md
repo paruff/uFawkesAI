@@ -7,14 +7,14 @@
 
 ## DORA Metrics Tracked (DORA 2025)
 
-| Metric | Target | Red | Command |
-|---|---|---|---|
-| Rework rate | < 10% | > 20% | `npm run metrics` |
-| PR revision rate | < 25% | > 40% | `npm run metrics` |
-| CI cycle time | < 4 min | > 10 min | `npm run metrics` |
-| Review turnaround | < 24h | > 72h | manual |
-| Failed Deployment Recovery Time | < 1h | > 4h | manual |
-| AI Credit burn rate | decreasing | increasing | `npm run token-audit` |
+| Metric                          | Target     | Red        | Command               |
+| ------------------------------- | ---------- | ---------- | --------------------- |
+| Rework rate                     | < 10%      | > 20%      | `npm run metrics`     |
+| PR revision rate                | < 25%      | > 40%      | `npm run metrics`     |
+| CI cycle time                   | < 4 min    | > 10 min   | `npm run metrics`     |
+| Review turnaround               | < 24h      | > 72h      | manual                |
+| Failed Deployment Recovery Time | < 1h       | > 4h       | manual                |
+| AI Credit burn rate             | decreasing | increasing | `npm run token-audit` |
 
 ## Rework Rate Formula
 
@@ -26,6 +26,7 @@ rework_rate = (lines_substantially_changed_within_14_days_of_authoring / total_l
 within 14 days of the original commit.
 
 **git command to approximate:**
+
 ```bash
 git log --since="28 days ago" --until="14 days ago" --format="%H" | \
   xargs -I{} git diff {}^..{} --stat | grep -E "^\s+\d+ file"
@@ -35,10 +36,11 @@ git log --since="28 days ago" --until="14 days ago" --format="%H" | \
 
 Track: credits spent per merged PR, week over week.
 
-**Target:** should *decrease* over time as `AGENTS.md` improves and
+**Target:** should _decrease_ over time as `AGENTS.md` improves and
 developers learn model routing.
 
 **Increasing burn rate signals:**
+
 - AGENTS.md growing too large (run `npm run token-audit`)
 - Developers using Agent Mode for questions
 - Vague prompts causing retry loops

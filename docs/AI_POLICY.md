@@ -23,14 +23,14 @@ human judgment, architectural decisions, or quality accountability.
 
 ## What AI Is Used For
 
-| Use Case | Tool | Human Oversight |
-|---|---|---|
-| Code generation from PM specs | GitHub Copilot agent | Human review before merge |
-| Test generation | `@test-agent` | Human confirms tests are meaningful |
-| Documentation generation | `@docs-agent` | Human reviews for accuracy |
-| Code review pre-screening | `@review-agent` | Human makes final review decision |
-| Security scanning | `@security-agent` | Human escalates all CRITICAL findings |
-| Debugging assistance | Copilot Chat | Human verifies the fix |
+| Use Case                      | Tool                 | Human Oversight                       |
+| ----------------------------- | -------------------- | ------------------------------------- |
+| Code generation from PM specs | GitHub Copilot agent | Human review before merge             |
+| Test generation               | `@test-agent`        | Human confirms tests are meaningful   |
+| Documentation generation      | `@docs-agent`        | Human reviews for accuracy            |
+| Code review pre-screening     | `@review-agent`      | Human makes final review decision     |
+| Security scanning             | `@security-agent`    | Human escalates all CRITICAL findings |
+| Debugging assistance          | Copilot Chat         | Human verifies the fix                |
 
 ---
 
@@ -82,6 +82,7 @@ human judgment, architectural decisions, or quality accountability.
 ## Policy Review Cadence
 
 This document is reviewed quarterly. Trigger a review if:
+
 - Rework rate exceeds 20% for two consecutive months
 - A new AI capability is being adopted (new agent, new tool)
 - A significant AI-introduced incident occurs in production
