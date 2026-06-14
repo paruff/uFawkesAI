@@ -10,8 +10,7 @@ metadata:
 
 # Skill: Test Generation
 
-> **Load trigger:** `"load test-generation skill"`
-> **DORA:** Cap 5 (Small Batches / Shift Left on Quality)
+> **Load trigger:** `"load test-generation skill"` > **DORA:** Cap 5 (Small Batches / Shift Left on Quality)
 > **Token cost:** Low
 
 ## TDD Pattern — Language Agnostic

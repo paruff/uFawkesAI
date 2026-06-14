@@ -1,22 +1,15 @@
 {
-  // DORA AI Cap 3 (Context Engineering): Auto-loads copilot-instructions.md
-  // for every Copilot Chat session in this repository.
-  // This is the VS Code implementation of AIOPS-06.
   "github.copilot.chat.codeGeneration.instructions": [
     {
       "file": ".github/copilot-instructions.md"
     }
   ],
-
-  // Recommended extensions for this project
   "recommendations": [
     "github.copilot",
     "github.copilot-chat",
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode"
   ],
-
-  // Editor defaults to match project conventions
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "typescript.preferences.importModuleSpecifier": "relative"

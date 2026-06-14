@@ -1,7 +1,6 @@
 # Onboarding Agent
 
-> **Trigger:** `"Setup this project"` or `"Onboard"`
-> **DORA:** Cap 1 (AI Policy) + Cap 3 (Context Engineering)
+> **Trigger:** `"Setup this project"` or `"Onboard"` > **DORA:** Cap 1 (AI Policy) + Cap 3 (Context Engineering)
 > **Token cost:** Medium (runs once per project; not in always-on context)
 > **Produces:** Populated AGENTS.md, first GitHub issue, pre-flight pass confirmation
 

@@ -14,7 +14,7 @@
 
 ```mermaid
 flowchart LR
-    A["📋 Issue Created\nWait: ?h\nActive: 15min\nFailure: vague spec"] 
+    A["📋 Issue Created\nWait: ?h\nActive: 15min\nFailure: vague spec"]
     --> B["✍️ Spec Written\nWait: ?h\nActive: ?h\nFailure: missing AC"]
     --> C["🤖 Agent Implements\nWait: 0h\nActive: ?h\nFailure: arch violation"]
     --> D["👁️ Human Review\nWait: ?h ← MEASURE THIS\nActive: ?h\nFailure: unclear diff"]
@@ -28,16 +28,16 @@ flowchart LR
 
 ## Step-by-Step Data
 
-| Step | Avg Wait Time | Avg Active Time | Primary Failure Reason | AI Insertion Point |
-|---|---|---|---|---|
-| Issue Created | — | 15 min | Vague spec | PM uses Copilot to draft AC |
-| Spec Written | [PLACEHOLDER] | [PLACEHOLDER] | Missing acceptance criteria | — |
-| Agent Implements | 0 (async) | [PLACEHOLDER] | Architecture violation | Copilot implements from spec |
-| Human Review | **[MEASURE THIS]** | [PLACEHOLDER] | Unclear diff | @review-agent pre-screens |
-| CI Gates | 0 | [target: < 4 min] | Test failure | Automated |
-| Merge | [PLACEHOLDER] | 5 min | Merge conflict | — |
-| Deploy | [PLACEHOLDER] | [PLACEHOLDER] | Build error | Automated |
-| User Feedback | [PLACEHOLDER] | ongoing | No analytics | — |
+| Step             | Avg Wait Time      | Avg Active Time   | Primary Failure Reason      | AI Insertion Point           |
+| ---------------- | ------------------ | ----------------- | --------------------------- | ---------------------------- |
+| Issue Created    | —                  | 15 min            | Vague spec                  | PM uses Copilot to draft AC  |
+| Spec Written     | [PLACEHOLDER]      | [PLACEHOLDER]     | Missing acceptance criteria | —                            |
+| Agent Implements | 0 (async)          | [PLACEHOLDER]     | Architecture violation      | Copilot implements from spec |
+| Human Review     | **[MEASURE THIS]** | [PLACEHOLDER]     | Unclear diff                | @review-agent pre-screens    |
+| CI Gates         | 0                  | [target: < 4 min] | Test failure                | Automated                    |
+| Merge            | [PLACEHOLDER]      | 5 min             | Merge conflict              | —                            |
+| Deploy           | [PLACEHOLDER]      | [PLACEHOLDER]     | Build error                 | Automated                    |
+| User Feedback    | [PLACEHOLDER]      | ongoing           | No analytics                | —                            |
 
 ---
 
@@ -56,15 +56,17 @@ flowchart LR
 ## AI Insertion Points
 
 Where Copilot currently adds value:
+
 - [PLACEHOLDER]
 
 Where Copilot currently creates friction:
+
 - [PLACEHOLDER]
 
 ---
 
 ## Revision History
 
-| Date | Who | What Changed |
-|---|---|---|
+| Date          | Who  | What Changed        |
+| ------------- | ---- | ------------------- |
 | [PLACEHOLDER] | [PM] | Initial map created |

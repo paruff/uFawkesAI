@@ -14,6 +14,7 @@
 **Targets:** < 10% ✅ | 10–20% ⚠️ | > 20% 🛑 Stop features, fix `AGENTS.md` first
 
 **Measurement:**
+
 ```bash
 npm run metrics
 # Or manually:
@@ -76,7 +77,7 @@ git log --since="28 days ago" --format="%H %ae %s" | head -50
 
 ---
 
-### 7. AI Credit Burn Rate *(New — June 2026)*
+### 7. AI Credit Burn Rate _(New — June 2026)_
 
 **Formula:** `total Copilot AI Credits consumed / merged PRs in the period`
 
@@ -85,6 +86,7 @@ git log --since="28 days ago" --format="%H %ae %s" | head -50
 **Measurement:** GitHub billing dashboard → Copilot usage → export to CSV
 
 **What increasing burn rate signals:**
+
 - `AGENTS.md` growing too large (run `npm run token-audit`)
 - Developers using Agent Mode for questions (see `docs/MODEL_ROUTING_GUIDE.md`)
 - Vague prompts causing multi-turn retry loops
@@ -116,9 +118,9 @@ open https://github.com/settings/billing/copilot_usage   # individual
 
 ## Monthly Records
 
-| Month | Rework % | PR Revision % | CI Time | Review Time | Credit Burn/PR | Notes |
-|---|---|---|---|---|---|---|
-| 2026-06 | — | — | — | — | — | Baseline month |
+| Month   | Rework % | PR Revision % | CI Time | Review Time | Credit Burn/PR | Notes          |
+| ------- | -------- | ------------- | ------- | ----------- | -------------- | -------------- |
+| 2026-06 | —        | —             | —       | —           | —              | Baseline month |
 
 ---
 

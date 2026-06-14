@@ -1,14 +1,17 @@
 # Copilot Agent Starter Template — Complete Paste Book
+
 > 25 files. DORA AI Capabilities Model + DORA 2025 State of AI-assisted Software Development.
 > Every file includes the DORA research basis for its existence.
 > Replace all [PLACEHOLDER] text before use.
 
 ---
 
-
 ======================================================================
+
 ## FILE: README
+
 ### Path: `README.md`
+
 ======================================================================
 
 # [PROJECT NAME]
@@ -55,6 +58,7 @@ PM writes issue → Assign to Copilot → Agent implements + tests → Draft PR
 ```
 
 **Key commands:**
+
 ```bash
 npm run preflight    # lint + typecheck + tests (run before every push)
 npm run pr-ready     # preflight + "ready to push" confirmation
@@ -65,12 +69,12 @@ npm run metrics      # weekly metrics snapshot (rework rate, coverage, etc.)
 
 ## Agent Specialists
 
-| Agent | Call with | Purpose |
-|---|---|---|
-| Review agent | `@review-agent` | Pre-screen PRs against architecture rules |
-| Test agent | `@test-agent` | Write tests, analyse coverage gaps |
-| Docs agent | `@docs-agent` | Generate/update living documentation |
-| Security agent | `@security-agent` | Review security-sensitive code |
+| Agent          | Call with         | Purpose                                   |
+| -------------- | ----------------- | ----------------------------------------- |
+| Review agent   | `@review-agent`   | Pre-screen PRs against architecture rules |
+| Test agent     | `@test-agent`     | Write tests, analyse coverage gaps        |
+| Docs agent     | `@docs-agent`     | Generate/update living documentation      |
+| Security agent | `@security-agent` | Review security-sensitive code            |
 
 Full agent profiles in `.github/agents/`.
 
@@ -78,19 +82,19 @@ Full agent profiles in `.github/agents/`.
 
 ## Key Documents
 
-| Document | Purpose |
-|---|---|
-| `AGENTS.md` | Universal agent instructions — all agents read this |
-| `docs/GOLDEN_PATH.md` | The 10-step idea→deploy workflow |
-| `docs/PROMPT_LIBRARY.md` | Tested prompts for every repeating task |
-| `docs/AI_POLICY.md` | AI policy and psychological safety norms |
-| `docs/ARCHITECTURE.md` | Layer boundaries (ESLint-enforced) |
-| `docs/API_SURFACE.md` | All public service and utility functions |
-| `docs/KNOWN_LIMITATIONS.md` | Known issues — agents do not make these worse |
-| `docs/METRICS.md` | Rework rate, change failure rate, DevEx targets |
-| `docs/RUNBOOKS.md` | Emergency rollback, feature disable, weekly review |
-| `docs/TEAM_ARCHETYPE.md` | DORA archetype self-assessment |
-| `TEMPLATE-DESIGN.md` | Why every file exists (DORA research basis) |
+| Document                    | Purpose                                             |
+| --------------------------- | --------------------------------------------------- |
+| `AGENTS.md`                 | Universal agent instructions — all agents read this |
+| `docs/GOLDEN_PATH.md`       | The 10-step idea→deploy workflow                    |
+| `docs/PROMPT_LIBRARY.md`    | Tested prompts for every repeating task             |
+| `docs/AI_POLICY.md`         | AI policy and psychological safety norms            |
+| `docs/ARCHITECTURE.md`      | Layer boundaries (ESLint-enforced)                  |
+| `docs/API_SURFACE.md`       | All public service and utility functions            |
+| `docs/KNOWN_LIMITATIONS.md` | Known issues — agents do not make these worse       |
+| `docs/METRICS.md`           | Rework rate, change failure rate, DevEx targets     |
+| `docs/RUNBOOKS.md`          | Emergency rollback, feature disable, weekly review  |
+| `docs/TEAM_ARCHETYPE.md`    | DORA archetype self-assessment                      |
+| `TEMPLATE-DESIGN.md`        | Why every file exists (DORA research basis)         |
 
 ---
 
@@ -115,19 +119,22 @@ Before writing the first issue:
 ## DORA Research Basis
 
 This template is grounded in:
-- **DORA 2025** — *State of AI-assisted Software Development*
+
+- **DORA 2025** — _State of AI-assisted Software Development_
 - **DORA AI Capabilities Model** companion report (Dec 2025)
 
 The central finding this template is designed around:
+
 > "AI adoption is linked to higher software delivery throughput AND increases instability.
 > Without robust control systems — strong automated testing, mature version control practices,
 > and fast feedback loops — an increase in change volume leads to instability."
 
-
-
 ======================================================================
+
 ## FILE: TEMPLATE-DESIGN
+
 ### Path: `TEMPLATE-DESIGN.md`
+
 ======================================================================
 
 # Copilot Agent Starter Template — Design Rationale
@@ -136,10 +143,11 @@ The central finding this template is designed around:
 > principle it implements. Read this before customising the template for your project.
 >
 > Research sources:
-> - **DORA 2025** — *State of AI-assisted Software Development* (2025)
-> - **DORA AI Cap** — *AI Capabilities Model* companion report (Dec 2025)
-> - **GitHub Docs** — *Best practices for Copilot coding agent* (2025–2026)
-> - **GitHub Blog** — *How to write a great agents.md: Lessons from 2,500+ repos* (Nov 2025)
+>
+> - **DORA 2025** — _State of AI-assisted Software Development_ (2025)
+> - **DORA AI Cap** — _AI Capabilities Model_ companion report (Dec 2025)
+> - **GitHub Docs** — _Best practices for Copilot coding agent_ (2025–2026)
+> - **GitHub Blog** — _How to write a great agents.md: Lessons from 2,500+ repos_ (Nov 2025)
 
 ---
 
@@ -156,63 +164,70 @@ This is the founding constraint of the entire template. Every file exists to eit
 
 ## Template File Map
 
-| File | DORA Capability | What It Does |
-|---|---|---|
-| `AGENTS.md` | AI Cap 3 — Context Engineering | Universal agent instruction file; loaded by all agents |
-| `.github/copilot-instructions.md` | AI Cap 3 | Copilot-specific context index; auto-loaded by VS Code |
-| `.github/agents/docs-agent.md` | AI Cap 2 — Prompt Engineering | Specialist for documentation generation |
-| `.github/agents/test-agent.md` | AI Cap 2 | Specialist for test generation |
-| `.github/agents/review-agent.md` | DORA 2025 — Review Speed | Specialist for code review (REVIEW-01) |
-| `.github/agents/security-agent.md` | AI Cap 1 — AI Policy | Specialist for security review |
-| `.github/instructions/feature.instructions.md` | AI Cap 3 | Scoped to src/**; injected for feature work |
-| `.github/instructions/testing.instructions.md` | AI Cap 3 | Scoped to tests/**; injected for test work |
-| `.github/PULL_REQUEST_TEMPLATE.md` | DORA 2025 — Review Speed | Structured AI-Assisted Review Block (REVIEW-01) |
-| `.github/workflows/ci-quality.yml` | DORA 2025 — Control Systems | CI gate with PR size blocking (INSTAB-01) |
-| `.github/workflows/doc-freshness.yml` | DORA 2025 — Living Docs | Posts reminder when services change without doc update |
-| `docs/ARCHITECTURE.md` | DORA 2025 — Loosely Coupled | Layer boundaries enforced by ESLint (ARCH-01) |
-| `docs/GOLDEN_PATH.md` | DORA 2025 — Platform Eng | 10-step idea→deploy workflow (PLAT-02) |
-| `docs/PROMPT_LIBRARY.md` | AI Cap 2 — Prompt Engineering | Versioned task-specific prompt templates (AIOPS-04) |
-| `docs/METRICS.md` | DORA 2025 — Rework Rate | Rework rate, change failure rate, PR revision rate (METRICS-02) |
-| `docs/DEVEX_LOG.md` | DORA 2025 — DevEx | Monthly 5-dimension self-assessment (DEVEX-01) |
-| `docs/TEAM_ARCHETYPE.md` | DORA 2025 — Archetypes | Seven archetype self-assessment; tailors issue priority (AIOPS-05) |
-| `docs/VALUE_STREAM_MAP.md` | DORA 2025 — VSM | Issue→deploy flow with wait times; identifies bottleneck (VSM-01) |
-| `docs/KNOWN_LIMITATIONS.md` | AI Cap 3 — Context | What agents must not make worse (DOCS-02) |
-| `docs/API_SURFACE.md` | AI Cap 3 — Context | All public service/util functions; Copilot reads before generating (DOCS-02) |
-| `docs/CHANGE_IMPACT_MAP.md` | AI Cap 3 — Context | Cross-file impact map; prevents Copilot omissions (DOCS-02) |
-| `docs/RUNBOOKS.md` | DORA 2025 — Instability | Emergency rollback, feature disable, weekly review (INSTAB-01) |
-| `docs/AI_POLICY.md` | AI Cap 1 — AI Policy | Clear AI stance; psychological safety (PSYCH-01) |
-| `scripts/weekly-metrics.sh` | DORA 2025 — Rework Rate | Single-screen metrics summary (METRICS-02) |
-| `.vscode/settings.json` | AI Cap 3 — Context Eng. | Auto-loads copilot-instructions.md in every session |
+| File                                           | DORA Capability                | What It Does                                                                 |
+| ---------------------------------------------- | ------------------------------ | ---------------------------------------------------------------------------- |
+| `AGENTS.md`                                    | AI Cap 3 — Context Engineering | Universal agent instruction file; loaded by all agents                       |
+| `.github/copilot-instructions.md`              | AI Cap 3                       | Copilot-specific context index; auto-loaded by VS Code                       |
+| `.github/agents/docs-agent.md`                 | AI Cap 2 — Prompt Engineering  | Specialist for documentation generation                                      |
+| `.github/agents/test-agent.md`                 | AI Cap 2                       | Specialist for test generation                                               |
+| `.github/agents/review-agent.md`               | DORA 2025 — Review Speed       | Specialist for code review (REVIEW-01)                                       |
+| `.github/agents/security-agent.md`             | AI Cap 1 — AI Policy           | Specialist for security review                                               |
+| `.github/instructions/feature.instructions.md` | AI Cap 3                       | Scoped to src/\*\*; injected for feature work                                |
+| `.github/instructions/testing.instructions.md` | AI Cap 3                       | Scoped to tests/\*\*; injected for test work                                 |
+| `.github/PULL_REQUEST_TEMPLATE.md`             | DORA 2025 — Review Speed       | Structured AI-Assisted Review Block (REVIEW-01)                              |
+| `.github/workflows/ci-quality.yml`             | DORA 2025 — Control Systems    | CI gate with PR size blocking (INSTAB-01)                                    |
+| `.github/workflows/doc-freshness.yml`          | DORA 2025 — Living Docs        | Posts reminder when services change without doc update                       |
+| `docs/ARCHITECTURE.md`                         | DORA 2025 — Loosely Coupled    | Layer boundaries enforced by ESLint (ARCH-01)                                |
+| `docs/GOLDEN_PATH.md`                          | DORA 2025 — Platform Eng       | 10-step idea→deploy workflow (PLAT-02)                                       |
+| `docs/PROMPT_LIBRARY.md`                       | AI Cap 2 — Prompt Engineering  | Versioned task-specific prompt templates (AIOPS-04)                          |
+| `docs/METRICS.md`                              | DORA 2025 — Rework Rate        | Rework rate, change failure rate, PR revision rate (METRICS-02)              |
+| `docs/DEVEX_LOG.md`                            | DORA 2025 — DevEx              | Monthly 5-dimension self-assessment (DEVEX-01)                               |
+| `docs/TEAM_ARCHETYPE.md`                       | DORA 2025 — Archetypes         | Seven archetype self-assessment; tailors issue priority (AIOPS-05)           |
+| `docs/VALUE_STREAM_MAP.md`                     | DORA 2025 — VSM                | Issue→deploy flow with wait times; identifies bottleneck (VSM-01)            |
+| `docs/KNOWN_LIMITATIONS.md`                    | AI Cap 3 — Context             | What agents must not make worse (DOCS-02)                                    |
+| `docs/API_SURFACE.md`                          | AI Cap 3 — Context             | All public service/util functions; Copilot reads before generating (DOCS-02) |
+| `docs/CHANGE_IMPACT_MAP.md`                    | AI Cap 3 — Context             | Cross-file impact map; prevents Copilot omissions (DOCS-02)                  |
+| `docs/RUNBOOKS.md`                             | DORA 2025 — Instability        | Emergency rollback, feature disable, weekly review (INSTAB-01)               |
+| `docs/AI_POLICY.md`                            | AI Cap 1 — AI Policy           | Clear AI stance; psychological safety (PSYCH-01)                             |
+| `scripts/weekly-metrics.sh`                    | DORA 2025 — Rework Rate        | Single-screen metrics summary (METRICS-02)                                   |
+| `.vscode/settings.json`                        | AI Cap 3 — Context Eng.        | Auto-loads copilot-instructions.md in every session                          |
 
 ---
 
 ## The Seven DORA AI Capabilities (and how this template addresses each)
 
 ### Capability 1 — Clarify AI Policies
+
 **Finding:** Ambiguity around AI use harms both adoption and psychological safety.
 **Template response:** `docs/AI_POLICY.md` — explicit stance on what AI does/doesn't do, who reviews, data handling.
 
 ### Capability 2 — Prompt Engineering as Core Skill
+
 **Finding:** "The modern engineer's value is in prompt engineering, solution architecture, and validating AI outputs — not just writing code."
 **Template response:** `docs/PROMPT_LIBRARY.md` — versioned, categorised templates for every repeating task type. `TEMPLATE_DESIGN.md` explains the why.
 
 ### Capability 3 — AI-Accessible Internal Data (Context Engineering)
+
 **Finding:** "Moving beyond simple prompts to securely connecting AI tools to your internal documentation and codebases" — Google's #2 "where to start" recommendation.
 **Template response:** `AGENTS.md` context index, `.vscode/settings.json` auto-load, `docs/API_SURFACE.md`, `docs/KNOWN_LIMITATIONS.md`, `docs/CHANGE_IMPACT_MAP.md`.
 
 ### Capability 4 — Mature Version Control
+
 **Finding:** Strong version control practices are prerequisites for safe AI adoption; without them AI increases instability.
 **Template response:** Branch protection in CI, conventional commits standard, PR size blocking at 400 lines (INSTAB-01), large-pr-approved label gate.
 
 ### Capability 5 — Small Batches / Shift Left on Quality
+
 **Finding:** Small batches are the most effective structural countermeasure to AI-induced instability.
 **Template response:** PR size block in CI, TDD requirement in golden path, failing test commit before implementation commit.
 
 ### Capability 6 — Fast Feedback Loops
+
 **Finding:** Fast feedback is the #1 platform capability correlated with positive DevEx.
 **Template response:** CI < 4 min target, human-readable CI output, `npm run preflight` (lint+typecheck+test in one command), `docs/DEVEX_LOG.md` Feedback Speed dimension.
 
 ### Capability 7 — Internal Developer Platform
+
 **Finding:** "Developer independence resulted in 5% productivity improvement."
 **Template response:** `docs/GOLDEN_PATH.md` (one route from idea to deploy), `npm run pr-ready`, `npm run metrics`, agent specialists that reduce interruption.
 
@@ -244,11 +259,12 @@ This template establishes the foundation. Elite teams additionally:
 5. **Wire feature flags from day one** — every new feature behind a flag; allows remote disable without OTA
 6. **Treat rework rate as the north star metric** — not LOC, not PR count. Rework rate > 10% = stop adding features, fix instructions first
 
-
-
 ======================================================================
+
 ## FILE: AGENTS
+
 ### Path: `AGENTS.md`
+
 ======================================================================
 
 # Agent Instructions — [PROJECT NAME]
@@ -271,6 +287,7 @@ This template establishes the foundation. Elite teams additionally:
 > Ambiguity around AI use creates friction, reduces adoption, and harms team morale."
 
 **Our AI stance:**
+
 - AI agents implement. Humans decide.
 - No AI-generated code merges without human review and approval.
 - AI is used for: code generation, test writing, documentation, code review assistance.
@@ -296,14 +313,14 @@ This template establishes the foundation. Elite teams additionally:
 
 Read these in order before writing code:
 
-| Priority | File | What You Learn |
-|---|---|---|
-| 1 | `src/types/index.ts` | All data shapes, field constraints, valid ranges |
-| 2 | `docs/ARCHITECTURE.md` | Layer boundaries — what can import from what |
-| 3 | `docs/API_SURFACE.md` | Every public service and utility function |
-| 4 | `docs/KNOWN_LIMITATIONS.md` | Known issues — do not make these worse |
-| 5 | `docs/DATA_MODEL.md` | Database/collection structure |
-| 6 | `docs/CHANGE_IMPACT_MAP.md` | Which files change when core types change |
+| Priority | File                        | What You Learn                                   |
+| -------- | --------------------------- | ------------------------------------------------ |
+| 1        | `src/types/index.ts`        | All data shapes, field constraints, valid ranges |
+| 2        | `docs/ARCHITECTURE.md`      | Layer boundaries — what can import from what     |
+| 3        | `docs/API_SURFACE.md`       | Every public service and utility function        |
+| 4        | `docs/KNOWN_LIMITATIONS.md` | Known issues — do not make these worse           |
+| 5        | `docs/DATA_MODEL.md`        | Database/collection structure                    |
+| 6        | `docs/CHANGE_IMPACT_MAP.md` | Which files change when core types change        |
 
 If any of these files do not exist: note it in your PR description and do not invent their contents.
 
@@ -330,6 +347,7 @@ config/      → Environment vars, feature flags. No business logic.
 **Dependency direction:** `screens → hooks → services → (SDK)`
 
 **NEVER violate:**
+
 1. No Firebase SDK calls in `screens/` or `components/` — ever.
 2. No business logic in screens — that belongs in `utils/`.
 3. No type definitions inline — all types go in `src/types/index.ts`.
@@ -341,6 +359,7 @@ config/      → Environment vars, feature flags. No business logic.
 ## 5. The PM–Agent Contract
 
 **The workflow:**
+
 1. PM writes a GitHub issue using the **feature issue template**
 2. Issue is assigned to Copilot (or another agent)
 3. Agent implements, tests, opens a **draft PR**
@@ -348,6 +367,7 @@ config/      → Environment vars, feature flags. No business logic.
 5. Human approves and merges — no agent merges its own PR
 
 ### What Agents MAY Do Without Asking
+
 - Read any file in the repository
 - Write to `src/`, `tests/`, `docs/`
 - Create new files that follow the established file structure
@@ -356,6 +376,7 @@ config/      → Environment vars, feature flags. No business logic.
 - Add or update JSDoc comments and doc files
 
 ### What Agents MUST Ask Before Doing
+
 - Adding any new dependency (`package.json` changes)
 - Changing database schema or collection structure
 - Modifying `.github/workflows/` files
@@ -365,6 +386,7 @@ config/      → Environment vars, feature flags. No business logic.
 - Any change to feature flags in production config
 
 ### What Agents Must NEVER Do
+
 - Commit secrets, API keys, or credentials
 - Modify `AGENTS.md` or `.github/copilot-instructions.md`
 - Delete existing tests — even failing ones — without explicit PM instruction
@@ -433,6 +455,7 @@ Every PR opened by an agent must include in the description:
 > AI output quality is degrading or that instructions need updating.
 
 Track monthly using `npm run metrics`:
+
 - **Rework rate** — target < 10%. > 20% = stop features, fix instructions.
 - **PR revision rate** — target < 25%.
 - **CI cycle time** — target < 4 min.
@@ -449,11 +472,12 @@ Track monthly using `npm run metrics`:
 - `docs/AI_POLICY.md` — Full AI policy and psychological safety norms
 - `docs/TEAM_ARCHETYPE.md` — DORA archetype self-assessment (run before Phase 1)
 
-
-
 ======================================================================
+
 ## FILE: .github/copilot-instructions
+
 ### Path: `.github/copilot-instructions.md`
+
 ======================================================================
 
 # Copilot Instructions — [PROJECT NAME]
@@ -514,6 +538,7 @@ ESLint enforces these. CI fails on violations.
 ## Golden Path for Every Feature
 
 See `docs/GOLDEN_PATH.md`. In short:
+
 ```
 Spec → Branch → Failing Test (commit) → Implement → npm run preflight → Draft PR
 ```
@@ -542,49 +567,53 @@ If you find yourself changing more than 5 files or more than 400 lines: stop.
 Break the task into smaller PRs. Ask the PM to split the issue.
 `large-pr-approved` label is required to override the CI block — a human must apply it.
 
-
-
 ======================================================================
+
 ## FILE: .github/PULL_REQUEST_TEMPLATE
+
 ### Path: `.github/PULL_REQUEST_TEMPLATE.md`
+
 ======================================================================
 
 ## What This PR Does
+
 <!-- One sentence. -->
 
-
 ## Closes
-<!-- Issue number(s): Closes #N -->
 
+<!-- Issue number(s): Closes #N -->
 
 ---
 
 ## AI-Assisted Review Block
+
 <!-- REQUIRED. Complete before requesting review. Use Copilot or @review-agent to help fill this in. -->
 <!-- DORA 2025 (REVIEW-01): Structured review blocks reduce review time by making context explicit. -->
 
 **What does this PR do in one sentence?**
+
 <!-- Ask Copilot: "Summarise this diff in one sentence for a PR description" -->
 
-
 **What are the top 2–3 failure modes?**
+
 <!-- Ask Copilot: "What are the most likely ways this diff could fail in production?" -->
 
-
 **What tests cover this change?**
+
 <!-- List test files. If none: explain why, or add tests before requesting review. -->
 
-
 **Architecture check:**
+
 <!-- Ask Copilot: "Does this diff violate any rules in .github/copilot-instructions.md?" -->
+
 - [ ] No Firebase SDK calls in `screens/` or `components/`
 - [ ] No business logic in screen files
 - [ ] No inline type definitions (all types in `src/types/index.ts`)
 - [ ] No `any` in catch blocks
 
 **What I was NOT sure about (flag for human review):**
-<!-- Any judgment call, ambiguous requirement, or edge case you deferred to the reviewer. -->
 
+<!-- Any judgment call, ambiguous requirement, or edge case you deferred to the reviewer. -->
 
 ---
 
@@ -596,26 +625,29 @@ Break the task into smaller PRs. Ask the PM to split the issue.
 - [ ] New features are behind a feature flag (if applicable)
 - [ ] `docs/` updated if any public service or utility function changed
 
-
-
 ======================================================================
+
 ## FILE: .github/ISSUE_TEMPLATE/feature
+
 ### Path: `.github/ISSUE_TEMPLATE/feature.md`
+
 ======================================================================
 
 ---
+
 name: Feature
 about: Product feature to be implemented by a Copilot agent, directed by a PM
 title: "[FEAT] "
 labels: product, effort-medium
 assignees: ''
+
 ---
 
-<!-- 
+<!--
   DORA 2025 (PLAT-02 — Golden Path): The PM-authored issue is the spec.
   Acceptance criteria become tests. User story provides intent.
   The more specific this issue, the better the agent output.
-  
+
   Fill in every section. Vague issues produce vague code.
 -->
 
@@ -632,9 +664,9 @@ assignees: ''
 <!-- Each criterion should be specific enough to become a test or BDD scenario. -->
 <!-- Use: "Given / When / Then" or "The app [does X] when [condition Y]" -->
 
-- [ ] AC1: 
-- [ ] AC2: 
-- [ ] AC3: 
+- [ ] AC1:
+- [ ] AC2:
+- [ ] AC3:
 
 ---
 
@@ -643,14 +675,11 @@ assignees: ''
 <!-- What does the agent need to know that isn't in the codebase? -->
 <!-- Reference relevant files: src/types/index.ts, existing services, etc. -->
 
-**Relevant files:**
-- 
+## **Relevant files:**
 
-**Existing patterns to follow:**
-- 
+## **Existing patterns to follow:**
 
-**Constraints:**
-- 
+## **Constraints:**
 
 ---
 
@@ -658,9 +687,7 @@ assignees: ''
 
 <!-- What should the agent explicitly NOT do? Prevents scope creep. -->
 
-- 
-
----
+- ***
 
 ## Definition of Done
 
@@ -677,7 +704,8 @@ assignees: ''
 ## Effort Estimate
 
 <!-- Update the label to match: effort-small / effort-medium / effort-large -->
-**Estimate:** 
+
+**Estimate:**
 
 ---
 
@@ -686,34 +714,36 @@ assignees: ''
 <!-- When ready to assign: open issue, click "Assignees", select "Copilot" -->
 <!-- Or use: @copilot please implement this issue following docs/GOLDEN_PATH.md -->
 
-**Assign to:** Copilot  
+**Assign to:** Copilot
 **Phase:**
 
-
-
 ======================================================================
+
 ## FILE: .github/ISSUE_TEMPLATE/bug
+
 ### Path: `.github/ISSUE_TEMPLATE/bug.md`
+
 ======================================================================
 
 ---
+
 name: Bug Fix
 about: A defect to be investigated and fixed by a Copilot agent
 title: "[BUG] "
 labels: bug, effort-small
 assignees: ''
+
 ---
 
 ## What Is Broken
 
 <!-- Be specific. "It doesn't work" is not enough. What exactly fails? -->
 
-
 ## Steps to Reproduce
 
-1. 
-2. 
-3. 
+1.
+2.
+3.
 
 **Expected behaviour:**
 
@@ -724,15 +754,17 @@ assignees: ''
 ## Context for the Agent
 
 **Error message or stack trace (if any):**
+
 ```
 [paste here]
 ```
 
 **Relevant files:**
-<!-- Where does the PM suspect the bug lives? -->
-- 
+
+## <!-- Where does the PM suspect the bug lives? -->
 
 **What was recently changed in this area?**
+
 <!-- Link to the PR that may have introduced this. -->
 
 ---
@@ -759,16 +791,19 @@ assignees: ''
 - [ ] `docs/KNOWN_LIMITATIONS.md` updated to remove this limitation (if it was listed)
 - [ ] Root cause noted in PR description
 
-
-
 ======================================================================
+
 ## FILE: .github/agents/review-agent
+
 ### Path: `.github/agents/review-agent.md`
+
 ======================================================================
 
 ---
+
 name: review-agent
 description: Code review specialist. Analyses PRs against architecture rules, security standards, and test coverage. Call with @review-agent before requesting human review.
+
 ---
 
 You are a code review specialist for this project.
@@ -787,13 +822,16 @@ You are a code review specialist for this project.
 ## What You Check (in this order)
 
 ### 1. Architecture Boundaries
+
 Read `docs/ARCHITECTURE.md` first. Then check:
+
 - No Firebase SDK calls in `screens/` or `components/`
 - No business logic in screens (belongs in `utils/`)
 - No cross-layer imports that violate the dependency direction
 - No inline type definitions (all types in `src/types/index.ts`)
 
 ### 2. Security
+
 - No secrets, API keys, or tokens in any file
 - No raw SDK error messages surfaced to the UI
 - All user inputs validated before writes
@@ -801,16 +839,19 @@ Read `docs/ARCHITECTURE.md` first. Then check:
 - No `any` type casts in catch blocks
 
 ### 3. Types
+
 - No `any` types (except where pre-existing and annotated)
 - Missing return types on exported functions
 - Unsafe type assertions (`as X`) without comment explaining why
 
 ### 4. Tests
+
 - New logic has a corresponding test
 - Tests are specific — not just testing that the function runs, but that it handles edge cases
 - No tests deleted or skipped without explanation
 
 ### 5. Duplication
+
 - Logic that duplicates existing code in `src/utils/` or `src/services/`
 - Components that duplicate existing components in `src/components/`
 
@@ -862,16 +903,19 @@ End with: "Ready for human review? YES/NO"
 - ⚠️ **Ask first:** Suggesting major refactors (note them as follow-up issues, not blockers)
 - 🚫 **Never:** Approve PRs, merge branches, modify source code, ignore a security finding to be polite
 
-
-
 ======================================================================
+
 ## FILE: .github/agents/test-agent
+
 ### Path: `.github/agents/test-agent.md`
+
 ======================================================================
 
 ---
+
 name: test-agent
 description: QA specialist. Writes unit tests, integration tests, and BDD scenarios. Analyzes coverage gaps. Always writes the failing test before the implementation. Call with @test-agent.
+
 ---
 
 You are a QA software engineer specialising in test coverage for this project.
@@ -885,6 +929,7 @@ You are a QA software engineer specialising in test coverage for this project.
 **Write the failing test before the implementation — without exception.**
 
 The commit sequence is fixed:
+
 1. `test(scope): failing test for [what]` — commit while RED
 2. `feat(scope): implement [what]` — commit when GREEN
 3. `refactor(scope): clean up` — if needed
@@ -913,17 +958,19 @@ npm run test:e2e          # E2E (requires running environment)
 ## Test Quality Rules
 
 Every test must have at minimum:
+
 - One **happy path** — expected inputs produce expected output
 - One **invalid input** — bad data is rejected or handled gracefully
 - One **edge case** — boundary conditions (empty array, zero, null, max value)
 
-`it()` names read as complete sentences: *"returns zero when the goal list is empty"*
+`it()` names read as complete sentences: _"returns zero when the goal list is empty"_
 
 Never test implementation details — test observable behaviour.
 
 ## Coverage Gap Analysis Workflow
 
 When asked to improve coverage:
+
 1. Run `npm run test:coverage` and read the output
 2. Find the three lowest-coverage files in `src/utils/` or `src/services/`
 3. For each: identify which **branches** are untested (prioritise error paths)
@@ -967,21 +1014,24 @@ Feature: [Feature name]
 - ⚠️ **Ask first:** Changing test infrastructure or adding test dependencies
 - 🚫 **Never:** Modify source code to make tests pass (fix the logic, not the test), delete or skip tests to unblock CI
 
-
-
 ======================================================================
+
 ## FILE: .github/agents/docs-agent
+
 ### Path: `.github/agents/docs-agent.md`
+
 ======================================================================
 
 ---
+
 name: docs-agent
 description: Technical writing specialist. Reads source code and generates or updates docs/API_SURFACE.md, docs/KNOWN_LIMITATIONS.md, docs/CHANGE_IMPACT_MAP.md, and other living documentation. Call with @docs-agent.
+
 ---
 
 You are an expert technical writer for this project.
 
-> DORA 2025 basis (DOCS-02): Documentation is the *least-used* AI capability despite
+> DORA 2025 basis (DOCS-02): Documentation is the _least-used_ AI capability despite
 > being high-value. This agent addresses that gap. It generates the living context
 > documents that make all other agents more effective.
 
@@ -1010,10 +1060,12 @@ npx markdown-link-check docs/   # Check for broken internal links
 ## The Three Core Living Documents You Maintain
 
 ### `docs/API_SURFACE.md` — Public Function Registry
+
 Every exported function in `src/services/` and `src/utils/`, documented as:
 
 ```markdown
 ### serviceName.functionName(param1, param2)
+
 **Purpose:** One sentence — what this does for the caller
 **Parameters:** param1: type — description; param2: type — description
 **Returns:** type — what the resolved value contains
@@ -1026,10 +1078,12 @@ Every exported function in `src/services/` and `src/utils/`, documented as:
 ```
 
 ### `docs/KNOWN_LIMITATIONS.md` — Do Not Make These Worse
+
 Human-curated list of technical debt and known issues. Format:
 
 ```markdown
 ### [LIMITATION-ID] Short description
+
 **Location:** `src/path/to/file.ts`
 **Impact:** Who is affected and how
 **Workaround:** Current mitigation (if any)
@@ -1037,17 +1091,19 @@ Human-curated list of technical debt and known issues. Format:
 ```
 
 ### `docs/CHANGE_IMPACT_MAP.md` — Cross-File Impact Table
+
 Which files must be updated when a core type or structure changes:
 
 ```markdown
-| If you change... | You must also update... |
-|---|---|
+| If you change...                | You must also update...                            |
+| ------------------------------- | -------------------------------------------------- |
 | Goal type in src/types/index.ts | goalService.ts, GoalCard.tsx, GoalDetailScreen.tsx |
 ```
 
 ## Update Trigger
 
 When `src/services/` or `src/utils/` changes, run:
+
 ```
 @docs-agent The following files changed in this PR: [list files].
 Please update docs/API_SURFACE.md to reflect the changes.
@@ -1059,16 +1115,19 @@ Please update docs/API_SURFACE.md to reflect the changes.
 - ⚠️ **Ask first:** Major restructuring of existing documentation
 - 🚫 **Never:** Modify `src/`, invent API behaviour you cannot verify from the code
 
-
-
 ======================================================================
+
 ## FILE: .github/agents/security-agent
+
 ### Path: `.github/agents/security-agent.md`
+
 ======================================================================
 
 ---
+
 name: security-agent
 description: Security specialist. Reviews service functions, auth flows, and data handling for vulnerabilities. Call with @security-agent before merging security-sensitive code.
+
 ---
 
 You are a security specialist for this project.
@@ -1133,51 +1192,58 @@ Rules to review:
 - ⚠️ **Ask first:** Suggesting architectural security changes (these need PM and human review)
 - 🚫 **Never:** Downgrade a finding to avoid disrupting a timeline, approve code with unresolved CRITICAL findings
 
-
-
 ======================================================================
+
 ## FILE: .github/workflows/ci-quality
+
 ### Path: `.github/workflows/ci-quality.yml`
+
 ======================================================================
 
 name: CI Quality Gate
 
 # DORA 2025 (INSTAB-01): "Control systems must be proportionally stronger as AI increases change volume."
-# This workflow is the primary control system. It blocks merges, not just warns.
+
+# This workflow is the primary control system. It blocks merges, not just warns
+
 # PR size limit: 400 lines (blocks without large-pr-approved label)
+
 # Targets: lint ✅, typecheck ✅, tests ✅, coverage ≥ 80%
 
 on:
-  pull_request:
-    branches: [main, develop]
-  push:
-    branches: [main]
+pull_request:
+branches: [main, develop]
+push:
+branches: [main]
 
 jobs:
 
-  # ─────────────────────────────────────────────
-  # GATE 1: PR Size Check (DORA 2025 INSTAB-01)
-  # Blocks PRs > 400 changed lines unless human has applied large-pr-approved label
-  # ─────────────────────────────────────────────
-  pr-size-check:
-    name: "🔢 PR Size Gate"
-    runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
-    steps:
-      - name: Check PR size
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const { data: pr } = await github.rest.pulls.get({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: context.issue.number,
-            });
-            
+# ─────────────────────────────────────────────
+
+# GATE 1: PR Size Check (DORA 2025 INSTAB-01)
+
+# Blocks PRs > 400 changed lines unless human has applied large-pr-approved label
+
+# ─────────────────────────────────────────────
+
+pr-size-check:
+name: "🔢 PR Size Gate"
+runs-on: ubuntu-latest
+if: github.event_name == 'pull_request'
+steps: - name: Check PR size
+uses: actions/github-script@v7
+with:
+script: |
+const { data: pr } = await github.rest.pulls.get({
+owner: context.repo.owner,
+repo: context.repo.repo,
+pull_number: context.issue.number,
+});
+
             const changed = pr.additions + pr.deletions;
             const limit = 400;
             const hasOverrideLabel = pr.labels.some(l => l.name === 'large-pr-approved');
-            
+
             if (changed > limit && !hasOverrideLabel) {
               core.setFailed(
                 `❌ PR size: ${changed} lines changed (limit: ${limit}).\n` +
@@ -1190,137 +1256,130 @@ jobs:
               console.log(`✅ PR size: ${changed} lines (within ${limit} limit)`);
             }
 
-  # ─────────────────────────────────────────────
-  # GATE 2: Lint
-  # ─────────────────────────────────────────────
-  lint:
-    name: "🔍 Lint"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-      - run: npm ci
-      - name: Run ESLint
-        run: |
-          npm run lint
-          echo "✅ Lint passed"
+# ─────────────────────────────────────────────
 
-  # ─────────────────────────────────────────────
-  # GATE 3: Type Check
-  # ─────────────────────────────────────────────
-  typecheck:
-    name: "🔷 TypeScript"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-      - run: npm ci
-      - name: Run TypeScript compiler
-        run: |
-          npm run typecheck
-          echo "✅ TypeScript passed"
+# GATE 2: Lint
 
-  # ─────────────────────────────────────────────
-  # GATE 4: Tests + Coverage
-  # ─────────────────────────────────────────────
-  test:
-    name: "🧪 Tests & Coverage"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-      - run: npm ci
-      - name: Run tests with coverage
-        run: |
-          npm run test:coverage
-          echo "✅ Tests passed"
-      - name: Check coverage threshold
-        run: |
-          # [PLACEHOLDER] — replace with your coverage tool's threshold check
-          # Example for Jest: configured in jest.config.js with coverageThreshold
-          # This step fails if coverage drops below 80%
-          echo "Coverage threshold: 80% (configured in jest.config.js)"
+# ─────────────────────────────────────────────
 
-  # ─────────────────────────────────────────────
-  # GATE 5: Architecture Boundary Check
-  # ESLint import rules enforce DORA ARCH-01 layer boundaries
-  # ─────────────────────────────────────────────
-  architecture:
-    name: "🏗️ Architecture Boundaries"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-      - run: npm ci
-      - name: Check architecture boundaries
-        run: |
-          # This runs the ESLint import boundary rules from eslint-plugin-import
-          # configured in .eslintrc.js with the layer boundary rules from ARCH-01
-          npm run lint:architecture
-          echo "✅ Architecture boundaries respected"
+lint:
+name: "🔍 Lint"
+runs-on: ubuntu-latest
+steps: - uses: actions/checkout@v4 - uses: actions/setup-node@v4
+with:
+node-version: '20'
+cache: 'npm' - run: npm ci - name: Run ESLint
+run: |
+npm run lint
+echo "✅ Lint passed"
 
-  # ─────────────────────────────────────────────
-  # SUMMARY: All gates must pass for merge
-  # ─────────────────────────────────────────────
-  ci-summary:
-    name: "✅ CI Complete"
-    needs: [lint, typecheck, test, architecture]
-    runs-on: ubuntu-latest
-    if: always()
-    steps:
-      - name: Check all gates
-        run: |
-          if [ "${{ needs.lint.result }}" != "success" ] || \
-             [ "${{ needs.typecheck.result }}" != "success" ] || \
-             [ "${{ needs.test.result }}" != "success" ] || \
-             [ "${{ needs.architecture.result }}" != "success" ]; then
-            echo "❌ One or more CI gates failed"
-            exit 1
-          fi
-          echo "✅ All CI gates passed — ready for human review"
+# ─────────────────────────────────────────────
 
+# GATE 3: Type Check
 
+# ─────────────────────────────────────────────
+
+typecheck:
+name: "🔷 TypeScript"
+runs-on: ubuntu-latest
+steps: - uses: actions/checkout@v4 - uses: actions/setup-node@v4
+with:
+node-version: '20'
+cache: 'npm' - run: npm ci - name: Run TypeScript compiler
+run: |
+npm run typecheck
+echo "✅ TypeScript passed"
+
+# ─────────────────────────────────────────────
+
+# GATE 4: Tests + Coverage
+
+# ─────────────────────────────────────────────
+
+test:
+name: "🧪 Tests & Coverage"
+runs-on: ubuntu-latest
+steps: - uses: actions/checkout@v4 - uses: actions/setup-node@v4
+with:
+node-version: '20'
+cache: 'npm' - run: npm ci - name: Run tests with coverage
+run: |
+npm run test:coverage
+echo "✅ Tests passed" - name: Check coverage threshold
+run: | # [PLACEHOLDER] — replace with your coverage tool's threshold check # Example for Jest: configured in jest.config.js with coverageThreshold # This step fails if coverage drops below 80%
+echo "Coverage threshold: 80% (configured in jest.config.js)"
+
+# ─────────────────────────────────────────────
+
+# GATE 5: Architecture Boundary Check
+
+# ESLint import rules enforce DORA ARCH-01 layer boundaries
+
+# ─────────────────────────────────────────────
+
+architecture:
+name: "🏗️ Architecture Boundaries"
+runs-on: ubuntu-latest
+steps: - uses: actions/checkout@v4 - uses: actions/setup-node@v4
+with:
+node-version: '20'
+cache: 'npm' - run: npm ci - name: Check architecture boundaries
+run: | # This runs the ESLint import boundary rules from eslint-plugin-import # configured in .eslintrc.js with the layer boundary rules from ARCH-01
+npm run lint:architecture
+echo "✅ Architecture boundaries respected"
+
+# ─────────────────────────────────────────────
+
+# SUMMARY: All gates must pass for merge
+
+# ─────────────────────────────────────────────
+
+ci-summary:
+name: "✅ CI Complete"
+needs: [lint, typecheck, test, architecture]
+runs-on: ubuntu-latest
+if: always()
+steps: - name: Check all gates
+run: |
+if [ "${{ needs.lint.result }}" != "success" ] || \
+ [ "${{ needs.typecheck.result }}" != "success" ] || \
+ [ "${{ needs.test.result }}" != "success" ] || \
+ [ "${{ needs.architecture.result }}" != "success" ]; then
+echo "❌ One or more CI gates failed"
+exit 1
+fi
+echo "✅ All CI gates passed — ready for human review"
 
 ======================================================================
+
 ## FILE: .github/workflows/doc-freshness
+
 ### Path: `.github/workflows/doc-freshness.yml`
+
 ======================================================================
 
 name: Documentation Freshness
 
 # DORA 2025 (DOCS-02): "Documentation is the least-used AI capability despite being high-value."
+
 # This workflow posts a reminder comment when service or utility files change
-# without a corresponding update to docs/API_SURFACE.md.
-# It does not block merges — it prompts @docs-agent to run.
+
+# without a corresponding update to docs/API_SURFACE.md
+
+# It does not block merges — it prompts @docs-agent to run
 
 on:
-  pull_request:
-    branches: [main, develop]
-    paths:
-      - 'src/services/**'
-      - 'src/utils/**'
-      - 'src/types/**'
+pull_request:
+branches: [main, develop]
+paths: - 'src/services/**' - 'src/utils/**' - 'src/types/\*\*'
 
 jobs:
-  doc-freshness-check:
-    name: "📄 Documentation Freshness"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+doc-freshness-check:
+name: "📄 Documentation Freshness"
+runs-on: ubuntu-latest
+steps: - uses: actions/checkout@v4
+with:
+fetch-depth: 0
 
       - name: Check if docs were updated alongside code
         uses: actions/github-script@v7
@@ -1331,28 +1390,28 @@ jobs:
               repo: context.repo.repo,
               pull_number: context.issue.number,
             });
-            
+
             const changedPaths = files.map(f => f.filename);
-            
+
             const codeChanged = changedPaths.some(f =>
               f.startsWith('src/services/') ||
               f.startsWith('src/utils/') ||
               f.startsWith('src/types/')
             );
-            
+
             const docsUpdated = changedPaths.some(f =>
               f === 'docs/API_SURFACE.md' ||
               f === 'docs/CHANGE_IMPACT_MAP.md' ||
               f === 'docs/DATA_MODEL.md'
             );
-            
+
             if (codeChanged && !docsUpdated) {
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: context.issue.number,
                 body: `## 📄 Documentation Freshness Reminder
-                
+
 This PR changes \`src/services/\`, \`src/utils/\`, or \`src/types/\` but does not update the living documentation.
 
 **If any public functions were added, removed, or changed:**
@@ -1366,48 +1425,50 @@ Please update docs/API_SURFACE.md and docs/CHANGE_IMPACT_MAP.md to reflect the c
 Add a comment below: "No public API changes — docs freshness N/A"
 
 _DORA 2025: Undocumented APIs force every agent to reverse-engineer intent from implementation._`
-              });
-              console.log('📄 Documentation reminder posted');
-            } else if (codeChanged && docsUpdated) {
-              console.log('✅ Documentation updated alongside code changes');
-            }
-
-
+});
+console.log('📄 Documentation reminder posted');
+} else if (codeChanged && docsUpdated) {
+console.log('✅ Documentation updated alongside code changes');
+}
 
 ======================================================================
+
 ## FILE: .vscode/settings
+
 ### Path: `.vscode/settings.json`
+
 ======================================================================
 
 {
-  // DORA AI Cap 3 (Context Engineering): Auto-loads copilot-instructions.md
-  // for every Copilot Chat session in this repository.
-  // This is the VS Code implementation of AIOPS-06.
-  "github.copilot.chat.codeGeneration.instructions": [
-    {
-      "file": ".github/copilot-instructions.md"
-    }
-  ],
+// DORA AI Cap 3 (Context Engineering): Auto-loads copilot-instructions.md
+// for every Copilot Chat session in this repository.
+// This is the VS Code implementation of AIOPS-06.
+"github.copilot.chat.codeGeneration.instructions": [
+{
+"file": ".github/copilot-instructions.md"
+}
+],
 
-  // Recommended extensions for this project
-  "recommendations": [
-    "github.copilot",
-    "github.copilot-chat",
-    "dbaeumer.vscode-eslint",
-    "esbenp.prettier-vscode"
-  ],
+// Recommended extensions for this project
+"recommendations": [
+"github.copilot",
+"github.copilot-chat",
+"dbaeumer.vscode-eslint",
+"esbenp.prettier-vscode"
+],
 
-  // Editor defaults to match project conventions
-  "editor.formatOnSave": true,
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "typescript.preferences.importModuleSpecifier": "relative"
+// Editor defaults to match project conventions
+"editor.formatOnSave": true,
+"editor.defaultFormatter": "esbenp.prettier-vscode",
+"typescript.preferences.importModuleSpecifier": "relative"
 }
 
-
-
 ======================================================================
+
 ## FILE: docs/GOLDEN_PATH
+
 ### Path: `docs/GOLDEN_PATH.md`
+
 ======================================================================
 
 # Golden Path — [PROJECT NAME]
@@ -1442,9 +1503,11 @@ _DORA 2025: Undocumented APIs force every agent to reverse-engineer intent from 
 ## Step-by-Step with Commands
 
 ### Step 1 — Spec (PM)
+
 Create a GitHub issue using the **Feature** issue template.
 
 Write acceptance criteria specific enough that each one becomes either:
+
 - A unit test (`it('returns X when Y')`)
 - A BDD scenario (`Given / When / Then`)
 
@@ -1453,6 +1516,7 @@ Write acceptance criteria specific enough that each one becomes either:
 ---
 
 ### Step 2 — Branch
+
 ```bash
 git checkout main && git pull
 git checkout -b feat/ISSUE-ID-short-description
@@ -1498,6 +1562,7 @@ Use the prompt template from docs/PROMPT_LIBRARY.md → [relevant category].
 ```
 
 Commit when tests go green:
+
 ```bash
 npm test  # Should pass now
 git commit -m "feat(scope): implement [ISSUE-ID] — [what was built]"
@@ -1526,6 +1591,7 @@ git push -u origin feat/ISSUE-ID-description
 ```
 
 Fill in every section of the AI-Assisted Review Block:
+
 ```
 @review-agent Please pre-screen this PR against .github/copilot-instructions.md
 ```
@@ -1535,6 +1601,7 @@ Fill in every section of the AI-Assisted Review Block:
 ### Step 7 — CI Gates Pass
 
 The CI pipeline runs automatically:
+
 - 🔢 PR size check (< 400 lines or `large-pr-approved` label)
 - 🔍 Lint
 - 🔷 TypeScript
@@ -1553,6 +1620,7 @@ Mark PR as Ready for Review. Tag the reviewer.
 DORA 2025: "Teams with shorter code review times have 50% better delivery performance."
 
 Reviewer checklist:
+
 - [ ] AI-Assisted Review Block is complete
 - [ ] Architecture boundaries respected
 - [ ] Tests actually test the failure cases
@@ -1563,6 +1631,7 @@ Reviewer checklist:
 ### Step 9 — Merge
 
 Squash merge with conventional commit message:
+
 ```
 feat(scope): [description] (#ISSUE-NUMBER)
 ```
@@ -1587,14 +1656,14 @@ If spike detected: see `docs/RUNBOOKS.md` → Emergency Rollback.
 
 These situations require the PM and a human developer to discuss before assigning to an agent:
 
-| Situation | Why it's off-path |
-|---|---|
-| Adding a new npm dependency | Security review, bundle size, license check |
-| Database schema change | Migration strategy, backward compatibility |
-| Authentication flow change | Security-critical, cannot be fully automated |
-| New architecture layer or pattern | Structural decision affecting all future agents |
-| Feature touching > 5 files | Break into multiple issues first |
-| Removing a known limitation | Verify the root cause is actually fixed, not just hidden |
+| Situation                         | Why it's off-path                                        |
+| --------------------------------- | -------------------------------------------------------- |
+| Adding a new npm dependency       | Security review, bundle size, license check              |
+| Database schema change            | Migration strategy, backward compatibility               |
+| Authentication flow change        | Security-critical, cannot be fully automated             |
+| New architecture layer or pattern | Structural decision affecting all future agents          |
+| Feature touching > 5 files        | Break into multiple issues first                         |
+| Removing a known limitation       | Verify the root cause is actually fixed, not just hidden |
 
 ---
 
@@ -1606,11 +1675,12 @@ npm run pr-ready      # preflight + "ready to push" message
 npm run metrics       # weekly metrics summary (rework rate, coverage, etc.)
 ```
 
-
-
 ======================================================================
+
 ## FILE: docs/PROMPT_LIBRARY
+
 ### Path: `docs/PROMPT_LIBRARY.md`
+
 ======================================================================
 
 # Prompt Library — [PROJECT NAME]
@@ -1656,7 +1726,8 @@ Read src/types/index.ts before writing. Do not import from src/services/ or src/
 
 **Expected output:** The function implementation that makes the test pass, plus JSDoc.
 
-**Red flags:** 
+**Red flags:**
+
 - Function imports from `services/` or `hooks/` → reject, re-prompt with rule 1
 - Missing return type → reject, ask for explicit return type
 - `any` type in catch block → reject, ask for typed error handling
@@ -1683,6 +1754,7 @@ The failing test:
 ```
 
 **Red flags:**
+
 - No userId scoping on Firestore operations → SECURITY issue, escalate to @security-agent
 - Raw error message returned → reject, ask for error mapping
 
@@ -1780,7 +1852,7 @@ Should this code go in screens/, components/, hooks/, services/, or utils/?
 
 Project layer rules:
 - screens/ → navigation targets; UI composition only; no data calls
-- components/ → reusable UI primitives; no navigation; no business logic  
+- components/ → reusable UI primitives; no navigation; no business logic
 - hooks/ → React state; may call services; no Firebase SDK directly
 - services/ → all Firestore/Firebase operations
 - utils/ → pure functions; stateless; no imports from other layers
@@ -1822,15 +1894,16 @@ Function:
 
 ## Changelog
 
-| Date | Change | Reason |
-|---|---|------|
+| Date          | Change                  | Reason   |
+| ------------- | ----------------------- | -------- |
 | [PLACEHOLDER] | Initial library created | AIOPS-04 |
 
-
-
 ======================================================================
+
 ## FILE: docs/AI_POLICY
+
 ### Path: `docs/AI_POLICY.md`
+
 ======================================================================
 
 # AI Policy — [PROJECT NAME]
@@ -1858,14 +1931,14 @@ human judgment, architectural decisions, or quality accountability.
 
 ## What AI Is Used For
 
-| Use Case | Tool | Human Oversight |
-|---|---|---|
-| Code generation from PM specs | GitHub Copilot agent | Human review before merge |
-| Test generation | `@test-agent` | Human confirms tests are meaningful |
-| Documentation generation | `@docs-agent` | Human reviews for accuracy |
-| Code review pre-screening | `@review-agent` | Human makes final review decision |
-| Security scanning | `@security-agent` | Human escalates all CRITICAL findings |
-| Debugging assistance | Copilot Chat | Human verifies the fix |
+| Use Case                      | Tool                 | Human Oversight                       |
+| ----------------------------- | -------------------- | ------------------------------------- |
+| Code generation from PM specs | GitHub Copilot agent | Human review before merge             |
+| Test generation               | `@test-agent`        | Human confirms tests are meaningful   |
+| Documentation generation      | `@docs-agent`        | Human reviews for accuracy            |
+| Code review pre-screening     | `@review-agent`      | Human makes final review decision     |
+| Security scanning             | `@security-agent`    | Human escalates all CRITICAL findings |
+| Debugging assistance          | Copilot Chat         | Human verifies the fix                |
 
 ---
 
@@ -1917,6 +1990,7 @@ human judgment, architectural decisions, or quality accountability.
 ## Policy Review Cadence
 
 This document is reviewed quarterly. Trigger a review if:
+
 - Rework rate exceeds 20% for two consecutive months
 - A new AI capability is being adopted (new agent, new tool)
 - A significant AI-introduced incident occurs in production
@@ -1925,11 +1999,12 @@ This document is reviewed quarterly. Trigger a review if:
 **Last reviewed:** [PLACEHOLDER — date]
 **Next review:** [PLACEHOLDER — date]
 
-
-
 ======================================================================
+
 ## FILE: docs/METRICS
+
 ### Path: `docs/METRICS.md`
+
 ======================================================================
 
 # Metrics — [PROJECT NAME]
@@ -1944,13 +2019,13 @@ This document is reviewed quarterly. Trigger a review if:
 
 ## The Five Metrics We Track
 
-| Metric | Target | ⚠️ Warning | ❌ Stop | Tool |
-|---|---|---|---|---|
-| **Rework rate** | < 10% | 10–20% | > 20% | `scripts/weekly-metrics.sh` |
-| **Change failure rate** | < 5% | 5–15% | > 15% | Error monitoring |
-| **PR revision rate** | < 25% | 25–40% | > 40% | GitHub Insights |
-| **Lead time (issue → deploy)** | < 3 days | 3–7 days | > 7 days | GitHub Projects |
-| **CI cycle time** | < 4 min | 4–8 min | > 8 min | GitHub Actions |
+| Metric                         | Target   | ⚠️ Warning | ❌ Stop  | Tool                        |
+| ------------------------------ | -------- | ---------- | -------- | --------------------------- |
+| **Rework rate**                | < 10%    | 10–20%     | > 20%    | `scripts/weekly-metrics.sh` |
+| **Change failure rate**        | < 5%     | 5–15%      | > 15%    | Error monitoring            |
+| **PR revision rate**           | < 25%    | 25–40%     | > 40%    | GitHub Insights             |
+| **Lead time (issue → deploy)** | < 3 days | 3–7 days   | > 7 days | GitHub Projects             |
+| **CI cycle time**              | < 4 min  | 4–8 min    | > 8 min  | GitHub Actions              |
 
 ---
 
@@ -1963,11 +2038,13 @@ as a percentage of total lines authored in the period.
 or that `AGENTS.md` / `copilot-instructions.md` needs updating.
 
 **Response protocol:**
+
 - **0–10%:** Healthy. Copilot output is landing well.
 - **10–20%:** Watch. Check for prompt pattern drift. Run a PROCESS tuning session.
 - **> 20%:** Stop adding features. Fix the instructions first. Review `docs/PROMPT_LIBRARY.md` changelog.
 
 **Measurement:**
+
 ```bash
 npm run metrics  # includes rework rate from scripts/weekly-metrics.sh
 ```
@@ -1979,6 +2056,7 @@ npm run metrics  # includes rework rate from scripts/weekly-metrics.sh
 **Definition:** Percentage of deploys that cause a user-visible bug, crash, or required rollback.
 
 **Response protocol:**
+
 1. Deploy causes error spike → automated alert fires
 2. Follow `docs/RUNBOOKS.md` → Change Failure Response runbook
 3. Root cause: Was it a Copilot pattern failure? Update `AGENTS.md`.
@@ -1991,6 +2069,7 @@ npm run metrics  # includes rework rate from scripts/weekly-metrics.sh
 **Definition:** Percentage of PRs requiring at least one revision request before merge.
 
 A rising PR revision rate means one of:
+
 - Issues are too vague (PMs need to write better specs)
 - Copilot is not following architecture rules (update `AGENTS.md`)
 - Review is inconsistent (update `docs/RUNBOOKS.md` review checklist)
@@ -2004,13 +2083,13 @@ A rising PR revision rate means one of:
 
 Track monthly in `docs/DEVEX_LOG.md`. Five dimensions, scored 1–5:
 
-| Dimension | Question | Target |
-|---|---|---|
-| Flow | How often do I reach flow state? | ≥ 4 |
-| Feedback Speed | How fast does the system tell me when something is wrong? | ≥ 4 |
-| Cognitive Load | How much mental effort does the codebase require? | ≤ 3 |
-| AI Trust | How often do I accept Copilot output with confidence? | ≥ 3 |
-| Tooling Friction | How often does a tool block my work? | ≤ 2 |
+| Dimension        | Question                                                  | Target |
+| ---------------- | --------------------------------------------------------- | ------ |
+| Flow             | How often do I reach flow state?                          | ≥ 4    |
+| Feedback Speed   | How fast does the system tell me when something is wrong? | ≥ 4    |
+| Cognitive Load   | How much mental effort does the codebase require?         | ≤ 3    |
+| AI Trust         | How often do I accept Copilot output with confidence?     | ≥ 3    |
+| Tooling Friction | How often does a tool block my work?                      | ≤ 2    |
 
 **Trigger:** Any dimension < 3 for two consecutive months → file an improvement issue.
 
@@ -2018,15 +2097,16 @@ Track monthly in `docs/DEVEX_LOG.md`. Five dimensions, scored 1–5:
 
 ## Monthly Metrics Log
 
-| Month | Rework Rate | Change Failure | PR Revision | Lead Time | CI Time | DevEx Avg |
-|---|---|---|---|---|---|---|
-| [PLACEHOLDER] | — | — | — | — | — | — |
-
-
+| Month         | Rework Rate | Change Failure | PR Revision | Lead Time | CI Time | DevEx Avg |
+| ------------- | ----------- | -------------- | ----------- | --------- | ------- | --------- |
+| [PLACEHOLDER] | —           | —              | —           | —         | —       | —         |
 
 ======================================================================
+
 ## FILE: docs/RUNBOOKS
+
 ### Path: `docs/RUNBOOKS.md`
+
 ======================================================================
 
 # Runbooks — [PROJECT NAME]
@@ -2062,6 +2142,7 @@ expo publish:rollback --channel production --sdk-version <version>
 ```
 
 **After rollback:**
+
 1. File a bug issue linking the error monitoring report
 2. Root cause analysis: Was it a Copilot pattern failure? If yes → update `AGENTS.md`.
 3. Add a regression test before re-deploying
@@ -2122,13 +2203,13 @@ npm run metrics
 
 Review the output:
 
-| Metric | If above target... |
-|---|---|
-| Rework rate 10–20% | Review recent Copilot output patterns; update AGENTS.md if drift observed |
-| Rework rate > 20% | Stop features. Fix instructions. Run prompt library review. |
-| Change failure rate > 5% | Review last 3 incidents. Improve test coverage in affected areas. |
-| CI time > 4 min | File a performance issue for CI optimisation |
-| PR revision rate > 25% | Review issue template quality — specs may be too vague |
+| Metric                   | If above target...                                                        |
+| ------------------------ | ------------------------------------------------------------------------- |
+| Rework rate 10–20%       | Review recent Copilot output patterns; update AGENTS.md if drift observed |
+| Rework rate > 20%        | Stop features. Fix instructions. Run prompt library review.               |
+| Change failure rate > 5% | Review last 3 incidents. Improve test coverage in affected areas.         |
+| CI time > 4 min          | File a performance issue for CI optimisation                              |
+| PR revision rate > 25%   | Review issue template quality — specs may be too vague                    |
 
 Update `docs/METRICS.md` monthly log.
 
@@ -2158,24 +2239,26 @@ For each changed service or utility file:
 
 Score each dimension 1–5 in `docs/DEVEX_LOG.md`:
 
-| Dimension | Score (1–5) |
-|---|---|
-| Flow — how often do I reach flow state? | |
-| Feedback Speed — how fast does the system respond? | |
-| Cognitive Load — how hard is it to navigate the code? | |
-| AI Trust — how often do I accept Copilot output? | |
-| Tooling Friction — how often does tooling block me? | |
+| Dimension                                             | Score (1–5) |
+| ----------------------------------------------------- | ----------- |
+| Flow — how often do I reach flow state?               |             |
+| Feedback Speed — how fast does the system respond?    |             |
+| Cognitive Load — how hard is it to navigate the code? |             |
+| AI Trust — how often do I accept Copilot output?      |             |
+| Tooling Friction — how often does tooling block me?   |             |
 
 **Triggers:**
+
 - Any dimension < 3 for two consecutive months → file an improvement issue
 - AI Trust < 3 → review AGENTS.md and PROMPT_LIBRARY.md
 - Cognitive Load ≥ 4 → run a Value Stream Mapping exercise
 
-
-
 ======================================================================
+
 ## FILE: docs/TEAM_ARCHETYPE
+
 ### Path: `docs/TEAM_ARCHETYPE.md`
+
 ======================================================================
 
 # Team Archetype Self-Assessment — [PROJECT NAME]
@@ -2190,15 +2273,15 @@ Score each dimension 1–5 in `docs/DEVEX_LOG.md`:
 
 ## The Seven Archetypes
 
-| # | Archetype | Key Signals | AI Risk |
-|---|---|---|---|
-| 1 | **Foundational Challenges** | Survival mode, process gaps, high burnout | AI accelerates chaos |
-| 2 | **Legacy Bottleneck** | Unstable systems, constant firefighting | AI speeds code; broken deploy consumes gains |
-| 3 | **Constrained by Process** | Slow, bureaucratic workflows | AI creates friction with process overhead |
-| 4 | **High Impact, Low Cadence** | Quality work, slow delivery, low stability | Need automation to unlock cadence |
-| 5 | **Stable and Methodical** | Deliberate, high quality, consistent delivery | AI can safely accelerate here |
-| 6 | **Pragmatic Performers** | Fast, functional, effective delivery | AI creates PR review backlog at scale |
-| 7 | **Harmonious High-Achievers** | Virtuous cycle: well-being + performance | AI multiplies advantages |
+| #   | Archetype                     | Key Signals                                   | AI Risk                                      |
+| --- | ----------------------------- | --------------------------------------------- | -------------------------------------------- |
+| 1   | **Foundational Challenges**   | Survival mode, process gaps, high burnout     | AI accelerates chaos                         |
+| 2   | **Legacy Bottleneck**         | Unstable systems, constant firefighting       | AI speeds code; broken deploy consumes gains |
+| 3   | **Constrained by Process**    | Slow, bureaucratic workflows                  | AI creates friction with process overhead    |
+| 4   | **High Impact, Low Cadence**  | Quality work, slow delivery, low stability    | Need automation to unlock cadence            |
+| 5   | **Stable and Methodical**     | Deliberate, high quality, consistent delivery | AI can safely accelerate here                |
+| 6   | **Pragmatic Performers**      | Fast, functional, effective delivery          | AI creates PR review backlog at scale        |
+| 7   | **Harmonious High-Achievers** | Virtuous cycle: well-being + performance      | AI multiplies advantages                     |
 
 ---
 
@@ -2208,14 +2291,14 @@ Score each dimension 1–5 in `docs/DEVEX_LOG.md`:
 
 ### Evidence from the last 30 days
 
-| Indicator | Measurement |
-|---|---|
-| Deployment frequency | deploys / week |
-| Average PR cycle time (open → merge) | days |
-| Change failure rate | % |
-| Rework rate | % |
-| DevEx score | /5 (if available) |
-| Team friction observations | [describe] |
+| Indicator                            | Measurement       |
+| ------------------------------------ | ----------------- |
+| Deployment frequency                 | deploys / week    |
+| Average PR cycle time (open → merge) | days              |
+| Change failure rate                  | %                 |
+| Rework rate                          | %                 |
+| DevEx score                          | /5 (if available) |
+| Team friction observations           | [describe]        |
 
 ### Archetype selection
 
@@ -2224,6 +2307,7 @@ Score each dimension 1–5 in `docs/DEVEX_LOG.md`:
 **Reasoning:** [PLACEHOLDER — 2–3 sentences explaining why this fits]
 
 **The two or three weakest DORA AI capabilities for our archetype:**
+
 1. [PLACEHOLDER]
 2. [PLACEHOLDER]
 
@@ -2232,25 +2316,30 @@ Score each dimension 1–5 in `docs/DEVEX_LOG.md`:
 ## Archetype-Specific Priority Adjustments
 
 ### If Archetypes 1 or 2 (Foundational / Legacy Bottleneck)
+
 **Elevate first:** CI/CD stability, observability, error monitoring, Firestore security rules
 **Logic:** Fix stability before accelerating throughput. AI on an unstable foundation accelerates instability.
 **Defer:** Prompt library, advanced agents, feature velocity
 
 ### If Archetype 3 (Constrained by Process)
+
 **Elevate first:** Small batch enforcement, PR process streamlining, bottleneck removal
 **Logic:** Reduce friction first. AI will amplify remaining friction.
 **Defer:** New feature work until flow is improved
 
 ### If Archetype 4 (High Impact, Low Cadence)
+
 **Elevate first:** Deploy automation, CI speed, environment promotion
 **Logic:** Automation to unlock deployment frequency before adding AI velocity
 **Defer:** Advanced prompt engineering until deploy pipeline is reliable
 
 ### If Archetypes 5 or 6 (Stable / Pragmatic Performers)
+
 **Proceed as planned.** Current implementation order is appropriate.
 **Watch for:** PR review becoming a bottleneck as AI increases PR volume. Elevate REVIEW-01.
 
 ### If Archetype 7 (Harmonious High-Achievers)
+
 **Accelerate:** Feature velocity. Foundation is sound.
 **Focus on:** Metrics visibility to maintain advantage as scale increases
 
@@ -2261,8 +2350,8 @@ Score each dimension 1–5 in `docs/DEVEX_LOG.md`:
 [PLACEHOLDER — list any issues elevated or deferred from the master implementation index]
 
 | Issue ID | Original Phase | New Priority | Reason |
-|---|---|---|---|
-| | | | |
+| -------- | -------------- | ------------ | ------ |
+|          |                |              |        |
 
 ---
 
@@ -2271,6 +2360,7 @@ Score each dimension 1–5 in `docs/DEVEX_LOG.md`:
 Review cadence: first week of each quarter.
 
 Questions to ask:
+
 - Has deployment frequency or stability changed significantly?
 - Has team composition changed?
 - Has the rework rate or DevEx score shifted by more than 1 point?
@@ -2278,11 +2368,12 @@ Questions to ask:
 
 **Next review date:** [PLACEHOLDER]
 
-
-
 ======================================================================
+
 ## FILE: docs/DEVEX_LOG
+
 ### Path: `docs/DEVEX_LOG.md`
+
 ======================================================================
 
 # Developer Experience Log — [PROJECT NAME]
@@ -2296,56 +2387,61 @@ Questions to ask:
 
 ## Scoring Guide
 
-**1** — Strongly disagree / very poor  
-**2** — Disagree / poor  
-**3** — Neutral / acceptable  
-**4** — Agree / good  
-**5** — Strongly agree / excellent  
+**1** — Strongly disagree / very poor
+**2** — Disagree / poor
+**3** — Neutral / acceptable
+**4** — Agree / good
+**5** — Strongly agree / excellent
 
 ---
 
 ## Monthly Log
 
-| Month | Flow | Feedback Speed | Cognitive Load* | AI Trust | Tooling Friction* | Notes |
-|---|---|---|---|---|---|---|
-| [PLACEHOLDER] | | | | | | First entry |
+| Month         | Flow | Feedback Speed | Cognitive Load\* | AI Trust | Tooling Friction\* | Notes       |
+| ------------- | ---- | -------------- | ---------------- | -------- | ------------------ | ----------- |
+| [PLACEHOLDER] |      |                |                  |          |                    | First entry |
 
-*Lower is better for Cognitive Load and Tooling Friction. Target ≤ 3.
+\*Lower is better for Cognitive Load and Tooling Friction. Target ≤ 3.
 
 ---
 
 ## Trigger Table
 
-| Condition | Action |
-|---|---|
-| Any dimension < 3 for 1 month | Note and monitor |
-| Any dimension < 3 for **2 consecutive months** | **File an improvement issue immediately** |
-| Cognitive Load ≥ 4 for 1 month | Run Value Stream Mapping — codebase may have accumulated complexity |
-| AI Trust < 3 for 1 month | Review `AGENTS.md` and `docs/PROMPT_LIBRARY.md` — update instructions |
-| Tooling Friction ≥ 4 for 1 month | File a developer platform improvement issue |
-| Flow < 3 for 2 months | Review sprint batch size — tasks may be too large or poorly scoped |
+| Condition                                      | Action                                                                |
+| ---------------------------------------------- | --------------------------------------------------------------------- |
+| Any dimension < 3 for 1 month                  | Note and monitor                                                      |
+| Any dimension < 3 for **2 consecutive months** | **File an improvement issue immediately**                             |
+| Cognitive Load ≥ 4 for 1 month                 | Run Value Stream Mapping — codebase may have accumulated complexity   |
+| AI Trust < 3 for 1 month                       | Review `AGENTS.md` and `docs/PROMPT_LIBRARY.md` — update instructions |
+| Tooling Friction ≥ 4 for 1 month               | File a developer platform improvement issue                           |
+| Flow < 3 for 2 months                          | Review sprint batch size — tasks may be too large or poorly scoped    |
 
 ---
 
 ## Dimension Definitions
 
 **Flow** — How often do development sessions produce a state of sustained focus and momentum?
+
 - Score 5: Almost every session
 - Score 1: Constant interruptions; rarely finish a task without switching context
 
 **Feedback Speed** — How quickly does the system (CI, tests, Copilot, linter) tell me when something is wrong?
+
 - Score 5: Errors surface within seconds–minutes
 - Score 1: I only learn something is wrong when it reaches production
 
 **Cognitive Load** — How much mental effort does navigating the codebase and tooling require?
+
 - Score 1 (target): The codebase is clear; architecture is predictable; tooling is transparent
 - Score 5 (problem): I have to hold too many things in my head; the code is hard to navigate
 
 **AI Trust** — How often do I accept Copilot output with confidence vs. needing to substantially rewrite?
+
 - Score 5: Output is almost always correct and architecturally sound
 - Score 1: I spend more time correcting AI output than I save
 
 **Tooling Friction** — How often does a tool, script, CI step, or process block or slow my work?
+
 - Score 1 (target): Tools work; CI is fast; scripts are reliable
 - Score 5 (problem): Frequent tool failures, slow CI, scripts that need babysitting
 
@@ -2353,15 +2449,16 @@ Questions to ask:
 
 ## Improvement Issues Filed
 
-| Month | Dimension Triggered | Issue Filed | Outcome |
-|---|---|---|---|
-| [PLACEHOLDER] | | | |
-
-
+| Month         | Dimension Triggered | Issue Filed | Outcome |
+| ------------- | ------------------- | ----------- | ------- |
+| [PLACEHOLDER] |                     |             |         |
 
 ======================================================================
+
 ## FILE: docs/VALUE_STREAM_MAP
+
 ### Path: `docs/VALUE_STREAM_MAP.md`
+
 ======================================================================
 
 # Value Stream Map — [PROJECT NAME]
@@ -2380,7 +2477,7 @@ Questions to ask:
 
 ```mermaid
 flowchart LR
-    A["📋 Issue Created\nWait: ?h\nActive: 15min\nFailure: vague spec"] 
+    A["📋 Issue Created\nWait: ?h\nActive: 15min\nFailure: vague spec"]
     --> B["✍️ Spec Written\nWait: ?h\nActive: ?h\nFailure: missing AC"]
     --> C["🤖 Agent Implements\nWait: 0h\nActive: ?h\nFailure: arch violation"]
     --> D["👁️ Human Review\nWait: ?h ← MEASURE THIS\nActive: ?h\nFailure: unclear diff"]
@@ -2394,16 +2491,16 @@ flowchart LR
 
 ## Step-by-Step Data
 
-| Step | Avg Wait Time | Avg Active Time | Primary Failure Reason | AI Insertion Point |
-|---|---|---|---|---|
-| Issue Created | — | 15 min | Vague spec | PM uses Copilot to draft AC |
-| Spec Written | [PLACEHOLDER] | [PLACEHOLDER] | Missing acceptance criteria | — |
-| Agent Implements | 0 (async) | [PLACEHOLDER] | Architecture violation | Copilot implements from spec |
-| Human Review | **[MEASURE THIS]** | [PLACEHOLDER] | Unclear diff | @review-agent pre-screens |
-| CI Gates | 0 | [target: < 4 min] | Test failure | Automated |
-| Merge | [PLACEHOLDER] | 5 min | Merge conflict | — |
-| Deploy | [PLACEHOLDER] | [PLACEHOLDER] | Build error | Automated |
-| User Feedback | [PLACEHOLDER] | ongoing | No analytics | — |
+| Step             | Avg Wait Time      | Avg Active Time   | Primary Failure Reason      | AI Insertion Point           |
+| ---------------- | ------------------ | ----------------- | --------------------------- | ---------------------------- |
+| Issue Created    | —                  | 15 min            | Vague spec                  | PM uses Copilot to draft AC  |
+| Spec Written     | [PLACEHOLDER]      | [PLACEHOLDER]     | Missing acceptance criteria | —                            |
+| Agent Implements | 0 (async)          | [PLACEHOLDER]     | Architecture violation      | Copilot implements from spec |
+| Human Review     | **[MEASURE THIS]** | [PLACEHOLDER]     | Unclear diff                | @review-agent pre-screens    |
+| CI Gates         | 0                  | [target: < 4 min] | Test failure                | Automated                    |
+| Merge            | [PLACEHOLDER]      | 5 min             | Merge conflict              | —                            |
+| Deploy           | [PLACEHOLDER]      | [PLACEHOLDER]     | Build error                 | Automated                    |
+| User Feedback    | [PLACEHOLDER]      | ongoing           | No analytics                | —                            |
 
 ---
 
@@ -2422,24 +2519,27 @@ flowchart LR
 ## AI Insertion Points
 
 Where Copilot currently adds value:
+
 - [PLACEHOLDER]
 
 Where Copilot currently creates friction:
+
 - [PLACEHOLDER]
 
 ---
 
 ## Revision History
 
-| Date | Who | What Changed |
-|---|---|---|
+| Date          | Who  | What Changed        |
+| ------------- | ---- | ------------------- |
 | [PLACEHOLDER] | [PM] | Initial map created |
 
-
-
 ======================================================================
+
 ## FILE: docs/API_SURFACE
+
 ### Path: `docs/API_SURFACE.md`
+
 ======================================================================
 
 # API Surface — [PROJECT NAME]
@@ -2453,6 +2553,7 @@ Where Copilot currently creates friction:
 ## Instructions for @docs-agent
 
 When updating this file:
+
 1. Scan all files in `src/services/` and `src/utils/` for exported functions
 2. Document each using the format below
 3. Remove any entries for functions that no longer exist
@@ -2465,12 +2566,14 @@ When updating this file:
 <!-- @docs-agent: populate from src/services/ -->
 
 ### [serviceName].[methodName](params)
+
 **Purpose:** [PLACEHOLDER]
 **Parameters:** [PLACEHOLDER]
 **Returns:** [PLACEHOLDER]
 **Side effects:** [PLACEHOLDER]
 **Error cases:** [PLACEHOLDER]
 **Example:**
+
 ```typescript
 // [PLACEHOLDER]
 ```
@@ -2482,21 +2585,24 @@ When updating this file:
 <!-- @docs-agent: populate from src/utils/ -->
 
 ### [utilName].[functionName](params)
+
 **Purpose:** [PLACEHOLDER]
 **Parameters:** [PLACEHOLDER]
 **Returns:** [PLACEHOLDER]
 **Side effects:** None (pure function)
 **Error cases:** [PLACEHOLDER]
 **Example:**
+
 ```typescript
 // [PLACEHOLDER]
 ```
 
-
-
 ======================================================================
+
 ## FILE: docs/KNOWN_LIMITATIONS
+
 ### Path: `docs/KNOWN_LIMITATIONS.md`
+
 ======================================================================
 
 # Known Limitations — [PROJECT NAME]
@@ -2522,6 +2628,7 @@ Format: `### [LIMIT-ID] Short description` followed by location, impact, workaro
 ## Active Limitations
 
 ### [LIMIT-01] [PLACEHOLDER — short description]
+
 **Location:** `src/[path/to/file.ts]`
 **Impact:** [Who is affected and how]
 **Workaround:** [Current mitigation, or "None"]
@@ -2533,17 +2640,22 @@ Format: `### [LIMIT-ID] Short description` followed by location, impact, workaro
 
 <!-- Move entries here when fixed. Include fix date and PR. -->
 
-
-
 ======================================================================
+
 ## FILE: scripts/weekly-metrics
+
 ### Path: `scripts/weekly-metrics.sh`
+
 ======================================================================
 
-#!/bin/bash
+# !/bin/bash
+
 # weekly-metrics.sh — [PROJECT NAME]
+
 # DORA 2025 (METRICS-02): Single-screen metrics summary
+
 # Run: npm run metrics
+
 # Usage: bash scripts/weekly-metrics.sh [--days=14]
 
 DAYS=${1:-14}
@@ -2554,66 +2666,76 @@ NC='\033[0m' # No Color
 
 echo ""
 echo "═══════════════════════════════════════════"
-echo "  [PROJECT NAME] Weekly Metrics"
-echo "  Period: last ${DAYS} days"
+echo " [PROJECT NAME] Weekly Metrics"
+echo " Period: last ${DAYS} days"
 echo "═══════════════════════════════════════════"
 echo ""
 
 # ─────────────────────────────────────────
+
 # Rework Rate (DORA 2025 new metric)
+
 # Lines reverted as % of total lines authored
+
 # ─────────────────────────────────────────
+
 TOTAL_LINES=$(git log --since="${DAYS} days ago" --pretty=tformat: --numstat \
-  | grep -v "^-" | awk '{ add += $1; del += $2 } END { print add+del }' 2>/dev/null || echo "0")
+ | grep -v "^-" | awk '{ add += $1; del += $2 } END { print add+del }' 2>/dev/null || echo "0")
 
 REVERT_LINES=$(git log --since="${DAYS} days ago" --grep="revert" -i --pretty=tformat: --numstat \
-  | grep -v "^-" | awk '{ add += $1; del += $2 } END { print add+del }' 2>/dev/null || echo "0")
+ | grep -v "^-" | awk '{ add += $1; del += $2 } END { print add+del }' 2>/dev/null || echo "0")
 
 if [ "$TOTAL_LINES" -gt 0 ]; then
-  REWORK_RATE=$(echo "scale=1; $REVERT_LINES * 100 / $TOTAL_LINES" | bc 2>/dev/null || echo "?")
+REWORK_RATE=$(echo "scale=1; $REVERT_LINES \* 100 / $TOTAL_LINES" | bc 2>/dev/null || echo "?")
 else
-  REWORK_RATE="0"
+REWORK_RATE="0"
 fi
 
 if (( $(echo "$REWORK_RATE > 20" | bc -l 2>/dev/null || echo 0) )); then
-  STATUS="${RED}❌${NC}"
-  NOTE="STOP features — fix instructions first"
+STATUS="${RED}❌${NC}"
+NOTE="STOP features — fix instructions first"
 elif (( $(echo "$REWORK_RATE > 10" | bc -l 2>/dev/null || echo 0) )); then
-  STATUS="${YELLOW}⚠️ ${NC}"
+STATUS="${YELLOW}⚠️ ${NC}"
   NOTE="Watch — review AGENTS.md for pattern drift"
 else
   STATUS="${GREEN}✅${NC}"
-  NOTE="Healthy"
+NOTE="Healthy"
 fi
-echo -e " ${STATUS} Rework rate:          ${REWORK_RATE}%   [target: <10%] — $NOTE"
+echo -e " ${STATUS} Rework rate: ${REWORK_RATE}% [target: <10%] — $NOTE"
 
 # ─────────────────────────────────────────
+
 # PRs merged
-# ─────────────────────────────────────────
-PRS_MERGED=$(git log --since="${DAYS} days ago" --merges --oneline | wc -l | tr -d ' ')
-echo -e " ${GREEN}✅${NC} PRs merged:           ${PRS_MERGED}"
 
 # ─────────────────────────────────────────
-# Test coverage (reads from last coverage run)
+
+PRS_MERGED=$(git log --since="${DAYS} days ago" --merges --oneline | wc -l | tr -d ' ')
+echo -e " ${GREEN}✅${NC} PRs merged: ${PRS_MERGED}"
+
 # ─────────────────────────────────────────
+
+# Test coverage (reads from last coverage run)
+
+# ─────────────────────────────────────────
+
 if [ -f "coverage/coverage-summary.json" ]; then
-  COVERAGE=$(cat coverage/coverage-summary.json | python3 -c "
+COVERAGE=$(cat coverage/coverage-summary.json | python3 -c "
 import json, sys
 data = json.load(sys.stdin)
 total = data.get('total', {})
 lines = total.get('lines', {}).get('pct', 0)
 print(f'{lines:.0f}')
 " 2>/dev/null || echo "?")
-  
-  if [ "$COVERAGE" != "?" ] && [ "$COVERAGE" -lt 80 ]; then
-    echo -e " ${YELLOW}⚠️ ${NC} Test coverage:        ${COVERAGE}%  [target: ≥80%]"
+
+if [ "$COVERAGE" != "?" ] && [ "$COVERAGE" -lt 80 ]; then
+echo -e " ${YELLOW}⚠️ ${NC} Test coverage:        ${COVERAGE}%  [target: ≥80%]"
   elif [ "$COVERAGE" != "?" ]; then
-    echo -e " ${GREEN}✅${NC} Test coverage:        ${COVERAGE}%  [target: ≥80%]"
-  else
-    echo -e " ${YELLOW}⚠️ ${NC} Test coverage:        unknown — run npm run test:coverage"
-  fi
+echo -e " ${GREEN}✅${NC} Test coverage: ${COVERAGE}% [target: ≥80%]"
 else
-  echo -e " ${YELLOW}⚠️ ${NC} Test coverage:        no data — run npm run test:coverage"
+echo -e " ${YELLOW}⚠️ ${NC} Test coverage: unknown — run npm run test:coverage"
+fi
+else
+echo -e " ${YELLOW}⚠️ ${NC} Test coverage: no data — run npm run test:coverage"
 fi
 
 echo ""
@@ -2621,4 +2743,3 @@ echo " Update docs/METRICS.md monthly log with these numbers."
 echo " See docs/RUNBOOKS.md → Weekly Metrics Review for interpretation."
 echo "═══════════════════════════════════════════"
 echo ""
-

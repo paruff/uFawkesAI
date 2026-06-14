@@ -38,34 +38,37 @@ START: What do I need to do?
 
 ## Model Selection Table
 
-| Task | Model | Approx cost/task | Notes |
-|---|---|---|---|
-| Q&A, explanation | GPT-4o mini / Haiku 4.5 | $0.01–0.05 | Default for questions |
-| Docs writing | GPT-4o mini / Flash | $0.02–0.08 | Cheap, perfectly capable |
-| Single-file edit | GPT-4o / Sonnet | $0.05–0.20 | Good quality/cost balance |
-| Feature (3–5 files) | GPT-4o / Sonnet | $0.20–0.80 | Most common work |
-| Feature (10+ files) | Sonnet / Opus | $0.50–2.00 | Confirm scope first |
-| Architecture review | Opus / GPT-5 | $1.00–5.00 | Reserve for real complexity |
-| Security audit | Opus / GPT-5 | $1.00–3.00 | Worth the cost here |
-| Rework rate > 20% | Opus / GPT-5 | varies | Fix AGENTS.md first |
+| Task                | Model                   | Approx cost/task | Notes                       |
+| ------------------- | ----------------------- | ---------------- | --------------------------- |
+| Q&A, explanation    | GPT-4o mini / Haiku 4.5 | $0.01–0.05       | Default for questions       |
+| Docs writing        | GPT-4o mini / Flash     | $0.02–0.08       | Cheap, perfectly capable    |
+| Single-file edit    | GPT-4o / Sonnet         | $0.05–0.20       | Good quality/cost balance   |
+| Feature (3–5 files) | GPT-4o / Sonnet         | $0.20–0.80       | Most common work            |
+| Feature (10+ files) | Sonnet / Opus           | $0.50–2.00       | Confirm scope first         |
+| Architecture review | Opus / GPT-5            | $1.00–5.00       | Reserve for real complexity |
+| Security audit      | Opus / GPT-5            | $1.00–3.00       | Worth the cost here         |
+| Rework rate > 20%   | Opus / GPT-5            | varies           | Fix AGENTS.md first         |
 
 ---
 
 ## Mode Cheat Sheet
 
 ### Ask Mode
+
 - **Use for:** Questions, explanations, lookups, understanding code
 - **Charged as:** Single inference, small context
 - **Cost multiplier:** 1x (baseline)
 - **When NOT to use:** Anything that requires file writes
 
-### Edit Mode  
+### Edit Mode
+
 - **Use for:** Targeted changes to 1–2 files with a clear spec
 - **Charged as:** Moderate inference, focused context
 - **Cost multiplier:** 2–3x Ask
 - **When NOT to use:** Don't know exactly which file needs changing
 
 ### Agent Mode
+
 - **Use for:** Multi-file features, refactors, anything requiring tool calls
 - **Charged as:** Multiple inference rounds + tool calls + large context
 - **Cost multiplier:** 5–20x Ask depending on scope
@@ -80,7 +83,7 @@ Before every Agent Mode task, say this to the agent:
 ```
 Before you start, tell me:
 1. Which files will you read? (list them)
-2. Which files will you write? (list them)  
+2. Which files will you write? (list them)
 3. What is your plan in 2 sentences?
 
 Then wait for my confirmation before proceeding.
@@ -92,12 +95,12 @@ This single habit reduces wasted Agent Mode runs by ~40%.
 
 ## Anti-Patterns and Their Cost
 
-| What you typed | Mode used | Actual cost | Better approach |
-|---|---|---|---|
-| "Explain auth service" | Agent | ~$0.30 | Ask Mode: ~$0.03 |
-| "Fix bugs" (vague) | Agent | ~$2.00 (3 retry loops) | Edit Mode with file:line: ~$0.15 |
-| "Refactor everything" | Agent | ~$5+ | Scope to one module, Agent: ~$0.50 |
-| "Review my code" | Agent | ~$1.50 | Ask Mode + paste code: ~$0.20 |
+| What you typed         | Mode used | Actual cost            | Better approach                    |
+| ---------------------- | --------- | ---------------------- | ---------------------------------- |
+| "Explain auth service" | Agent     | ~$0.30                 | Ask Mode: ~$0.03                   |
+| "Fix bugs" (vague)     | Agent     | ~$2.00 (3 retry loops) | Edit Mode with file:line: ~$0.15   |
+| "Refactor everything"  | Agent     | ~$5+                   | Scope to one module, Agent: ~$0.50 |
+| "Review my code"       | Agent     | ~$1.50                 | Ask Mode + paste code: ~$0.20      |
 
 ---
 
@@ -106,14 +109,14 @@ This single habit reduces wasted Agent Mode runs by ~40%.
 For low-stakes tasks, your Ollama + Gemma 4 E4B local setup is a legitimate
 cost-avoidance tool:
 
-| Task | Local (Gemma 4 E4B) | Copilot | Recommendation |
-|---|---|---|---|
-| Drafting docs, changelogs | ✅ Fine | credits | Use local |
-| Explaining code snippets | ✅ Fine | credits | Use local |
-| Simple regex / one-liners | ✅ Fine | credits | Use local |
-| Multi-file feature implementation | ⚠️ Weaker | credits | Use Copilot |
-| Architecture decisions | ❌ Not reliable | credits | Use Copilot + Opus |
-| Security review | ❌ Not reliable | credits | Use Copilot + Opus |
+| Task                              | Local (Gemma 4 E4B) | Copilot | Recommendation     |
+| --------------------------------- | ------------------- | ------- | ------------------ |
+| Drafting docs, changelogs         | ✅ Fine             | credits | Use local          |
+| Explaining code snippets          | ✅ Fine             | credits | Use local          |
+| Simple regex / one-liners         | ✅ Fine             | credits | Use local          |
+| Multi-file feature implementation | ⚠️ Weaker           | credits | Use Copilot        |
+| Architecture decisions            | ❌ Not reliable     | credits | Use Copilot + Opus |
+| Security review                   | ❌ Not reliable     | credits | Use Copilot + Opus |
 
 **Setup tip:** Point `OLLAMA_HOST` and use VS Code's Ollama extension or
 OpenCode CLI for local tasks. Reserve Copilot credits for tasks requiring

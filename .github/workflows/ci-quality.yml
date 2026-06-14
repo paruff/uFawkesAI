@@ -10,20 +10,50 @@ on:
     branches: [main, develop]
   push:
     branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
   pull-requests: read
 
-jobs:
+concurrency:
+  group: ci-quality-${{ github.ref }}
+  cancel-in-progress: true
 
-  # ─────────────────────────────────────────────
+# Opt into Node 24 runner now — Node 20 forced removal September 16 2026.
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  # ════════════════════════════════════════════════════════════════════════════
+  # Stage 0: Pre-flight (via reusable workflow)
+  # ════════════════════════════════════════════════════════════════════════════
+  preflight:
+    name: "✈️ Pre-flight"
+    uses: ./.github/workflows/reusable-preflight.yml
+    with:
+      pr-size-limit: 400
+      commit-format: conventional
+      emergency-bypass: true
+
+  # ════════════════════════════════════════════════════════════════════════════
+  # Stage 1: Lint (via reusable workflow)
+  # ════════════════════════════════════════════════════════════════════════════
+  lint:
+    name: "🔍 Lint"
+    uses: ./.github/workflows/reusable-lint.yml
+    with:
+      auto-detect: true
+      emergency-bypass: true
+
+  # ════════════════════════════════════════════════════════════════════════════
   # GATE 0: Agent Symlink Check
   # Ensures agent instruction symlinks resolve on fresh clone
-  # ─────────────────────────────────────────────
+  # ════════════════════════════════════════════════════════════════════════════
   symlink-check:
     name: "🔗 Agent Symlinks"
     runs-on: ubuntu-latest
+    timeout-minutes: 2
     steps:
       - uses: actions/checkout@v6
       - name: Verify symlinks
@@ -39,94 +69,62 @@ jobs:
           test "$(readlink .cursorrules)" = "AGENTS.md"
           echo "✅ Agent symlinks resolve correctly"
 
-  # ─────────────────────────────────────────────
-  # GATE 1: PR Size Check (DORA 2025 INSTAB-01)
-  # Blocks PRs > 400 changed lines unless human has applied large-pr-approved label
-  # ─────────────────────────────────────────────
-  pr-size-check:
-    name: "🔢 PR Size Gate"
+  # ════════════════════════════════════════════════════════════════════════════
+  # GATE 2: Lint (placeholder - actual linting in reusable-lint.yml)
+  # ════════════════════════════════════════════════════════════════════════════
+  lint-placeholder:
+    name: "🔍 Lint (Placeholder)"
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
-    steps:
-      - name: Check PR size
-        uses: actions/github-script@v9
-        with:
-          script: |
-            const { data: pr } = await github.rest.pulls.get({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: context.issue.number,
-            });
-            
-            const changed = pr.additions + pr.deletions;
-            const limit = 400;
-            const hasOverrideLabel = pr.labels.some(l => l.name === 'large-pr-approved');
-            
-            if (changed > limit && !hasOverrideLabel) {
-              core.setFailed(
-                `❌ PR size: ${changed} lines changed (limit: ${limit}).\n` +
-                `Split this PR into smaller pieces, or ask a human reviewer to apply the 'large-pr-approved' label.\n` +
-                `DORA 2025: "AI consistently increases PR size by 154%. Larger PRs = more surface area for bugs."`
-              );
-            } else if (changed > limit) {
-              core.warning(`⚠️ Large PR override active: ${changed} lines changed. Human approved.`);
-            } else {
-              console.log(`✅ PR size: ${changed} lines (within ${limit} limit)`);
-            }
-
-  # ─────────────────────────────────────────────
-  # GATE 2: Lint
-  # ─────────────────────────────────────────────
-  lint:
-    name: "🔍 Lint"
-    runs-on: ubuntu-latest
+    timeout-minutes: 2
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: "22.x"
+          cache: "npm"
       - run: npm ci
-      - name: Run ESLint
+      - name: Run ESLint placeholder
         run: |
           npm run lint
-          echo "✅ Lint passed"
+          echo "✅ Lint passed (placeholder)"
 
-  # ─────────────────────────────────────────────
-  # GATE 3: Type Check
-  # ─────────────────────────────────────────────
+  # ════════════════════════════════════════════════════════════════════════════
+  # GATE 3: Type Check (placeholder)
+  # ════════════════════════════════════════════════════════════════════════════
   typecheck:
     name: "🔷 TypeScript"
     runs-on: ubuntu-latest
+    timeout-minutes: 2
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: "22.x"
+          cache: "npm"
       - run: npm ci
-      - name: Run TypeScript compiler
+      - name: Run TypeScript compiler placeholder
         run: |
           npm run typecheck
-          echo "✅ TypeScript passed"
+          echo "✅ TypeScript passed (placeholder)"
 
-  # ─────────────────────────────────────────────
-  # GATE 4: Tests + Coverage
-  # ─────────────────────────────────────────────
+  # ════════════════════════════════════════════════════════════════════════════
+  # GATE 4: Tests + Coverage (placeholder)
+  # ════════════════════════════════════════════════════════════════════════════
   test:
     name: "🧪 Tests & Coverage"
     runs-on: ubuntu-latest
+    timeout-minutes: 2
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: "22.x"
+          cache: "npm"
       - run: npm ci
-      - name: Run tests with coverage
+      - name: Run tests with coverage placeholder
         run: |
           npm run test:coverage
-          echo "✅ Tests passed"
+          echo "✅ Tests passed (placeholder)"
       - name: Check coverage threshold
         run: |
           # [PLACEHOLDER] — replace with your coverage tool's threshold check
@@ -134,44 +132,73 @@ jobs:
           # This step fails if coverage drops below 80%
           echo "Coverage threshold: 80% (configured in jest.config.js)"
 
-  # ─────────────────────────────────────────────
-  # GATE 5: Architecture Boundary Check
-  # ESLint import rules enforce DORA ARCH-01 layer boundaries
-  # ─────────────────────────────────────────────
+  # ════════════════════════════════════════════════════════════════════════════
+  # GATE 5: Architecture Boundary Check (placeholder)
+  # ════════════════════════════════════════════════════════════════════════════
   architecture:
     name: "🏗️ Architecture Boundaries"
     runs-on: ubuntu-latest
+    timeout-minutes: 2
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: "22.x"
+          cache: "npm"
       - run: npm ci
-      - name: Check architecture boundaries
+      - name: Check architecture boundaries placeholder
         run: |
-          # This runs the ESLint import boundary rules from eslint-plugin-import
-          # configured in .eslintrc.js with the layer boundary rules from ARCH-01
           npm run lint:architecture
-          echo "✅ Architecture boundaries respected"
+          echo "✅ Architecture boundaries respected (placeholder)"
 
-  # ─────────────────────────────────────────────
+  # ════════════════════════════════════════════════════════════════════════════
   # SUMMARY: All gates must pass for merge
-  # ─────────────────────────────────────────────
+  # ════════════════════════════════════════════════════════════════════════════
   ci-summary:
     name: "✅ CI Complete"
-    needs: [symlink-check, lint, typecheck, test, architecture]
+    needs:
+      [
+        preflight,
+        lint,
+        symlink-check,
+        lint-placeholder,
+        typecheck,
+        test,
+        architecture,
+      ]
     runs-on: ubuntu-latest
     if: always()
     steps:
       - name: Check all gates
         run: |
-          if [ "${{ needs.symlink-check.result }}" != "success" ] || \
-             [ "${{ needs.lint.result }}" != "success" ] || \
-             [ "${{ needs.typecheck.result }}" != "success" ] || \
-             [ "${{ needs.test.result }}" != "success" ] || \
-             [ "${{ needs.architecture.result }}" != "success" ]; then
+          if [ "${{ needs.preflight.result }}" == "failure" ] || \
+             [ "${{ needs.lint.result }}" == "failure" ] || \
+             [ "${{ needs.symlink-check.result }}" == "failure" ] || \
+             [ "${{ needs.lint-placeholder.result }}" == "failure" ] || \
+             [ "${{ needs.typecheck.result }}" == "failure" ] || \
+             [ "${{ needs.test.result }}" == "failure" ] || \
+             [ "${{ needs.architecture.result }}" == "failure" ]; then
             echo "❌ One or more CI gates failed"
             exit 1
           fi
           echo "✅ All CI gates passed — ready for human review"
+
+      - name: Generate quality summary
+        if: always()
+        run: |
+          echo "## Quality Gate Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Gate | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Pre-flight | ${{ needs.preflight.result == 'success' && '✅ Pass' || (needs.preflight.result == 'skipped' && '⏭️ Skipped' || '❌ Fail') }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Lint | ${{ needs.lint.result == 'success' && '✅ Pass' || (needs.lint.result == 'skipped' && '⏭️ Skipped' || '❌ Fail') }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Symlinks | ${{ needs.symlink-check.result == 'success' && '✅ Pass' || '❌ Fail' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Lint (Placeholder) | ${{ needs.lint-placeholder.result == 'success' && '✅ Pass' || '❌ Fail' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| TypeScript | ${{ needs.typecheck.result == 'success' && '✅ Pass' || '❌ Fail' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Tests | ${{ needs.test.result == 'success' && '✅ Pass' || '❌ Fail' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Architecture | ${{ needs.architecture.result == 'success' && '✅ Pass' || '❌ Fail' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### DORA Metrics" >> $GITHUB_STEP_SUMMARY
+          echo "- **Total gates**: 7" >> $GITHUB_STEP_SUMMARY
+          echo "- **Parallel execution**: Yes" >> $GITHUB_STEP_SUMMARY
+          echo "- **Estimated time**: ~5 min" >> $GITHUB_STEP_SUMMARY

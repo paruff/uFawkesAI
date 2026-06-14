@@ -32,6 +32,7 @@ config/      → Environment vars, feature flags. No business logic.
 ## Before Writing Code
 
 Read these in order:
+
 1. `src/types/index.ts` — all data shapes
 2. `docs/ARCHITECTURE.md` — full layer doc
 3. `docs/API_SURFACE.md` — public service functions
@@ -40,6 +41,7 @@ Read these in order:
 ## PR Architecture Check (Required)
 
 In every PR description, confirm:
+
 - [ ] No layer boundary violations
 - [ ] Types added to `src/types/index.ts`
 - [ ] No new dependencies without PM sign-off

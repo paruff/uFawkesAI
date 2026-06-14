@@ -1,0 +1,59 @@
+# uFawkesAI Pipeline Configuration
+# Defines which CI stages run for this repository type
+
+version: "1"
+repo-type: template
+
+# YAML anchors for DRY config
+_defaults: &defaults
+  enabled: true
+  timeout: 5
+
+# Emergency bypass settings
+emergency:
+  label: emergency-bypass
+  allow-override: true
+
+# Stage configurations
+stages:
+  # Stage 0: Pre-flight checks (fastest feedback)
+  preflight:
+    <<: *defaults
+    pr-size-limit: 400
+    commit-format: conventional
+
+  # Stage 1: Static analysis
+  lint:
+    <<: *defaults
+    # Template repo only has shell scripts, YAML, and JSON
+    languages:
+      - shell
+      - yaml
+      - json
+      - markdown
+    # Placeholder npm scripts - will pass even when not configured
+    auto-detect: false
+
+  # Stage 2: Build (disabled for template)
+  build:
+    enabled: false
+
+  # Stage 3: Security scanning
+  security:
+    <<: *defaults
+    sca: true # Trivy dependency scanning
+    sast: true # CodeQL static analysis
+    container-scan: false # No Dockerfiles in template
+    policy-enforcement: false
+
+  # Stage 4: Tests (disabled for template - placeholders only)
+  tests:
+    enabled: false
+
+  # Stage 5: Quality gates (disabled for template)
+  quality:
+    enabled: false
+
+  # Stage 6: Deploy (disabled for template)
+  deploy:
+    enabled: false

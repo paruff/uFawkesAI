@@ -11,9 +11,9 @@
 
 ## Prompt Library Changelog
 
-| Date | Change | Author |
-|------|--------|--------|
-| 2026-05-10 | Added "Using Agent Skills" section | @paruff |
+| Date       | Change                                                                                  | Author  |
+| ---------- | --------------------------------------------------------------------------------------- | ------- |
+| 2026-05-10 | Added "Using Agent Skills" section                                                      | @paruff |
 | 2026-05-10 | Added DORA AI Capabilities, Multi-agent orchestration, Agent Skills invocation sections | @paruff |
 
 ---
@@ -50,7 +50,8 @@ Read src/types/index.ts before writing. Do not import from src/services/ or src/
 
 **Expected output:** The function implementation that makes the test pass, plus JSDoc.
 
-**Red flags:** 
+**Red flags:**
+
 - Function imports from `services/` or `hooks/` → reject, re-prompt with rule 1
 - Missing return type → reject, ask for explicit return type
 - `any` type in catch block → reject, ask for typed error handling
@@ -77,6 +78,7 @@ The failing test:
 ```
 
 **Red flags:**
+
 - No userId scoping on Firestore operations → SECURITY issue, escalate to @security-agent
 - Raw error message returned → reject, ask for error mapping
 
@@ -174,7 +176,7 @@ Should this code go in screens/, components/, hooks/, services/, or utils/?
 
 Project layer rules:
 - screens/ → navigation targets; UI composition only; no data calls
-- components/ → reusable UI primitives; no navigation; no business logic  
+- components/ → reusable UI primitives; no navigation; no business logic
 - hooks/ → React state; may call services; no Firebase SDK directly
 - services/ → all Firestore/Firebase operations
 - utils/ → pure functions; stateless; no imports from other layers
@@ -253,6 +255,7 @@ Function:
 **Expected output:** Structured findings list with severity levels and corrected code.
 
 **Red flags:**
+
 - Agent reports "no issues" on a function with unscoped DB operations → re-prompt, explicitly ask it to check the "All database operations are scoped to the authenticated `userId`" bullet in the Pre-commit security checklist section of the skill
 
 ---
@@ -277,6 +280,7 @@ Function:
 invalid input, and edge cases.
 
 **Red flags:**
+
 - Tests only assert mock calls → reject, ask for behaviour assertions
 - `describe` / `it` names don't follow convention → reject, ask for rename
 
@@ -308,6 +312,7 @@ End with: "Current archetype: [name] — Next step: [single highest-leverage act
 single prioritised next step.
 
 **Red flags:**
+
 - Assessment cites no evidence → re-prompt asking for specific metric values
 - Recommends more than one next step → ask it to pick the highest-leverage action only
 
@@ -342,6 +347,7 @@ today's date, the rework rate value, and a one-line trend note.
 classification and (if needed) per-file churn counts from git.
 
 **Red flags:**
+
 - Agent updates METRICS.md without running `npm run metrics` → reject, ask it to run
   the script first
 - Rework > 20% but no fix suggested → re-prompt asking it to recommend a specific
@@ -381,6 +387,7 @@ Format it as a collapsible GitHub markdown block:
 description.
 
 **Red flags:**
+
 - Monitoring signals are not measurable (e.g. "watch for problems") → re-prompt asking
   for specific metric names and threshold values
 
@@ -412,6 +419,7 @@ End with: "Small-batch compliant? YES / NO — [reason]"
 a concrete split plan with sub-PR scopes.
 
 **Red flags:**
+
 - Agent says YES on a 600-line PR → re-prompt, ask it to count changed lines explicitly
 - Split plan has more than 3 sub-PRs → acceptable, but flag for PM review
 
@@ -455,6 +463,7 @@ End with a dependency graph showing the order of execution.
 ASCII or Mermaid syntax.
 
 **Red flags:**
+
 - Any two tasks write to the same file → reject the decomposition, ask for a re-split
 - More than 3 concurrent tasks proposed → reject, ask it to serialize some tasks
 
@@ -492,6 +501,7 @@ PR description.
 plus a summary of any conflicts found and how they were resolved.
 
 **Red flags:**
+
 - Lead agent skips conflict checking → re-prompt asking it to diff each pair of
   sub-agent branches explicitly
 - Unresolved conflicts not flagged in PR description → reject, ask it to add them to
@@ -529,6 +539,7 @@ or re-scope one agent's work).
 **Expected output:** A per-branch file list and an overlap report with YES/NO verdict.
 
 **Red flags:**
+
 - Agent reports NO overlap without listing any files → re-prompt asking for the
   explicit file list per branch
 
@@ -585,6 +596,7 @@ End with: "Safe to approve? YES / NO — [reason if NO]"
 recommendation.
 
 **Red flags:**
+
 - Agent says YES without listing any findings → re-prompt asking for an explicit
   checklist run even if all items pass
 
@@ -616,6 +628,7 @@ The test file must cover: happy path, invalid input, and at least two edge cases
 implementation is written and passes after.
 
 **Red flags:**
+
 - Tests only assert mock calls, not behaviour → reject, ask for behaviour assertions
 - `describe`/`it` names don't follow `when [condition], should [result]` → ask for rename
 - No edge cases → re-prompt asking for at least two edge-case scenarios

@@ -1,16 +1,28 @@
 # Copilot Billing Handoff — Scripts Prompt (Copilot / Claude Code via API)
+
 #
+
 # USE THIS WHEN: running GitHub Copilot Agent Mode or Claude Code with API
-# RUN AFTER:    COPILOT_BILLING_HANDOFF_PROMPT_LOCAL.md (the docs are already done)
-# COST:         Medium — use Sonnet/GPT-4o, NOT Opus (over-powered for this task)
+
+# RUN AFTER: COPILOT_BILLING_HANDOFF_PROMPT_LOCAL.md (the docs are already done)
+
+# COST: Medium — use Sonnet/GPT-4o, NOT Opus (over-powered for this task)
+
 #
-# SCOPE CHECK (paste to agent before starting):
-#   Files I will read: scripts/, package.json, .github/workflows/
-#   Files I will write: scripts/token-audit.sh, scripts/setup.sh (update),
-#     .github/workflows/placeholder-audit.yml, package.json (scripts section)
-#   Plan: create two bash scripts and one workflow file, update package.json
-#   Complexity: medium
-#   Confirm I should proceed?
+
+# SCOPE CHECK (paste to agent before starting)
+
+# Files I will read: scripts/, package.json, .github/workflows/
+
+# Files I will write: scripts/token-audit.sh, scripts/setup.sh (update)
+
+# .github/workflows/placeholder-audit.yml, package.json (scripts section)
+
+# Plan: create two bash scripts and one workflow file, update package.json
+
+# Complexity: medium
+
+# Confirm I should proceed?
 
 ---
 
@@ -23,6 +35,7 @@ Your job is the bash scripts and CI workflow only.
 Do not regenerate the markdown files — they are done.
 
 Read these files before starting:
+
 - scripts/setup.sh (existing — you will update it, not replace it)
 - package.json (add scripts entries)
 - AGENTS.md (understand the project context)
@@ -35,6 +48,7 @@ Create `scripts/token-audit.sh` — a bash script that measures the Copilot toke
 footprint of always-on context files and projects monthly cost.
 
 Requirements:
+
 - shebang: `#!/usr/bin/env bash`
 - `set -euo pipefail` at top
 - Support `--save` flag that appends results to docs/METRICS.md
@@ -81,6 +95,7 @@ After writing, run: `bash -n scripts/token-audit.sh` to syntax check.
 Read the existing `scripts/setup.sh`. Then update it to add any missing functionality.
 
 Required functionality (add if missing, preserve if present):
+
 - Coloured output with GREEN ✓, YELLOW ⚠, RED ✗ status indicators
 - Create symlink: CLAUDE.md → AGENTS.md (if CLAUDE.md doesn't exist)
 - Create symlink: .github/copilot-instructions.md → ../../AGENTS.md
@@ -100,6 +115,7 @@ Required functionality (add if missing, preserve if present):
   List any warnings that need attention
 
 Do NOT:
+
 - Remove existing functionality from setup.sh
 - Change the shebang or set flags at the top
 - Add dependencies not already present in the repo
@@ -114,6 +130,7 @@ Then test: `bash scripts/setup.sh --dry-run`
 Create a GitHub Actions workflow that scans for unfilled [PLACEHOLDER] strings.
 
 Workflow requirements:
+
 - name: "Placeholder Audit"
 - triggers: push to main, pull_request targeting main
 - single job: placeholder-check
@@ -124,16 +141,16 @@ Workflow requirements:
      If file `.template` exists in repo root → set output `template_mode=true`
   3. Scan for placeholders:
      `grep -rn "\[PLACEHOLDER" --include="*.md" --include="*.sh" --include="*.yml" \
-       --exclude-dir=".git" --exclude-dir="node_modules" . || true`
+--exclude-dir=".git" --exclude-dir="node_modules" . || true`
      Save output to a variable
   4. Conditional result:
      If template_mode=true AND placeholders found: warn only (exit 0)
-       Print: "⚠️ Template mode: X placeholders found (expected — fill before use)"
+     Print: "⚠️ Template mode: X placeholders found (expected — fill before use)"
      If template_mode=false AND placeholders found: fail (exit 1)
-       Print each file:line with the placeholder
-       Print: "❌ X unfilled placeholders found. Run setup and fill before committing."
-     If no placeholders found: 
-       Print: "✅ No unfilled placeholders found"
+     Print each file:line with the placeholder
+     Print: "❌ X unfilled placeholders found. Run setup and fill before committing."
+     If no placeholders found:
+     Print: "✅ No unfilled placeholders found"
 
 Use bash conditionals, not third-party actions.
 Add a comment at top explaining the template vs fork distinction.
@@ -153,6 +170,7 @@ without removing existing entries:
 ```
 
 If package.json does not exist, create a minimal one:
+
 ```json
 {
   "name": "ufawkesai",
@@ -199,6 +217,7 @@ If any fail, fix them before finishing.
 ## WHAT TO REPORT WHEN DONE
 
 Produce a summary with:
+
 1. Files created/modified (list with line counts)
 2. Output of `bash scripts/token-audit.sh` (full output)
 3. Output of `bash scripts/setup.sh --dry-run` (full output)

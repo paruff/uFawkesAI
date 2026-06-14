@@ -30,9 +30,11 @@
 ## Step-by-Step with Commands
 
 ### Step 1 — Spec (PM)
+
 Create a GitHub issue using the **Feature** issue template.
 
 Write acceptance criteria specific enough that each one becomes either:
+
 - A unit test (`it('returns X when Y')`)
 - A BDD scenario (`Given / When / Then`)
 
@@ -41,6 +43,7 @@ Write acceptance criteria specific enough that each one becomes either:
 ---
 
 ### Step 2 — Branch
+
 ```bash
 git checkout main && git pull
 git checkout -b feat/ISSUE-ID-short-description
@@ -86,6 +89,7 @@ Use the prompt template from docs/PROMPT_LIBRARY.md → [relevant category].
 ```
 
 Commit when tests go green:
+
 ```bash
 npm test  # Should pass now
 git commit -m "feat(scope): implement [ISSUE-ID] — [what was built]"
@@ -114,6 +118,7 @@ git push -u origin feat/ISSUE-ID-description
 ```
 
 Fill in every section of the AI-Assisted Review Block:
+
 ```
 @review-agent Please pre-screen this PR against .github/copilot-instructions.md
 ```
@@ -123,6 +128,7 @@ Fill in every section of the AI-Assisted Review Block:
 ### Step 7 — CI Gates Pass
 
 The CI pipeline runs automatically:
+
 - 🔢 PR size check (< 400 lines or `large-pr-approved` label)
 - 🔍 Lint
 - 🔷 TypeScript
@@ -141,6 +147,7 @@ Mark PR as Ready for Review. Tag the reviewer.
 DORA 2025: "Teams with shorter code review times have 50% better delivery performance."
 
 Reviewer checklist:
+
 - [ ] AI-Assisted Review Block is complete
 - [ ] Architecture boundaries respected
 - [ ] Tests actually test the failure cases
@@ -151,6 +158,7 @@ Reviewer checklist:
 ### Step 9 — Merge
 
 Squash merge with conventional commit message:
+
 ```
 feat(scope): [description] (#ISSUE-NUMBER)
 ```
@@ -175,14 +183,14 @@ If spike detected: see `docs/RUNBOOKS.md` → Emergency Rollback.
 
 These situations require the PM and a human developer to discuss before assigning to an agent:
 
-| Situation | Why it's off-path |
-|---|---|
-| Adding a new npm dependency | Security review, bundle size, license check |
-| Database schema change | Migration strategy, backward compatibility |
-| Authentication flow change | Security-critical, cannot be fully automated |
-| New architecture layer or pattern | Structural decision affecting all future agents |
-| Feature touching > 5 files | Break into multiple issues first |
-| Removing a known limitation | Verify the root cause is actually fixed, not just hidden |
+| Situation                         | Why it's off-path                                        |
+| --------------------------------- | -------------------------------------------------------- |
+| Adding a new npm dependency       | Security review, bundle size, license check              |
+| Database schema change            | Migration strategy, backward compatibility               |
+| Authentication flow change        | Security-critical, cannot be fully automated             |
+| New architecture layer or pattern | Structural decision affecting all future agents          |
+| Feature touching > 5 files        | Break into multiple issues first                         |
+| Removing a known limitation       | Verify the root cause is actually fixed, not just hidden |
 
 ---
 

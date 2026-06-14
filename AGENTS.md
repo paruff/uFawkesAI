@@ -41,6 +41,7 @@
 ## 4. Token Budget Protocol
 
 Before starting any task touching > 3 files:
+
 1. State scope in one sentence.
 2. List files you plan to read.
 3. Say: "Confirm I should proceed? (moderate/high credit cost)"
@@ -53,14 +54,14 @@ For questions → use Ask Mode (60–90% cheaper than Agent Mode).
 
 Reference a skill in your prompt to load its full instructions:
 
-| Skill | When to load |
-|---|---|
-| `.github/skills/architecture/SKILL.md` | Before writing any code |
-| `.github/skills/pr-contract/SKILL.md` | Before opening a PR |
-| `.github/skills/metrics/SKILL.md` | When running or interpreting metrics |
-| `.github/skills/model-routing/SKILL.md` | When unsure which model/mode to use |
-| `.github/skills/dora-metrics/SKILL.md` | DORA metric calculation |
-| `.github/skills/security-review/SKILL.md` | Security checklist for PRs |
+| Skill                                     | When to load                         |
+| ----------------------------------------- | ------------------------------------ |
+| `.github/skills/architecture/SKILL.md`    | Before writing any code              |
+| `.github/skills/pr-contract/SKILL.md`     | Before opening a PR                  |
+| `.github/skills/metrics/SKILL.md`         | When running or interpreting metrics |
+| `.github/skills/model-routing/SKILL.md`   | When unsure which model/mode to use  |
+| `.github/skills/dora-metrics/SKILL.md`    | DORA metric calculation              |
+| `.github/skills/security-review/SKILL.md` | Security checklist for PRs           |
 
 **Prompt example:** `"Use the architecture skill to implement this feature."`
 
@@ -68,12 +69,12 @@ Reference a skill in your prompt to load its full instructions:
 
 ## 6. Context Files (Read Before Generating Code)
 
-| Priority | File | What You Learn |
-|---|---|---|
-| 1 | `src/types/index.ts` | All data shapes |
-| 2 | `docs/ARCHITECTURE.md` | Layer boundaries |
-| 3 | `docs/API_SURFACE.md` | Public service functions |
-| 4 | `docs/KNOWN_LIMITATIONS.md` | Do not make these worse |
+| Priority | File                        | What You Learn           |
+| -------- | --------------------------- | ------------------------ |
+| 1        | `src/types/index.ts`        | All data shapes          |
+| 2        | `docs/ARCHITECTURE.md`      | Layer boundaries         |
+| 3        | `docs/API_SURFACE.md`       | Public service functions |
+| 4        | `docs/KNOWN_LIMITATIONS.md` | Do not make these worse  |
 
 ---
 

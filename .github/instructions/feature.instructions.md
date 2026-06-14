@@ -11,7 +11,7 @@ applyTo: "src/**/*.ts,src/**/*.tsx"
 When implementing a feature from a GitHub issue:
 
 1. **Read the acceptance criteria first.** Every acceptance criterion becomes either a unit test or a BDD scenario.
-2. **Read the user story.** Understand *why* this feature exists before writing any code.
+2. **Read the user story.** Understand _why_ this feature exists before writing any code.
 3. **Check `docs/KNOWN_LIMITATIONS.md`** for any gotchas in the area you're working.
 4. **Write the failing test first.** Commit it before writing implementation code.
 
@@ -40,13 +40,14 @@ export function GoalDetailScreen() {
 
 // ❌ Wrong — screen calls Firebase directly
 export function GoalDetailScreen() {
-  const goal = await getDoc(doc(db, 'goals', goalId)); // NEVER
+  const goal = await getDoc(doc(db, "goals", goalId)); // NEVER
 }
 ```
 
 ## When Something Is Ambiguous
 
 If the issue acceptance criteria don't cover an edge case:
+
 - Handle it defensively (validate input, show a user-friendly error)
 - Add a comment: `// TODO: PM decision needed — [describe the ambiguity]`
 - Flag it in the PR description under "Files I was NOT sure about"

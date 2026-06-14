@@ -8,6 +8,7 @@ in context), Skills are opt-in — this preserves the agent's limited instructio
 budget for everyday work and loads specialist guidance only when relevant.
 
 Agent Skills are supported by:
+
 - **GitHub Copilot** (agent mode)
 - **Claude Code**
 - **Codex / OpenAI o-series agents**
@@ -18,11 +19,11 @@ Agent Skills are supported by:
 
 ## Skills in this repository
 
-| Skill | Directory | Use when… |
-|---|---|---|
-| DORA Metrics | `dora-metrics/` | Working on metrics collection, dashboards, deployment tracking, or rework rate analysis |
-| Security Review | `security-review/` | Reviewing a PR for security issues, auditing service functions, or adding auth logic |
-| Test Generation | `test-generation/` | Writing tests, improving coverage, or following TDD for a new feature |
+| Skill           | Directory          | Use when…                                                                               |
+| --------------- | ------------------ | --------------------------------------------------------------------------------------- |
+| DORA Metrics    | `dora-metrics/`    | Working on metrics collection, dashboards, deployment tracking, or rework rate analysis |
+| Security Review | `security-review/` | Reviewing a PR for security issues, auditing service functions, or adding auth logic    |
+| Test Generation | `test-generation/` | Writing tests, improving coverage, or following TDD for a new feature                   |
 
 ---
 

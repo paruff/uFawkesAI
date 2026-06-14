@@ -1,5 +1,6 @@
 # GitHub Copilot Billing Optimization — Handoff Prompt
-## Copy and paste this into any AI agent (Copilot, Claude Code, Cursor, etc.) to kick off a billing audit and retrofit for any repo.
+
+## Copy and paste this into any AI agent (Copilot, Claude Code, Cursor, etc.) to kick off a billing audit and retrofit for any repo
 
 ---
 
@@ -207,6 +208,7 @@ Then wait for confirmation before proceeding.
 ## HOW TO USE THIS PROMPT
 
 ### In GitHub Copilot Agent Mode
+
 1. Open your repo in VS Code
 2. Switch to **Agent Mode** (not Ask or Edit)
 3. Select **Claude Sonnet or GPT-4o** (not Opus — this task doesn't need it)
@@ -214,6 +216,7 @@ Then wait for confirmation before proceeding.
 5. Review the Step 3 confirmation, then approve
 
 ### In Claude Code
+
 ```bash
 cd your-repo
 claude   # opens interactive session
@@ -221,6 +224,7 @@ claude   # opens interactive session
 ```
 
 ### In Cursor (Agent Mode)
+
 - Cmd+I to open Composer
 - Set to Agent mode
 - Paste the prompt
@@ -249,12 +253,12 @@ prepend this block before the prompt:
 
 If you are retrofitting several repos, do them in this order for maximum ROI:
 
-| Priority | Repo type | Why |
-|---|---|---|
-| 1 | Your most active repo (most agent interactions) | Highest daily savings |
-| 2 | Repos with the largest AGENTS.md | Biggest per-request savings |
-| 3 | Team/shared repos | Multiplies savings across all users |
-| 4 | Archived or low-activity repos | Low urgency |
+| Priority | Repo type                                       | Why                                 |
+| -------- | ----------------------------------------------- | ----------------------------------- |
+| 1        | Your most active repo (most agent interactions) | Highest daily savings               |
+| 2        | Repos with the largest AGENTS.md                | Biggest per-request savings         |
+| 3        | Team/shared repos                               | Multiplies savings across all users |
+| 4        | Archived or low-activity repos                  | Low urgency                         |
 
 Run `wc -l AGENTS.md .github/copilot-instructions.md` in each repo first.
 Sort by line count descending. Start at the top.
@@ -265,18 +269,18 @@ Sort by line count descending. Start at the top.
 
 A complete retrofit of a typical repo produces:
 
-| Deliverable | Typical size |
-|---|---|
-| AGENTS.md (lean core) | 80–90 lines |
-| .github/skills/architecture/SKILL.md | 40–60 lines |
-| .github/skills/pr-contract/SKILL.md | 60–90 lines |
-| .github/skills/metrics/SKILL.md | 50–70 lines |
-| .github/skills/model-routing/SKILL.md | 40–50 lines |
-| .copilotignore | 60–80 lines |
-| scripts/token-audit.sh | 120–150 lines |
-| docs/COPILOT_COST_GUIDE.md | 150–200 lines |
-| docs/MODEL_ROUTING_GUIDE.md | 100–130 lines |
-| .github/copilot-budget.md | 80–100 lines |
+| Deliverable                           | Typical size  |
+| ------------------------------------- | ------------- |
+| AGENTS.md (lean core)                 | 80–90 lines   |
+| .github/skills/architecture/SKILL.md  | 40–60 lines   |
+| .github/skills/pr-contract/SKILL.md   | 60–90 lines   |
+| .github/skills/metrics/SKILL.md       | 50–70 lines   |
+| .github/skills/model-routing/SKILL.md | 40–50 lines   |
+| .copilotignore                        | 60–80 lines   |
+| scripts/token-audit.sh                | 120–150 lines |
+| docs/COPILOT_COST_GUIDE.md            | 150–200 lines |
+| docs/MODEL_ROUTING_GUIDE.md           | 100–130 lines |
+| .github/copilot-budget.md             | 80–100 lines  |
 
 **Typical result:** 40–60% reduction in always-on context tokens.
 At moderate agentic use (20 tasks/day, 22 working days), this saves

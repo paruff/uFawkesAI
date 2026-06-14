@@ -31,6 +31,7 @@ expo publish:rollback --channel production --sdk-version <version>
 ```
 
 **After rollback:**
+
 1. File a bug issue linking the error monitoring report
 2. Root cause analysis: Was it a Copilot pattern failure? If yes → update `AGENTS.md`.
 3. Add a regression test before re-deploying
@@ -91,13 +92,13 @@ npm run metrics
 
 Review the output:
 
-| Metric | If above target... |
-|---|---|
-| Rework rate 10–20% | Review recent Copilot output patterns; update AGENTS.md if drift observed |
-| Rework rate > 20% | Stop features. Fix instructions. Run prompt library review. |
-| Change failure rate > 5% | Review last 3 incidents. Improve test coverage in affected areas. |
-| CI time > 4 min | File a performance issue for CI optimisation |
-| PR revision rate > 25% | Review issue template quality — specs may be too vague |
+| Metric                   | If above target...                                                        |
+| ------------------------ | ------------------------------------------------------------------------- |
+| Rework rate 10–20%       | Review recent Copilot output patterns; update AGENTS.md if drift observed |
+| Rework rate > 20%        | Stop features. Fix instructions. Run prompt library review.               |
+| Change failure rate > 5% | Review last 3 incidents. Improve test coverage in affected areas.         |
+| CI time > 4 min          | File a performance issue for CI optimisation                              |
+| PR revision rate > 25%   | Review issue template quality — specs may be too vague                    |
 
 Update `docs/METRICS.md` monthly log.
 
@@ -127,15 +128,16 @@ For each changed service or utility file:
 
 Score each dimension 1–5 in `docs/DEVEX_LOG.md`:
 
-| Dimension | Score (1–5) |
-|---|---|
-| Flow — how often do I reach flow state? | |
-| Feedback Speed — how fast does the system respond? | |
-| Cognitive Load — how hard is it to navigate the code? | |
-| AI Trust — how often do I accept Copilot output? | |
-| Tooling Friction — how often does tooling block me? | |
+| Dimension                                             | Score (1–5) |
+| ----------------------------------------------------- | ----------- |
+| Flow — how often do I reach flow state?               |             |
+| Feedback Speed — how fast does the system respond?    |             |
+| Cognitive Load — how hard is it to navigate the code? |             |
+| AI Trust — how often do I accept Copilot output?      |             |
+| Tooling Friction — how often does tooling block me?   |             |
 
 **Triggers:**
+
 - Any dimension < 3 for two consecutive months → file an improvement issue
 - AI Trust < 3 → review AGENTS.md and PROMPT_LIBRARY.md
 - Cognitive Load ≥ 4 → run a Value Stream Mapping exercise
