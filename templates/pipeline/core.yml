@@ -1,0 +1,129 @@
+# ============================================================================
+# uFawkes Core Pipeline — Pre-configured for Kubernetes repos
+# ============================================================================
+# Usage: Copy to your repo root as `.pipeline.yml`
+# Repos: fawkes
+# ============================================================================
+
+version: "2"
+repo-type: core
+artifact:
+  type: kubernetes
+  deploy-method: argocd
+
+emergency:
+  label: emergency-bypass
+  allow-override: true
+
+stages:
+  preflight:
+    enabled: true
+    timeout: 3
+    pr-size-limit: 400
+    commit-format: conventional
+    secret-detection: true
+
+  lint:
+    enabled: true
+    timeout: 5
+    languages: [python, typescript, go, shell, yaml, terraform]
+
+  sast:
+    enabled: true
+    languages: [python, typescript, go]
+    tool: codeql
+    fail-on: high
+
+  sca:
+    enabled: true
+    tools: [trivy-fs, pip-safety, npm-audit]
+    fail-on: critical
+
+  secrets:
+    enabled: true
+    tools: [gitleaks, env-example]
+
+  build:
+    enabled: true
+    timeout: 15
+    config-validation:
+      docker: true
+      helm: true
+      terraform: true
+    supply-chain:
+      :latest-check: true
+      sbom: true
+      signing: true
+      slsa: true
+      container-scan: true
+
+  policy:
+    enabled: true
+    tool: conftest
+    policy-path: .security-plane/policies
+
+  tests:
+    enabled: true
+    timeout: 30
+    coverage-thresholds:
+      unit:
+        total: 60
+        diff: 80
+      acceptance:
+        total: 50
+        diff: 70
+    unit:
+      enabled: true
+    integration:
+      enabled: true
+    e2e:
+      enabled: true
+    terratest:
+      enabled: true
+    acceptance:
+      enabled: true
+      timeout: 15
+    load:
+      enabled: true
+      tool: k6
+      max-vusers: 1000
+      duration: 120s
+      thresholds:
+        p95-latency: 500
+        error-rate: 1
+    performance:
+      enabled: true
+      tool: k6
+      thresholds:
+        p95-latency: 500
+        error-rate: 1
+        memory: 4096
+
+  quality:
+    enabled: true
+    accessibility: true
+    link-check: true
+    lighthouse: false
+    pr-size:
+      enabled: true
+      max-lines: 400
+
+  deploy-readiness:
+    enabled: true
+    timeout: 5
+
+  deploy:
+    enabled: true
+    strategy: argocd
+    manual-approval: false
+
+gates:
+  require-all-stage-pass: true
+  emergency-bypass: true
+  bypass-label: emergency-bypass
+
+notifications:
+  failure:
+    - github-actions
+  success:
+    - github-actions

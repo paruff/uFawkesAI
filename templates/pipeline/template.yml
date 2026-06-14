@@ -1,0 +1,70 @@
+# ============================================================================
+# uFawkes Template Pipeline — Pre-configured for config-only repos
+# ============================================================================
+# Usage: Copy to your repo root as `.pipeline.yml`
+# Repos: uFawkesAI, dora, sec, devx (when they have content)
+# ============================================================================
+
+version: "2"
+repo-type: template
+artifact:
+  type: template
+  deploy-method: none
+
+emergency:
+  label: emergency-bypass
+  allow-override: true
+
+stages:
+  preflight:
+    enabled: true
+    timeout: 3
+    pr-size-limit: 400
+    commit-format: conventional
+    secret-detection: true
+
+  lint:
+    enabled: true
+    timeout: 5
+    languages: [shell, yaml, markdown]
+
+  sast:
+    enabled: false  # No application code
+
+  sca:
+    enabled: true
+    tools: [trivy-fs]
+    fail-on: critical
+
+  secrets:
+    enabled: true
+    tools: [gitleaks, env-example]
+
+  build:
+    enabled: false  # No build step
+
+  policy:
+    enabled: false
+
+  tests:
+    enabled: false  # No application code to test
+
+  quality:
+    enabled: false
+
+  deploy-readiness:
+    enabled: false
+
+  deploy:
+    enabled: false
+
+gates:
+  require-all-stage-pass: true
+  emergency-bypass: true
+  bypass-label: emergency-bypass
+
+notifications:
+  failure:
+    - github-actions
+  success:
+    - github-actions

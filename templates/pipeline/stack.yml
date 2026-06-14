@@ -1,0 +1,122 @@
+# ============================================================================
+# uFawkes Stack Pipeline — Pre-configured for Docker Compose stacks
+# ============================================================================
+# Usage: Copy to your repo root as `.pipeline.yml`
+# Repos: uFawkesObs, uFawkesPipe, uFawkesDevX
+# ============================================================================
+
+version: "2"
+repo-type: stack
+artifact:
+  type: docker-compose
+  deploy-method: ssh-gitops
+
+emergency:
+  label: emergency-bypass
+  allow-override: true
+
+stages:
+  preflight:
+    enabled: true
+    timeout: 3
+    pr-size-limit: 400
+    commit-format: conventional
+    secret-detection: true
+
+  lint:
+    enabled: true
+    timeout: 5
+    languages: [python, shell, yaml, markdown]
+
+  sast:
+    enabled: true
+    languages: [python]
+    tool: codeql
+    fail-on: high
+
+  sca:
+    enabled: true
+    tools: [trivy-fs, pip-safety]
+    fail-on: critical
+
+  secrets:
+    enabled: true
+    tools: [gitleaks, env-example]
+
+  build:
+    enabled: true
+    timeout: 15
+    config-validation:
+      prometheus: true
+      otel: true
+      tempo: true
+      grafana: true
+      docker: true
+    supply-chain:
+      :latest-check: true
+      sbom: true
+      signing: true
+      slsa: true
+      container-scan: true
+
+  policy:
+    enabled: false
+
+  tests:
+    enabled: true
+    timeout: 30
+    coverage-thresholds:
+      unit:
+        total: 60
+        diff: 80
+      acceptance:
+        total: 50
+        diff: 70
+    unit:
+      enabled: true
+    integration:
+      enabled: true
+      docker-stack: true
+    compose-smoke:
+      enabled: true
+    acceptance:
+      enabled: true
+      timeout: 10
+    load:
+      enabled: true
+      tool: k6
+      max-vusers: 50
+      duration: 90s
+      thresholds:
+        p95-latency: 500
+        error-rate: 1
+    performance:
+      enabled: true
+      tool: k6
+      thresholds:
+        p95-latency: 500
+        error-rate: 1
+        memory: 2048
+
+  quality:
+    enabled: false
+
+  deploy-readiness:
+    enabled: true
+    timeout: 5
+
+  deploy:
+    enabled: true
+    strategy: ssh-gitops
+    manual-approval: false
+
+gates:
+  require-all-stage-pass: true
+  emergency-bypass: true
+  bypass-label: emergency-bypass
+
+notifications:
+  failure:
+    - github-actions
+  success:
+    - github-actions

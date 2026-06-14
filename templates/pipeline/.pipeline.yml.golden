@@ -1,0 +1,275 @@
+# ============================================================================
+# uFawkes Golden Path Pipeline Template
+# ============================================================================
+# This is the reference implementation for all uFawkes repositories.
+# Copy this file to your repo root as `.pipeline.yml` and customize.
+#
+# Schema version: 2
+# Last updated: 2026-06-14
+#
+# Usage:
+#   1. Copy this file to your repo root
+#   2. Set `repo-type` to match your repository
+#   3. Set `artifact` type and deploy method
+#   4. Enable/disable stages based on your repo contents
+#   5. Customize thresholds for your project's needs
+#
+# Pipeline ordering (shift-left):
+#   Preflight → Lint → [SAST, SCA, Secrets, Policy] → Build → Tests → Deploy
+#   All static analysis runs BEFORE build. Never skip static checks.
+# ============================================================================
+
+version: "2"
+
+# ============================================================================
+# 1. REPO IDENTITY
+# ============================================================================
+
+repo-type: stack  # stack | core | site | template | bootstrap
+
+# What this repo produces
+artifact:
+  type: docker-compose  # docker-compose | kubernetes | static-site | template | none
+  deploy-method: ssh-gitops  # ssh-gitops | argocd | github-pages | manual | none
+
+# Emergency bypass (allows breaking glass in production incidents)
+emergency:
+  label: emergency-bypass
+  allow-override: true
+
+# ============================================================================
+# 2. STAGES
+# ============================================================================
+# Each stage can be enabled/disabled independently.
+# All stages run in the order defined below.
+# Static analysis (GATE 1) stages run in PARALLEL after lint passes.
+
+stages:
+
+  # --------------------------------------------------------------------------
+  # GATE 0: PREFLIGHT — Should this code exist at all?
+  # --------------------------------------------------------------------------
+  # Fastest feedback. Catches process violations before expensive checks.
+  # Source of truth: .pre-commit-config.yaml (local + CI run same hooks)
+
+  preflight:
+    enabled: true
+    timeout: 3  # minutes
+    pr-size-limit: 400  # max lines changed (override with label: large-pr-approved)
+    commit-format: conventional  # conventional commits (feat:, fix:, chore:, etc.)
+    secret-detection: true  # validate .env.example placeholders
+
+  # --------------------------------------------------------------------------
+  # GATE 1: STATIC ANALYSIS — Is the code clean?
+  # --------------------------------------------------------------------------
+  # All 4 stages run in PARALLEL after lint passes.
+  # Wall clock = max(all 4) ≈ 30-60 seconds
+
+  lint:
+    enabled: true
+    timeout: 5
+    languages: auto-detect  # or explicit: [python, shell, yaml, markdown]
+
+  # SAST: Static Application Security Testing
+  # Only enable if repo has application code (Python, TypeScript, Go)
+  # Config-only repos (YAML, Markdown) skip SAST — Trivy SCA catches dependency CVEs
+  sast:
+    enabled: false  # SET TO TRUE if repo has Python/TS/Go code
+    languages: [python]  # adjust to match your codebase
+    tool: codeql
+    fail-on: high  # block merge on high+ severity
+
+  # SCA: Software Composition Analysis
+  # Scans dependencies for known CVEs
+  sca:
+    enabled: true
+    tools: [trivy-fs, pip-safety, npm-audit]  # adjust to match your stack
+    fail-on: critical  # block merge on critical+ severity
+
+  # Secrets: Leaked credential detection
+  secrets:
+    enabled: true
+    tools: [gitleaks, env-example]
+
+  # --------------------------------------------------------------------------
+  # GATE 2: BUILD & VALIDATE — Does it build?
+  # --------------------------------------------------------------------------
+  # Produce the artifact and validate it.
+  # Supply chain security: SBOM, signing, attestation
+
+  build:
+    enabled: true  # SET TO FALSE if repo has no build step
+    timeout: 15
+
+    # Config validation (adjust based on your stack)
+    config-validation:
+      prometheus: false  # set true if you have prometheus configs
+      otel: false  # set true if you have OpenTelemetry configs
+      tempo: false  # set true if you have Tempo configs
+      grafana: false  # set true if you have Grafana dashboards
+      docker: true  # validate Dockerfiles
+      helm: false  # set true if you have Helm charts
+      terraform: false  # set true if you have Terraform
+
+    # Supply chain security
+    supply-chain:
+      :latest-check: true  # fail if any image uses :latest tag
+      sbom: true  # generate SPDX + CycloneDX SBOM per image
+      signing: true  # sign images with cosign (keyless OIDC via Sigstore)
+      slsa: true  # generate SLSA provenance attestation
+      container-scan: true  # scan built images with Trivy
+
+  # --------------------------------------------------------------------------
+  # POLICY — OPA/Rego enforcement (K8s repos only)
+  # --------------------------------------------------------------------------
+  # Only enable for repos with Kubernetes manifests or Docker Compose files
+
+  policy:
+    enabled: false  # SET TO TRUE for K8s repos
+    tool: conftest
+    policy-path: .security-plane/policies  # path to Rego policies
+
+  # --------------------------------------------------------------------------
+  # GATE 3: TESTS — Does it work?
+  # --------------------------------------------------------------------------
+  # Coverage thresholds: dual (total + diff) with ratchet effect
+  # - Total: minimum across entire codebase (prevents regression)
+  # - Diff: minimum for lines changed in this PR (ensures new code is tested)
+
+  tests:
+    enabled: true  # SET TO FALSE if repo has no tests
+    timeout: 30  # total timeout in minutes
+
+    # Coverage thresholds
+    coverage-thresholds:
+      unit:
+        total: 60  # minimum total unit test coverage %
+        diff: 80  # minimum diff coverage for new code %
+      acceptance:
+        total: 50  # minimum total acceptance test coverage %
+        diff: 70  # minimum diff coverage for new code %
+
+    # Test tiers (in order of execution)
+    unit:
+      enabled: true
+
+    integration:
+      enabled: true
+      docker-stack: false  # set true for Docker Compose stacks
+
+    compose-smoke:
+      enabled: false  # set true for Docker Compose stacks
+
+    acceptance:
+      enabled: true
+      timeout: 10
+
+    load:
+      enabled: false  # set true for repos with runtime services
+      tool: k6
+      max-vusers: 50
+      duration: 90s
+      thresholds:
+        p95-latency: 500  # ms
+        error-rate: 1  # percent
+
+    performance:
+      enabled: false  # set true for repos with performance targets
+      tool: k6
+      thresholds:
+        p95-latency: 500  # ms
+        error-rate: 1  # percent
+        memory: 2048  # MB
+
+  # --------------------------------------------------------------------------
+  # QUALITY — Accessibility, link checking, visual regression
+  # --------------------------------------------------------------------------
+
+  quality:
+    enabled: false  # SET TO TRUE for sites
+    accessibility: false  # set true for sites (requires built artifact)
+    link-check: false  # set true for sites
+    lighthouse: false  # set true for sites
+    pr-size:
+      enabled: true
+      max-lines: 400
+
+  # --------------------------------------------------------------------------
+  # GATE 4: DEPLOY READINESS — Can we deploy?
+  # --------------------------------------------------------------------------
+
+  deploy-readiness:
+    enabled: true
+    timeout: 5
+
+  # --------------------------------------------------------------------------
+  # GATE 5: DEPLOY — Did it deploy?
+  # --------------------------------------------------------------------------
+
+  deploy:
+    enabled: true  # SET TO FALSE if repo has no deploy target
+    strategy: ssh-gitops  # ssh-gitops | argocd | github-pages | manual
+    manual-approval: false
+
+# ============================================================================
+# 3. GATES
+# ============================================================================
+
+gates:
+  require-all-stage-pass: true
+  emergency-bypass: true
+  bypass-label: emergency-bypass
+
+# ============================================================================
+# 4. NOTIFICATIONS
+# ============================================================================
+
+notifications:
+  failure:
+    - github-actions
+  success:
+    - github-actions
+
+# ============================================================================
+# 5. CUSTOMIZATION GUIDE
+# ============================================================================
+#
+# REPO TYPE: stack (Docker Compose)
+#   - Set repo-type: stack
+#   - Set artifact.type: docker-compose
+#   - Enable build.config-validation for your services
+#   - Enable tests.compose-smoke: true
+#   - Enable tests.integration.docker-stack: true
+#   - Enable tests.load and tests.performance if you have load targets
+#
+# REPO TYPE: core (Kubernetes)
+#   - Set repo-type: core
+#   - Set artifact.type: kubernetes
+#   - Set artifact.deploy-method: argocd
+#   - Enable build.config-validation.helm and .terraform
+#   - Enable policy.enabled: true
+#   - Enable tests.load and tests.performance
+#   - Enable quality.accessibility: true
+#
+# REPO TYPE: site (Static site)
+#   - Set repo-type: site
+#   - Set artifact.type: static-site
+#   - Set artifact.deploy-method: github-pages
+#   - Enable build.config-validation: false (no Docker)
+#   - Enable quality.accessibility: true
+#   - Enable quality.link-check: true
+#   - Enable quality.lighthouse: true
+#   - Disable supply-chain (no Docker images)
+#
+# REPO TYPE: template (Config only)
+#   - Set repo-type: template
+#   - Set artifact.type: template
+#   - Disable build, tests, quality, deploy
+#   - Only run preflight, lint, sca, secrets
+#
+# REPO TYPE: bootstrap (Placeholder)
+#   - Set repo-type: bootstrap
+#   - Set artifact.type: none
+#   - Disable all stages except preflight
+#
+# ============================================================================

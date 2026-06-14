@@ -1,0 +1,111 @@
+# ============================================================================
+# uFawkes Site Pipeline — Pre-configured for static sites
+# ============================================================================
+# Usage: Copy to your repo root as `.pipeline.yml`
+# Repos: uFawkes.dev
+# ============================================================================
+
+version: "2"
+repo-type: site
+artifact:
+  type: static-site
+  deploy-method: github-pages
+
+emergency:
+  label: emergency-bypass
+  allow-override: true
+
+stages:
+  preflight:
+    enabled: true
+    timeout: 3
+    pr-size-limit: 400
+    commit-format: conventional
+    secret-detection: true
+
+  lint:
+    enabled: true
+    timeout: 5
+    languages: [markdown, css, javascript]
+
+  sast:
+    enabled: false  # No application code
+
+  sca:
+    enabled: true
+    tools: [trivy-fs]
+    fail-on: critical
+
+  secrets:
+    enabled: true
+    tools: [gitleaks, env-example]
+
+  build:
+    enabled: true
+    timeout: 10
+    config-validation:
+      jekyll: true
+    supply-chain:
+      :latest-check: false
+      sbom: false
+      signing: false
+      slsa: false
+      container-scan: false
+
+  policy:
+    enabled: false
+
+  tests:
+    enabled: true
+    timeout: 15
+    unit:
+      enabled: false  # No application code to test
+    integration:
+      enabled: false
+    acceptance:
+      enabled: true
+      timeout: 5
+    load:
+      enabled: true
+      tool: k6
+      max-vusers: 100
+      duration: 60s
+      thresholds:
+        p95-latency: 1000  # TTFB <1s
+        error-rate: 0.1
+    performance:
+      enabled: true
+      tool: lighthouse
+      thresholds:
+        lcp: 2500  # ms
+        fid: 100  # ms
+        cls: 0.1
+
+  quality:
+    enabled: true
+    accessibility: true
+    link-check: true
+    lighthouse: true
+    pr-size:
+      enabled: true
+      max-lines: 400
+
+  deploy-readiness:
+    enabled: true
+    timeout: 5
+
+  deploy:
+    enabled: true
+    strategy: github-pages
+    manual-approval: false
+
+gates:
+  require-all-stage-pass: true
+  emergency-bypass: true
+  bypass-label: emergency-bypass
+
+notifications:
+  failure:
+    - github-actions
+  success:
+    - github-actions
