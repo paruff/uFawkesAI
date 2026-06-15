@@ -1,0 +1,1243 @@
+{
+  "skill": "skill-dependency-graph",
+  "generated_at": "",
+  "registry": "skill-lifecycle.yaml",
+  "total_skills": 33,
+  "deprecated_skills": 1,
+  "edges": 216,
+  "nodes": [
+    {
+      "id": "adr-writer",
+      "level": "domain",
+      "status": "active",
+      "version": "1.0.0"
+    },
+    {
+      "id": "agent-observability",
+      "level": "domain",
+      "status": "active",
+      "version": "1.0.0"
+    },
+    {
+      "id": "build",
+      "level": "domain",
+      "status": "stable",
+      "version": "1.1.0"
+    },
+    {
+      "id": "cd",
+      "level": "domain",
+      "status": "stable",
+      "version": "1.1.0"
+    },
+    {
+      "id": "chaos-testing",
+      "level": "domain",
+      "status": "beta",
+      "version": "1.0.0"
+    },
+    {
+      "id": "ci",
+      "level": "domain",
+      "status": "stable",
+      "version": "1.1.0"
+    },
+    {
+      "id": "design",
+      "level": "domain",
+      "status": "stable",
+      "version": "1.1.0"
+    },
+    {
+      "id": "developer-experience",
+      "level": "domain",
+      "status": "active",
+      "version": "1.0.0"
+    },
+    {
+      "id": "dora-metrics",
+      "level": "domain",
+      "status": "active",
+      "version": "1.0.0"
+    },
+    {
+      "id": "e2e-testing",
+      "level": "domain",
+      "status": "active",
+      "version": "1.0.0"
+    },
+    {
+      "id": "gitops",
+      "level": "domain",
+      "status": "stable",
+      "version": "1.1.0"
+    },
+    {
+      "id": "governance-policy",
+      "level": "domain",
+      "status": "active",
+      "version": "1.0.0"
+    },
+    {
+      "id": "integration-testing",
+      "level": "domain",
+      "status": "active",
+      "version": "1.0.0"
+    },
+    {
+      "id": "lang-go",
+      "level": "domain",
+      "status": "stable",
+      "version": "1.0.0"
+    },
+    {
+      "id": "lang-python",
+      "level": "domain",
+      "status": "stable",
+      "version": "1.0.0"
+    },
+    {
+      "id": "lang-typescript",
+      "level": "domain",
+      "status": "stable",
+      "version": "1.0.0"
+    },
+    {
+      "id": "load-testing",
+      "level": "domain",
+      "status": "beta",
+      "version": "1.0.0"
+    },
+    {
+      "id": "obs-bootstrap",
+      "level": "domain",
+      "status": "stable",
+      "version": "1.0.0"
+    },
+    {
+      "id": "observability-testing",
+      "level": "domain",
+      "status": "beta",
+      "version": "1.0.0"
+    },
+    {
+      "id": "orchestration",
+      "level": "domain",
+      "status": "active",
+      "version": "1.0.0"
+    },
+    {
+      "id": "pipeline-bootstrap",
+      "level": "domain",
+      "status": "stable",
+      "version": "1.0.0"
+    },
+    {
+      "id": "plan",
+      "level": "domain",
+      "status": "stable",
+      "version": "1.1.0"
+    },
+    {
+      "id": "platform-engineering",
+      "level": "domain",
+      "status": "active",
+      "version": "1.0.0"
+    },
+    {
+      "id": "release-engineering",
+      "level": "domain",
+      "status": "stable",
+      "version": "1.1.0"
+    },
+    {
+      "id": "review",
+      "level": "domain",
+      "status": "stable",
+      "version": "1.1.0"
+    },
+    {
+      "id": "runtime-operations",
+      "level": "domain",
+      "status": "stable",
+      "version": "1.1.0"
+    },
+    {
+      "id": "security",
+      "level": "domain",
+      "status": "stable",
+      "version": "1.1.0"
+    },
+    {
+      "id": "security-testing",
+      "level": "domain",
+      "status": "active",
+      "version": "1.0.0"
+    },
+    {
+      "id": "spec",
+      "level": "domain",
+      "status": "stable",
+      "version": "1.1.0"
+    },
+    {
+      "id": "test-execution",
+      "level": "domain",
+      "status": "stable",
+      "version": "1.1.0"
+    },
+    {
+      "id": "test-generation",
+      "level": "domain",
+      "status": "active",
+      "version": "1.0.0"
+    },
+    {
+      "id": "token-budget",
+      "level": "domain",
+      "status": "active",
+      "version": "1.0.0"
+    },
+    {
+      "id": "unit-testing",
+      "level": "domain",
+      "status": "active",
+      "version": "1.0.0"
+    }
+  ],
+  "edges_list": [
+    {
+      "from": "obs-bootstrap",
+      "to": "agent-observability"
+    },
+    {
+      "from": "obs-bootstrap",
+      "to": "agent-observability/invocation-tracking"
+    },
+    {
+      "from": "obs-bootstrap",
+      "to": "agent-observability/skill-load-events"
+    },
+    {
+      "from": "obs-bootstrap",
+      "to": "agent-observability/finding-quality"
+    },
+    {
+      "from": "obs-bootstrap",
+      "to": "agent-observability/decision-logging"
+    },
+    {
+      "from": "plan",
+      "to": "build"
+    },
+    {
+      "from": "design",
+      "to": "build"
+    },
+    {
+      "from": "plan",
+      "to": "build/code-generation"
+    },
+    {
+      "from": "design",
+      "to": "build/code-generation"
+    },
+    {
+      "from": "plan",
+      "to": "build/manifest-generation"
+    },
+    {
+      "from": "design",
+      "to": "build/manifest-generation"
+    },
+    {
+      "from": "plan",
+      "to": "build/pipeline-generation"
+    },
+    {
+      "from": "design",
+      "to": "build/pipeline-generation"
+    },
+    {
+      "from": "plan",
+      "to": "build/gitops-overlay-generation"
+    },
+    {
+      "from": "design",
+      "to": "build/gitops-overlay-generation"
+    },
+    {
+      "from": "plan",
+      "to": "build/governance-enforcement"
+    },
+    {
+      "from": "design",
+      "to": "build/governance-enforcement"
+    },
+    {
+      "from": "plan",
+      "to": "build/template-application"
+    },
+    {
+      "from": "design",
+      "to": "build/template-application"
+    },
+    {
+      "from": "plan",
+      "to": "build/refactoring"
+    },
+    {
+      "from": "design",
+      "to": "build/refactoring"
+    },
+    {
+      "from": "build",
+      "to": "cd"
+    },
+    {
+      "from": "release-engineering",
+      "to": "cd"
+    },
+    {
+      "from": "build",
+      "to": "cd/cd-orchestration"
+    },
+    {
+      "from": "release-engineering",
+      "to": "cd/cd-orchestration"
+    },
+    {
+      "from": "build",
+      "to": "cd/deployment-strategy"
+    },
+    {
+      "from": "release-engineering",
+      "to": "cd/deployment-strategy"
+    },
+    {
+      "from": "build",
+      "to": "cd/progressive-delivery"
+    },
+    {
+      "from": "release-engineering",
+      "to": "cd/progressive-delivery"
+    },
+    {
+      "from": "build",
+      "to": "cd/blue-green"
+    },
+    {
+      "from": "release-engineering",
+      "to": "cd/blue-green"
+    },
+    {
+      "from": "build",
+      "to": "cd/canary-analysis"
+    },
+    {
+      "from": "release-engineering",
+      "to": "cd/canary-analysis"
+    },
+    {
+      "from": "build",
+      "to": "cd/rollout-execution"
+    },
+    {
+      "from": "release-engineering",
+      "to": "cd/rollout-execution"
+    },
+    {
+      "from": "build",
+      "to": "cd/environment-promotion"
+    },
+    {
+      "from": "release-engineering",
+      "to": "cd/environment-promotion"
+    },
+    {
+      "from": "build",
+      "to": "cd/automated-promotion"
+    },
+    {
+      "from": "release-engineering",
+      "to": "cd/automated-promotion"
+    },
+    {
+      "from": "build",
+      "to": "cd/multi-cluster-delivery"
+    },
+    {
+      "from": "release-engineering",
+      "to": "cd/multi-cluster-delivery"
+    },
+    {
+      "from": "build",
+      "to": "cd/deployment-policy"
+    },
+    {
+      "from": "release-engineering",
+      "to": "cd/deployment-policy"
+    },
+    {
+      "from": "runtime-operations",
+      "to": "chaos-testing"
+    },
+    {
+      "from": "runtime-operations",
+      "to": "chaos-testing/chaos-injection"
+    },
+    {
+      "from": "runtime-operations",
+      "to": "chaos-testing/failure-modes"
+    },
+    {
+      "from": "runtime-operations",
+      "to": "chaos-testing/gitops-drift-chaos"
+    },
+    {
+      "from": "runtime-operations",
+      "to": "chaos-testing/cluster-chaos"
+    },
+    {
+      "from": "build",
+      "to": "ci"
+    },
+    {
+      "from": "test-execution",
+      "to": "ci"
+    },
+    {
+      "from": "build",
+      "to": "ci/ci-pipeline-execution"
+    },
+    {
+      "from": "test-execution",
+      "to": "ci/ci-pipeline-execution"
+    },
+    {
+      "from": "build",
+      "to": "ci/ci-quality-gates"
+    },
+    {
+      "from": "test-execution",
+      "to": "ci/ci-quality-gates"
+    },
+    {
+      "from": "build",
+      "to": "ci/ci-caching"
+    },
+    {
+      "from": "test-execution",
+      "to": "ci/ci-caching"
+    },
+    {
+      "from": "build",
+      "to": "ci/ci-parallelization"
+    },
+    {
+      "from": "test-execution",
+      "to": "ci/ci-parallelization"
+    },
+    {
+      "from": "build",
+      "to": "ci/ci-matrix-execution"
+    },
+    {
+      "from": "test-execution",
+      "to": "ci/ci-matrix-execution"
+    },
+    {
+      "from": "build",
+      "to": "ci/ci-environment-validation"
+    },
+    {
+      "from": "test-execution",
+      "to": "ci/ci-environment-validation"
+    },
+    {
+      "from": "build",
+      "to": "ci/ci-artifact-production"
+    },
+    {
+      "from": "test-execution",
+      "to": "ci/ci-artifact-production"
+    },
+    {
+      "from": "build",
+      "to": "ci/ci-failure-recovery"
+    },
+    {
+      "from": "test-execution",
+      "to": "ci/ci-failure-recovery"
+    },
+    {
+      "from": "build",
+      "to": "ci/ci-observability"
+    },
+    {
+      "from": "test-execution",
+      "to": "ci/ci-observability"
+    },
+    {
+      "from": "build",
+      "to": "ci/ci-performance"
+    },
+    {
+      "from": "test-execution",
+      "to": "ci/ci-performance"
+    },
+    {
+      "from": "spec",
+      "to": "design"
+    },
+    {
+      "from": "spec",
+      "to": "design/architecture-decomposition"
+    },
+    {
+      "from": "spec",
+      "to": "design/component-identification"
+    },
+    {
+      "from": "spec",
+      "to": "design/interface-definition"
+    },
+    {
+      "from": "spec",
+      "to": "design/k8s-design-validation"
+    },
+    {
+      "from": "test-execution",
+      "to": "e2e-testing"
+    },
+    {
+      "from": "test-execution",
+      "to": "e2e-testing/e2e-happy-path"
+    },
+    {
+      "from": "test-execution",
+      "to": "e2e-testing/e2e-failure-paths"
+    },
+    {
+      "from": "test-execution",
+      "to": "e2e-testing/e2e-deployment-validation"
+    },
+    {
+      "from": "test-execution",
+      "to": "e2e-testing/e2e-rollback"
+    },
+    {
+      "from": "ci",
+      "to": "gitops"
+    },
+    {
+      "from": "ci",
+      "to": "gitops/gitops-manifest-validation"
+    },
+    {
+      "from": "ci",
+      "to": "gitops/gitops-drift-detection"
+    },
+    {
+      "from": "ci",
+      "to": "gitops/gitops-environment-promotion"
+    },
+    {
+      "from": "ci",
+      "to": "gitops/gitops-reconciliation-testing"
+    },
+    {
+      "from": "design",
+      "to": "governance-policy"
+    },
+    {
+      "from": "security",
+      "to": "governance-policy"
+    },
+    {
+      "from": "design",
+      "to": "governance-policy/policy-as-code"
+    },
+    {
+      "from": "security",
+      "to": "governance-policy/policy-as-code"
+    },
+    {
+      "from": "design",
+      "to": "governance-policy/compliance-audit"
+    },
+    {
+      "from": "security",
+      "to": "governance-policy/compliance-audit"
+    },
+    {
+      "from": "design",
+      "to": "governance-policy/cost-governance"
+    },
+    {
+      "from": "security",
+      "to": "governance-policy/cost-governance"
+    },
+    {
+      "from": "design",
+      "to": "governance-policy/rbac-governance"
+    },
+    {
+      "from": "security",
+      "to": "governance-policy/rbac-governance"
+    },
+    {
+      "from": "test-execution",
+      "to": "integration-testing"
+    },
+    {
+      "from": "test-execution",
+      "to": "integration-testing/pipe-to-obs"
+    },
+    {
+      "from": "test-execution",
+      "to": "integration-testing/obs-to-gitops"
+    },
+    {
+      "from": "test-execution",
+      "to": "integration-testing/gitops-to-controller"
+    },
+    {
+      "from": "test-execution",
+      "to": "integration-testing/full-stack"
+    },
+    {
+      "from": "test-execution",
+      "to": "load-testing"
+    },
+    {
+      "from": "test-execution",
+      "to": "load-testing/pipeline-throughput"
+    },
+    {
+      "from": "test-execution",
+      "to": "load-testing/system-stress"
+    },
+    {
+      "from": "test-execution",
+      "to": "load-testing/obs-gitops-load"
+    },
+    {
+      "from": "test-execution",
+      "to": "load-testing/registry-load"
+    },
+    {
+      "from": "obs-bootstrap",
+      "to": "observability-testing"
+    },
+    {
+      "from": "obs-bootstrap",
+      "to": "observability-testing/log-schema-validation"
+    },
+    {
+      "from": "obs-bootstrap",
+      "to": "observability-testing/metrics-validation"
+    },
+    {
+      "from": "obs-bootstrap",
+      "to": "observability-testing/trace-propagation"
+    },
+    {
+      "from": "obs-bootstrap",
+      "to": "observability-testing/observability-health"
+    },
+    {
+      "from": "agent-observability",
+      "to": "orchestration"
+    },
+    {
+      "from": "agent-observability",
+      "to": "orchestration/capability-matching"
+    },
+    {
+      "from": "agent-observability",
+      "to": "orchestration/dependency-graph"
+    },
+    {
+      "from": "agent-observability",
+      "to": "orchestration/handoff-validation"
+    },
+    {
+      "from": "ci",
+      "to": "pipeline-bootstrap"
+    },
+    {
+      "from": "spec",
+      "to": "plan"
+    },
+    {
+      "from": "design",
+      "to": "plan"
+    },
+    {
+      "from": "spec",
+      "to": "plan/task-decomposition"
+    },
+    {
+      "from": "design",
+      "to": "plan/task-decomposition"
+    },
+    {
+      "from": "spec",
+      "to": "plan/dependency-mapping"
+    },
+    {
+      "from": "design",
+      "to": "plan/dependency-mapping"
+    },
+    {
+      "from": "spec",
+      "to": "plan/effort-estimation"
+    },
+    {
+      "from": "design",
+      "to": "plan/effort-estimation"
+    },
+    {
+      "from": "spec",
+      "to": "plan/risk-identification"
+    },
+    {
+      "from": "design",
+      "to": "plan/risk-identification"
+    },
+    {
+      "from": "spec",
+      "to": "plan/skill-matching"
+    },
+    {
+      "from": "design",
+      "to": "plan/skill-matching"
+    },
+    {
+      "from": "spec",
+      "to": "plan/governance-alignment"
+    },
+    {
+      "from": "design",
+      "to": "plan/governance-alignment"
+    },
+    {
+      "from": "build",
+      "to": "platform-engineering"
+    },
+    {
+      "from": "ci",
+      "to": "platform-engineering"
+    },
+    {
+      "from": "cd",
+      "to": "platform-engineering"
+    },
+    {
+      "from": "build",
+      "to": "platform-engineering/skill-dependency-graph"
+    },
+    {
+      "from": "ci",
+      "to": "platform-engineering/skill-dependency-graph"
+    },
+    {
+      "from": "cd",
+      "to": "platform-engineering/skill-dependency-graph"
+    },
+    {
+      "from": "build",
+      "to": "platform-engineering/pipeline-spec-enforcement"
+    },
+    {
+      "from": "ci",
+      "to": "platform-engineering/pipeline-spec-enforcement"
+    },
+    {
+      "from": "cd",
+      "to": "platform-engineering/pipeline-spec-enforcement"
+    },
+    {
+      "from": "build",
+      "to": "platform-engineering/golden-path-validation"
+    },
+    {
+      "from": "ci",
+      "to": "platform-engineering/golden-path-validation"
+    },
+    {
+      "from": "cd",
+      "to": "platform-engineering/golden-path-validation"
+    },
+    {
+      "from": "build",
+      "to": "platform-engineering/template-drift-detection"
+    },
+    {
+      "from": "ci",
+      "to": "platform-engineering/template-drift-detection"
+    },
+    {
+      "from": "cd",
+      "to": "platform-engineering/template-drift-detection"
+    },
+    {
+      "from": "build",
+      "to": "release-engineering"
+    },
+    {
+      "from": "ci",
+      "to": "release-engineering"
+    },
+    {
+      "from": "build",
+      "to": "release-engineering/semantic-versioning"
+    },
+    {
+      "from": "ci",
+      "to": "release-engineering/semantic-versioning"
+    },
+    {
+      "from": "build",
+      "to": "release-engineering/changelog-generation"
+    },
+    {
+      "from": "ci",
+      "to": "release-engineering/changelog-generation"
+    },
+    {
+      "from": "build",
+      "to": "release-engineering/release-metadata"
+    },
+    {
+      "from": "ci",
+      "to": "release-engineering/release-metadata"
+    },
+    {
+      "from": "build",
+      "to": "release-engineering/git-tagging"
+    },
+    {
+      "from": "ci",
+      "to": "release-engineering/git-tagging"
+    },
+    {
+      "from": "design",
+      "to": "review"
+    },
+    {
+      "from": "build",
+      "to": "review"
+    },
+    {
+      "from": "design",
+      "to": "review/spec-compliance"
+    },
+    {
+      "from": "build",
+      "to": "review/spec-compliance"
+    },
+    {
+      "from": "design",
+      "to": "review/design-compliance"
+    },
+    {
+      "from": "build",
+      "to": "review/design-compliance"
+    },
+    {
+      "from": "design",
+      "to": "review/code-quality"
+    },
+    {
+      "from": "build",
+      "to": "review/code-quality"
+    },
+    {
+      "from": "design",
+      "to": "review/acceptance-criteria"
+    },
+    {
+      "from": "build",
+      "to": "review/acceptance-criteria"
+    },
+    {
+      "from": "design",
+      "to": "review/security-rbac"
+    },
+    {
+      "from": "build",
+      "to": "review/security-rbac"
+    },
+    {
+      "from": "design",
+      "to": "review/secret-governance"
+    },
+    {
+      "from": "build",
+      "to": "review/secret-governance"
+    },
+    {
+      "from": "design",
+      "to": "review/policy-validation"
+    },
+    {
+      "from": "build",
+      "to": "review/policy-validation"
+    },
+    {
+      "from": "design",
+      "to": "review/k8s-policy"
+    },
+    {
+      "from": "build",
+      "to": "review/k8s-policy"
+    },
+    {
+      "from": "design",
+      "to": "review/pipeline-policy"
+    },
+    {
+      "from": "build",
+      "to": "review/pipeline-policy"
+    },
+    {
+      "from": "design",
+      "to": "review/gitops-overlay"
+    },
+    {
+      "from": "build",
+      "to": "review/gitops-overlay"
+    },
+    {
+      "from": "obs-bootstrap",
+      "to": "runtime-operations"
+    },
+    {
+      "from": "obs-bootstrap",
+      "to": "runtime-operations/health-monitoring"
+    },
+    {
+      "from": "obs-bootstrap",
+      "to": "runtime-operations/incident-detection"
+    },
+    {
+      "from": "obs-bootstrap",
+      "to": "runtime-operations/incident-triage"
+    },
+    {
+      "from": "obs-bootstrap",
+      "to": "runtime-operations/incident-correlation"
+    },
+    {
+      "from": "obs-bootstrap",
+      "to": "runtime-operations/runbook-automation"
+    },
+    {
+      "from": "obs-bootstrap",
+      "to": "runtime-operations/auto-remediation"
+    },
+    {
+      "from": "obs-bootstrap",
+      "to": "runtime-operations/drift-detection"
+    },
+    {
+      "from": "obs-bootstrap",
+      "to": "runtime-operations/slo-management"
+    },
+    {
+      "from": "obs-bootstrap",
+      "to": "runtime-operations/capacity-management"
+    },
+    {
+      "from": "obs-bootstrap",
+      "to": "runtime-operations/multi-cluster-ops"
+    },
+    {
+      "from": "build",
+      "to": "security"
+    },
+    {
+      "from": "build",
+      "to": "security/sast"
+    },
+    {
+      "from": "build",
+      "to": "security/sca"
+    },
+    {
+      "from": "build",
+      "to": "security/secret-governance"
+    },
+    {
+      "from": "build",
+      "to": "security/rbac-validation"
+    },
+    {
+      "from": "build",
+      "to": "security/container-security"
+    },
+    {
+      "from": "build",
+      "to": "security/pipeline-security"
+    },
+    {
+      "from": "build",
+      "to": "security/k8s-security"
+    },
+    {
+      "from": "build",
+      "to": "security/gitops-security"
+    },
+    {
+      "from": "build",
+      "to": "security/policy-validation"
+    },
+    {
+      "from": "security",
+      "to": "security-testing"
+    },
+    {
+      "from": "security",
+      "to": "security-testing/sast"
+    },
+    {
+      "from": "security",
+      "to": "security-testing/secret-detection"
+    },
+    {
+      "from": "security",
+      "to": "security-testing/dependency-scanning"
+    },
+    {
+      "from": "security",
+      "to": "security-testing/container-security"
+    },
+    {
+      "from": "build",
+      "to": "test-execution"
+    },
+    {
+      "from": "build",
+      "to": "test-execution/unit-test-execution"
+    },
+    {
+      "from": "build",
+      "to": "test-execution/integration-test-execution"
+    },
+    {
+      "from": "build",
+      "to": "test-execution/e2e-test-execution"
+    },
+    {
+      "from": "build",
+      "to": "test-execution/test-coverage-validation"
+    },
+    {
+      "from": "build",
+      "to": "test-execution/pipeline-test-stage-validation"
+    },
+    {
+      "from": "build",
+      "to": "test-execution/runtime-simulation-validation"
+    },
+    {
+      "from": "build",
+      "to": "test-execution/performance-smoke-testing"
+    },
+    {
+      "from": "test-execution",
+      "to": "test-generation"
+    },
+    {
+      "from": "test-generation",
+      "to": "unit-testing"
+    },
+    {
+      "from": "test-generation",
+      "to": "unit-testing/unit-core-logic"
+    },
+    {
+      "from": "test-generation",
+      "to": "unit-testing/unit-mocking"
+    },
+    {
+      "from": "test-generation",
+      "to": "unit-testing/unit-error-handling"
+    },
+    {
+      "from": "test-generation",
+      "to": "unit-testing/unit-contracts"
+    }
+  ],
+  "topological_order": [
+    "unit-testing/unit-mocking",
+    "unit-testing/unit-error-handling",
+    "unit-testing/unit-core-logic",
+    "unit-testing/unit-contracts",
+    "unit-testing",
+    "token-budget",
+    "test-generation",
+    "test-execution/unit-test-execution",
+    "test-execution/test-coverage-validation",
+    "test-execution/runtime-simulation-validation",
+    "test-execution/pipeline-test-stage-validation",
+    "test-execution/performance-smoke-testing",
+    "test-execution/integration-test-execution",
+    "test-execution/e2e-test-execution",
+    "spec/template-governance",
+    "spec/requirements-extraction",
+    "spec/policy-validation",
+    "spec/pipeline-policy",
+    "spec/k8s-policy",
+    "spec/acceptance-criteria",
+    "security/secret-governance",
+    "security/sca",
+    "security/sast",
+    "security/rbac-validation",
+    "security/policy-validation",
+    "security/pipeline-security",
+    "security/k8s-security",
+    "security/gitops-security",
+    "security/container-security",
+    "security-testing/secret-detection",
+    "security-testing/sast",
+    "security-testing/dependency-scanning",
+    "security-testing/container-security",
+    "security-testing",
+    "runtime-operations/slo-management",
+    "runtime-operations/runbook-automation",
+    "runtime-operations/multi-cluster-ops",
+    "runtime-operations/incident-triage",
+    "runtime-operations/incident-detection",
+    "runtime-operations/incident-correlation",
+    "runtime-operations/health-monitoring",
+    "runtime-operations/drift-detection",
+    "runtime-operations/capacity-management",
+    "runtime-operations/auto-remediation",
+    "review/spec-compliance",
+    "review/security-rbac",
+    "review/secret-governance",
+    "review/policy-validation",
+    "review/pipeline-policy",
+    "review/k8s-policy",
+    "review/gitops-overlay",
+    "review/design-compliance",
+    "review/code-quality",
+    "review/acceptance-criteria",
+    "review",
+    "release-engineering/semantic-versioning",
+    "release-engineering/release-metadata",
+    "release-engineering/git-tagging",
+    "release-engineering/changelog-generation",
+    "platform-engineering/template-drift-detection",
+    "platform-engineering/skill-dependency-graph",
+    "platform-engineering/pipeline-spec-enforcement",
+    "platform-engineering/golden-path-validation",
+    "platform-engineering",
+    "plan/task-decomposition",
+    "plan/skill-matching",
+    "plan/risk-identification",
+    "plan/governance-alignment",
+    "plan/effort-estimation",
+    "plan/dependency-mapping",
+    "pipeline-bootstrap",
+    "orchestration/handoff-validation",
+    "orchestration/dependency-graph",
+    "orchestration/capability-matching",
+    "orchestration",
+    "observability-testing/trace-propagation",
+    "observability-testing/observability-health",
+    "observability-testing/metrics-validation",
+    "observability-testing/log-schema-validation",
+    "observability-testing",
+    "load-testing/system-stress",
+    "load-testing/registry-load",
+    "load-testing/pipeline-throughput",
+    "load-testing/obs-gitops-load",
+    "load-testing",
+    "lang-typescript",
+    "lang-python",
+    "lang-go",
+    "integration-testing/pipe-to-obs",
+    "integration-testing/obs-to-gitops",
+    "integration-testing/gitops-to-controller",
+    "integration-testing/full-stack",
+    "integration-testing",
+    "governance-policy/rbac-governance",
+    "governance-policy/policy-as-code",
+    "governance-policy/cost-governance",
+    "governance-policy/compliance-audit",
+    "governance-policy",
+    "security",
+    "gitops/gitops-reconciliation-testing",
+    "gitops/gitops-manifest-validation",
+    "gitops/gitops-environment-promotion",
+    "gitops/gitops-drift-detection",
+    "gitops",
+    "e2e-testing/e2e-rollback",
+    "e2e-testing/e2e-happy-path",
+    "e2e-testing/e2e-failure-paths",
+    "e2e-testing/e2e-deployment-validation",
+    "e2e-testing",
+    "dora-metrics",
+    "developer-experience/workspace-bootstrap",
+    "developer-experience/local-environment-simulation",
+    "developer-experience/dev-container-setup",
+    "developer-experience/cli-scaffolding",
+    "developer-experience",
+    "design/k8s-design-validation",
+    "design/interface-definition",
+    "design/component-identification",
+    "design/architecture-decomposition",
+    "ci/ci-quality-gates",
+    "ci/ci-pipeline-execution",
+    "ci/ci-performance",
+    "ci/ci-parallelization",
+    "ci/ci-observability",
+    "ci/ci-matrix-execution",
+    "ci/ci-failure-recovery",
+    "ci/ci-environment-validation",
+    "ci/ci-caching",
+    "ci/ci-artifact-production",
+    "chaos-testing/gitops-drift-chaos",
+    "chaos-testing/failure-modes",
+    "chaos-testing/cluster-chaos",
+    "chaos-testing/chaos-injection",
+    "chaos-testing",
+    "runtime-operations",
+    "cd/rollout-execution",
+    "cd/progressive-delivery",
+    "cd/multi-cluster-delivery",
+    "cd/environment-promotion",
+    "cd/deployment-strategy",
+    "cd/deployment-policy",
+    "cd/cd-orchestration",
+    "cd/canary-analysis",
+    "cd/blue-green",
+    "cd/automated-promotion",
+    "cd",
+    "release-engineering",
+    "ci",
+    "test-execution",
+    "build/template-application",
+    "build/refactoring",
+    "build/pipeline-generation",
+    "build/manifest-generation",
+    "build/governance-enforcement",
+    "build/gitops-overlay-generation",
+    "build/code-generation",
+    "build",
+    "plan",
+    "design",
+    "spec",
+    "agent-observability/skill-load-events",
+    "agent-observability/invocation-tracking",
+    "agent-observability/finding-quality",
+    "agent-observability/decision-logging",
+    "agent-observability",
+    "obs-bootstrap",
+    "adr-writer"
+  ]
+}

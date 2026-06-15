@@ -1,3 +1,13 @@
+---
+name: dora-metrics
+description: "DORA metric calculation, interpretation, and coaching patterns. Use when running metrics, interpreting results, or discussing DORA performance."
+license: MIT
+compatibility: Claude Code, GitHub Copilot, OpenCode, Cursor, Codex, Gemini CLI
+metadata:
+  author: paruff
+  suite: uFawkesAI
+---
+
 # DORA Metrics Skill
 
 ## When to activate

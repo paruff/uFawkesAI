@@ -42,41 +42,63 @@ gh skill install paruff/uFawkesAI dora-metrics
 gh skill install paruff/uFawkesAI lang-python --agent claude-code
 ```
 
-| Folder                   | Load Trigger                        | Purpose                                                         |
-| ------------------------ | ----------------------------------- | --------------------------------------------------------------- |
-| `spec/`                  | `@spec` requirements extraction     | Requirements, acceptance criteria, policy gates                 |
-| `design/`                | `@design` architecture              | Architecture decomposition, K8s design validation               |
-| `plan/`                  | `@planner` task planning            | Task decomposition, dependency mapping, risk ID                 |
-| `build/`                 | `@build` code generation            | Code, manifests, pipelines, overlays, governance                |
-| `test-execution/`        | `@test-execution` run tests         | Unit, integration, E2E, coverage, smoke tests                   |
-| `unit-testing/`          | unit test patterns                  | Core logic, mocking, error handling, contracts                  |
-| `integration-testing/`   | integration test patterns           | PIPE→OBS, OBS→GitOps, controller, full-stack                    |
-| `e2e-testing/`           | end-to-end test patterns            | Happy path, failure paths, deployment, rollback                 |
-| `review/`                | `@build-review` compliance gates    | Spec/design compliance, K8s policy, code quality                |
-| `security/`              | `@security` security gates          | RBAC, secrets, container, SAST, SCA, pipeline                   |
-| `ci/`                    | `@pipe` CI execution                | Environment, pipeline, caching, parallelization                 |
-| `cd/`                    | `@pipe` CD execution                | Orchestration, progressive delivery, rollback                   |
-| `gitops/`                | GitOps operations                   | Manifest validation, drift detection, promotion, reconciliation |
-| `runtime-operations/`    | `@obs` runtime ops                  | Incidents, health, drift, SLO, remediation                      |
-| `governance-policy/`     | `@orchestrator` policy gates        | Policy-as-code, RBAC, cost, compliance audit                    |
-| `release-engineering/`   | release versioning & publishing     | Semver, changelog, provenance, SBOM, tagging                    |
-| `platform-engineering/`  | golden paths & pipeline enforcement | Pipeline-spec, template compliance, drift detection             |
-| `observability-testing/` | telemetry validation                | Log schema, metrics, traces, dashboards, alerts                 |
-| `security-testing/`      | security scanning & integrity       | SAST, dependency scanning, container security, secrets          |
-| `chaos-testing/`         | resilience & failure injection      | Chaos injection, failure modes, drift chaos, cluster chaos      |
-| `load-testing/`          | performance & stress testing        | Pipeline throughput, GitOps load, registry load, system stress  |
-| `developer-experience/`  | dev environment setup               | Devcontainers, bootstrap, local sim, CLI tools                  |
-| `orchestration/`         | `@orchestrator` v2 task routing     | Capability matching, dependency graphs, handoff validation      |
-| `agent-observability/`   | agent telemetry and observability   | Invocation tracking, skill load, finding quality                |
-| `adr-writer/`            | ask to write an ADR                 | ADR template with DORA capability linkage                       |
-| `dora-metrics/`          | ask about DORA metrics              | Metric calculation and interpretation patterns                  |
-| `lang-typescript/`       | TypeScript project context          | ESLint, tsc, Jest, npm toolchain                                |
-| `lang-python/`           | Python project context              | ruff, mypy, pytest, uv toolchain                                |
-| `lang-go/`               | Go project context                  | golangci-lint, go test, go mod toolchain                        |
-| `pipeline-bootstrap/`    | ask to setup pipeline               | uFawkesPipe + ArgoCD integration steps                          |
-| `obs-bootstrap/`         | ask to add observability            | OTEL SDK init, Grafana dashboard spec                           |
-| `test-generation/`       | ask to write tests                  | TDD patterns for TS, Python, Go                                 |
-| `token-budget/`          | ask about token costs               | Context footprint audit and cost control                        |
+| Folder                   | Load Trigger                        | Purpose                                                           |
+| ------------------------ | ----------------------------------- | ----------------------------------------------------------------- |
+| `spec/`                  | `@spec` requirements extraction     | Requirements, acceptance criteria, policy gates                   |
+| `design/`                | `@design` architecture              | Architecture decomposition, K8s design validation                 |
+| `plan/`                  | `@planner` task planning            | Task decomposition, dependency mapping, risk ID                   |
+| `build/`                 | `@build` code generation            | Code, manifests, pipelines, overlays, governance                  |
+| `test-execution/`        | `@test-execution` run tests         | Unit, integration, E2E, coverage, smoke tests                     |
+| `unit-testing/`          | unit test patterns                  | Core logic, mocking, error handling, contracts                    |
+| `integration-testing/`   | integration test patterns           | PIPE→OBS, OBS→GitOps, controller, full-stack                      |
+| `e2e-testing/`           | end-to-end test patterns            | Happy path, failure paths, deployment, rollback                   |
+| `review/`                | `@build-review` compliance gates    | Spec/design compliance, K8s policy, code quality                  |
+| `security/`              | `@security` security gates          | RBAC, secrets, container, SAST, SCA, pipeline                     |
+| `ci/`                    | `@pipe` CI execution                | Environment, pipeline, caching, parallelization                   |
+| `cd/`                    | `@pipe` CD execution                | Orchestration, progressive delivery, rollback                     |
+| `gitops/`                | GitOps operations                   | Manifest validation, drift detection, promotion, reconciliation   |
+| `runtime-operations/`    | `@obs` runtime ops                  | Incidents, health, drift, SLO, remediation                        |
+| `governance-policy/`     | `@orchestrator` policy gates        | Policy-as-code, RBAC, cost, compliance audit                      |
+| `release-engineering/`   | release versioning & publishing     | Semver, changelog, provenance, SBOM, tagging                      |
+| `platform-engineering/`  | golden paths & pipeline enforcement | Pipeline-spec, template compliance, drift detection               |
+| `observability-testing/` | telemetry validation                | Log schema, metrics, traces, dashboards, alerts                   |
+| `security-testing/`      | security scanning & integrity       | SAST, dependency scanning, container security, secrets            |
+| `chaos-testing/`         | resilience & failure injection      | Chaos injection, failure modes, drift chaos, cluster chaos        |
+| `load-testing/`          | performance & stress testing        | Pipeline throughput, GitOps load, registry load, system stress    |
+| `developer-experience/`  | dev environment setup               | Devcontainers, bootstrap, local sim, CLI tools                    |
+| `orchestration/`         | `@orchestrator` v2 task routing     | Capability matching, dependency graphs, handoff validation        |
+| `agent-observability/`   | agent telemetry and observability   | Invocation tracking, skill load, finding quality                  |
+| `adr-writer/`            | ask to write an ADR                 | ADR template with DORA capability linkage                         |
+| `dora-metrics/`          | ask about DORA metrics              | Metric calculation and interpretation patterns                    |
+| `lang-typescript/`       | TypeScript project context          | ESLint, tsc, Jest, npm toolchain                                  |
+| `lang-python/`           | Python project context              | ruff, mypy, pytest, uv toolchain                                  |
+| `lang-go/`               | Go project context                  | golangci-lint, go test, go mod toolchain                          |
+| `pipeline-bootstrap/`    | ask to setup pipeline               | uFawkesPipe + ArgoCD integration steps                            |
+| `obs-bootstrap/`         | ask to add observability            | OTEL SDK init, Grafana dashboard spec                             |
+| `test-generation/`       | ask to write tests                  | TDD patterns for TS, Python, Go                                   |
+| `skill-lifecycle/`       | `@orchestrator` skill lifecycle     | Deprecation, versioning, status transitions, dep graph validation |
+| `token-budget/`          | ask about token costs               | Context footprint audit and cost control                          |
+
+---
+
+## Skill Lifecycle
+
+Every skill has a lifecycle status tracked in `.agents/registry/skill-lifecycle.yaml` (schema: `.agents/schema/skill-lifecycle.json`). Statuses: `active`, `stable`, `beta`, `draft`, `deprecated`, `experimental`.
+
+**Before loading a skill**, check the registry. If a skill is `deprecated`, use `replaced_by` instead. If it has `dependencies`, ensure those skills are loaded first.
+
+The dependency graph is generated by `scripts/agent-skill-graph.sh` and written to:
+
+- `.agents/skills/platform-engineering/skill-dependency-graph/skill-graph.json`
+- `.agents/skills/platform-engineering/skill-dependency-graph/graph-validation.json`
+
+Regenerate after any lifecycle change: `bash scripts/agent-skill-graph.sh`
+
+### Deprecated Skills
+
+| Skill      | Replaced By     | Reason                         |
+| ---------- | --------------- | ------------------------------ |
+| `metrics/` | `dora-metrics/` | Merged into dora-metrics skill |
 
 ---
 

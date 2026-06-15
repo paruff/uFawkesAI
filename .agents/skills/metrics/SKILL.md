@@ -1,5 +1,17 @@
-# Metrics Skill
+---
+name: metrics
+description: "Legacy metrics skill — merged into dora-metrics. Use dora-metrics instead."
+license: MIT
+compatibility: Claude Code, GitHub Copilot, OpenCode, Cursor, Codex, Gemini CLI
+metadata:
+  author: paruff
+  suite: uFawkesAI
+deprecated: true
+---
 
+# Metrics Skill (Deprecated)
+
+> **Use `dora-metrics` instead.** This skill is kept for reference.
 > **Load this skill when:** running metrics, interpreting results, or discussing DORA performance.
 > **Prompt example:** `"Use the metrics skill to interpret our rework rate."`
 
