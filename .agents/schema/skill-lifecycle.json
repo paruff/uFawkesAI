@@ -30,11 +30,6 @@
               "pattern": "^\\d+\\.\\d+\\.\\d+$",
               "description": "Semantic version of this skill"
             },
-            "deprecated": {
-              "type": "boolean",
-              "description": "Whether this skill is deprecated",
-              "default": false
-            },
             "replaced_by": {
               "type": "string",
               "description": "Skill path that replaces this deprecated skill"

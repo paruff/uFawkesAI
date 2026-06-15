@@ -20,6 +20,8 @@ fi
 
 mkdir -p "${OUT_DIR}"
 
+export SNAPSHOT_UTC="$(date -u +"%Y-%m-%d %H:%M:%SZ")"
+
 echo "Building skill dependency graph from lifecycle registry..."
 echo ""
 
@@ -44,7 +46,13 @@ reverse_adj = {}  # name -> [dependents]
 for name, meta in sorted(skills.items()):
     if meta.get("status") == "deprecated":
         continue
-    deps = [d for d in meta.get("dependencies", []) if d in skills]
+    raw_deps = meta.get("dependencies", [])
+    deps = []
+    for d in raw_deps:
+        if d in skills:
+            deps.append(d)
+        else:
+            print("  ⚠ WARNING: {} depends on '{}' which is not in the registry — skipping".format(name, d))
     adjacency[name] = deps
     reverse_adj.setdefault(name, [])
     for dep in deps:
@@ -53,7 +61,12 @@ for name, meta in sorted(skills.items()):
 
     sub_skills = meta.get("sub_skills", [])
     for sub in sub_skills:
-        sub_deps = [d for d in meta.get("dependencies", []) if d in skills]
+        sub_deps = []
+        for d in meta.get("dependencies", []):
+            if d in skills:
+                sub_deps.append(d)
+            else:
+                print("  ⚠ WARNING: {} depends on '{}' which is not in the registry — skipping".format(sub, d))
         adjacency[sub] = sub_deps
         reverse_adj.setdefault(sub, [])
         for dep in sub_deps:
@@ -118,7 +131,8 @@ for node in sorted(adjacency.keys()):
         dfs(node)
 
 # Topological sort
-topological_order = list(reversed(order))
+# DFS appends after visiting dependencies, so order has deps before dependents
+topological_order = list(order)
 
 # Build output
 graph_data = {
