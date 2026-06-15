@@ -28,7 +28,7 @@ Emit when the agent produces its final decision.
 | Attribute | Type | Description |
 |-----------|------|-------------|
 | `decision` | string | Final decision (PASS/FAIL/BLOCKED/APPROVE/REQUEST_CHANGES/ESCALATE) |
-| `blocker_count` | integer | Number of CRITICAL or blocking findings |
+| `blocker_count` | integer | Number of CRITICAL or HIGH severity findings |
 | `finding_count` | integer | Total number of findings |
 | `agent.name` | string | Agent that made this decision |
 | `session_id` | string | Unique invocation identifier |

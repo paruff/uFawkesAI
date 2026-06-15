@@ -44,7 +44,7 @@ Emit when the agent finishes.
 | `duration_ms` | integer | Wall-clock duration in milliseconds |
 | `total_skills_loaded` | integer | Count of skills loaded during invocation |
 | `total_findings` | integer | Count of findings produced |
-| `decision` | string | Final decision (PASS/FAIL/BLOCKED) |
+| `decision` | string | Final decision (PASS/FAIL/BLOCKED/APPROVE/REQUEST_CHANGES/ESCALATE) |
 
 ### `agent.invocation.failed`
 

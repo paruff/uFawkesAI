@@ -41,12 +41,12 @@ When asked to add observability to the agent system (`.agents/`), use these span
 
 | Span Name | When to Emit | Attributes |
 |-----------|-------------|------------|
-| `agent.invocation.started` | Agent begins its task | `agent.name`, `session_id`, `mode` |
-| `agent.skill.loaded` | Skill file is loaded | `skill.name`, `skill.domain` |
-| `agent.finding.produced` | A finding is identified | `severity`, `category`, `actionable` |
-| `agent.decision.made` | Agent produces final decision | `decision`, `blocker_count`, `finding_count` |
-| `agent.invocation.completed` | Agent finishes | `duration_ms`, `total_skills_loaded` |
-| `agent.invocation.failed` | Agent encounters an error | `error`, `stage` |
+| `agent.invocation.started` | Agent begins its task | `agent.name`, `session_id`, `mode`, `trigger`, `input_files` |
+| `agent.skill.loaded` | Skill file is loaded | `skill.name`, `skill.domain`, `agent.name`, `session_id` |
+| `agent.finding.produced` | A finding is identified | `severity`, `category`, `actionable`, `manual_review_needed`, `agent.name`, `session_id` |
+| `agent.decision.made` | Agent produces final decision | `decision`, `blocker_count`, `finding_count`, `agent.name`, `session_id` |
+| `agent.invocation.completed` | Agent finishes | `duration_ms`, `total_skills_loaded`, `total_findings`, `decision`, `agent.name`, `session_id` |
+| `agent.invocation.failed` | Agent encounters an error | `error`, `stage`, `agent.name`, `session_id` |
 
 Agent telemetry spans follow the same naming convention: `agent.[action].[detail]`.
 Source data is the Phase 0 invocation logs (`.agents/logs/`). Each log entry maps to one `agent.invocation.started` + `agent.invocation.completed` pair.
