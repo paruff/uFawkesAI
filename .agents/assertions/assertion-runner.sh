@@ -79,10 +79,10 @@ for section in contract.get("required_sections", []):
 print()
 print("--- Required Fields ---")
 field_checks = {
-    "decision": lambda c: bool(re.search(r"\*\*Decision:\*\*|PASS|FAIL|BLOCKED", c, re.IGNORECASE)),
+    "decision": lambda c: bool(re.search(r"\*\*Decision:\*\*", c, re.IGNORECASE)),
     "status": lambda c: bool(re.search(r"\*\*Status:\*\*", c, re.IGNORECASE)),
     "risk_level": lambda c: bool(re.search(r"\*\*Risk level:\*\*", c, re.IGNORECASE)),
-    "size_decision": lambda c: bool(re.search(r"\*\*Size:\*\*|PASS|EXCEEDS LIMIT", c, re.IGNORECASE)),
+    "size_decision": lambda c: bool(re.search(r"\*\*Size:\*\*", c, re.IGNORECASE)),
     "biggest_gap": lambda c: bool(re.search(r"biggest gap", c, re.IGNORECASE)),
     "total_estimated_lines": lambda c: bool(re.search(r"total estimated lines|estimated lines", c, re.IGNORECASE)),
 }
@@ -129,7 +129,7 @@ if findings_when != "never":
         decision_found = "FAIL"
     elif findings_when == "REQUEST_CHANGES" and re.search(r"REQUEST CHANGES", content):
         decision_found = "REQUEST_CHANGES"
-    elif findings_when == "CRITICAL" and re.search(r"^### CRITICAL|^## CRITICAL", content, re.MULTILINE):
+    elif findings_when == "CRITICAL" and re.search(r"^# CRITICAL|^## CRITICAL|^### CRITICAL", content, re.MULTILINE):
         decision_found = "CRITICAL"
 
     if decision_found:

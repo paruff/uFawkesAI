@@ -46,6 +46,11 @@ agents:
       - "ADR-"
       - "Runbook"
     findings_required_when: never
+    required_patterns:
+      - "last.updated"
+      - "Status:"
+      - "Rationale:"
+      - "Consequences"
 
   dora:
     required_sections:
@@ -62,24 +67,41 @@ agents:
     findings_required_when: never
     forbidden_patterns:
       - "hardcode"
+    required_patterns:
+      - "OTEL_SERVICE_NAME"
+      - "OTEL_EXPORTER_OTLP_ENDPOINT"
 
   onboarding:
     required_sections: []
     findings_required_when: never
     forbidden_patterns:
       - "PLACEHOLDER"
+    required_patterns:
+      - "AGENTS.md"
+      - "data policy"
+      - "pre-flight"
 
   orchestrator:
     required_sections: []
     findings_required_when: never
     forbidden_patterns:
       - "I'll implement"
+    required_patterns:
+      - "Handoff"
+      - "Task:"
+      - "Source:"
+      - "Branch:"
+      - "files in scope"
 
   pipe:
     required_sections: []
     findings_required_when: never
     forbidden_patterns:
       - "I'll just"
+    required_patterns:
+      - "CI Gate"
+      - "agents-md-budget"
+      - "pr-size"
 
   planner:
     required_sections:
@@ -127,6 +149,10 @@ agents:
     forbidden_patterns:
       - "expect(true).toBe(true)"
       - "it(\"works\""
+    required_patterns:
+      - "TDD"
+      - "test:.*failing"
+      - "feat:.*implement"
 
   test-execution:
     required_sections:

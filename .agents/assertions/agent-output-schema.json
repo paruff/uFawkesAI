@@ -16,7 +16,6 @@
               "type": "array",
               "description": "Markdown headings that must appear in the agent's report",
               "items": { "type": "string" },
-              "minItems": 1
             },
             "optional_sections": {
               "type": "array",
