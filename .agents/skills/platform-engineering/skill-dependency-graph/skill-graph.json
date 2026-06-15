@@ -2,7 +2,7 @@
   "skill": "skill-dependency-graph",
   "generated_at": "",
   "registry": "skill-lifecycle.yaml",
-  "total_skills": 33,
+  "total_skills": 167,
   "deprecated_skills": 1,
   "edges": 216,
   "nodes": [
@@ -203,6 +203,810 @@
       "level": "domain",
       "status": "active",
       "version": "1.0.0"
+    },
+    {
+      "id": "agent-observability/invocation-tracking",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "agent-observability/skill-load-events",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "agent-observability/finding-quality",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "agent-observability/decision-logging",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "build/code-generation",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "build/manifest-generation",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "build/pipeline-generation",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "build/gitops-overlay-generation",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "build/governance-enforcement",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "build/template-application",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "build/refactoring",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "cd/cd-orchestration",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "cd/deployment-strategy",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "cd/progressive-delivery",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "cd/blue-green",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "cd/canary-analysis",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "cd/rollout-execution",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "cd/environment-promotion",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "cd/automated-promotion",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "cd/multi-cluster-delivery",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "cd/deployment-policy",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "chaos-testing/chaos-injection",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "chaos-testing/failure-modes",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "chaos-testing/gitops-drift-chaos",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "chaos-testing/cluster-chaos",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "ci/ci-pipeline-execution",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "ci/ci-quality-gates",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "ci/ci-caching",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "ci/ci-parallelization",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "ci/ci-matrix-execution",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "ci/ci-environment-validation",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "ci/ci-artifact-production",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "ci/ci-failure-recovery",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "ci/ci-observability",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "ci/ci-performance",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "design/architecture-decomposition",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "design/component-identification",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "design/interface-definition",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "design/k8s-design-validation",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "developer-experience/dev-container-setup",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "developer-experience/workspace-bootstrap",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "developer-experience/local-environment-simulation",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "developer-experience/cli-scaffolding",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "e2e-testing/e2e-happy-path",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "e2e-testing/e2e-failure-paths",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "e2e-testing/e2e-deployment-validation",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "e2e-testing/e2e-rollback",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "gitops/gitops-manifest-validation",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "gitops/gitops-drift-detection",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "gitops/gitops-environment-promotion",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "gitops/gitops-reconciliation-testing",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "governance-policy/policy-as-code",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "governance-policy/compliance-audit",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "governance-policy/cost-governance",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "governance-policy/rbac-governance",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "integration-testing/pipe-to-obs",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "integration-testing/obs-to-gitops",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "integration-testing/gitops-to-controller",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "integration-testing/full-stack",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "load-testing/pipeline-throughput",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "load-testing/system-stress",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "load-testing/obs-gitops-load",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "load-testing/registry-load",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "observability-testing/log-schema-validation",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "observability-testing/metrics-validation",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "observability-testing/trace-propagation",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "observability-testing/observability-health",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "orchestration/capability-matching",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "orchestration/dependency-graph",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "orchestration/handoff-validation",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "plan/task-decomposition",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "plan/dependency-mapping",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "plan/effort-estimation",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "plan/risk-identification",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "plan/skill-matching",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "plan/governance-alignment",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "platform-engineering/skill-dependency-graph",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "platform-engineering/pipeline-spec-enforcement",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "platform-engineering/golden-path-validation",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "platform-engineering/template-drift-detection",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "release-engineering/semantic-versioning",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "release-engineering/changelog-generation",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "release-engineering/release-metadata",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "release-engineering/git-tagging",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "review/spec-compliance",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "review/design-compliance",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "review/code-quality",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "review/acceptance-criteria",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "review/security-rbac",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "review/secret-governance",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "review/policy-validation",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "review/k8s-policy",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "review/pipeline-policy",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "review/gitops-overlay",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "runtime-operations/health-monitoring",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "runtime-operations/incident-detection",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "runtime-operations/incident-triage",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "runtime-operations/incident-correlation",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "runtime-operations/runbook-automation",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "runtime-operations/auto-remediation",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "runtime-operations/drift-detection",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "runtime-operations/slo-management",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "runtime-operations/capacity-management",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "runtime-operations/multi-cluster-ops",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "security/sast",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "security/sca",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "security/secret-governance",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "security/rbac-validation",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "security/container-security",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "security/pipeline-security",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "security/k8s-security",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "security/gitops-security",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "security/policy-validation",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "security-testing/sast",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "security-testing/secret-detection",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "security-testing/dependency-scanning",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "security-testing/container-security",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "spec/requirements-extraction",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "spec/acceptance-criteria",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "spec/policy-validation",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "spec/pipeline-policy",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "spec/k8s-policy",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "spec/template-governance",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "test-execution/unit-test-execution",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "test-execution/integration-test-execution",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "test-execution/e2e-test-execution",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "test-execution/test-coverage-validation",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "test-execution/pipeline-test-stage-validation",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "test-execution/runtime-simulation-validation",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "test-execution/performance-smoke-testing",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "unit-testing/unit-core-logic",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "unit-testing/unit-mocking",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "unit-testing/unit-error-handling",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "unit-testing/unit-contracts",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
     }
   ],
   "edges_list": [

@@ -2,7 +2,7 @@
   "skill": "graph-validation",
   "generated_at": "",
   "status": "valid",
-  "total_nodes": 33,
+  "total_nodes": 167,
   "total_edges": 216,
   "cycles": [],
   "cycle_count": 0,
@@ -177,10 +177,10 @@
   ],
   "level_counts": {
     "domains": 33,
-    "sub_skills": 0
+    "sub_skills": 134
   },
   "status_counts": {
-    "active": 13,
+    "active": 147,
     "stable": 17,
     "beta": 3
   }

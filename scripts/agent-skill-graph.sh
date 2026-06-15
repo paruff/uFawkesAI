@@ -74,6 +74,17 @@ for name, meta in sorted(skills.items()):
         "version": meta.get("version", "0.0.0"),
     })
 
+# Add sub-skills to nodes (they're in adjacency but not in the skills dict)
+node_ids = {n["id"] for n in nodes}
+for adj_name in adjacency:
+    if adj_name not in node_ids:
+        nodes.append({
+            "id": adj_name,
+            "level": "sub-skill",
+            "status": "active",
+            "version": "0.0.0",
+        })
+
 # Cycle detection (DFS)
 WHITE, GRAY, BLACK = 0, 1, 2
 color = {n: WHITE for n in adjacency}
