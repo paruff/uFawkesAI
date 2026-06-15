@@ -23,8 +23,7 @@ Invoke by `@name` in OpenCode or any compatible agent host.
 | `build.md`          | `@build`            | Code, manifests, pipelines, overlays  | Cap 4     |
 | `review.md`         | `@review`           | PR review, risk assessment            | Cap 4 + 6 |
 | `build-review.md`   | `@build-review`     | Build compliance, spec/design gates   | Cap 4 + 6 |
-| `security.md`       | `@security`         | Security findings, remediation        | Cap 1     |
-| `security-review.md`| `@security-review`  | RBAC, secrets, container, pipeline    | Cap 1 + 6 |
+| `security.md`       | `@security`         | Security findings, remediation (PR Audit + Deep Review) | Cap 1 + 6 |
 | `pipe.md`           | `@pipe`             | CI/CD workflows, uFawkesPipe contract | Cap 4 + 6 |
 | `obs.md`            | `@obs`              | OTEL instrumentation, uFawkesObs      | Cap 6 + 2 |
 | `dora.md`           | `@dora`             | Metric interpretation, coaching       | All       |
@@ -54,7 +53,7 @@ gh skill install paruff/uFawkesAI lang-python --agent claude-code
 | `integration-testing/`       | integration test patterns          | PIPE→OBS, OBS→GitOps, controller, full-stack       |
 | `e2e-testing/`               | end-to-end test patterns           | Happy path, failure paths, deployment, rollback    |
 | `review/`                    | `@build-review` compliance gates   | Spec/design compliance, K8s policy, code quality   |
-| `security-review/`           | `@security-review` security gates  | RBAC, secrets, container, SAST, SCA, pipeline      |
+| `security/`                  | `@security` security gates          | RBAC, secrets, container, SAST, SCA, pipeline      |
 | `ci/`                        | `@pipe` CI execution               | Environment, pipeline, caching, parallelization    |
 | `cd/`                        | `@pipe` CD execution               | Orchestration, progressive delivery, rollback      |
 | `gitops/`                    | GitOps operations                  | Manifest validation, drift detection, promotion, reconciliation |

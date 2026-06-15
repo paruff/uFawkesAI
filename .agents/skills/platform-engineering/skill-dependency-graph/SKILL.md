@@ -44,7 +44,7 @@ Define and validate the dependency graph between all Fawkes skills to enable int
 ## Skill Order (Fawkes Lifecycle)
 
 ```
-spec → design → plan → build → test → security-review → build-review → release → deploy
+spec → design → plan → build → test → security → build-review → release → deploy
 ```
 
 ## Dependencies
@@ -55,8 +55,8 @@ spec → design → plan → build → test → security-review → build-review
 | `plan` | `spec`, `design` |
 | `build` | `plan`, `design` |
 | `test-execution` | `build` |
-| `security-review` | `build` |
-| `build-review` | `build`, `test-execution`, `security-review` |
+| `security` | `build` |
+| `build-review` | `build`, `test-execution`, `security` |
 | `release-engineering` | `build-review` |
 | `cd` | `release-engineering` |
 

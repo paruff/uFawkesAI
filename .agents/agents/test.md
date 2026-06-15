@@ -97,3 +97,14 @@ Tests do not cross layer boundaries. Mocks applied at service/API boundaries onl
 **What I was NOT sure about:**
 [Ambiguous behavior in the source that needed a judgment call]
 ```
+
+## Post-Task Logging
+
+After producing your report, write a structured log entry:
+
+1. Append one JSON object to `.agents/logs/YYYY-MM-DD.jsonl` (one line per invocation)
+2. Follow the schema in `.agents/schema/skill-invocation-log.json`
+3. Include: agent name, session_id (unique identifier), skills loaded, findings, decision, blockers
+4. For each finding, set `actionable` and `manual_review_needed` accurately
+
+This log is required. If the file cannot be written, document why.

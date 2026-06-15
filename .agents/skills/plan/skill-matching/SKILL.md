@@ -45,7 +45,7 @@ Map tasks to the skills required by the Build agent.
 | `template-application` | Build | Applying golden-path templates |
 | `governance-enforcement` | Build | Validating compliance |
 | `test-generation` | Test | Writing tests |
-| `security-review/*` | Security | Security validation |
+| `security/*` | Security | Security validation |
 | `adr-writer` | Any | Documenting architectural decisions |
 
 ## Matching Rules

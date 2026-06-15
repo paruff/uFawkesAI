@@ -39,7 +39,7 @@ Define how Fawkes agents coordinate across skills.
 | Rule | Description |
 |------|-------------|
 | Sequential | `spec` → `design` → `plan` (must be ordered) |
-| Parallel | `test-execution` + `security-review` (can run together) |
+| Parallel | `test-execution` + `security` (can run together) |
 | Gate | `build-review` requires all prior passing |
 
 ### Retry
@@ -63,7 +63,7 @@ Define how Fawkes agents coordinate across skills.
 
 | Skills | Can Parallelize |
 |--------|-----------------|
-| `test-execution` + `security-review` | Yes |
+| `test-execution` + `security` | Yes |
 | `unit-test` + `lint` | Yes |
 | `build` + `test-execution` | No (test depends on build) |
 
@@ -74,7 +74,7 @@ Define how Fawkes agents coordinate across skills.
   "skill": "cross-agent-coordination",
   "rules": {
     "sequential": [["spec", "design", "plan"]],
-    "parallel": [["test-execution", "security-review"]],
+    "parallel": [["test-execution", "security"]],
     "gates": ["build-review"]
   },
   "retry": {
