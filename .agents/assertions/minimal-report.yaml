@@ -92,6 +92,8 @@ agents:
       - "Source:"
       - "Branch:"
       - "files in scope"
+      - "capability.registry"
+      - "capability.matching"
 
   pipe:
     required_sections: []

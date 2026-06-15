@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Orchestrator Handoff Block",
+  "description": "Structured handoff block passed from the orchestrator to a receiving agent. Every handoff MUST satisfy this schema before being sent.",
+  "type": "object",
+  "required": ["task", "source", "branch", "files_in_scope"],
+  "properties": {
+    "task": {
+      "type": "string",
+      "description": "One-sentence description of the task being handed off"
+    },
+    "source": {
+      "type": "string",
+      "enum": ["Human", "Planner", "Orchestrator", "review", "security", "build-review", "spec", "design"],
+      "description": "Origin of this task"
+    },
+    "branch": {
+      "type": "string",
+      "description": "Target branch name or 'not yet created'"
+    },
+    "related_issues": {
+      "type": "array",
+      "description": "GitHub issue numbers if known",
+      "items": { "type": "string" }
+    },
+    "files_in_scope": {
+      "type": "array",
+      "description": "Files that will be created or modified",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "constraints": {
+      "type": "array",
+      "description": "AGENTS.md §5 restrictions or other constraints that apply",
+      "items": { "type": "string" }
+    },
+    "dependency": {
+      "type": "string",
+      "description": "What must merge first, or 'none'",
+      "default": "none"
+    },
+    "skills_to_load": {
+      "type": "array",
+      "description": "Skills the receiving agent should load for this task",
+      "items": { "type": "string" }
+    },
+    "context_files": {
+      "type": "array",
+      "description": "Files the receiving agent should read before starting",
+      "items": { "type": "string" }
+    }
+  }
+}

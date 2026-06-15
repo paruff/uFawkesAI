@@ -1,0 +1,283 @@
+# Agent Capability Registry — v2
+# Machine-readable capability declarations for the orchestrator.
+# The orchestrator uses this to match tasks to agents dynamically.
+# Schema (informal): each agent has name, description, capabilities[], inputs[], outputs[], consumes_from[], dora_caps[]
+
+agents:
+  - name: spec
+    description: "Convert intent into structured specification with requirements, acceptance criteria, and policy alignment"
+    capabilities:
+      - requirements-extraction
+      - acceptance-criteria-definition
+      - policy-alignment
+      - constraint-documentation
+    inputs:
+      - human-intent
+      - policy-documents
+    outputs:
+      - specification-document
+      - acceptance-criteria
+    consumes_from: []
+    dora_caps: [3]
+
+  - name: design
+    description: "Convert specification into actionable technical design with architecture, components, interfaces, and data flows"
+    capabilities:
+      - architecture-decomposition
+      - component-definition
+      - interface-contracts
+      - data-modeling
+      - tradeoff-analysis
+    inputs:
+      - specification-document
+    outputs:
+      - design-document
+      - architecture-decisions
+    consumes_from: [spec]
+    dora_caps: [3]
+
+  - name: planner
+    description: "Decompose intent into sequenced, bounded GitHub issues implementable in single PRs under 400 lines"
+    capabilities:
+      - task-decomposition
+      - backlog-sequencing
+      - dependency-mapping
+      - size-estimation
+      - risk-identification
+    inputs:
+      - specification-document
+      - design-document
+    outputs:
+      - issue-backlog
+      - dependency-graph
+      - task-estimates
+    consumes_from: [spec, design]
+    dora_caps: [3, 5]
+
+  - name: build
+    description: "Turn plan into code, manifests, pipelines, and GitOps overlays"
+    capabilities:
+      - code-generation
+      - manifest-generation
+      - pipeline-generation
+      - overlay-generation
+      - implementation
+    inputs:
+      - task-list
+      - design-document
+      - specification-document
+    outputs:
+      - source-code
+      - kubernetes-manifests
+      - pipeline-configs
+      - gitops-overlays
+    consumes_from: [planner, design]
+    dora_caps: [4]
+
+  - name: test-execution
+    description: "Execute all relevant tests and quality gates to validate build output"
+    capabilities:
+      - unit-test-execution
+      - integration-test-execution
+      - e2e-test-execution
+      - coverage-validation
+      - smoke-testing
+      - linting
+    inputs:
+      - source-code
+      - test-suites
+    outputs:
+      - test-report
+      - coverage-report
+    consumes_from: [build]
+    dora_caps: [5]
+
+  - name: test
+    description: "Write failing tests before implementation, increase coverage, generate test patterns"
+    capabilities:
+      - tdd-test-writing
+      - coverage-gap-analysis
+      - test-pattern-generation
+      - test-refactoring
+    inputs:
+      - source-code
+      - specification-document
+      - api-surface
+    outputs:
+      - test-suites
+      - coverage-improvements
+    consumes_from: [spec]
+    dora_caps: [5]
+
+  - name: review
+    description: "Review PRs for architecture violations, test gaps, security surface, and completeness"
+    capabilities:
+      - pr-review
+      - architecture-violation-detection
+      - test-gap-analysis
+      - risk-assessment
+      - security-surface-identification
+    inputs:
+      - pull-request-diff
+      - specification-document
+      - design-document
+    outputs:
+      - review-report
+      - risk-assessment
+    consumes_from: [build, test-execution]
+    dora_caps: [4, 6]
+
+  - name: build-review
+    description: "Verify build output satisfies specification, design, acceptance criteria, and governance rules"
+    capabilities:
+      - spec-compliance-verification
+      - design-compliance-verification
+      - acceptance-criteria-validation
+      - governance-policy-enforcement
+      - code-quality-assessment
+    inputs:
+      - build-output
+      - specification-document
+      - design-document
+      - test-report
+    outputs:
+      - build-review-report
+      - compliance-verdict
+    consumes_from: [build, test-execution]
+    dora_caps: [4, 6]
+
+  - name: security
+    description: "Audit PRs and build output for secrets, dependencies, auth, data handling, infrastructure security"
+    capabilities:
+      - secret-scanning
+      - dependency-vulnerability-analysis
+      - auth-review
+      - data-handling-review
+      - container-security-review
+      - sast
+      - sca
+      - k8s-security-review
+      - gitops-security-review
+      - policy-validation
+    inputs:
+      - pull-request-diff
+      - build-output
+      - manifests
+      - pipeline-configs
+    outputs:
+      - security-report
+      - security-findings
+    consumes_from: [build]
+    dora_caps: [1, 6]
+
+  - name: pipe
+    description: "Design and generate CI/CD configuration, Dockerfiles, ArgoCD manifests"
+    capabilities:
+      - ci-pipeline-design
+      - cd-pipeline-design
+      - dockerfile-generation
+      - argocd-manifest-generation
+      - pipeline-hardening
+    inputs:
+      - service-specification
+      - deployment-requirements
+    outputs:
+      - ci-quality-gates
+      - dockerfiles
+      - argocd-manifests
+      - pipeline-configs
+    consumes_from: [spec]
+    dora_caps: [4, 6]
+
+  - name: obs
+    description: "Add OpenTelemetry instrumentation, DORA deployment spans, uFawkesObs connection config"
+    capabilities:
+      - otel-instrumentation
+      - dora-deployment-spans
+      - prometheus-metric-setup
+      - grafana-dashboard-creation
+      - agent-telemetry
+    inputs:
+      - service-source-code
+      - deployment-configs
+    outputs:
+      - instrumented-code
+      - telemetry-configs
+      - grafana-dashboards
+    consumes_from: [build, pipe]
+    dora_caps: [6, 2]
+
+  - name: dora
+    description: "Interpret DORA delivery metrics, diagnose rework, identify team archetype, recommend actions"
+    capabilities:
+      - metric-interpretation
+      - rework-diagnosis
+      - archetype-identification
+      - coaching-recommendation
+      - trend-analysis
+    inputs:
+      - metrics-data
+      - deployment-logs
+      - team-archetype
+    outputs:
+      - metrics-interpretation
+      - coaching-recommendations
+    consumes_from: [obs, pipe]
+    dora_caps: [1, 2, 3, 4, 5, 6]
+
+  - name: docs
+    description: "Write and update documentation, ADRs, runbooks, and inline code comments"
+    capabilities:
+      - documentation-writing
+      - adr-creation
+      - runbook-writing
+      - api-documentation
+      - code-commenting
+    inputs:
+      - specification-document
+      - design-document
+      - source-code
+    outputs:
+      - documentation
+      - adrs
+      - runbooks
+    consumes_from: [spec, design]
+    dora_caps: [3]
+
+  - name: onboarding
+    description: "Guide developer through template setup, populate AGENTS.md, create first issue"
+    capabilities:
+      - project-setup
+      - template-configuration
+      - placeholder-replacement
+      - issue-creation
+      - preflight-validation
+    inputs:
+      - project-answers
+      - language-signals
+    outputs:
+      - populated-agents-md
+      - first-issue
+      - preflight-results
+    consumes_from: []
+    dora_caps: [1, 3]
+
+  - name: orchestrator
+    description: "Route tasks to specialist agents, enforce concurrency limit, prevent merge conflicts"
+    capabilities:
+      - task-routing
+      - concurrency-enforcement
+      - conflict-detection
+      - handoff-packaging
+      - capability-matching
+      - dependency-graph-construction
+      - skill-composition
+    inputs:
+      - task-description
+      - agent-capability-registry
+    outputs:
+      - routing-decision
+      - handoff-block
+      - execution-plan
+    consumes_from: []
+    dora_caps: [1, 2, 3, 4, 5, 6]

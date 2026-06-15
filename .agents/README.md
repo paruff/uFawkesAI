@@ -14,7 +14,7 @@ Invoke by `@name` in OpenCode or any compatible agent host.
 | ------------------- | ------------------- | ------------------------------------- | --------- |
 | `onboarding.md`     | `@onboarding`       | Populated AGENTS.md + first issue     | Cap 1 + 3 |
 | `planner.md`        | `@planner`          | Sequenced issue backlog ≤400 lines/PR | Cap 3 + 5 |
-| `orchestrator.md`   | `@orchestrator`     | Task routing + conflict prevention    | All       |
+| `orchestrator.md`   | `@orchestrator`     | Capability-matched routing + dependency graph execution plans + conflict prevention | All       |
 | `docs.md`           | `@docs`             | Docs, ADRs, runbooks, inline comments | Cap 3     |
 | `spec.md`           | `@spec`             | Requirements, acceptance criteria      | Cap 3     |
 | `design.md`         | `@design`           | Architecture, component design        | Cap 3     |
@@ -66,6 +66,7 @@ gh skill install paruff/uFawkesAI lang-python --agent claude-code
 | `chaos-testing/`             | resilience & failure injection     | Chaos injection, failure modes, drift chaos, cluster chaos |
 | `load-testing/`              | performance & stress testing       | Pipeline throughput, GitOps load, registry load, system stress |
 | `developer-experience/`      | dev environment setup              | Devcontainers, bootstrap, local sim, CLI tools     |
+| `orchestration/`             | `@orchestrator` v2 task routing       | Capability matching, dependency graphs, handoff validation |
 | `agent-observability/`       | agent telemetry and observability  | Invocation tracking, skill load, finding quality   |
 | `adr-writer/`                | ask to write an ADR                | ADR template with DORA capability linkage          |
 | `dora-metrics/`              | ask about DORA metrics             | Metric calculation and interpretation patterns     |
