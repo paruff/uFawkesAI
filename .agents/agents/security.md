@@ -161,6 +161,7 @@ Run these checks in order:
 ```markdown
 ## Security Review Report — [Build/task title]
 
+**Risk level:** CRITICAL | HIGH | MEDIUM | LOW | NONE
 **Decision:** PASS | FAIL
 
 ---

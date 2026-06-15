@@ -74,10 +74,12 @@
     },
     "blockers": {
       "type": "integer",
+      "minimum": 0,
       "description": "Number of CRITICAL or blocking findings"
     },
     "duration_seconds": {
       "type": "number",
+      "minimum": 0,
       "description": "Approximate wall-clock duration of the invocation"
     }
   }

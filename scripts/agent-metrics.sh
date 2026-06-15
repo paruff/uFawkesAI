@@ -42,12 +42,13 @@ if [ ${#LOG_FILES[@]} -eq 0 ]; then
 fi
 
 # Delegate aggregation to Python for portability (bash 3 on macOS has no associative arrays)
+export DAYS_FILTER="${DAYS}"
 report="$(python3 - "${LOG_FILES[@]}" <<'PY'
-import json, os, sys
+import datetime, json, os, sys
 from collections import Counter
-from pathlib import Path
 
 log_files = sys.argv[1:]
+days_filter = int(os.environ.get("DAYS_FILTER", "0"))
 
 total_invocations = 0
 total_findings = 0
@@ -60,6 +61,8 @@ skill_counts = Counter()
 decision_counts = Counter()
 severity_counts = Counter()
 
+cutoff = datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(days=days_filter) if days_filter > 0 else None
+
 for f in log_files:
     with open(f) as fh:
         for line in fh:
@@ -70,6 +73,19 @@ for f in log_files:
                 entry = json.loads(line)
             except json.JSONDecodeError:
                 continue
+
+            # Skip entries older than --days=N cutoff
+            if cutoff is not None:
+                ts = entry.get("timestamp")
+                if ts:
+                    try:
+                        entry_time = datetime.datetime.fromisoformat(ts)
+                        if entry_time.tzinfo is None:
+                            entry_time = entry_time.replace(tzinfo=datetime.timezone.utc)
+                        if entry_time < cutoff:
+                            continue
+                    except (ValueError, TypeError):
+                        pass
 
             total_invocations += 1
             agent = entry.get("agent", "unknown")
