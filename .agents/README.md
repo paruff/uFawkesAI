@@ -66,6 +66,7 @@ gh skill install paruff/uFawkesAI lang-python --agent claude-code
 | `chaos-testing/`             | resilience & failure injection     | Chaos injection, failure modes, drift chaos, cluster chaos |
 | `load-testing/`              | performance & stress testing       | Pipeline throughput, GitOps load, registry load, system stress |
 | `developer-experience/`      | dev environment setup              | Devcontainers, bootstrap, local sim, CLI tools     |
+| `agent-observability/`       | agent telemetry and observability  | Invocation tracking, skill load, finding quality   |
 | `adr-writer/`                | ask to write an ADR                | ADR template with DORA capability linkage          |
 | `dora-metrics/`              | ask about DORA metrics             | Metric calculation and interpretation patterns     |
 | `lang-typescript/`           | TypeScript project context         | ESLint, tsc, Jest, npm toolchain                   |

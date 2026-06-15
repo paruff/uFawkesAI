@@ -70,7 +70,17 @@ Check that the PR description contains a completed AI-Assisted Review Block (AGE
 Template is in AGENTS.md §7. The PR author must complete it before merge.
 ```
 
-### 7. Author Uncertainty
+### 7. Agent Telemetry Check
+
+If `.agents/logs/` exists and contains logs: check historical telemetry for the files in scope.
+
+- Have previous agents reviewed these same files? Check `.agents/logs/` for past findings.
+- If a previous `security` or `build-review` finding was not resolved, flag it.
+- If previous agent reports contradict your findings, escalate for human resolution.
+
+Load `agent-observability` skill and run `bash scripts/agent-metrics.sh` for a quick summary.
+
+### 8. Author Uncertainty
 
 Read the "What I was NOT sure about" section. These items require direct human attention. List them as action items.
 
