@@ -61,7 +61,7 @@ Pass a structured handoff block validated against `.agents/schema/handoff.json`.
 ```
 ## Handoff from Orchestrator
 Task: [one sentence]
-Source: [Human / Planner / Orchestrator / agent-name]
+Source: [human / orchestrator / agent-name]
 Branch: [target branch or "not yet created"]
 Related issues: [#num or "none"]
 Files in scope:
@@ -132,11 +132,16 @@ The dependency graph skill will:
 **Known default sequence:**
 
 ```
-spec → design → planner → build → [test-execution | review | security] → pipe/obs
+spec → design → planner → [build | test] → [test-execution | review | build-review | security] → pipe/obs → dora
 ```
 
-**Parallel branches (after build):**
-test-execution, review, build-review, and security can run in parallel.
+Note: `test` (TDD) consumes from `spec` only and can run in parallel with `build`.
+
+**Parallel branches (after planner):**
+
+- `build` and `test` can run in parallel (test consumes spec, build consumes planner + design)
+- After build: `test-execution`, `review`, `build-review`, and `security` can run in parallel
+- `pipe` and `obs` run after build
 
 **Output:**
 
@@ -153,11 +158,39 @@ execution_order:
     depends_on: [spec, design]
   - step: 4
     agent: build
+    parallel_with: [test]
     depends_on: [planner]
   - step: 5
+    agent: test
+    parallel_with: [build]
+    depends_on: [planner]
+  - step: 6
     agent: test-execution
-    parallel_with: [review, security]
+    parallel_with: [review, build-review, security]
     depends_on: [build]
+  - step: 7
+    agent: review
+    parallel_with: [test-execution, build-review, security]
+    depends_on: [build]
+  - step: 8
+    agent: build-review
+    parallel_with: [test-execution, review, security]
+    depends_on: [build]
+  - step: 9
+    agent: security
+    parallel_with: [test-execution, review, build-review]
+    depends_on: [build]
+  - step: 10
+    agent: pipe
+    parallel_with: [obs]
+    depends_on: [build]
+  - step: 11
+    agent: obs
+    parallel_with: [pipe]
+    depends_on: [build]
+  - step: 12
+    agent: dora
+    depends_on: [pipe, obs]
 ```
 
 ## Rule 7 — Skill Composition
@@ -196,7 +229,7 @@ Your report MUST satisfy this contract. Self-validate before finishing.
 
 - Forbidden: "I'll implement" — orchestrator does not implement
 - Must include Handoff block with task, source, branch, files in scope
-- Must reference the capability registry or dependency graph when used
+- Must reference the capability registry and/or dependency graph when used (at least one must appear in the report)
 - Schema: `.agents/assertions/agent-output-schema.json`
 - Runner: `bash .agents/assertions/assertion-runner.sh <report.md> orchestrator`
 

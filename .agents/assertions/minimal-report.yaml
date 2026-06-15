@@ -92,8 +92,7 @@ agents:
       - "Source:"
       - "Branch:"
       - "files in scope"
-      - "capability.registry"
-      - "capability.matching"
+      - "capability.registry|dependency.graph"
 
   pipe:
     required_sections: []
@@ -135,7 +134,7 @@ agents:
     findings_required_when: FAIL
     severity_classification: true
     forbidden_patterns:
-      - "no vulnerabilities found"  # must be specific
+      - "no vulnerabilities found" # must be specific
 
   spec:
     required_sections:
@@ -150,7 +149,7 @@ agents:
     findings_required_when: never
     forbidden_patterns:
       - "expect(true).toBe(true)"
-      - "it(\"works\""
+      - 'it("works"'
     required_patterns:
       - "TDD"
       - "test:.*failing"

@@ -17,7 +17,7 @@ Route a task to the right agent by matching task keywords against declared agent
 
 - The task does not clearly match a single row in the routing table
 - Two agents could plausibly handle the task
-- You need to justify *why* a particular agent was chosen
+- You need to justify _why_ a particular agent was chosen
 
 ## How It Works
 
@@ -35,22 +35,23 @@ For each agent in registry:
         if keyword in agent.capabilities: score += 3
         if keyword in agent.description:  score += 2
         if keyword in agent.inputs:       score += 1
-    if agent.consumes_from matches previous_agent: score += 2
+    if agent.consumes_from includes the agent that produced the input task: score += 2
 Return highest-scoring agent
 ```
 
 ## Scoring Examples
 
-| Task Keywords | Top Agent | Rationale |
-|---------------|-----------|-----------|
-| "generate kubernetes manifests" | `build` | manifest-generation capability |
-| "check for hardcoded secrets" | `security` | secret-scanning capability |
-| "interpret deployment frequency" | `dora` | metric-interpretation capability |
-| "write test for login feature" | `test` | tdd-test-writing capability |
+| Task Keywords                    | Top Agent  | Rationale                        |
+| -------------------------------- | ---------- | -------------------------------- |
+| "generate kubernetes manifests"  | `build`    | manifest-generation capability   |
+| "check for hardcoded secrets"    | `security` | secret-scanning capability       |
+| "interpret deployment frequency" | `dora`     | metric-interpretation capability |
+| "write test for login feature"   | `test`     | tdd-test-writing capability      |
 
 ## Output
 
 A routing decision with:
+
 - Selected agent name
 - Match score
 - Capabilities matched

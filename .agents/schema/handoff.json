@@ -12,16 +12,24 @@
     "source": {
       "type": "string",
       "enum": [
-        "Human",
-        "Planner",
-        "Orchestrator",
-        "review",
-        "security",
-        "build-review",
+        "human",
+        "orchestrator",
         "spec",
-        "design"
+        "design",
+        "planner",
+        "build",
+        "test",
+        "test-execution",
+        "review",
+        "build-review",
+        "security",
+        "pipe",
+        "obs",
+        "dora",
+        "docs",
+        "onboarding"
       ],
-      "description": "Origin of this task"
+      "description": "Origin of this task (agent name, all lowercase)"
     },
     "branch": {
       "type": "string",

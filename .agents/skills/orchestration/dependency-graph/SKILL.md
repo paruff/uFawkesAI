@@ -35,15 +35,18 @@ Rule 1 — consumes_from defines edges
   If agent B.consumes_from includes agent A: A → B (A before B)
 
 Rule 2 — Known sequence (from the lifecycle):
-  spec → design → planner → build → [test-execution | test] → 
-  [review | build-review | security] → pipe → obs → dora
+  spec → design → planner → [build | test] →
+  [test-execution | review | build-review | security] → pipe → obs → dora
+
+  Note: test (TDD) consumes from spec only and can run in parallel with build.
 
 Rule 3 — Parallel branches:
-  After build, test-execution, review, build-review, and security 
+  After planner, build and test can run in parallel.
+  After build, test-execution, review, build-review, and security
   can run in parallel. The slowest path determines total wall time.
 
 Rule 4 — Circular dependency check:
-  Before returning, run DFS cycle detection. If a cycle exists, 
+  Before returning, run DFS cycle detection. If a cycle exists,
   report it and ask the human to break it.
 ```
 
@@ -67,24 +70,39 @@ execution_order:
     depends_on: [spec, design]
   - step: 4
     agent: build
-    parallel_with: []
+    parallel_with: [test]
     depends_on: [planner]
   - step: 5
-    agent: test-execution
-    parallel_with: [review]
-    depends_on: [build]
+    agent: test
+    parallel_with: [build]
+    depends_on: [planner]
   - step: 6
-    agent: review
-    parallel_with: [test-execution]
+    agent: test-execution
+    parallel_with: [review, build-review, security]
     depends_on: [build]
   - step: 7
+    agent: review
+    parallel_with: [test-execution, build-review, security]
+    depends_on: [build]
+  - step: 8
+    agent: build-review
+    parallel_with: [test-execution, review, security]
+    depends_on: [build]
+  - step: 9
+    agent: security
+    parallel_with: [test-execution, review, build-review]
+    depends_on: [build]
+  - step: 10
     agent: pipe
     parallel_with: [obs]
     depends_on: [build]
-  - step: 8
+  - step: 11
     agent: obs
     parallel_with: [pipe]
     depends_on: [build]
+  - step: 12
+    agent: dora
+    depends_on: [pipe, obs]
 ```
 
 ## Cycle Detection
