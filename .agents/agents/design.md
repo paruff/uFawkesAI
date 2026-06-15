@@ -156,6 +156,14 @@ Load these skills as needed:
 | K8s | Deployment + Service | COVERED |
 ```
 
+## Output Contract
+
+Your report MUST satisfy this contract. Self-validate before finishing.
+
+- Required sections: Design:, Architecture Overview, Components, Tradeoffs, Governance Alignment
+- Schema: `.agents/assertions/agent-output-schema.json`
+- Runner: `bash .agents/assertions/assertion-runner.sh <report.md> design`
+
 ## Post-Task Logging
 
 After producing your report, write a structured log entry:

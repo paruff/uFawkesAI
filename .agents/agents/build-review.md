@@ -169,6 +169,18 @@ Load these skills as needed:
 | MEDIUM | code-quality | Unused import in src/utils.ts | Remove import |
 ```
 
+## Output Contract
+
+Your report MUST satisfy this contract. Self-validate before finishing.
+
+- Required sections: Build Review Report, Spec Compliance, Design Compliance, Acceptance Criteria, Code Quality, Findings
+- Required fields: decision (PASS/FAIL/BLOCKED)
+- Findings required when decision is FAIL
+- Findings must include severity classification (CRITICAL/HIGH/MEDIUM/LOW)
+- Forbidden: "I think", "probably", "might be" — report actual findings
+- Schema: `.agents/assertions/agent-output-schema.json`
+- Runner: `bash .agents/assertions/assertion-runner.sh <report.md> build-review`
+
 ## Post-Task Logging
 
 After producing your report, write a structured log entry:

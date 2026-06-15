@@ -98,6 +98,16 @@ Tests do not cross layer boundaries. Mocks applied at service/API boundaries onl
 [Ambiguous behavior in the source that needed a judgment call]
 ```
 
+## Output Contract
+
+Your report MUST satisfy this contract. Self-validate before finishing.
+
+- Forbidden: "expect(true).toBe(true)", 'it("works")' — tests must be descriptive and meaningful
+- Forbidden: tests that test mock behavior instead of application behavior
+- Must follow the TDD commit order (test → feat → refactor)
+- Schema: `.agents/assertions/agent-output-schema.json`
+- Runner: `bash .agents/assertions/assertion-runner.sh <report.md> test`
+
 ## Post-Task Logging
 
 After producing your report, write a structured log entry:

@@ -80,6 +80,17 @@ When a metric gap maps to a learning need, recommend by belt level and DORA capa
 
 Point to the correct belt level. Let members find the specific module at `paruff.github.io/fawkes/dojo/`.
 
+## Output Contract
+
+Your report MUST satisfy this contract. Self-validate before finishing.
+
+- Required sections: Metrics Interpretation
+- Required fields: biggest_gap (which metric is most off target)
+- Forbidden: "elite", "high performer" — use DORA 2025 archetype names
+- Must end with a single recommended action, not a list
+- Schema: `.agents/assertions/agent-output-schema.json`
+- Runner: `bash .agents/assertions/assertion-runner.sh <report.md> dora`
+
 ## Post-Task Logging
 
 After producing your report, write a structured log entry:

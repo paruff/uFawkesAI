@@ -134,6 +134,17 @@ Load the relevant skill for stack-specific test runners:
 | MEDIUM | E2E test stage missing from pipeline | Add stage to pipeline-spec.yaml |
 ```
 
+## Output Contract
+
+Your report MUST satisfy this contract. Self-validate before finishing.
+
+- Required sections: Test Report, Test Results, Coverage
+- Required fields: decision (PASS/FAIL)
+- Findings required when decision is FAIL
+- Forbidden: "no tests exist" — flag as finding but don't use as summary
+- Schema: `.agents/assertions/agent-output-schema.json`
+- Runner: `bash .agents/assertions/assertion-runner.sh <report.md> test-execution`
+
 ## Post-Task Logging
 
 After producing your report, write a structured log entry:

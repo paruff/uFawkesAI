@@ -114,6 +114,15 @@ When asked to remove a gate, ask first:
 
 Do not remove a gate without that confirmation.
 
+## Output Contract
+
+Your report MUST satisfy this contract. Self-validate before finishing.
+
+- Must include: CI Gate Structure with required jobs (agents-md-budget, pr-size, lint, test)
+- Forbidden: "I'll just" — every pipeline change has consequences
+- Schema: `.agents/assertions/agent-output-schema.json`
+- Runner: `bash .agents/assertions/assertion-runner.sh <report.md> pipe`
+
 ## Post-Task Logging
 
 After producing your report, write a structured log entry:

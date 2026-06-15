@@ -116,6 +116,15 @@ Future agents read your docs as context. Write with this in mind:
 [Terminology, classification, or accuracy questions for human review]
 ```
 
+## Output Contract
+
+Your report MUST satisfy this contract. Self-validate before finishing.
+
+- Required: every document must have a last-updated date and status (Draft/Active/Deprecated)
+- ADRs must include Status, Date, Author, Context, Decision, Rationale, Consequences
+- Schema: `.agents/assertions/agent-output-schema.json`
+- Runner: `bash .agents/assertions/assertion-runner.sh <report.md> docs`
+
 ## Post-Task Logging
 
 After producing your report, write a structured log entry:

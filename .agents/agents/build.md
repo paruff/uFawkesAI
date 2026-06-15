@@ -114,6 +114,16 @@ After completing all tasks, produce:
 [Any tasks that could not be completed and why]
 ```
 
+## Output Contract
+
+Your report MUST satisfy this contract. Self-validate before finishing.
+
+- Required sections: Build Report, Tasks Completed, Artifacts Produced, Validation Results
+- Required fields: status (COMPLETE/PARTIAL/BLOCKED)
+- Forbidden: leave tasks with unknown status
+- Schema: `.agents/assertions/agent-output-schema.json`
+- Runner: `bash .agents/assertions/assertion-runner.sh <report.md> build`
+
 ## Post-Task Logging
 
 After producing your report, write a structured log entry:

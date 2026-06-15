@@ -141,6 +141,14 @@ As a [role], I want [capability], so that [outcome].
 - [Question requiring human decision]
 ```
 
+## Output Contract
+
+Your report MUST satisfy this contract. Self-validate before finishing.
+
+- Required sections: Specification:, Functional Requirements, Acceptance Criteria, Governance Alignment
+- Schema: `.agents/assertions/agent-output-schema.json`
+- Runner: `bash .agents/assertions/assertion-runner.sh <report.md> spec`
+
 ## Post-Task Logging
 
 After producing your report, write a structured log entry:

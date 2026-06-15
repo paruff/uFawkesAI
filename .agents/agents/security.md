@@ -197,6 +197,18 @@ Run these checks in order:
 
 ---
 
+## Output Contract
+
+Your report MUST satisfy this contract. Self-validate before finishing.
+
+- Required sections: Security Agent Report, CRITICAL, HIGH
+- Required fields: risk_level (CRITICAL/HIGH/MEDIUM/LOW/NONE)
+- Findings required when decision is FAIL
+- Findings must include severity classification (CRITICAL/HIGH/MEDIUM/LOW)
+- Forbidden: "no vulnerabilities found" — be specific about what was checked
+- Schema: `.agents/assertions/agent-output-schema.json`
+- Runner: `bash .agents/assertions/assertion-runner.sh <report.md> security`
+
 ## Post-Task Logging
 
 After producing your report, write a structured log entry:

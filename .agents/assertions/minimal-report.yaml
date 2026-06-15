@@ -1,0 +1,140 @@
+# Agent Output Contracts
+# Each agent's report must satisfy its contract before being considered complete.
+# Schema: .agents/assertions/agent-output-schema.json
+# Runner: bash .agents/assertions/assertion-runner.sh <report.md> <agent-name>
+
+agents:
+  build-review:
+    required_sections:
+      - "Build Review Report"
+      - "Spec Compliance"
+      - "Design Compliance"
+      - "Acceptance Criteria"
+      - "Code Quality"
+      - "Findings"
+    required_fields:
+      decision: true
+    findings_required_when: FAIL
+    severity_classification: true
+    forbidden_patterns:
+      - "I think"
+      - "probably"
+      - "might be"
+
+  build:
+    required_sections:
+      - "Build Report"
+      - "Tasks Completed"
+      - "Artifacts Produced"
+      - "Validation Results"
+    required_fields:
+      status: true
+    findings_required_when: never
+
+  design:
+    required_sections:
+      - "Design:"
+      - "Architecture Overview"
+      - "Components"
+      - "Tradeoffs"
+      - "Governance Alignment"
+    findings_required_when: never
+
+  docs:
+    required_sections: []
+    optional_sections:
+      - "ADR-"
+      - "Runbook"
+    findings_required_when: never
+
+  dora:
+    required_sections:
+      - "Metrics Interpretation"
+    required_fields:
+      biggest_gap: true
+    findings_required_when: never
+    forbidden_patterns:
+      - "elite"
+      - "high performer"
+
+  obs:
+    required_sections: []
+    findings_required_when: never
+    forbidden_patterns:
+      - "hardcode"
+
+  onboarding:
+    required_sections: []
+    findings_required_when: never
+    forbidden_patterns:
+      - "PLACEHOLDER"
+
+  orchestrator:
+    required_sections: []
+    findings_required_when: never
+    forbidden_patterns:
+      - "I'll implement"
+
+  pipe:
+    required_sections: []
+    findings_required_when: never
+    forbidden_patterns:
+      - "I'll just"
+
+  planner:
+    required_sections:
+      - "Issue"
+      - "Backlog Summary"
+    required_fields:
+      total_estimated_lines: true
+    findings_required_when: never
+
+  review:
+    required_sections:
+      - "Review Agent Assessment"
+      - "Architecture Violations"
+      - "Test Gaps"
+    required_fields:
+      size_decision: true
+    findings_required_when: REQUEST_CHANGES
+    forbidden_patterns:
+      - "LGTM"
+      - "looks good"
+
+  security:
+    required_sections:
+      - "Security Agent Report"
+      - "CRITICAL"
+      - "HIGH"
+    required_fields:
+      risk_level: true
+    findings_required_when: FAIL
+    severity_classification: true
+    forbidden_patterns:
+      - "no vulnerabilities found"  # must be specific
+
+  spec:
+    required_sections:
+      - "Specification:"
+      - "Functional Requirements"
+      - "Acceptance Criteria"
+      - "Governance Alignment"
+    findings_required_when: never
+
+  test:
+    required_sections: []
+    findings_required_when: never
+    forbidden_patterns:
+      - "expect(true).toBe(true)"
+      - "it(\"works\""
+
+  test-execution:
+    required_sections:
+      - "Test Report"
+      - "Test Results"
+      - "Coverage"
+    required_fields:
+      decision: true
+    findings_required_when: FAIL
+    forbidden_patterns:
+      - "no tests exist"

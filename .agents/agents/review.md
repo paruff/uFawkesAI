@@ -115,6 +115,17 @@ REQUEST CHANGES — [N] blocking issues listed above
 ESCALATE — architectural decision required before this can merge
 ```
 
+## Output Contract
+
+Your report MUST satisfy this contract. Self-validate before finishing.
+
+- Required sections: Review Agent Assessment, Architecture Violations, Test Gaps
+- Required fields: size_decision (PASS/EXCEEDS LIMIT)
+- Findings required when decision is REQUEST CHANGES
+- Forbidden: "LGTM", "looks good" — be specific
+- Schema: `.agents/assertions/agent-output-schema.json`
+- Runner: `bash .agents/assertions/assertion-runner.sh <report.md> review`
+
 ## Post-Task Logging
 
 After producing your report, write a structured log entry:

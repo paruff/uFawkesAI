@@ -106,6 +106,15 @@ Routing to @obs now.
 | Promotion to production  | pipe    | dora (deployment frequency) |
 | Incident / rollback      | obs     | dora (FDRT tracking)        |
 
+## Output Contract
+
+Your report MUST satisfy this contract. Self-validate before finishing.
+
+- Forbidden: "I'll implement" — orchestrator does not implement
+- Must include Handoff block with task, source, branch, files in scope
+- Schema: `.agents/assertions/agent-output-schema.json`
+- Runner: `bash .agents/assertions/assertion-runner.sh <report.md> orchestrator`
+
 ## Post-Task Logging
 
 After producing your report, write a structured log entry:

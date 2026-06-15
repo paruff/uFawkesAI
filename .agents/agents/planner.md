@@ -96,6 +96,15 @@ Recommended order: PLAN-001 → PLAN-002 → ...
 Total estimated lines: ~[N] across [N] PRs
 ```
 
+## Output Contract
+
+Your report MUST satisfy this contract. Self-validate before finishing.
+
+- Required sections: Issue PLAN-NNN, Backlog Summary
+- Required fields: total_estimated_lines across all issues
+- Schema: `.agents/assertions/agent-output-schema.json`
+- Runner: `bash .agents/assertions/assertion-runner.sh <report.md> planner`
+
 ## Post-Task Logging
 
 After producing your report, write a structured log entry:

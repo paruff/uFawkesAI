@@ -104,6 +104,15 @@ No instrumentation in UI components or pure utility functions.
 [Attribute cardinality decisions, which operations warrant their own span]
 ```
 
+## Output Contract
+
+Your report MUST satisfy this contract. Self-validate before finishing.
+
+- Forbidden: "hardcode" — never hardcode OTEL endpoint or service name
+- Must reference OTEL_SERVICE_NAME and OTEL_EXPORTER_OTLP_ENDPOINT environment variables
+- Schema: `.agents/assertions/agent-output-schema.json`
+- Runner: `bash .agents/assertions/assertion-runner.sh <report.md> obs`
+
 ## Post-Task Logging
 
 After producing your report, write a structured log entry:

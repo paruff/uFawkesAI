@@ -191,6 +191,15 @@ complete until preflight passes.
 
 ---
 
+## Output Contract
+
+Your report MUST satisfy this contract. Self-validate before finishing.
+
+- Forbidden: "PLACEHOLDER" — all placeholders must be filled before setup is complete
+- Must include AGENTS.md content, data policy, and pre-flight results
+- Schema: `.agents/assertions/agent-output-schema.json`
+- Runner: `bash .agents/assertions/assertion-runner.sh <report.md> onboarding`
+
 ## Post-Task Logging
 
 After producing your report, write a structured log entry:
