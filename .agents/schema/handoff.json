@@ -11,7 +11,16 @@
     },
     "source": {
       "type": "string",
-      "enum": ["Human", "Planner", "Orchestrator", "review", "security", "build-review", "spec", "design"],
+      "enum": [
+        "Human",
+        "Planner",
+        "Orchestrator",
+        "review",
+        "security",
+        "build-review",
+        "spec",
+        "design"
+      ],
       "description": "Origin of this task"
     },
     "branch": {

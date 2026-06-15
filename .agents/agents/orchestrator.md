@@ -28,20 +28,20 @@ Options: (A) Wait for one branch to merge. (B) Human override — confirm explic
 
 Use this table for well-known tasks. If the task does not match clearly, use the capability-matching skill.
 
-| Task involves...                      | Route to                             |
-| ------------------------------------- | ------------------------------------ |
-| Setup, first-time config              | `onboarding`                         |
-| Decomposing a feature into issues     | `planner`                            |
-| Writing/updating documentation, ADRs  | `docs`                               |
-| Writing tests, increasing coverage    | `test`                               |
-| Reviewing a PR, assessing risk        | `review`                             |
-| Security audit, secret scanning       | `security`                           |
-| CI/CD pipelines, GitHub Actions       | `pipe`                               |
-| OTEL, Prometheus, Grafana, uFawkesObs | `obs`                                |
-| DORA metrics, archetype coaching      | `dora`                               |
-| Language conventions question         | load `lang-[language]` skill         |
-| ADR creation                          | load `adr-writer` skill              |
-| Token cost audit                      | load `token-budget` skill            |
+| Task involves...                      | Route to                               |
+| ------------------------------------- | -------------------------------------- |
+| Setup, first-time config              | `onboarding`                           |
+| Decomposing a feature into issues     | `planner`                              |
+| Writing/updating documentation, ADRs  | `docs`                                 |
+| Writing tests, increasing coverage    | `test`                                 |
+| Reviewing a PR, assessing risk        | `review`                               |
+| Security audit, secret scanning       | `security`                             |
+| CI/CD pipelines, GitHub Actions       | `pipe`                                 |
+| OTEL, Prometheus, Grafana, uFawkesObs | `obs`                                  |
+| DORA metrics, archetype coaching      | `dora`                                 |
+| Language conventions question         | load `lang-[language]` skill           |
+| ADR creation                          | load `adr-writer` skill                |
+| Token cost audit                      | load `token-budget` skill              |
 | Unclear                               | Use capability-matching skill (Rule 3) |
 
 ## Rule 3 — Capability Matching
@@ -170,6 +170,7 @@ For tasks that span multiple domains, compose skills rather than routing to a si
 4. Package the composed skill set in the handoff's `Skills to load` field
 
 Example: a task to "harden a pipeline with security gates" needs:
+
 - `ci/` (pipeline structure)
 - `security/pipeline-security` (security gates)
 - `security/sca` (dependency scanning)
