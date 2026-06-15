@@ -75,7 +75,11 @@ class TestWorkflowValidation:
                     )
 
     def test_use_official_actions(self, workflow_files):
-        """Workflows should use official GitHub actions or well-known third-party actions."""
+        """Workflows should use official GitHub actions or well-known third-party actions.
+
+        NOTE: This allowlist is a starting point. Customize it for your project's
+        specific action dependencies. Add new prefixes as needed.
+        """
         allowed_actions = [
             "actions/",
             "./",
@@ -88,6 +92,10 @@ class TestWorkflowValidation:
             "aquasecurity/",
             "ludeeus/",
             "golangci/",
+            "aws-actions/",
+            "azure/",
+            "hashicorp/",
+            "google-github-actions/",
         ]
         for f in workflow_files:
             with open(f) as fh:

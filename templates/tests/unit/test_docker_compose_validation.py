@@ -4,6 +4,7 @@ Customize this file for your project's specific Docker Compose requirements.
 """
 
 import pytest
+import re
 import yaml
 from pathlib import Path
 
@@ -57,26 +58,24 @@ class TestDockerComposeValidation:
         for service_name, service_config in docker_compose_config["services"].items():
             if "healthcheck" in service_config:
                 healthcheck = service_config["healthcheck"]
-                assert "retries" in healthcheck or "test" in healthcheck, (
-                    f"Service '{service_name}' healthcheck missing retries/test"
+                assert "retries" in healthcheck, (
+                    f"Service '{service_name}' healthcheck missing 'retries'"
                 )
 
     def test_no_secrets_in_compose(self, docker_compose_config):
         """No hardcoded secrets or credentials in docker-compose.yml."""
         content = yaml.dump(docker_compose_config)
-        # Only check for actual hardcoded values, not variable references
+        # Use regex with word boundaries to avoid false positives
         sensitive_patterns = [
-            "password: admin",
-            "password: password",
-            "password: root",
-            "secret: secret",
-            "token: token",
-            "api_key: key",
-            "PRIVATE_KEY: -----BEGIN",
+            r"password:\s*['\"]?(admin|password|root)['\"]?\s*$",
+            r"secret:\s*['\"]?secret['\"]?\s*$",
+            r"token:\s*['\"]?token['\"]?\s*$",
+            r"api_key:\s*['\"]?key['\"]?\s*$",
+            r"PRIVATE_KEY:\s*['\"]?-----BEGIN",
         ]
         for pattern in sensitive_patterns:
-            assert pattern.lower() not in content.lower(), (
-                f"Found hardcoded secret '{pattern}' in docker-compose.yml"
+            assert not re.search(pattern, content, re.IGNORECASE | re.MULTILINE), (
+                f"Found hardcoded secret matching '{pattern}' in docker-compose.yml"
             )
 
     def test_volumes_are_named(self, docker_compose_config):

@@ -25,24 +25,31 @@ class TestPipelineAcceptance:
         # Wait for services to be healthy
         time.sleep(60)
         yield
+        # Teardown: Stop stack
+        subprocess.run(
+            ["docker", "compose", "down", "-v"],
+            capture_output=True,
+            text=True,
+            cwd=str(Path(__file__).parent.parent.parent),
+        )
 
-    def test_pipeline_can_start(self):
+    def test_pipeline_can_start(self, service_base_url):
         """Pipeline should be able to start."""
         try:
             # Check if the main service is running
             response = requests.get(
-                "http://localhost:8080/login",
+                f"{service_base_url}/login",
                 timeout=10,
             )
             assert response.status_code == 200
         except requests.exceptions.ConnectionError:
             pytest.skip("Main service not available")
 
-    def test_has_required_plugins(self):
+    def test_has_required_plugins(self, service_base_url):
         """Required plugins should be installed."""
         try:
             response = requests.get(
-                "http://localhost:8080/pluginManager/api/json",
+                f"{service_base_url}/pluginManager/api/json",
                 timeout=10,
             )
             if response.status_code == 200:
@@ -61,11 +68,11 @@ class TestPipelineAcceptance:
         except requests.exceptions.ConnectionError:
             pytest.skip("Plugin manager not available")
 
-    def test_has_pipeline_jobs(self):
+    def test_has_pipeline_jobs(self, service_base_url):
         """Pipeline jobs should be configured."""
         try:
             response = requests.get(
-                "http://localhost:8080/api/json?tree=jobs[name]",
+                f"{service_base_url}/api/json?tree=jobs[name]",
                 timeout=10,
             )
             if response.status_code == 200:

@@ -5,6 +5,7 @@ Customize this file for your project's specific Jenkinsfile requirements.
 
 import pytest
 import re
+import warnings
 from pathlib import Path
 
 
@@ -64,7 +65,10 @@ class TestJenkinsfileValidation:
         )
         # Soft assertion - warn but don't fail
         if not has_timeout:
-            pytest.warns(UserWarning, "Jenkinsfile has no timeout configured")
+            warnings.warn(
+                "Jenkinsfile has no timeout configured",
+                UserWarning,
+            )
 
     def test_stages_are_named(self, jenkinsfile_content):
         """All stages should have descriptive names."""

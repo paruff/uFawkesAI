@@ -69,9 +69,27 @@ class TestDockerComposeIntegration:
             cwd=str(Path(__file__).parent.parent.parent),
         )
         if result.returncode == 0:
-            # Parse the output to check for port conflicts
-            # This is a basic check - real implementation would parse JSON
-            assert "0.0.0.0:" in result.stdout or "0.0.0.0:" not in result.stdout
+            # Parse JSON output to check for port conflicts
+            import json
+            ports_seen = {}
+            for line in result.stdout.strip().split("\n"):
+                if not line:
+                    continue
+                try:
+                    service = json.loads(line)
+                    ports = service.get("Publishers", [])
+                    for port_info in ports:
+                        published_port = port_info.get("PublishedPort", 0)
+                        if published_port > 0:
+                            if published_port in ports_seen:
+                                pytest.fail(
+                                    f"Port conflict: port {published_port} used by "
+                                    f"both '{ports_seen[published_port]}' and "
+                                    f"'{service.get('Name', 'unknown')}'"
+                                )
+                            ports_seen[published_port] = service.get("Name", "unknown")
+                except json.JSONDecodeError:
+                    pass
 
     def test_volumes_are_created(self):
         """Docker volumes should be created for persistence."""
