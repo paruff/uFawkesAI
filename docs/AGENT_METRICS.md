@@ -33,7 +33,7 @@ _No data yet. Run `bash scripts/agent-metrics.sh --save` after agents have logge
 | Finding actionability < 40% | Agent produces too much noise | Tighten the agent's protocol |
 | Manual review burden > 30% | Findings require too much human judgment | Add more specific rules to the agent |
 | Blocker density increasing | Agents are getting more critical — or quality is dropping | Investigate root cause |
-| Single agent > 50% of all invocations | Other agents may be underutilized or routing is wrong | Review orchestrator routing |
+| Single agent > 50% of all invocations | Other agents may be underutilized or routing is wrong | Review agent routing in AGENTS.md |
 
 ---
 

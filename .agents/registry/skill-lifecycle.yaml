@@ -1,38 +1,71 @@
-# Skill Lifecycle Registry — Phase 3
+# Skill Lifecycle Registry
 # Canonical source of truth for all uFawkesAI skills.
 # Schema: .agents/schema/skill-lifecycle.json
-# Validator: python3 -c "import json, yaml; ..."
 #
 # Status values: active, stable, beta, draft, deprecated, experimental
 # Version follows semver.
+#
+# Core Pipeline: spec → design → build → test → test-execution → review → delivery
 
 skills:
-  adr-writer:
-    status: active
-    version: 1.0.0
-    dependencies: []
-    load_trigger: "load adr-writer skill"
-    sub_skills: []
+  # ============================================
+  # Core Pipeline Skills
+  # ============================================
 
-  agent-observability:
-    status: active
-    version: 1.0.0
-    dependencies:
-      - obs-bootstrap
-    load_trigger: "agent telemetry"
+  spec:
+    status: stable
+    version: 1.1.0
+    dependencies: []
+    load_trigger: "load spec skill"
     sub_skills:
-      - agent-observability/invocation-tracking
-      - agent-observability/skill-load-events
-      - agent-observability/finding-quality
-      - agent-observability/decision-logging
+      - spec/requirements-extraction
+      - spec/acceptance-criteria
+      - spec/policy-validation
+      - spec/pipeline-policy
+      - spec/k8s-policy
+      - spec/template-governance
+
+  design:
+    status: stable
+    version: 1.1.0
+    dependencies:
+      - spec
+    load_trigger: "load design skill"
+    sub_skills:
+      - design/architecture-decomposition
+      - design/component-identification
+      - design/interface-definition
+      - design/k8s-design-validation
+
+  plan:
+    status: stable
+    version: 1.1.0
+    dependencies:
+      - spec
+      - design
+    load_trigger: "load plan skill"
+    sub_skills:
+      - plan/task-decomposition
+      - plan/dependency-mapping
+      - plan/effort-estimation
+      - plan/risk-identification
+      - plan/skill-matching
+      - plan/governance-alignment
+
+  test:
+    status: stable
+    version: 1.1.0
+    dependencies:
+      - spec
+    load_trigger: "load test skill"
+    sub_skills: []
 
   build:
     status: stable
     version: 1.1.0
     dependencies:
-      - plan
       - design
-    load_trigger: "@build code generation"
+    load_trigger: "load build skill"
     sub_skills:
       - build/code-generation
       - build/manifest-generation
@@ -42,265 +75,29 @@ skills:
       - build/template-application
       - build/refactoring
 
-  cd:
+  test-execution:
     status: stable
     version: 1.1.0
     dependencies:
       - build
-      - release-engineering
-    load_trigger: "@pipe CD execution"
+      - test
+    load_trigger: "load test-execution skill"
     sub_skills:
-      - cd/cd-orchestration
-      - cd/deployment-strategy
-      - cd/progressive-delivery
-      - cd/blue-green
-      - cd/canary-analysis
-      - cd/rollout-execution
-      - cd/environment-promotion
-      - cd/automated-promotion
-      - cd/multi-cluster-delivery
-      - cd/deployment-policy
-
-  chaos-testing:
-    status: beta
-    version: 1.0.0
-    dependencies:
-      - runtime-operations
-    load_trigger: "resilience testing"
-    sub_skills:
-      - chaos-testing/chaos-injection
-      - chaos-testing/failure-modes
-      - chaos-testing/gitops-drift-chaos
-      - chaos-testing/cluster-chaos
-
-  ci:
-    status: stable
-    version: 1.1.0
-    dependencies:
-      - build
-      - test-execution
-    load_trigger: "@pipe CI execution"
-    sub_skills:
-      - ci/ci-pipeline-execution
-      - ci/ci-quality-gates
-      - ci/ci-caching
-      - ci/ci-parallelization
-      - ci/ci-matrix-execution
-      - ci/ci-environment-validation
-      - ci/ci-artifact-production
-      - ci/ci-failure-recovery
-      - ci/ci-observability
-      - ci/ci-performance
-
-  design:
-    status: stable
-    version: 1.1.0
-    dependencies:
-      - spec
-    load_trigger: "@design architecture"
-    sub_skills:
-      - design/architecture-decomposition
-      - design/component-identification
-      - design/interface-definition
-      - design/k8s-design-validation
-
-  developer-experience:
-    status: active
-    version: 1.0.0
-    dependencies: []
-    load_trigger: "dev environment setup"
-    sub_skills:
-      - developer-experience/dev-container-setup
-      - developer-experience/workspace-bootstrap
-      - developer-experience/local-environment-simulation
-      - developer-experience/cli-scaffolding
-
-  dora-metrics:
-    status: active
-    version: 1.0.0
-    dependencies: []
-    load_trigger: "dora metrics"
-    sub_skills: []
-
-  e2e-testing:
-    status: active
-    version: 1.0.0
-    dependencies:
-      - test-execution
-    load_trigger: "end-to-end test patterns"
-    sub_skills:
-      - e2e-testing/e2e-happy-path
-      - e2e-testing/e2e-failure-paths
-      - e2e-testing/e2e-deployment-validation
-      - e2e-testing/e2e-rollback
-
-  gitops:
-    status: stable
-    version: 1.1.0
-    dependencies:
-      - ci
-    load_trigger: "GitOps operations"
-    sub_skills:
-      - gitops/gitops-manifest-validation
-      - gitops/gitops-drift-detection
-      - gitops/gitops-environment-promotion
-      - gitops/gitops-reconciliation-testing
-
-  governance-policy:
-    status: active
-    version: 1.0.0
-    dependencies:
-      - design
-      - security
-    load_trigger: "@orchestrator policy gates"
-    sub_skills:
-      - governance-policy/policy-as-code
-      - governance-policy/compliance-audit
-      - governance-policy/cost-governance
-      - governance-policy/rbac-governance
-
-  integration-testing:
-    status: active
-    version: 1.0.0
-    dependencies:
-      - test-execution
-    load_trigger: "integration test patterns"
-    sub_skills:
-      - integration-testing/pipe-to-obs
-      - integration-testing/obs-to-gitops
-      - integration-testing/gitops-to-controller
-      - integration-testing/full-stack
-
-  lang-go:
-    status: stable
-    version: 1.0.0
-    dependencies: []
-    load_trigger: "Go project context"
-    sub_skills: []
-
-  lang-python:
-    status: stable
-    version: 1.0.0
-    dependencies: []
-    load_trigger: "Python project context"
-    sub_skills: []
-
-  lang-typescript:
-    status: stable
-    version: 1.0.0
-    dependencies: []
-    load_trigger: "TypeScript project context"
-    sub_skills: []
-
-  load-testing:
-    status: beta
-    version: 1.0.0
-    dependencies:
-      - test-execution
-    load_trigger: "performance testing"
-    sub_skills:
-      - load-testing/pipeline-throughput
-      - load-testing/system-stress
-      - load-testing/obs-gitops-load
-      - load-testing/registry-load
-
-  metrics:
-    status: deprecated
-    version: 0.5.0
-    deprecated: true
-    replaced_by: dora-metrics
-    deprecation_reason: "Merged into dora-metrics skill which covers both metric calculation and interpretation"
-    dependencies: []
-    load_trigger: "metrics (legacy)"
-    sub_skills: []
-
-  obs-bootstrap:
-    status: stable
-    version: 1.0.0
-    dependencies: []
-    load_trigger: "add observability"
-    sub_skills: []
-
-  observability-testing:
-    status: beta
-    version: 1.0.0
-    dependencies:
-      - obs-bootstrap
-    load_trigger: "telemetry validation"
-    sub_skills:
-      - observability-testing/log-schema-validation
-      - observability-testing/metrics-validation
-      - observability-testing/trace-propagation
-      - observability-testing/observability-health
-
-  orchestration:
-    status: active
-    version: 1.0.0
-    dependencies:
-      - agent-observability
-    load_trigger: "@orchestrator task routing"
-    sub_skills:
-      - orchestration/capability-matching
-      - orchestration/dependency-graph
-      - orchestration/handoff-validation
-
-  pipeline-bootstrap:
-    status: stable
-    version: 1.0.0
-    dependencies:
-      - ci
-    load_trigger: "setup pipeline"
-    sub_skills: []
-
-  plan:
-    status: stable
-    version: 1.1.0
-    dependencies:
-      - spec
-      - design
-    load_trigger: "@planner task planning"
-    sub_skills:
-      - plan/task-decomposition
-      - plan/dependency-mapping
-      - plan/effort-estimation
-      - plan/risk-identification
-      - plan/skill-matching
-      - plan/governance-alignment
-
-  platform-engineering:
-    status: active
-    version: 1.0.0
-    dependencies:
-      - build
-      - ci
-      - cd
-    load_trigger: "platform engineering"
-    sub_skills:
-      - platform-engineering/skill-dependency-graph
-      - platform-engineering/pipeline-spec-enforcement
-      - platform-engineering/golden-path-validation
-      - platform-engineering/template-drift-detection
-
-  release-engineering:
-    status: stable
-    version: 1.1.0
-    dependencies:
-      - build
-      - ci
-    load_trigger: "release versioning"
-    sub_skills:
-      - release-engineering/semantic-versioning
-      - release-engineering/changelog-generation
-      - release-engineering/release-metadata
-      - release-engineering/git-tagging
+      - test-execution/unit-test-execution
+      - test-execution/integration-test-execution
+      - test-execution/e2e-test-execution
+      - test-execution/test-coverage-validation
+      - test-execution/pipeline-test-stage-validation
+      - test-execution/runtime-simulation-validation
+      - test-execution/performance-smoke-testing
 
   review:
     status: stable
-    version: 1.1.0
+    version: 2.0.0
     dependencies:
-      - design
       - build
-    load_trigger: "@build-review compliance gates"
+      - test-execution
+    load_trigger: "load review skill"
     sub_skills:
       - review/spec-compliance
       - review/design-compliance
@@ -312,95 +109,28 @@ skills:
       - review/k8s-policy
       - review/pipeline-policy
       - review/gitops-overlay
+    modes:
+      - pr-review
+      - build-validation
 
-  runtime-operations:
-    status: stable
-    version: 1.1.0
-    dependencies:
-      - obs-bootstrap
-    load_trigger: "@obs runtime ops"
-    sub_skills:
-      - runtime-operations/health-monitoring
-      - runtime-operations/incident-detection
-      - runtime-operations/incident-triage
-      - runtime-operations/incident-correlation
-      - runtime-operations/runbook-automation
-      - runtime-operations/auto-remediation
-      - runtime-operations/drift-detection
-      - runtime-operations/slo-management
-      - runtime-operations/capacity-management
-      - runtime-operations/multi-cluster-ops
-
-  security:
+  delivery:
     status: stable
     version: 1.1.0
     dependencies:
       - build
-    load_trigger: "@security security gates"
-    sub_skills:
-      - security/sast
-      - security/sca
-      - security/secret-governance
-      - security/rbac-validation
-      - security/container-security
-      - security/pipeline-security
-      - security/k8s-security
-      - security/gitops-security
-      - security/policy-validation
-
-  security-testing:
-    status: active
-    version: 1.0.0
-    dependencies:
-      - security
-    load_trigger: "security scanning"
-    sub_skills:
-      - security-testing/sast
-      - security-testing/secret-detection
-      - security-testing/dependency-scanning
-      - security-testing/container-security
-
-  spec:
-    status: stable
-    version: 1.1.0
-    dependencies: []
-    load_trigger: "@spec requirements extraction"
-    sub_skills:
-      - spec/requirements-extraction
-      - spec/acceptance-criteria
-      - spec/policy-validation
-      - spec/pipeline-policy
-      - spec/k8s-policy
-      - spec/template-governance
-
-  test-execution:
-    status: stable
-    version: 1.1.0
-    dependencies:
-      - build
-    load_trigger: "@test-execution run tests"
-    sub_skills:
-      - test-execution/unit-test-execution
-      - test-execution/integration-test-execution
-      - test-execution/e2e-test-execution
-      - test-execution/test-coverage-validation
-      - test-execution/pipeline-test-stage-validation
-      - test-execution/runtime-simulation-validation
-      - test-execution/performance-smoke-testing
-
-  test-generation:
-    status: active
-    version: 1.0.0
-    dependencies:
-      - test-execution
-    load_trigger: "write tests"
+      - review
+    load_trigger: "load delivery skill"
     sub_skills: []
 
-  token-budget:
+  # ============================================
+  # Cross-Cutting Skills
+  # ============================================
+
+  observability:
     status: active
     version: 1.0.0
     dependencies: []
-    load_trigger: "token cost audit"
+    load_trigger: "load observability skill"
     sub_skills: []
 
   cross-validation:
@@ -410,21 +140,190 @@ skills:
       - spec
       - design
       - build
-      - test-generation
+      - test
       - test-execution
       - review
-      - security
-    load_trigger: "@orchestrator cross-validation"
+    load_trigger: "load cross-validation skill"
     sub_skills: []
+
+  token-budget:
+    status: active
+    version: 1.0.0
+    dependencies: []
+    load_trigger: "load token-budget skill"
+    sub_skills: []
+
+  # ============================================
+  # Language Skills
+  # ============================================
+
+  lang-typescript:
+    status: stable
+    version: 1.0.0
+    dependencies: []
+    load_trigger: "TypeScript project context"
+    sub_skills: []
+
+  lang-python:
+    status: stable
+    version: 1.0.0
+    dependencies: []
+    load_trigger: "Python project context"
+    sub_skills: []
+
+  lang-go:
+    status: stable
+    version: 1.0.0
+    dependencies: []
+    load_trigger: "Go project context"
+    sub_skills: []
+
+  # ============================================
+  # Testing Skills
+  # ============================================
 
   unit-testing:
     status: active
     version: 1.0.0
-    dependencies:
-      - test-generation
-    load_trigger: "unit test patterns"
+    dependencies: []
+    load_trigger: "load unit-testing skill"
     sub_skills:
-      - unit-testing/unit-core-logic
-      - unit-testing/unit-mocking
-      - unit-testing/unit-error-handling
       - unit-testing/unit-contracts
+      - unit-testing/unit-core-logic
+      - unit-testing/unit-error-handling
+      - unit-testing/unit-mocking
+
+  integration-testing:
+    status: active
+    version: 1.0.0
+    dependencies: []
+    load_trigger: "load integration-testing skill"
+    sub_skills:
+      - integration-testing/full-stack
+      - integration-testing/gitops-to-controller
+      - integration-testing/obs-to-gitops
+      - integration-testing/pipe-to-obs
+
+  e2e-testing:
+    status: active
+    version: 1.0.0
+    dependencies: []
+    load_trigger: "load e2e-testing skill"
+    sub_skills:
+      - e2e-testing/e2e-deployment-validation
+      - e2e-testing/e2e-failure-paths
+      - e2e-testing/e2e-happy-path
+      - e2e-testing/e2e-rollback
+
+  observability-testing:
+    status: active
+    version: 1.0.0
+    dependencies: []
+    load_trigger: "load observability-testing skill"
+    sub_skills:
+      - observability-testing/log-schema-validation
+      - observability-testing/metrics-validation
+      - observability-testing/observability-health
+      - observability-testing/trace-propagation
+
+  # ============================================
+  # Security & Compliance Skills
+  # ============================================
+
+  security-testing:
+    status: active
+    version: 1.0.0
+    dependencies: []
+    load_trigger: "load security-testing skill"
+    sub_skills:
+      - security-testing/container-security
+      - security-testing/dependency-scanning
+      - security-testing/sast
+      - security-testing/secret-detection
+
+  # ============================================
+  # Runtime Operations Skills
+  # ============================================
+
+  runtime-operations:
+    status: active
+    version: 1.0.0
+    dependencies: []
+    load_trigger: "load runtime-operations skill"
+    sub_skills:
+      - runtime-operations/auto-remediation
+      - runtime-operations/capacity-management
+      - runtime-operations/drift-detection
+      - runtime-operations/health-monitoring
+      - runtime-operations/incident-correlation
+      - runtime-operations/incident-detection
+      - runtime-operations/incident-triage
+      - runtime-operations/multi-cluster-ops
+      - runtime-operations/runbook-automation
+      - runtime-operations/slo-management
+
+  # ============================================
+  # Resilience Testing Skills
+  # ============================================
+
+  chaos-testing:
+    status: active
+    version: 1.0.0
+    dependencies: []
+    load_trigger: "load chaos-testing skill"
+    sub_skills:
+      - chaos-testing/chaos-injection
+      - chaos-testing/cluster-chaos
+      - chaos-testing/failure-modes
+      - chaos-testing/gitops-drift-chaos
+
+  load-testing:
+    status: active
+    version: 1.0.0
+    dependencies: []
+    load_trigger: "load load-testing skill"
+    sub_skills:
+      - load-testing/obs-gitops-load
+      - load-testing/pipeline-throughput
+      - load-testing/registry-load
+      - load-testing/system-stress
+
+  # ============================================
+  # Platform Skills
+  # ============================================
+
+  golden-paths:
+    status: active
+    version: 1.0.0
+    dependencies: []
+    load_trigger: "load golden-paths skill"
+    sub_skills: []
+
+  dev-experience:
+    status: stable
+    version: 1.0.0
+    dependencies: []
+    load_trigger: "load dev-experience skill"
+    sub_skills:
+      - dev-experience/cli-scaffolding
+      - dev-experience/dev-container-setup
+      - dev-experience/local-environment-simulation
+      - dev-experience/workspace-bootstrap
+
+  model-routing:
+    status: active
+    version: 1.0.0
+    dependencies: []
+    load_trigger: "load model-routing skill"
+    sub_skills: []
+
+  agent-observability:
+    status: active
+    version: 1.0.0
+    dependencies: []
+    load_trigger: "load agent-observability skill"
+    sub_skills:
+      - agent-observability/invocation-tracking
+      - agent-observability/skill-load-events
+      - agent-observability/finding-quality
+      - agent-observability/decision-logging

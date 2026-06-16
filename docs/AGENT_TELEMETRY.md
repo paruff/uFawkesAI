@@ -16,7 +16,7 @@ Emitted when an agent begins processing. Source: Phase 0 log entry creation.
 | `agent.name` | string | yes | Agent identifier (matches filename without .md) |
 | `session_id` | string | yes | Unique invocation identifier |
 | `mode` | string | no | Operational mode (e.g. "pr-audit", "deep-review") |
-| `trigger` | string | no | What triggered this (human, orchestrator, CI) |
+| `trigger` | string | no | What triggered this (human, CI, direct invocation) |
 | `input_files` | string[] | no | Context files read before starting |
 
 ### `agent.skill.loaded`
@@ -110,7 +110,6 @@ Agent completes task
 |-----------|-------------|
 | Phase 0 logs | Source data for all spans |
 | `agent-metrics.sh` | Reads logs, can be extended to export OTEL |
-| `obs` agent | Can set up OTEL export for agent logs |
 | `agent-observability` skill | Full implementation patterns |
 | `.agents/logs/` | Log storage directory |
 

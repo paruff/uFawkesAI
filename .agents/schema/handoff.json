@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Orchestrator Handoff Block",
-  "description": "Structured handoff block passed from the orchestrator to a receiving agent. Every handoff MUST satisfy this schema before being sent.",
+  "title": "Agent Handoff Block",
+  "description": "Structured handoff block passed between agents. Every handoff MUST satisfy this schema before being sent.",
   "type": "object",
   "required": ["task", "source", "branch", "files_in_scope"],
   "properties": {
@@ -13,21 +13,13 @@
       "type": "string",
       "enum": [
         "human",
-        "orchestrator",
         "spec",
         "design",
-        "planner",
         "build",
         "test",
         "test-execution",
         "review",
-        "build-review",
-        "security",
-        "pipe",
-        "obs",
-        "dora",
-        "docs",
-        "onboarding"
+        "cross-validation"
       ],
       "description": "Origin of this task (agent name, all lowercase)"
     },

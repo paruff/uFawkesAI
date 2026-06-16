@@ -30,7 +30,7 @@ Emit when the agent begins processing.
 | `agent.name` | string | Agent identifier (matches filename without .md) |
 | `session_id` | string | Unique invocation identifier |
 | `mode` | string | Operational mode (if agent supports multiple) |
-| `trigger` | string | What triggered this invocation (human request, orchestrator handoff, CI) |
+| `trigger` | string | What triggered this invocation (human request, CI, direct invocation) |
 | `input_files` | string[] | Files read as context for this invocation |
 
 ### `agent.invocation.completed`

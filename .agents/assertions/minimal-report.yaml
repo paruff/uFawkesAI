@@ -4,23 +4,6 @@
 # Runner: bash .agents/assertions/assertion-runner.sh <report.md> <agent-name>
 
 agents:
-  build-review:
-    required_sections:
-      - "Build Review Report"
-      - "Spec Compliance"
-      - "Design Compliance"
-      - "Acceptance Criteria"
-      - "Code Quality"
-      - "Findings"
-    required_fields:
-      decision: true
-    findings_required_when: FAIL
-    severity_classification: true
-    forbidden_patterns:
-      - "I think"
-      - "probably"
-      - "might be"
-
   build:
     required_sections:
       - "Build Report"
@@ -40,79 +23,10 @@ agents:
       - "Governance Alignment"
     findings_required_when: never
 
-  docs:
-    required_sections: []
-    optional_sections:
-      - "ADR-"
-      - "Runbook"
-    findings_required_when: never
-    required_patterns:
-      - "last.updated"
-      - "Status:"
-      - "Rationale:"
-      - "Consequences"
-
-  dora:
-    required_sections:
-      - "Metrics Interpretation"
-    required_fields:
-      biggest_gap: true
-    findings_required_when: never
-    forbidden_patterns:
-      - "elite"
-      - "high performer"
-
-  obs:
-    required_sections: []
-    findings_required_when: never
-    forbidden_patterns:
-      - "hardcode"
-    required_patterns:
-      - "OTEL_SERVICE_NAME"
-      - "OTEL_EXPORTER_OTLP_ENDPOINT"
-
-  onboarding:
-    required_sections: []
-    findings_required_when: never
-    forbidden_patterns:
-      - "PLACEHOLDER"
-    required_patterns:
-      - "AGENTS.md"
-      - "data policy"
-      - "pre-flight"
-
-  orchestrator:
-    required_sections: []
-    findings_required_when: never
-    forbidden_patterns:
-      - "I'll implement"
-    required_patterns:
-      - "Handoff"
-      - "Task:"
-      - "Source:"
-      - "Branch:"
-      - "files in scope"
-      - "capability.registry|dependency.graph"
-
-  pipe:
-    required_sections: []
-    findings_required_when: never
-    forbidden_patterns:
-      - "I'll just"
-    required_patterns:
-      - "CI Gate"
-      - "agents-md-budget"
-      - "pr-size"
-
-  planner:
-    required_sections:
-      - "Issue"
-      - "Backlog Summary"
-    required_fields:
-      total_estimated_lines: true
-    findings_required_when: never
-
   review:
+    # Two modes: PR Review and Build Validation
+    # PR Review Mode requires: Review Agent Assessment, Architecture Violations, Test Gaps
+    # Build Validation Mode requires: Build Review Report, Spec Compliance, Design Compliance, Acceptance Criteria, Code Quality, Findings
     required_sections:
       - "Review Agent Assessment"
       - "Architecture Violations"
@@ -123,18 +37,6 @@ agents:
     forbidden_patterns:
       - "LGTM"
       - "looks good"
-
-  security:
-    required_sections:
-      - "Security Agent Report"
-      - "CRITICAL"
-      - "HIGH"
-    required_fields:
-      risk_level: true
-    findings_required_when: FAIL
-    severity_classification: true
-    forbidden_patterns:
-      - "no vulnerabilities found" # must be specific
 
   spec:
     required_sections:
@@ -179,5 +81,5 @@ agents:
       - "probably"
       - "might be"
     required_patterns:
-      - "All 6 rules must pass"
+      - "All 4 rules must pass"
       - "pipeline blocked"

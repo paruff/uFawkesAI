@@ -1,4 +1,4 @@
-# Cross-Validation Rules Registry — Phase 5
+# Cross-Validation Rules Registry
 # Defines pairwise validation rules between agent outputs
 # Schema (informal): each rule defines source/target agents, validation type, and comparison logic
 #
@@ -6,7 +6,6 @@
 # - requirement_coverage — source requirements must be covered in target output
 # - acceptance_criteria_coverage — source acceptance criteria must have corresponding tests
 # - architecture_compliance — target must follow source architecture decisions
-# - finding_resolution — source findings must be resolved in target output
 # - test_viability — source tests must be viable in target execution
 #
 # Rules are applied by the cross-validation runner to agent reports.
@@ -56,37 +55,6 @@ rules:
       source_field: "decision"
       target_field: "implementation"
       similarity_threshold: 0.8
-
-  - rule_id: review-finding-resolution
-    source_agent: review
-    target_agent: build
-    validation_type: finding_resolution
-    description: "All review findings must be resolved in build"
-    required_sections:
-      - "Findings"
-    comparison_logic:
-      extract_keywords: true
-      require_all_keywords: true
-      source_field: "finding"
-      target_field: "resolution"
-      similarity_threshold: 0.6
-
-  - rule_id: security-finding-resolution
-    source_agent: security
-    target_agent: build
-    validation_type: finding_resolution
-    description: "All security findings must be resolved or acknowledged in build"
-    required_sections:
-      - "CRITICAL"
-      - "HIGH"
-      - "MEDIUM"
-      - "LOW"
-    comparison_logic:
-      extract_keywords: true
-      require_all_keywords: true
-      source_field: "finding"
-      target_field: "remediation"
-      similarity_threshold: 0.6
 
   - rule_id: test-execution-viability
     source_agent: test

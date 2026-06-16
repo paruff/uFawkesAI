@@ -14,14 +14,14 @@ The cross-validation skill enables the cross-validation agent to validate consis
 
 ## Skill Purpose
 
-This skill implements Phase 5 (Cross-Validation) of the uFawkesAI agent pipeline. It validates that:
+This skill implements cross-validation of the uFawkesAI agent pipeline. It validates that:
 
 1. **Spec ↔ Build Consistency** — All spec requirements are addressed in build output
 2. **Spec ↔ Test Coverage** — All spec acceptance criteria have corresponding tests
 3. **Design ↔ Build Compliance** — Build follows architecture decisions from design
-4. **Review ↔ Build Resolution** — All review findings are resolved in build
-5. **Security ↔ Build Resolution** — All security findings are resolved or acknowledged in build
-6. **Test ↔ Test-Execution Viability** — All tests are viable and passing in test-execution
+4. **Test ↔ Test-Execution Viability** — All tests are viable and passing in test-execution
+
+Note: The review agent now consolidates review, build-review, and security capabilities. Review findings are validated as part of the build process.
 
 ## How to Load
 
@@ -44,7 +44,7 @@ The skill uses `.agents/registry/cross-validation.yaml` as the rules registry. T
 The skill provides `.agents/assertions/cross-validation-runner.sh` which:
 
 1. Reads the cross-validation rules from the registry
-2. Extracts relevant sections from agent reports (spec, design, build, test, test-execution, review, build-review, security)
+2. Extracts relevant sections from agent reports (spec, design, build, test, test-execution, review)
 3. Applies each validation rule
 4. Generates a unified cross-validation report
 5. Returns PASS if all rules pass, FAIL otherwise
@@ -66,9 +66,7 @@ bash .agents/assertions/cross-validation-runner.sh \
   --build-report path/to/build-report.md \
   --test-report path/to/test-report.md \
   --test-execution-report path/to/test-execution-report.md \
-  --review-report path/to/review-report.md \
-  --build-review-report path/to/build-review-report.md \
-  --security-report path/to/security-report.md
+  --review-report path/to/review-report.md
 ```
 
 ### Expected Output
@@ -81,9 +79,9 @@ The runner produces a unified cross-validation report with:
 - Overall decision (PASS or FAIL)
 - Recommendations for fixing failures
 
-## Integration with Orchestrator
+## Integration
 
-The cross-validation skill is loaded by the cross-validation agent, which runs after the parallel block of `test-execution`, `review`, `build-review`, and `security` and before `pipe` and `obs`.
+The cross-validation skill is loaded by the cross-validation agent, which runs after the parallel block of `test-execution` and `review` and before `delivery`.
 
 ## Validation Rules Details
 
@@ -121,13 +119,13 @@ If any validation rule fails:
 1. The runner reports the specific inconsistencies
 2. The cross-validation agent blocks the pipeline
 3. The cross-validation agent generates recommendations for fixing the issues
-4. The orchestrator waits for manual intervention or fixes
+4. The human operator reviews and decides next steps
 
 ## Testing the Skill
 
 To test the cross-validation skill:
 
-1. Create sample agent reports (spec, design, build, test, test-execution, review, build-review, security)
+1. Create sample agent reports (spec, design, build, test, test-execution, review)
 2. Run the cross-validation runner with these reports
 3. Verify that the runner correctly identifies consistency issues
 4. Verify that the runner correctly identifies consistency passes
