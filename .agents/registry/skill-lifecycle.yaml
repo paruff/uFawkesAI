@@ -403,6 +403,20 @@ skills:
     load_trigger: "token cost audit"
     sub_skills: []
 
+  cross-validation:
+    status: active
+    version: 1.0.0
+    dependencies:
+      - spec
+      - design
+      - build
+      - test-generation
+      - test-execution
+      - review
+      - security
+    load_trigger: "@orchestrator cross-validation"
+    sub_skills: []
+
   unit-testing:
     status: active
     version: 1.0.0

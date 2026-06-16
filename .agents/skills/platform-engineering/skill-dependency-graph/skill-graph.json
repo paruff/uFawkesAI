@@ -1,10 +1,10 @@
 {
   "skill": "skill-dependency-graph",
-  "generated_at": "2026-06-15 12:06:43Z",
+  "generated_at": "2026-06-16 05:46:17Z",
   "registry": "skill-lifecycle.yaml",
-  "total_skills": 167,
+  "total_skills": 168,
   "deprecated_skills": 1,
-  "edges": 216,
+  "edges": 223,
   "nodes": [
     {
       "id": "adr-writer",
@@ -41,6 +41,12 @@
       "level": "domain",
       "status": "stable",
       "version": "1.1.0"
+    },
+    {
+      "id": "cross-validation",
+      "level": "domain",
+      "status": "active",
+      "version": "1.0.0"
     },
     {
       "id": "design",
@@ -1292,6 +1298,34 @@
     },
     {
       "from": "spec",
+      "to": "cross-validation"
+    },
+    {
+      "from": "design",
+      "to": "cross-validation"
+    },
+    {
+      "from": "build",
+      "to": "cross-validation"
+    },
+    {
+      "from": "test-generation",
+      "to": "cross-validation"
+    },
+    {
+      "from": "test-execution",
+      "to": "cross-validation"
+    },
+    {
+      "from": "review",
+      "to": "cross-validation"
+    },
+    {
+      "from": "security",
+      "to": "cross-validation"
+    },
+    {
+      "from": "spec",
       "to": "design"
     },
     {
@@ -1924,6 +1958,10 @@
     "ci/ci-performance",
     "ci/ci-pipeline-execution",
     "ci/ci-quality-gates",
+    "test-generation",
+    "review",
+    "security",
+    "cross-validation",
     "design/architecture-decomposition",
     "design/component-identification",
     "design/interface-definition",
@@ -1944,7 +1982,6 @@
     "gitops/gitops-environment-promotion",
     "gitops/gitops-manifest-validation",
     "gitops/gitops-reconciliation-testing",
-    "security",
     "governance-policy",
     "governance-policy/compliance-audit",
     "governance-policy/cost-governance",
@@ -1988,7 +2025,6 @@
     "release-engineering/git-tagging",
     "release-engineering/release-metadata",
     "release-engineering/semantic-versioning",
-    "review",
     "review/acceptance-criteria",
     "review/code-quality",
     "review/design-compliance",
@@ -2036,7 +2072,6 @@
     "test-execution/runtime-simulation-validation",
     "test-execution/test-coverage-validation",
     "test-execution/unit-test-execution",
-    "test-generation",
     "token-budget",
     "unit-testing",
     "unit-testing/unit-contracts",

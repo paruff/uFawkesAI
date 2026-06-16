@@ -132,7 +132,7 @@ The dependency graph skill will:
 **Known default sequence:**
 
 ```
-spec → design → planner → [build | test] → [test-execution | review | build-review | security] → pipe/obs → dora
+spec → design → planner → [build | test] → [test-execution | review | build-review | security] → cross-validation → pipe/obs → dora
 ```
 
 Note: `test` (TDD) consumes from `spec` only and can run in parallel with `build`.
@@ -141,7 +141,21 @@ Note: `test` (TDD) consumes from `spec` only and can run in parallel with `build
 
 - `build` and `test` can run in parallel (test consumes spec, build consumes planner + design)
 - After build: `test-execution`, `review`, `build-review`, and `security` can run in parallel
-- `pipe` and `obs` run after build
+- `cross-validation` runs after the parallel block and before `pipe`/`obs`
+- `pipe` and `obs` run after cross-validation
+
+**Cross-validation role:**
+
+Cross-validation validates pairwise consistency between agent outputs:
+
+1. **Spec ↔ Build Consistency** — All spec requirements are addressed in build output
+2. **Spec ↔ Test Coverage** — All spec acceptance criteria have corresponding tests
+3. **Design ↔ Build Compliance** — Build follows architecture decisions from design
+4. **Review ↔ Build Resolution** — All review findings are resolved in build
+5. **Security ↔ Build Resolution** — All security findings are resolved or acknowledged in build
+6. **Test ↔ Test-Execution Viability** — All tests are viable and passing in test-execution
+
+If any validation rule fails, cross-validation blocks the pipeline and reports the specific inconsistencies.
 
 **Output:**
 
@@ -181,14 +195,18 @@ execution_order:
     parallel_with: [test-execution, review, build-review]
     depends_on: [build]
   - step: 10
+    agent: cross-validation
+    parallel_with: []
+    depends_on: [test-execution, review, build-review, security]
+  - step: 11
     agent: pipe
     parallel_with: [obs]
-    depends_on: [build]
-  - step: 11
+    depends_on: [cross-validation]
+  - step: 12
     agent: obs
     parallel_with: [pipe]
-    depends_on: [build]
-  - step: 12
+    depends_on: [cross-validation]
+  - step: 13
     agent: dora
     depends_on: [pipe, obs]
 ```

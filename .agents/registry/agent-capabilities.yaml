@@ -262,6 +262,30 @@ agents:
     consumes_from: []
     dora_caps: [1, 3]
 
+  - name: cross-validation
+    description: "Validate pairwise consistency between agent outputs and block pipeline if any inconsistency found"
+    capabilities:
+      - cross-validation-execution
+      - pipeline-blocking
+      - inconsistency-detection
+      - validation-reporting
+      - recommendation-generation
+    inputs:
+      - spec-report
+      - design-report
+      - build-report
+      - test-report
+      - test-execution-report
+      - review-report
+      - build-review-report
+      - security-report
+    outputs:
+      - cross-validation-report
+      - validation-results
+      - pipeline-decision
+    consumes_from: [spec, design, build, test, test-execution, review, build-review, security]
+    dora_caps: [4, 6]
+
   - name: orchestrator
     description: "Route tasks to specialist agents, enforce concurrency limit, prevent merge conflicts"
     capabilities:

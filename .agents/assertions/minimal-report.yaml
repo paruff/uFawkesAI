@@ -165,3 +165,19 @@ agents:
     findings_required_when: FAIL
     forbidden_patterns:
       - "no tests exist"
+
+  cross-validation:
+    required_sections:
+      - "Cross-Validation Report"
+      - "Validation Results"
+      - "Findings"
+    required_fields:
+      decision: true
+    findings_required_when: FAIL
+    forbidden_patterns:
+      - "I think"
+      - "probably"
+      - "might be"
+    required_patterns:
+      - "All 6 rules must pass"
+      - "pipeline blocked"

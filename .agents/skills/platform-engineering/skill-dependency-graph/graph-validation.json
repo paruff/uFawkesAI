@@ -1,9 +1,9 @@
 {
   "skill": "graph-validation",
-  "generated_at": "2026-06-15 12:06:43Z",
+  "generated_at": "2026-06-16 05:46:17Z",
   "status": "valid",
-  "total_nodes": 167,
-  "total_edges": 216,
+  "total_nodes": 168,
+  "total_edges": 223,
   "cycles": [],
   "cycle_count": 0,
   "topological_order": [
@@ -55,6 +55,10 @@
     "ci/ci-performance",
     "ci/ci-pipeline-execution",
     "ci/ci-quality-gates",
+    "test-generation",
+    "review",
+    "security",
+    "cross-validation",
     "design/architecture-decomposition",
     "design/component-identification",
     "design/interface-definition",
@@ -75,7 +79,6 @@
     "gitops/gitops-environment-promotion",
     "gitops/gitops-manifest-validation",
     "gitops/gitops-reconciliation-testing",
-    "security",
     "governance-policy",
     "governance-policy/compliance-audit",
     "governance-policy/cost-governance",
@@ -119,7 +122,6 @@
     "release-engineering/git-tagging",
     "release-engineering/release-metadata",
     "release-engineering/semantic-versioning",
-    "review",
     "review/acceptance-criteria",
     "review/code-quality",
     "review/design-compliance",
@@ -167,7 +169,6 @@
     "test-execution/runtime-simulation-validation",
     "test-execution/test-coverage-validation",
     "test-execution/unit-test-execution",
-    "test-generation",
     "token-budget",
     "unit-testing",
     "unit-testing/unit-contracts",
@@ -176,11 +177,11 @@
     "unit-testing/unit-mocking"
   ],
   "level_counts": {
-    "domains": 33,
+    "domains": 34,
     "sub_skills": 134
   },
   "status_counts": {
-    "active": 147,
+    "active": 148,
     "stable": 17,
     "beta": 3
   }
