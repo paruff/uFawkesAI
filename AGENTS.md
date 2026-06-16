@@ -1,10 +1,8 @@
-# Agent Instructions — [PROJECT NAME]
+# Agent Instructions — uFawkesAI
 
 > **TOKEN COST NOTICE:** This file loads on EVERY Copilot/Claude Code/Cursor request.
 > Every line here is billed on every interaction. Keep it lean.
 > Full details live in `.agents/skills/` — load them on demand only.
->
-> **DORA basis:** Cap 3 (Context Engineering) + Cap 1 (AI Policy)
 
 ---
 
@@ -16,25 +14,25 @@
 - Read `docs/MODEL_ROUTING_GUIDE.md` before choosing a model or mode.
 - Read `docs/COPILOT_COST_GUIDE.md` to understand token cost before starting.
 
-**Data policy:** [PLACEHOLDER — e.g. "No customer PII in AI prompts."]
+**Data policy:** No customer PII in AI prompts.
 
 ---
 
 ## 2. Project Identity
 
-**Product:** [PLACEHOLDER — e.g. "A React Native savings app"]
-**Stack:** [PLACEHOLDER — e.g. "TypeScript · React Native · Expo 52 · Firebase"]
-**Key constraints:** [PLACEHOLDER — e.g. "Must support iOS 15+ and Android 12+"]
+**Product:** uFawkesAI — Agent orchestration framework for platform engineering
+**Stack:** TypeScript · Node 20 · GitHub Actions · OpenTelemetry
+**Key constraints:** 7 agents, 25 skills, humans = routing layer
 
 ---
 
 ## 3. Five Hard Rules (Never Violate)
 
-1. No Firebase/DB SDK calls in UI layer — ever.
-2. No `any` in catch blocks — use typed error pattern.
-3. No secrets, API keys, or credentials in any file.
-4. No merging your own PR.
-5. No modifying `AGENTS.md` or `.github/copilot-instructions.md`.
+1. No secrets, API keys, or credentials in any file.
+2. No merging your own PR.
+3. No modifying `AGENTS.md` or `.github/copilot-instructions.md`.
+4. Run pre-commit hooks before committing (`pre-commit run --all-files`).
+5. All agent outputs must satisfy contracts in `.agents/assertions/minimal-report.yaml`.
 
 ---
 
@@ -76,8 +74,6 @@ spec → design → build → [test-execution || review] → cross-validation
 
 ## 6. On-Demand Skills (Load These Explicitly)
 
-Reference a skill in your prompt to load its full instructions:
-
 | Skill                                   | When to load                        |
 | --------------------------------------- | ----------------------------------- |
 | `.agents/skills/model-routing/SKILL.md` | When unsure which model/mode to use |
@@ -88,22 +84,33 @@ Reference a skill in your prompt to load its full instructions:
 
 ---
 
-## 7. Context Files (Read Before Generating Code)
+## 7. CI/CD Context
 
-| Priority | File                        | What You Learn           |
-| -------- | --------------------------- | ------------------------ |
-| 1        | `src/types/index.ts`        | All data shapes          |
-| 2        | `docs/ARCHITECTURE.md`      | Layer boundaries         |
-| 3        | `docs/API_SURFACE.md`       | Public service functions |
-| 4        | `docs/KNOWN_LIMITATIONS.md` | Do not make these worse  |
+### Commit Format
+- Conventional Commits required: `type(scope): description` (max 120 chars)
+- Types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`, `ci`, `perf`, `build`, `revert`
+
+### Pre-commit Hooks
+- `pre-commit run --all-files` must pass before pushing
+- Gitleaks and detect-secrets scan for secrets — use `# pragma: allowlist secret` for false positives
+- If updating `.secrets.baseline`, run `detect-secrets scan > .secrets.baseline`
+
+### Cross-Validation
+- Runner: `.agents/assertions/cross-validation-runner.sh`
+- Output: `.agents/logs/cross-validation-report.md`
+- Validates 4 rules: spec-build, spec-test, design-build, test-test-execution
+
+### Assertion Runner
+- Validates agent reports against contracts in `minimal-report.yaml`
+- Command: `.agents/assertions/assertion-runner.sh <report.md> <agent-name>`
+- Pre-commit hook auto-validates any staged `*-report.md` files
 
 ---
 
 ## 8. See Also
 
-- `docs/COPILOT_COST_GUIDE.md` — Token billing, model costs, how to stay in budget
-- `docs/MODEL_ROUTING_GUIDE.md` — Which model/mode for which task
-- `docs/GOLDEN_PATH.md` — 10-step idea→deploy workflow
-- `docs/METRICS.md` — DORA metrics + AI credit burn tracking
 - `.agents/README.md` — Full agent and skill documentation
-- `docs/PROMPT_LIBRARY.md` — Tested prompts for every repeating task
+- `.agents/registry/` — Agent capabilities, cross-validation rules, skill lifecycle
+- `.agents/assertions/` — Report contracts, assertion runner, pre-commit hooks
+- `docs/COPILOT_COST_GUIDE.md` — Token billing, model costs
+- `docs/MODEL_ROUTING_GUIDE.md` — Which model/mode for which task
