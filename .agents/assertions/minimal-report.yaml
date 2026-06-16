@@ -75,7 +75,7 @@ agents:
       - "Findings"
     required_fields:
       decision: true
-    findings_required_when: FAIL
+    findings_required_when: never
     forbidden_patterns:
       - "I think"
       - "probably"

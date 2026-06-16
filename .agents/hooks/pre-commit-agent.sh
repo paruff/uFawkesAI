@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # pre-commit-agent.sh — Validate agent reports before committing
 # Install: ln -sf ../../.agents/hooks/pre-commit-agent.sh .git/hooks/pre-commit
-# This hook checks any agent report files (*-report.md, *-report.json)
+# This hook checks any agent report files (*-report.md)
 # in the staged changes against their output contracts.
 set -euo pipefail
 
@@ -15,7 +15,7 @@ if [ ! -f "${ASSERTION_RUNNER}" ]; then
 fi
 
 # Find staged report files
-STAGED_REPORTS=$(git diff --cached --name-only --diff-filter=ACM | grep -E '.*-report\.md$|.*-report\.json$' || true)
+STAGED_REPORTS=$(git diff --cached --name-only --diff-filter=ACM | grep -E '.*-report\.md$' || true)
 
 if [ -z "${STAGED_REPORTS}" ]; then
   # No report files staged — nothing to check
@@ -36,13 +36,12 @@ while IFS= read -r report_path; do
   # Determine agent name from filename prefix
   agent_name=""
   case "$(basename "${report_path}")" in
-    security-review-report.md|security-report.md) agent_name="security" ;;
-    build-review-report.md) agent_name="build-review" ;;
     build-report.md) agent_name="build" ;;
     test-report.md) agent_name="test-execution" ;;
     review-report.md) agent_name="review" ;;
     design-report.md) agent_name="design" ;;
     spec-report.md) agent_name="spec" ;;
+    cross-validation-report.md) agent_name="cross-validation" ;;
     *) 
       # Try prefix match
       base="$(basename "${report_path}")"

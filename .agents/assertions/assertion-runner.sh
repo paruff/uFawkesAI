@@ -79,10 +79,10 @@ for section in contract.get("required_sections", []):
 print()
 print("--- Required Fields ---")
 field_checks = {
-    "decision": lambda c: bool(re.search(r"\*\*Decision:\*\*", c, re.IGNORECASE)),
-    "status": lambda c: bool(re.search(r"\*\*Status:\*\*", c, re.IGNORECASE)),
-    "risk_level": lambda c: bool(re.search(r"\*\*Risk level:\*\*", c, re.IGNORECASE)),
-    "size_decision": lambda c: bool(re.search(r"\*\*Size:\*\*", c, re.IGNORECASE)),
+    "decision": lambda c: bool(re.search(r"(?:\*\*)?Decision:(?:\*\*)?\s*(PASS|FAIL|BLOCKED)", c, re.IGNORECASE)),
+    "status": lambda c: bool(re.search(r"(?:\*\*)?Status:(?:\*\*)?", c, re.IGNORECASE)),
+    "risk_level": lambda c: bool(re.search(r"(?:\*\*)?Risk level:(?:\*\*)?", c, re.IGNORECASE)),
+    "size_decision": lambda c: bool(re.search(r"(?:\*\*)?Size:(?:\*\*)?\s*(PASS|EXCEEDS LIMIT)", c, re.IGNORECASE)),
     "biggest_gap": lambda c: bool(re.search(r"biggest gap", c, re.IGNORECASE)),
     "total_estimated_lines": lambda c: bool(re.search(r"total estimated lines|estimated lines", c, re.IGNORECASE)),
 }
@@ -125,12 +125,14 @@ print("--- Findings Validation ---")
 findings_when = contract.get("findings_required_when", "never")
 if findings_when != "never":
     decision_found = None
-    if findings_when == "FAIL" and re.search(r"\*\*Decision:\*\*.*FAIL", content):
+    if findings_when == "FAIL" and re.search(r"Decision:.*FAIL", content, re.IGNORECASE):
         decision_found = "FAIL"
     elif findings_when == "REQUEST_CHANGES" and re.search(r"REQUEST CHANGES", content):
         decision_found = "REQUEST_CHANGES"
     elif findings_when == "CRITICAL" and re.search(r"^# CRITICAL|^## CRITICAL|^### CRITICAL", content, re.MULTILINE):
         decision_found = "CRITICAL"
+    elif findings_when == "BLOCKED" and re.search(r"Decision:.*BLOCKED", content, re.IGNORECASE):
+        decision_found = "BLOCKED"
 
     if decision_found:
         finding_count = len(re.findall(r"^\| (CRITICAL|HIGH|MEDIUM|LOW)", content, re.MULTILINE))
