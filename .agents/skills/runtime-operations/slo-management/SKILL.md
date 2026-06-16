@@ -36,27 +36,27 @@ Define, monitor, and enforce service-level objectives (SLOs).
 
 ## Sub-Skills
 
-| Skill | Purpose |
-|-------|---------|
-| `slo-management/error-budget` | Track error budget burn rate |
-| `slo-management/violation-response` | Respond to SLO violations |
+| Skill                               | Purpose                      |
+| ----------------------------------- | ---------------------------- |
+| `slo-management/error-budget`       | Track error budget burn rate |
+| `slo-management/violation-response` | Respond to SLO violations    |
 
 ## SLO Definitions
 
-| SLO | Target | Window |
-|-----|--------|--------|
-| Availability | 99.9% | 30 days |
+| SLO           | Target  | Window  |
+| ------------- | ------- | ------- |
+| Availability  | 99.9%   | 30 days |
 | Latency (p99) | < 500ms | 30 days |
-| Error rate | < 0.1% | 30 days |
+| Error rate    | < 0.1%  | 30 days |
 
 ## Burn Rate Thresholds
 
-| Burn Rate | Severity | Action |
-|-----------|----------|--------|
-| > 14.4x | CRITICAL | Immediate rollback |
-| > 6x | HIGH | Alert + prepare rollback |
-| > 3x | MEDIUM | Alert + investigate |
-| > 1x | LOW | Monitor |
+| Burn Rate | Severity | Action                   |
+| --------- | -------- | ------------------------ |
+| > 14.4x   | CRITICAL | Immediate rollback       |
+| > 6x      | HIGH     | Alert + prepare rollback |
+| > 3x      | MEDIUM   | Alert + investigate      |
+| > 1x      | LOW      | Monitor                  |
 
 ## Output Format
 

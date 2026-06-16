@@ -76,11 +76,11 @@ Generate clear, testable acceptance criteria for the specification.
 
 ## Examples
 
-| Requirement | Acceptance Criteria |
-|-------------|-------------------|
-| User can sign up | AC-01: Given valid email/password, when user submits signup form, then account is created and confirmation email is sent |
-| API responds quickly | AC-02: Given 100 concurrent requests, when measured, then p95 latency is < 200ms |
-| Data is secure | AC-03: Given user A's data, when user B requests it, then 403 Forbidden is returned |
+| Requirement          | Acceptance Criteria                                                                                                      |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| User can sign up     | AC-01: Given valid email/password, when user submits signup form, then account is created and confirmation email is sent |
+| API responds quickly | AC-02: Given 100 concurrent requests, when measured, then p95 latency is < 200ms                                         |
+| Data is secure       | AC-03: Given user A's data, when user B requests it, then 403 Forbidden is returned                                      |
 
 ## Success Criteria
 

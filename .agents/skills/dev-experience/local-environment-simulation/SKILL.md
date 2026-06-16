@@ -36,10 +36,10 @@ Simulate PIPE, OBS, GitOps, and cluster behavior locally for fast feedback loops
 
 ## Sub-Skills
 
-| Skill | Purpose |
-|-------|---------|
-| `local-environment-simulation/gitops-sim` | Simulate GitOps updates locally |
-| `local-environment-simulation/cluster-sim` | Run local K8s cluster |
+| Skill                                      | Purpose                         |
+| ------------------------------------------ | ------------------------------- |
+| `local-environment-simulation/gitops-sim`  | Simulate GitOps updates locally |
+| `local-environment-simulation/cluster-sim` | Run local K8s cluster           |
 
 ## Simulation Flow
 
@@ -53,12 +53,12 @@ Simulate PIPE, OBS, GitOps, and cluster behavior locally for fast feedback loops
 
 ## Tools
 
-| Tool | Purpose |
-|------|---------|
-| kind | Local K8s cluster |
-| k3d | Lightweight K8s cluster |
-| Kustomize | Overlay rendering |
-| Git CLI | Local GitOps |
+| Tool      | Purpose                 |
+| --------- | ----------------------- |
+| kind      | Local K8s cluster       |
+| k3d       | Lightweight K8s cluster |
+| Kustomize | Overlay rendering       |
+| Git CLI   | Local GitOps            |
 
 ## Rules
 

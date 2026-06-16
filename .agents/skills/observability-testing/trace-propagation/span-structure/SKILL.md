@@ -34,13 +34,13 @@ Ensure spans follow the correct parent-child relationships.
 
 ## Span Rules
 
-| Rule | Description |
-|------|-------------|
-| Root span | One root span per trace, no parent |
-| Child span | Exactly one parent |
-| Timing | child.start >= parent.start |
-| Timing | child.end <= parent.end |
-| Error span | status = ERROR, error.message set |
+| Rule       | Description                        |
+| ---------- | ---------------------------------- |
+| Root span  | One root span per trace, no parent |
+| Child span | Exactly one parent                 |
+| Timing     | child.start >= parent.start        |
+| Timing     | child.end <= parent.end            |
+| Error span | status = ERROR, error.message set  |
 
 ## Validation Rules
 
@@ -62,7 +62,7 @@ Ensure spans follow the correct parent-child relationships.
   "timing_inversions": 0,
   "error_spans": 15,
   "issues": [
-    {"span_id": "xyz789", "issue": "orphan_span", "parent_id": "missing"}
+    { "span_id": "xyz789", "issue": "orphan_span", "parent_id": "missing" }
   ]
 }
 ```

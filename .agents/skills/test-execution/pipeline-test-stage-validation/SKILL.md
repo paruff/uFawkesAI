@@ -38,25 +38,25 @@ Ensure the CI/CD pipeline includes required test stages.
 
 ### Must Have
 
-| Stage | Purpose | Required |
-|-------|---------|----------|
-| Unit tests | Fast correctness check | Yes |
-| Coverage report | Measure coverage | Yes |
-| Lint/format | Code quality | Yes |
+| Stage           | Purpose                | Required |
+| --------------- | ---------------------- | -------- |
+| Unit tests      | Fast correctness check | Yes      |
+| Coverage report | Measure coverage       | Yes      |
+| Lint/format     | Code quality           | Yes      |
 
 ### Should Have
 
-| Stage | Purpose | Required |
-|-------|---------|----------|
+| Stage             | Purpose               | Required    |
+| ----------------- | --------------------- | ----------- |
 | Integration tests | Component interaction | Recommended |
-| Security scan | Vulnerability check | Recommended |
+| Security scan     | Vulnerability check   | Recommended |
 
 ### Nice to Have
 
-| Stage | Purpose | Required |
-|-------|---------|----------|
-| E2E tests | Full workflow validation | If applicable |
-| Performance smoke | Basic perf check | Optional |
+| Stage             | Purpose                  | Required      |
+| ----------------- | ------------------------ | ------------- |
+| E2E tests         | Full workflow validation | If applicable |
+| Performance smoke | Basic perf check         | Optional      |
 
 ## Validation Rules
 

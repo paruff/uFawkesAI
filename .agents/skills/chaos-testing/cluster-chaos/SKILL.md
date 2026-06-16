@@ -35,19 +35,19 @@ Validate Kubernetes resilience under node failures, pod failures, and API degrad
 
 ## Sub-Skills
 
-| Skill | Purpose |
-|-------|---------|
-| `cluster-chaos/pod-failure` | Kill pods to test recovery |
-| `cluster-chaos/node-failure` | Simulate node failures |
+| Skill                        | Purpose                    |
+| ---------------------------- | -------------------------- |
+| `cluster-chaos/pod-failure`  | Kill pods to test recovery |
+| `cluster-chaos/node-failure` | Simulate node failures     |
 
 ## Chaos Scenarios
 
-| Scenario | Tool | Expected Behavior |
-|----------|------|-------------------|
-| Pod failure | Chaos Mesh | Pod restarted, service available |
-| Node failure | Chaos Mesh | Workloads rescheduled |
-| API latency | Chaos Mesh | Controller retries, queues work |
-| Disk pressure | Chaos Mesh | Eviction, reschedule |
+| Scenario      | Tool       | Expected Behavior                |
+| ------------- | ---------- | -------------------------------- |
+| Pod failure   | Chaos Mesh | Pod restarted, service available |
+| Node failure  | Chaos Mesh | Workloads rescheduled            |
+| API latency   | Chaos Mesh | Controller retries, queues work  |
+| Disk pressure | Chaos Mesh | Eviction, reschedule             |
 
 ## Validation Rules
 
@@ -64,8 +64,8 @@ Validate Kubernetes resilience under node failures, pod failures, and API degrad
   "skill": "cluster-chaos",
   "status": "success",
   "scenarios": {
-    "pod_failure": {"recovered": true, "time_s": 30},
-    "node_failure": {"rescheduled": true, "time_s": 120}
+    "pod_failure": { "recovered": true, "time_s": 30 },
+    "node_failure": { "rescheduled": true, "time_s": 120 }
   },
   "gitops_drift": "none",
   "data_loss": "none",

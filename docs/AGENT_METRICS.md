@@ -20,20 +20,22 @@ This file records real invocation data so you can:
 ## Latest Snapshot
 
 <!-- AGENT_METRICS_AUTO:START -->
+
 _No data yet. Run `bash scripts/agent-metrics.sh --save` after agents have logged invocations._
+
 <!-- AGENT_METRICS_AUTO:END -->
 
 ---
 
 ## Interpretation Guide
 
-| Signal | What It Means | Action |
-|--------|--------------|--------|
-| Skill loaded 0 times in 90 days | Dead weight in the skill registry | Archive it |
-| Finding actionability < 40% | Agent produces too much noise | Tighten the agent's protocol |
-| Manual review burden > 30% | Findings require too much human judgment | Add more specific rules to the agent |
-| Blocker density increasing | Agents are getting more critical — or quality is dropping | Investigate root cause |
-| Single agent > 50% of all invocations | Other agents may be underutilized or routing is wrong | Review agent routing in AGENTS.md |
+| Signal                                | What It Means                                             | Action                               |
+| ------------------------------------- | --------------------------------------------------------- | ------------------------------------ |
+| Skill loaded 0 times in 90 days       | Dead weight in the skill registry                         | Archive it                           |
+| Finding actionability < 40%           | Agent produces too much noise                             | Tighten the agent's protocol         |
+| Manual review burden > 30%            | Findings require too much human judgment                  | Add more specific rules to the agent |
+| Blocker density increasing            | Agents are getting more critical — or quality is dropping | Investigate root cause               |
+| Single agent > 50% of all invocations | Other agents may be underutilized or routing is wrong     | Review agent routing in AGENTS.md    |
 
 ---
 

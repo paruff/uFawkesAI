@@ -63,13 +63,13 @@ Break the specification into logical architectural components.
 
 ## Architecture Patterns
 
-| Pattern | Use When |
-|---------|----------|
-| Monolith | Simple domain, small team, fast iteration |
+| Pattern       | Use When                                           |
+| ------------- | -------------------------------------------------- |
+| Monolith      | Simple domain, small team, fast iteration          |
 | Microservices | Complex domain, independent scaling, team autonomy |
-| Event-Driven | Async workflows, loose coupling, audit trail |
-| CQRS | Read/write optimization, complex queries |
-| Serverless | Variable load, event-driven, minimal ops |
+| Event-Driven  | Async workflows, loose coupling, audit trail       |
+| CQRS          | Read/write optimization, complex queries           |
+| Serverless    | Variable load, event-driven, minimal ops           |
 
 ## Output Format
 

@@ -36,9 +36,9 @@ Validate Flux or ArgoCD reconciliation behavior after GitOps updates.
 
 ## Sub-Skills
 
-| Skill | Purpose |
-|-------|---------|
-| `gitops-to-controller/flux` | Flux integration testing |
+| Skill                       | Purpose                    |
+| --------------------------- | -------------------------- |
+| `gitops-to-controller/flux` | Flux integration testing   |
 | `gitops-to-controller/argo` | ArgoCD integration testing |
 
 ## Validation Rules

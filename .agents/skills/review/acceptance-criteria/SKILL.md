@@ -56,13 +56,13 @@ Validate that the build output satisfies all acceptance criteria.
 
 ## AC Status Classification
 
-| Status | Meaning |
-|--------|---------|
-| PASS | Implementation satisfies the AC completely |
-| FAIL | Implementation does not satisfy the AC |
-| PARTIAL | Implementation partially satisfies the AC |
+| Status     | Meaning                                            |
+| ---------- | -------------------------------------------------- |
+| PASS       | Implementation satisfies the AC completely         |
+| FAIL       | Implementation does not satisfy the AC             |
+| PARTIAL    | Implementation partially satisfies the AC          |
 | NOT TESTED | AC requires runtime testing not possible in review |
-| AMBIGUOUS | AC is unclear and needs human clarification |
+| AMBIGUOUS  | AC is unclear and needs human clarification        |
 
 ## Output Format
 

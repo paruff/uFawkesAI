@@ -66,13 +66,13 @@ overlays/
 
 ### Environment Differences
 
-| Setting | Dev | Staging | Production |
-|---------|-----|---------|------------|
-| Replicas | 1 | 2 | 3+ |
-| CPU limit | 500m | 1 | 2 |
-| Memory limit | 256Mi | 512Mi | 1Gi |
-| Log level | debug | info | warn |
-| Auto-sync | yes | yes | manual |
+| Setting      | Dev   | Staging | Production |
+| ------------ | ----- | ------- | ---------- |
+| Replicas     | 1     | 2       | 3+         |
+| CPU limit    | 500m  | 1       | 2          |
+| Memory limit | 256Mi | 512Mi   | 1Gi        |
+| Log level    | debug | info    | warn       |
+| Auto-sync    | yes   | yes     | manual     |
 
 ### Validation
 

@@ -37,9 +37,9 @@ Classify incidents, determine severity, and identify likely root causes.
 
 ## Sub-Skills
 
-| Skill | Purpose |
-|-------|---------|
-| `incident-triage/severity` | Assign severity levels |
+| Skill                        | Purpose                        |
+| ---------------------------- | ------------------------------ |
+| `incident-triage/severity`   | Assign severity levels         |
 | `incident-triage/root-cause` | Generate root cause hypothesis |
 
 ## Triage Process
@@ -52,13 +52,13 @@ Classify incidents, determine severity, and identify likely root causes.
 
 ## Severity Matrix
 
-| Severity | Description | Response Time | Escalation |
-|----------|-------------|---------------|------------|
-| SEV1 | Complete outage, data loss | 15 min | Immediate |
-| SEV2 | Major feature broken, no workaround | 30 min | Within 15 min |
-| SEV3 | Feature degraded, workaround exists | 1 hour | Within 30 min |
-| SEV4 | Minor issue, low impact | 4 hours | Within 1 hour |
-| SEV5 | Cosmetic, no user impact | Next day | None |
+| Severity | Description                         | Response Time | Escalation    |
+| -------- | ----------------------------------- | ------------- | ------------- |
+| SEV1     | Complete outage, data loss          | 15 min        | Immediate     |
+| SEV2     | Major feature broken, no workaround | 30 min        | Within 15 min |
+| SEV3     | Feature degraded, workaround exists | 1 hour        | Within 30 min |
+| SEV4     | Minor issue, low impact             | 4 hours       | Within 1 hour |
+| SEV5     | Cosmetic, no user impact            | Next day      | None          |
 
 ## Output Format
 

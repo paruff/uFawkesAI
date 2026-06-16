@@ -33,12 +33,12 @@ Ensure all build artifacts are tamper-proof and verifiable.
 
 ## Artifact Types
 
-| Artifact | Checksum | Signature | Provenance |
-|----------|----------|-----------|------------|
-| Container image | digest | Cosign | SLSA |
-| SBOM | sha256 | Cosign | - |
-| Manifests | sha256 | - | - |
-| Binaries | sha256 | Cosign | SLSA |
+| Artifact        | Checksum | Signature | Provenance |
+| --------------- | -------- | --------- | ---------- |
+| Container image | digest   | Cosign    | SLSA       |
+| SBOM            | sha256   | Cosign    | -          |
+| Manifests       | sha256   | -         | -          |
+| Binaries        | sha256   | Cosign    | SLSA       |
 
 ## Validation Commands
 
@@ -69,8 +69,18 @@ cosign verify-attestation --type slsaprovenance --key cosign.pub artifact
   "skill": "artifact-integrity-validation",
   "status": "pass | fail",
   "artifacts": [
-    {"name": "my-app:v1.3.0", "checksum": "valid", "signature": "valid", "provenance": "valid"},
-    {"name": "sbom.json", "checksum": "valid", "signature": "valid", "provenance": "n/a"}
+    {
+      "name": "my-app:v1.3.0",
+      "checksum": "valid",
+      "signature": "valid",
+      "provenance": "valid"
+    },
+    {
+      "name": "sbom.json",
+      "checksum": "valid",
+      "signature": "valid",
+      "provenance": "n/a"
+    }
   ],
   "total_artifacts": 5,
   "verified": 5,

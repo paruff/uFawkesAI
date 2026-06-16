@@ -34,11 +34,11 @@ Validate that OBS updates manifests correctly based on PIPE output.
 
 ## Update Targets
 
-| Field | Location | Expected Value |
-|-------|----------|----------------|
-| `newTag` | `kustomization.yaml` | `v1.3.0` |
-| `image` | `deployment.yaml` | `my-app:v1.3.0@sha256:abc123` |
-| `version` | `version.json` | `1.3.0` |
+| Field     | Location             | Expected Value                |
+| --------- | -------------------- | ----------------------------- |
+| `newTag`  | `kustomization.yaml` | `v1.3.0`                      |
+| `image`   | `deployment.yaml`    | `my-app:v1.3.0@sha256:abc123` |
+| `version` | `version.json`       | `1.3.0`                       |
 
 ## Validation Rules
 
@@ -54,9 +54,9 @@ Validate that OBS updates manifests correctly based on PIPE output.
   "skill": "manifest-update-validation",
   "status": "pass | fail",
   "updates": {
-    "dev": {"tag": "pass", "digest": "pass", "build": "pass"},
-    "staging": {"tag": "pass", "digest": "pass", "build": "pass"},
-    "prod": {"tag": "pass", "digest": "pass", "build": "pass"}
+    "dev": { "tag": "pass", "digest": "pass", "build": "pass" },
+    "staging": { "tag": "pass", "digest": "pass", "build": "pass" },
+    "prod": { "tag": "pass", "digest": "pass", "build": "pass" }
   },
   "total_updates": 9,
   "failures": 0

@@ -15,7 +15,7 @@
             "required_sections": {
               "type": "array",
               "description": "Markdown headings that must appear in the agent's report",
-              "items": { "type": "string" },
+              "items": { "type": "string" }
             },
             "optional_sections": {
               "type": "array",
@@ -31,7 +31,13 @@
             },
             "findings_required_when": {
               "type": "string",
-              "enum": ["FAIL", "BLOCKED", "REQUEST_CHANGES", "CRITICAL", "never"],
+              "enum": [
+                "FAIL",
+                "BLOCKED",
+                "REQUEST_CHANGES",
+                "CRITICAL",
+                "never"
+              ],
               "description": "When findings must be non-empty"
             },
             "severity_classification": {

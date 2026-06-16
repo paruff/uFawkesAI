@@ -37,19 +37,19 @@ Install all project dependencies in a reproducible way.
 
 ### Node
 
-| Lock File | Command |
-|-----------|---------|
-| `package-lock.json` | `npm ci` |
-| `yarn.lock` | `yarn install --frozen-lockfile` |
-| `pnpm-lock.yaml` | `pnpm install --frozen-lockfile` |
+| Lock File           | Command                          |
+| ------------------- | -------------------------------- |
+| `package-lock.json` | `npm ci`                         |
+| `yarn.lock`         | `yarn install --frozen-lockfile` |
+| `pnpm-lock.yaml`    | `pnpm install --frozen-lockfile` |
 
 ### Python
 
-| Lock File | Command |
-|-----------|---------|
+| Lock File          | Command                           |
+| ------------------ | --------------------------------- |
 | `requirements.txt` | `pip install -r requirements.txt` |
-| `poetry.lock` | `poetry install --no-root` |
-| `Pipfile.lock` | `pipenv install --deploy` |
+| `poetry.lock`      | `poetry install --no-root`        |
+| `Pipfile.lock`     | `pipenv install --deploy`         |
 
 ## Validation Rules
 

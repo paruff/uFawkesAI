@@ -37,19 +37,19 @@ Detect operational issues in real time using logs, metrics, traces, and events.
 
 ## Sub-Skills
 
-| Skill | Purpose |
-|-------|---------|
-| `incident-detection/anomaly` | Detect unusual patterns in telemetry |
+| Skill                                 | Purpose                                    |
+| ------------------------------------- | ------------------------------------------ |
+| `incident-detection/anomaly`          | Detect unusual patterns in telemetry       |
 | `incident-detection/alert-evaluation` | Evaluate alert rules and trigger incidents |
 
 ## Golden Signals
 
-| Signal | Metric | Threshold |
-|--------|--------|-----------|
-| Latency | p99 response time | > 500ms |
-| Errors | Error rate | > 1% |
-| Saturation | CPU/Memory usage | > 80% |
-| Traffic | Request rate | Anomaly detection |
+| Signal     | Metric            | Threshold         |
+| ---------- | ----------------- | ----------------- |
+| Latency    | p99 response time | > 500ms           |
+| Errors     | Error rate        | > 1%              |
+| Saturation | CPU/Memory usage  | > 80%             |
+| Traffic    | Request rate      | Anomaly detection |
 
 ## Detection Rules
 

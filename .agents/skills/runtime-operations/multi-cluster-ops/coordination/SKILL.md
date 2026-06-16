@@ -34,11 +34,11 @@ Coordinate remediation across multiple clusters.
 
 ## Coordination Strategies
 
-| Strategy | Description | Use When |
-|----------|-------------|----------|
-| Sequential | Fix one cluster at a time | Low risk, verify approach |
-| Parallel | Fix all clusters simultaneously | High urgency, known fix |
-| Canary | Fix one cluster, validate, then others | Uncertain fix |
+| Strategy   | Description                            | Use When                  |
+| ---------- | -------------------------------------- | ------------------------- |
+| Sequential | Fix one cluster at a time              | Low risk, verify approach |
+| Parallel   | Fix all clusters simultaneously        | High urgency, known fix   |
+| Canary     | Fix one cluster, validate, then others | Uncertain fix             |
 
 ## Execution Rules
 

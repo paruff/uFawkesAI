@@ -34,21 +34,21 @@ Ensure each service exposes latency, traffic, errors, and saturation metrics.
 
 ## Golden Signals
 
-| Signal | Metric Pattern | Type | Example |
-|--------|---------------|------|---------|
-| Latency | `<svc>_request_duration_seconds` | Histogram | `fawkes_pipe_build_duration_seconds` |
-| Traffic | `<svc>_requests_total` | Counter | `fawkes_pipe_builds_total` |
-| Errors | `<svc>_errors_total` | Counter | `fawkes_pipe_build_errors_total` |
-| Saturation | `<svc>_utilization_ratio` | Gauge | `fawkes_pipe_active_builds` |
+| Signal     | Metric Pattern                   | Type      | Example                              |
+| ---------- | -------------------------------- | --------- | ------------------------------------ |
+| Latency    | `<svc>_request_duration_seconds` | Histogram | `fawkes_pipe_build_duration_seconds` |
+| Traffic    | `<svc>_requests_total`           | Counter   | `fawkes_pipe_builds_total`           |
+| Errors     | `<svc>_errors_total`             | Counter   | `fawkes_pipe_build_errors_total`     |
+| Saturation | `<svc>_utilization_ratio`        | Gauge     | `fawkes_pipe_active_builds`          |
 
 ## Per-Service Requirements
 
-| Service | Latency | Traffic | Errors | Saturation |
-|---------|---------|---------|--------|------------|
-| PIPE | build duration | builds total | build errors | active builds |
-| OBS | reconcile duration | reconciles total | reconcile errors | queue depth |
-| GitOps | sync duration | syncs total | sync errors | pending syncs |
-| Cluster | pod restarts | request total | 5xx total | CPU/memory |
+| Service | Latency            | Traffic          | Errors           | Saturation    |
+| ------- | ------------------ | ---------------- | ---------------- | ------------- |
+| PIPE    | build duration     | builds total     | build errors     | active builds |
+| OBS     | reconcile duration | reconciles total | reconcile errors | queue depth   |
+| GitOps  | sync duration      | syncs total      | sync errors      | pending syncs |
+| Cluster | pod restarts       | request total    | 5xx total        | CPU/memory    |
 
 ## Validation Rules
 
@@ -65,10 +65,20 @@ Ensure each service exposes latency, traffic, errors, and saturation metrics.
   "skill": "golden-signal-validation",
   "status": "pass | fail",
   "services": {
-    "pipe": {"latency": "present", "traffic": "present", "errors": "present", "saturation": "present"},
-    "obs": {"latency": "present", "traffic": "present", "errors": "missing", "saturation": "present"}
+    "pipe": {
+      "latency": "present",
+      "traffic": "present",
+      "errors": "present",
+      "saturation": "present"
+    },
+    "obs": {
+      "latency": "present",
+      "traffic": "present",
+      "errors": "missing",
+      "saturation": "present"
+    }
   },
-  "missing_signals": [{"service": "obs", "signal": "errors"}]
+  "missing_signals": [{ "service": "obs", "signal": "errors" }]
 }
 ```
 

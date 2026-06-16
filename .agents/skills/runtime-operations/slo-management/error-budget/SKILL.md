@@ -49,9 +49,9 @@ burn_rate = (1 - actual_success_rate) / (1 - slo_target)
 
 ### Budget Window
 
-| Window | Budget | 1% Budget | 14.4x Burn | 6x Burn | 3x Burn |
-|--------|--------|-----------|-----------|---------|---------|
-| 30 days | 43.2 min | 43.2s | 3s/min | 1.25s/min | 0.43s/min |
+| Window  | Budget   | 1% Budget | 14.4x Burn | 6x Burn   | 3x Burn   |
+| ------- | -------- | --------- | ---------- | --------- | --------- |
+| 30 days | 43.2 min | 43.2s     | 3s/min     | 1.25s/min | 0.43s/min |
 
 ## Detection Rules
 

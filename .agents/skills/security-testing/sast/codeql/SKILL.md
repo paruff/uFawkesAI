@@ -33,17 +33,17 @@ Run CodeQL queries to detect deep security vulnerabilities.
 
 ## Language Queries
 
-| Language | Query Pack | Focus |
-|----------|-----------|-------|
-| JavaScript/TypeScript | `js-security-extended` | Injection, auth, crypto |
-| Python | `python-security-extended` | Injection, path traversal |
-| Go | `go-security-extended` | Injection, SSRF, crypto |
+| Language              | Query Pack                 | Focus                     |
+| --------------------- | -------------------------- | ------------------------- |
+| JavaScript/TypeScript | `js-security-extended`     | Injection, auth, crypto   |
+| Python                | `python-security-extended` | Injection, path traversal |
+| Go                    | `go-security-extended`     | Injection, SSRF, crypto   |
 
 ## Query Suites
 
-| Suite | Coverage |
-|-------|----------|
-| `security-extended` | Broad security coverage |
+| Suite                  | Coverage                |
+| ---------------------- | ----------------------- |
+| `security-extended`    | Broad security coverage |
 | `security-and-quality` | Security + code quality |
 
 ## Validation Rules

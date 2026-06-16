@@ -59,12 +59,12 @@ Run unit tests and validate correctness of individual components.
 
 ## Tools
 
-| Language | Runner | Coverage |
-|----------|--------|----------|
-| TypeScript | Jest / Vitest | `--coverage` |
-| Python | pytest | `pytest-cov` |
-| Go | `go test` | `-coverprofile` |
-| Rust | `cargo test` | `cargo-tarpaulin` |
+| Language   | Runner        | Coverage          |
+| ---------- | ------------- | ----------------- |
+| TypeScript | Jest / Vitest | `--coverage`      |
+| Python     | pytest        | `pytest-cov`      |
+| Go         | `go test`     | `-coverprofile`   |
+| Rust       | `cargo test`  | `cargo-tarpaulin` |
 
 ## Output Format
 

@@ -36,20 +36,20 @@ Detect when a project drifts from the uFawkesAI template or golden paths.
 
 ## Sub-Skills
 
-| Skill | Purpose |
-|-------|---------|
-| `template-drift-detection/workflow-drift` | Detect workflow drift |
+| Skill                                          | Purpose                    |
+| ---------------------------------------------- | -------------------------- |
+| `template-drift-detection/workflow-drift`      | Detect workflow drift      |
 | `template-drift-detection/pipeline-spec-drift` | Detect pipeline-spec drift |
 
 ## Drift Categories
 
-| Category | Description | Severity |
-|----------|-------------|----------|
-| Missing file | Required file deleted | High |
-| Modified file | Template file changed | Medium |
-| Outdated workflow | Workflow behind template | Medium |
-| Extra file | Non-template file added | Low |
-| Schema drift | pipeline-spec changed | High |
+| Category          | Description              | Severity |
+| ----------------- | ------------------------ | -------- |
+| Missing file      | Required file deleted    | High     |
+| Modified file     | Template file changed    | Medium   |
+| Outdated workflow | Workflow behind template | Medium   |
+| Extra file        | Non-template file added  | Low      |
+| Schema drift      | pipeline-spec changed    | High     |
 
 ## Validation Rules
 

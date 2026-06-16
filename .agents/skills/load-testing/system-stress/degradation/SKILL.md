@@ -34,14 +34,14 @@ Understand how the system degrades as load increases.
 ## Load Increments
 
 | Load Level | Pipelines | Expected Latency | Expected Error Rate |
-|------------|-----------|------------------|---------------------|
-| 10% | 10 | 5s | 0% |
-| 25% | 25 | 6s | 0% |
-| 50% | 50 | 8s | 0.5% |
-| 75% | 75 | 12s | 2% |
-| 100% | 100 | 20s | 5% |
-| 125% | 125 | 30s | 10% |
-| 150% | 150 | 45s | 20% |
+| ---------- | --------- | ---------------- | ------------------- |
+| 10%        | 10        | 5s               | 0%                  |
+| 25%        | 25        | 6s               | 0%                  |
+| 50%        | 50        | 8s               | 0.5%                |
+| 75%        | 75        | 12s              | 2%                  |
+| 100%       | 100       | 20s              | 5%                  |
+| 125%       | 125       | 30s              | 10%                 |
+| 150%       | 150       | 45s              | 20%                 |
 
 ## Validation Rules
 
@@ -57,10 +57,30 @@ Understand how the system degrades as load increases.
   "skill": "degradation-pattern-analysis",
   "status": "pass | fail",
   "curve": [
-    {"load_percent": 10, "latency_s": 5, "error_rate_percent": 0, "throughput": 10},
-    {"load_percent": 50, "latency_s": 8, "error_rate_percent": 0.5, "throughput": 48},
-    {"load_percent": 100, "latency_s": 20, "error_rate_percent": 5, "throughput": 90},
-    {"load_percent": 150, "latency_s": 45, "error_rate_percent": 20, "throughput": 100}
+    {
+      "load_percent": 10,
+      "latency_s": 5,
+      "error_rate_percent": 0,
+      "throughput": 10
+    },
+    {
+      "load_percent": 50,
+      "latency_s": 8,
+      "error_rate_percent": 0.5,
+      "throughput": 48
+    },
+    {
+      "load_percent": 100,
+      "latency_s": 20,
+      "error_rate_percent": 5,
+      "throughput": 90
+    },
+    {
+      "load_percent": 150,
+      "latency_s": 45,
+      "error_rate_percent": 20,
+      "throughput": 100
+    }
   ],
   "tipping_point_percent": 100,
   "catastrophic_failure": false

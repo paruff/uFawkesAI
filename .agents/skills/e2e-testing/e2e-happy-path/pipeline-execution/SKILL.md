@@ -34,17 +34,17 @@ Validate that the CI pipeline executes all required stages correctly.
 
 ## Required Stages
 
-| Stage | Expected Status | Artifacts |
-|-------|----------------|-----------|
-| type-check | pass | - |
-| lint | pass | - |
-| sast | pass | sast.sarif |
-| build | pass | container image |
-| unit-test | pass | junit.xml, coverage.xml |
-| integration-test | pass | junit.xml |
-| security-scan | pass | dependency.json |
-| publish | pass | image in registry |
-| release | pass | version.json |
+| Stage            | Expected Status | Artifacts               |
+| ---------------- | --------------- | ----------------------- |
+| type-check       | pass            | -                       |
+| lint             | pass            | -                       |
+| sast             | pass            | sast.sarif              |
+| build            | pass            | container image         |
+| unit-test        | pass            | junit.xml, coverage.xml |
+| integration-test | pass            | junit.xml               |
+| security-scan    | pass            | dependency.json         |
+| publish          | pass            | image in registry       |
+| release          | pass            | version.json            |
 
 ## Validation Rules
 
@@ -60,18 +60,18 @@ Validate that the CI pipeline executes all required stages correctly.
   "skill": "pipeline-execution-validation",
   "status": "pass | fail",
   "stages": {
-    "type-check": {"status": "pass", "time_s": 30},
-    "lint": {"status": "pass", "time_s": 20},
-    "sast": {"status": "pass", "time_s": 60},
-    "build": {"status": "pass", "time_s": 120},
-    "unit-test": {"status": "pass", "time_s": 60},
-    "integration-test": {"status": "pass", "time_s": 90},
-    "security-scan": {"status": "pass", "time_s": 45},
-    "publish": {"status": "pass", "time_s": 30},
-    "release": {"status": "pass", "time_s": 10}
+    "type-check": { "status": "pass", "time_s": 30 },
+    "lint": { "status": "pass", "time_s": 20 },
+    "sast": { "status": "pass", "time_s": 60 },
+    "build": { "status": "pass", "time_s": 120 },
+    "unit-test": { "status": "pass", "time_s": 60 },
+    "integration-test": { "status": "pass", "time_s": 90 },
+    "security-scan": { "status": "pass", "time_s": 45 },
+    "publish": { "status": "pass", "time_s": 30 },
+    "release": { "status": "pass", "time_s": 10 }
   },
   "total_time_s": 465,
-  "artifacts": {"image": true, "sbom": true, "signature": true}
+  "artifacts": { "image": true, "sbom": true, "signature": true }
 }
 ```
 

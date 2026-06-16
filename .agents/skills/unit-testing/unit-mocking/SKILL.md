@@ -36,13 +36,13 @@ Isolate OBS and PIPE logic from external systems to ensure deterministic, fast t
 
 ## Mock Targets
 
-| Target | Tool | Use When |
-|--------|------|----------|
-| Git operations | `ts-mockito` | Testing commit, push, pull |
-| Registry | `nock` | Testing image pull, push |
-| Filesystem | `jest.mock('fs')` | Testing file read/write |
-| K8s API | `nock` | Testing pod, deployment operations |
-| HTTP | `nock` | Testing API calls |
+| Target         | Tool              | Use When                           |
+| -------------- | ----------------- | ---------------------------------- |
+| Git operations | `ts-mockito`      | Testing commit, push, pull         |
+| Registry       | `nock`            | Testing image pull, push           |
+| Filesystem     | `jest.mock('fs')` | Testing file read/write            |
+| K8s API        | `nock`            | Testing pod, deployment operations |
+| HTTP           | `nock`            | Testing API calls                  |
 
 ## Mock Validation Rules
 
@@ -57,11 +57,11 @@ Isolate OBS and PIPE logic from external systems to ensure deterministic, fast t
 ```typescript
 // Mock Git operations
 const mockGit = mock<GitClient>();
-when(mockGit.commit(anything())).thenResolve({ sha: 'abc123' });
+when(mockGit.commit(anything())).thenResolve({ sha: "abc123" });
 
 // Mock registry
-nock('https://registry.example.com')
-  .get('/v2/my-app/manifests/latest')
+nock("https://registry.example.com")
+  .get("/v2/my-app/manifests/latest")
   .reply(200, manifest);
 ```
 

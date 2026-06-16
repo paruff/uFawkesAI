@@ -35,13 +35,13 @@ Detect drift in GitHub Actions workflows.
 
 ## Drift Checks
 
-| Check | Description |
-|-------|-------------|
-| Missing job | Required job removed |
-| Modified step | Step changed from template |
-| Trigger change | Trigger modified |
-| Secret drift | Secret reference changed |
-| Action version | Action version outdated |
+| Check          | Description                |
+| -------------- | -------------------------- |
+| Missing job    | Required job removed       |
+| Modified step  | Step changed from template |
+| Trigger change | Trigger modified           |
+| Secret drift   | Secret reference changed   |
+| Action version | Action version outdated    |
 
 ## Validation Rules
 

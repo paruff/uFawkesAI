@@ -36,21 +36,21 @@ Automate initial project setup for developers.
 
 ## Sub-Skills
 
-| Skill | Purpose |
-|-------|---------|
-| `workspace-bootstrap/dependencies` | Install project dependencies |
-| `workspace-bootstrap/env-generation` | Generate `.env.local` files |
+| Skill                                | Purpose                      |
+| ------------------------------------ | ---------------------------- |
+| `workspace-bootstrap/dependencies`   | Install project dependencies |
+| `workspace-bootstrap/env-generation` | Generate `.env.local` files  |
 
 ## Bootstrap Steps
 
-| Step | Action | Required |
-|------|--------|----------|
-| 1 | Install dependencies | Yes |
-| 2 | Generate `.env.local` | Yes |
-| 3 | Configure Git hooks | Yes |
-| 4 | Start local cluster | Optional |
-| 5 | Clone GitOps repo | Optional |
-| 6 | Validate environment | Yes |
+| Step | Action                | Required |
+| ---- | --------------------- | -------- |
+| 1    | Install dependencies  | Yes      |
+| 2    | Generate `.env.local` | Yes      |
+| 3    | Configure Git hooks   | Yes      |
+| 4    | Start local cluster   | Optional |
+| 5    | Clone GitOps repo     | Optional |
+| 6    | Validate environment  | Yes      |
 
 ## Rules
 

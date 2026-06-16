@@ -36,20 +36,20 @@ Inject controlled failures into PIPE, OBS, GitOps repos, registries, and Kuberne
 
 ## Sub-Skills
 
-| Skill | Purpose |
-|-------|---------|
-| `chaos-injection/network` | Network fault injection |
+| Skill                     | Purpose                        |
+| ------------------------- | ------------------------------ |
+| `chaos-injection/network` | Network fault injection        |
 | `chaos-injection/process` | Process kill/restart injection |
 
 ## Chaos Targets
 
-| Target | Fault Type | Impact |
-|--------|-----------|--------|
-| PIPE build | Process kill | Build interruption |
-| OBS reconcile | Network partition | Reconcile delay |
-| Registry | Connection timeout | Image pull failure |
-| GitOps repo | Lock/unavailable | Commit failure |
-| K8s API | Latency | Controller delay |
+| Target        | Fault Type         | Impact             |
+| ------------- | ------------------ | ------------------ |
+| PIPE build    | Process kill       | Build interruption |
+| OBS reconcile | Network partition  | Reconcile delay    |
+| Registry      | Connection timeout | Image pull failure |
+| GitOps repo   | Lock/unavailable   | Commit failure     |
+| K8s API       | Latency            | Controller delay   |
 
 ## Validation Rules
 
@@ -73,8 +73,8 @@ Inject controlled failures into PIPE, OBS, GitOps repos, registries, and Kuberne
   "status": "success",
   "scenarios_executed": 5,
   "recovery": {
-    "pipe": {"recovered": true, "recovery_time_s": 30},
-    "obs": {"recovered": true, "recovery_time_s": 45}
+    "pipe": { "recovered": true, "recovery_time_s": 30 },
+    "obs": { "recovered": true, "recovery_time_s": 45 }
   },
   "data_integrity": "preserved",
   "gitops_drift": "none"

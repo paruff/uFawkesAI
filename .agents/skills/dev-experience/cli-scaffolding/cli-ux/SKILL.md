@@ -36,11 +36,11 @@ Ensure the Fawkes CLI provides a clean, intuitive developer experience.
 
 ### Command Naming
 
-| Rule | Example |
-|------|---------|
+| Rule       | Example                              |
+| ---------- | ------------------------------------ |
 | Verb-first | `fawkes scaffold`, `fawkes validate` |
-| Kebab-case | `fawkes scaffold service` |
-| Consistent | `fawkes <verb> <noun>` |
+| Kebab-case | `fawkes scaffold service`            |
+| Consistent | `fawkes <verb> <noun>`               |
 
 ### Help Text
 

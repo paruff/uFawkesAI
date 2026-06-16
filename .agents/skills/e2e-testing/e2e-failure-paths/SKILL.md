@@ -35,20 +35,20 @@ Validate pipeline behavior under failure conditions.
 
 ## Sub-Skills
 
-| Skill | Purpose |
-|-------|---------|
-| `e2e-failure-paths/pipeline-failures` | Negative pipeline scenarios |
+| Skill                                   | Purpose                     |
+| --------------------------------------- | --------------------------- |
+| `e2e-failure-paths/pipeline-failures`   | Negative pipeline scenarios |
 | `e2e-failure-paths/manifest-protection` | Invalid manifest protection |
 
 ## Failure Scenarios
 
-| Scenario | Expected Behavior |
-|----------|-------------------|
-| Unit test failure | Pipeline stops, no GitOps update |
+| Scenario                 | Expected Behavior                |
+| ------------------------ | -------------------------------- |
+| Unit test failure        | Pipeline stops, no GitOps update |
 | Integration test failure | Pipeline stops, no GitOps update |
-| SAST failure | Pipeline stops, no GitOps update |
-| Build failure | Pipeline stops, no GitOps update |
-| Invalid manifest | Pipeline stops, no GitOps update |
+| SAST failure             | Pipeline stops, no GitOps update |
+| Build failure            | Pipeline stops, no GitOps update |
+| Invalid manifest         | Pipeline stops, no GitOps update |
 
 ## Validation Rules
 
@@ -64,10 +64,10 @@ Validate pipeline behavior under failure conditions.
   "skill": "e2e-failure-paths",
   "status": "pass | fail",
   "scenarios": {
-    "unit_test_failure": {"stopped": true, "gitops_update": false},
-    "sast_failure": {"stopped": true, "gitops_update": false},
-    "build_failure": {"stopped": true, "gitops_update": false},
-    "invalid_manifest": {"stopped": true, "gitops_update": false}
+    "unit_test_failure": { "stopped": true, "gitops_update": false },
+    "sast_failure": { "stopped": true, "gitops_update": false },
+    "build_failure": { "stopped": true, "gitops_update": false },
+    "invalid_manifest": { "stopped": true, "gitops_update": false }
   },
   "total_scenarios": 4,
   "all_correct": true

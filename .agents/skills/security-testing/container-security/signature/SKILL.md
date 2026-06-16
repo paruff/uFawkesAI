@@ -33,11 +33,11 @@ Ensure all images are signed and verifiable before deployment.
 
 ## Signing Methods
 
-| Method | Tool | Use When |
-|--------|------|----------|
-| Key-based | Cosign | CI/CD pipeline |
-| Keyless | Cosign + OIDC | GitHub Actions |
-| Hardware key | Cosign + HSM | High security |
+| Method       | Tool          | Use When       |
+| ------------ | ------------- | -------------- |
+| Key-based    | Cosign        | CI/CD pipeline |
+| Keyless      | Cosign + OIDC | GitHub Actions |
+| Hardware key | Cosign + HSM  | High security  |
 
 ## Verification Commands
 

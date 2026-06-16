@@ -10,8 +10,7 @@ metadata:
 
 # Skill: Spec
 
-> **Load trigger:** `"load spec skill"` 
-> **DORA:** Cap 3 (AI-Accessible Internal Data)
+> **Load trigger:** `"load spec skill"` > **DORA:** Cap 3 (AI-Accessible Internal Data)
 > **Token cost:** Low
 
 ## Purpose
@@ -28,19 +27,19 @@ Extract structured specification from human intent.
 
 ## Sub-Skills
 
-| Skill | Purpose |
-|-------|---------|
-| `spec/requirements-extraction` | Extract requirements from human intent |
-| `spec/acceptance-criteria` | Define testable acceptance criteria |
-| `spec/policy-validation` | Validate against organizational policies |
-| `spec/pipeline-policy` | Ensure pipeline compliance |
-| `spec/k8s-policy` | Kubernetes policy alignment |
-| `spec/template-governance` | Template compliance validation |
+| Skill                          | Purpose                                  |
+| ------------------------------ | ---------------------------------------- |
+| `spec/requirements-extraction` | Extract requirements from human intent   |
+| `spec/acceptance-criteria`     | Define testable acceptance criteria      |
+| `spec/policy-validation`       | Validate against organizational policies |
+| `spec/pipeline-policy`         | Ensure pipeline compliance               |
+| `spec/k8s-policy`              | Kubernetes policy alignment              |
+| `spec/template-governance`     | Template compliance validation           |
 
 ## Dependencies
 
-| Skill | Relationship |
-|-------|-------------|
+| Skill  | Relationship                               |
+| ------ | ------------------------------------------ |
 | (none) | Foundation skill, no upstream dependencies |
 
 ## Inputs

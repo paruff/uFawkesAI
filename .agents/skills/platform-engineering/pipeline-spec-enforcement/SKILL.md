@@ -37,23 +37,23 @@ Ensure every Fawkes project adheres to pipeline-spec.yaml, guaranteeing consiste
 
 ## Sub-Skills
 
-| Skill | Purpose |
-|-------|---------|
-| `pipeline-spec-enforcement/stage-contracts` | Validate stage inputs/outputs |
-| `pipeline-spec-enforcement/artifact-contracts` | Validate required artifacts |
+| Skill                                          | Purpose                       |
+| ---------------------------------------------- | ----------------------------- |
+| `pipeline-spec-enforcement/stage-contracts`    | Validate stage inputs/outputs |
+| `pipeline-spec-enforcement/artifact-contracts` | Validate required artifacts   |
 
 ## Required Stages
 
-| Stage | Required | Order |
-|-------|----------|-------|
-| `lint` | Yes | 1 |
-| `unit-test` | Yes | 2 |
-| `build` | Yes | 3 |
-| `security-scan` | Yes | 4 |
-| `integration-test` | Conditional | 5 |
-| `e2e-test` | Conditional | 6 |
-| `publish` | Yes | 7 |
-| `deploy` | Yes | 8 |
+| Stage              | Required    | Order |
+| ------------------ | ----------- | ----- |
+| `lint`             | Yes         | 1     |
+| `unit-test`        | Yes         | 2     |
+| `build`            | Yes         | 3     |
+| `security-scan`    | Yes         | 4     |
+| `integration-test` | Conditional | 5     |
+| `e2e-test`         | Conditional | 6     |
+| `publish`          | Yes         | 7     |
+| `deploy`           | Yes         | 8     |
 
 ## Validation Rules
 
@@ -77,7 +77,14 @@ Ensure every Fawkes project adheres to pipeline-spec.yaml, guaranteeing consiste
   "status": "pass | fail",
   "spec_version": "1.0",
   "stages": {
-    "present": ["lint", "unit-test", "build", "security-scan", "publish", "deploy"],
+    "present": [
+      "lint",
+      "unit-test",
+      "build",
+      "security-scan",
+      "publish",
+      "deploy"
+    ],
     "missing": ["integration-test"],
     "invalid": []
   },

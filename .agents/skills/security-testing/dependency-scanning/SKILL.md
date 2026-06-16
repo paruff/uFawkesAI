@@ -37,28 +37,28 @@ Detect vulnerable dependencies in NPM, Python, Go, and container layers.
 
 ## Sub-Skills
 
-| Skill | Purpose |
-|-------|---------|
-| `dependency-scanning/npm` | NPM dependency scanning |
+| Skill                      | Purpose                      |
+| -------------------------- | ---------------------------- |
+| `dependency-scanning/npm`  | NPM dependency scanning      |
 | `dependency-scanning/sbom` | SBOM generation & validation |
 
 ## Scan Targets
 
-| Target | Tool | Focus |
-|--------|------|-------|
-| `package-lock.json` | Trivy | JS/TS CVEs |
-| `requirements.txt` | Trivy | Python CVEs |
-| `go.sum` | Trivy | Go CVEs |
-| Container OS packages | Trivy | OS CVEs |
+| Target                | Tool  | Focus       |
+| --------------------- | ----- | ----------- |
+| `package-lock.json`   | Trivy | JS/TS CVEs  |
+| `requirements.txt`    | Trivy | Python CVEs |
+| `go.sum`              | Trivy | Go CVEs     |
+| Container OS packages | Trivy | OS CVEs     |
 
 ## Severity Thresholds
 
-| Severity | Action |
-|----------|--------|
-| Critical | Block build |
-| High | Block build |
-| Medium | Warn, fix within 1 week |
-| Low | Log, fix in next sprint |
+| Severity | Action                  |
+| -------- | ----------------------- |
+| Critical | Block build             |
+| High     | Block build             |
+| Medium   | Warn, fix within 1 week |
+| Low      | Log, fix in next sprint |
 
 ## Validation Rules
 
@@ -74,9 +74,9 @@ Detect vulnerable dependencies in NPM, Python, Go, and container layers.
   "skill": "dependency-scanning",
   "status": "pass | fail",
   "scans": {
-    "npm": {"vulnerabilities": 0, "critical": 0},
-    "python": {"vulnerabilities": 0, "critical": 0},
-    "container_os": {"vulnerabilities": 0, "critical": 0}
+    "npm": { "vulnerabilities": 0, "critical": 0 },
+    "python": { "vulnerabilities": 0, "critical": 0 },
+    "container_os": { "vulnerabilities": 0, "critical": 0 }
   },
   "sbom_generated": true,
   "total_critical": 0

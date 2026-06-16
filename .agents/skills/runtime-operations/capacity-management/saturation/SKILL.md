@@ -36,35 +36,35 @@ Detect when services or nodes are approaching resource limits.
 
 ### CPU Saturation
 
-| Metric | Threshold | Severity |
-|--------|-----------|----------|
-| CPU usage | > 85% sustained 5 min | HIGH |
-| CPU throttling | > 50% | MEDIUM |
-| CPU throttling | > 80% | HIGH |
+| Metric         | Threshold             | Severity |
+| -------------- | --------------------- | -------- |
+| CPU usage      | > 85% sustained 5 min | HIGH     |
+| CPU throttling | > 50%                 | MEDIUM   |
+| CPU throttling | > 80%                 | HIGH     |
 
 ### Memory Pressure
 
-| Metric | Threshold | Severity |
-|--------|-----------|----------|
-| Memory usage | > 85% | HIGH |
-| OOM kills | > 0 | CRITICAL |
-| Memory working set | > 90% | HIGH |
+| Metric             | Threshold | Severity |
+| ------------------ | --------- | -------- |
+| Memory usage       | > 85%     | HIGH     |
+| OOM kills          | > 0       | CRITICAL |
+| Memory working set | > 90%     | HIGH     |
 
 ### Disk Pressure
 
-| Metric | Threshold | Severity |
-|--------|-----------|----------|
-| Disk usage | > 85% | HIGH |
-| Disk I/O wait | > 20% | MEDIUM |
-| Inode usage | > 80% | MEDIUM |
+| Metric        | Threshold | Severity |
+| ------------- | --------- | -------- |
+| Disk usage    | > 85%     | HIGH     |
+| Disk I/O wait | > 20%     | MEDIUM   |
+| Inode usage   | > 80%     | MEDIUM   |
 
 ### Network Saturation
 
-| Metric | Threshold | Severity |
-|--------|-----------|----------|
-| Network bandwidth | > 75% | MEDIUM |
-| Packet drops | > 0.1% | MEDIUM |
-| TCP retransmits | > 1% | HIGH |
+| Metric            | Threshold | Severity |
+| ----------------- | --------- | -------- |
+| Network bandwidth | > 75%     | MEDIUM   |
+| Packet drops      | > 0.1%    | MEDIUM   |
+| TCP retransmits   | > 1%      | HIGH     |
 
 ## Output Format
 

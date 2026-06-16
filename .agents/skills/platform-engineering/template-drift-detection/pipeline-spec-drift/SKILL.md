@@ -35,13 +35,13 @@ Detect drift in pipeline-spec.yaml.
 
 ## Drift Checks
 
-| Check | Description |
-|-------|-------------|
-| Missing stage | Required stage removed |
+| Check             | Description                  |
+| ----------------- | ---------------------------- |
+| Missing stage     | Required stage removed       |
 | Modified contract | Stage inputs/outputs changed |
-| Schema change | Spec structure changed |
-| Version drift | Spec version outdated |
-| Extra stage | Non-standard stage added |
+| Schema change     | Spec structure changed       |
+| Version drift     | Spec version outdated        |
+| Extra stage       | Non-standard stage added     |
 
 ## Validation Rules
 

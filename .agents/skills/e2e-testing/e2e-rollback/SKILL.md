@@ -35,10 +35,10 @@ Validate rollback behavior under deployment failure.
 
 ## Sub-Skills
 
-| Skill | Purpose |
-|-------|---------|
-| `e2e-rollback/trigger` | Trigger controlled failure |
-| `e2e-rollback/state-validation` | Validate rollback state |
+| Skill                           | Purpose                    |
+| ------------------------------- | -------------------------- |
+| `e2e-rollback/trigger`          | Trigger controlled failure |
+| `e2e-rollback/state-validation` | Validate rollback state    |
 
 ## Rollback Flow
 
@@ -65,8 +65,8 @@ Validate rollback behavior under deployment failure.
 {
   "skill": "e2e-rollback",
   "status": "pass | fail",
-  "trigger": {"invalid_manifest_injected": true},
-  "rollback": {"triggered": true, "version": "v1.2.3", "time_s": 30},
+  "trigger": { "invalid_manifest_injected": true },
+  "rollback": { "triggered": true, "version": "v1.2.3", "time_s": 30 },
   "gitops_state": "consistent",
   "cluster_state": "consistent",
   "drift": "none"

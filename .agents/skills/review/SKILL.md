@@ -10,8 +10,7 @@ metadata:
 
 # Skill: Review
 
-> **Load trigger:** `"load review skill"` 
-> **DORA:** Cap 4 + 6 (Continuous Delivery + Operations)
+> **Load trigger:** `"load review skill"` > **DORA:** Cap 4 + 6 (Continuous Delivery + Operations)
 > **Token cost:** Medium
 
 ## Purpose
@@ -58,27 +57,27 @@ Consumes build output and validates:
 
 ## Sub-Skills
 
-| Skill | Purpose |
-|-------|---------|
-| `review/spec-compliance` | Validate against specification |
-| `review/design-compliance` | Validate against architecture |
-| `review/code-quality` | Assess code quality |
-| `review/acceptance-criteria` | Validate acceptance criteria |
-| `review/security-rbac` | RBAC validation |
-| `review/secret-governance` | Secret management review |
-| `review/policy-validation` | Policy-as-code validation |
-| `review/k8s-policy` | Kubernetes policy compliance |
-| `review/pipeline-policy` | Pipeline policy validation |
-| `review/gitops-overlay` | GitOps overlay validation |
+| Skill                        | Purpose                        |
+| ---------------------------- | ------------------------------ |
+| `review/spec-compliance`     | Validate against specification |
+| `review/design-compliance`   | Validate against architecture  |
+| `review/code-quality`        | Assess code quality            |
+| `review/acceptance-criteria` | Validate acceptance criteria   |
+| `review/security-rbac`       | RBAC validation                |
+| `review/secret-governance`   | Secret management review       |
+| `review/policy-validation`   | Policy-as-code validation      |
+| `review/k8s-policy`          | Kubernetes policy compliance   |
+| `review/pipeline-policy`     | Pipeline policy validation     |
+| `review/gitops-overlay`      | GitOps overlay validation      |
 
 ## Dependencies
 
-| Skill | Relationship |
-|-------|-------------|
-| `build` | Consumes build output |
-| `test-execution` | Consumes test results |
-| `spec` | Validates against requirements |
-| `design` | Validates against architecture |
+| Skill            | Relationship                   |
+| ---------------- | ------------------------------ |
+| `build`          | Consumes build output          |
+| `test-execution` | Consumes test results          |
+| `spec`           | Validates against requirements |
+| `design`         | Validates against architecture |
 
 ## Inputs
 

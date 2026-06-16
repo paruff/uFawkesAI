@@ -33,12 +33,12 @@ Validate that the deployed application is healthy and functional.
 
 ## Smoke Test Targets
 
-| Target | Endpoint | Expected |
-|--------|----------|----------|
-| Health | `/health` | 200 OK |
-| Readiness | `/ready` | 200 OK |
-| Version | `/version` | Current version |
-| API | `/api/v1/status` | 200 OK |
+| Target    | Endpoint         | Expected        |
+| --------- | ---------------- | --------------- |
+| Health    | `/health`        | 200 OK          |
+| Readiness | `/ready`         | 200 OK          |
+| Version   | `/version`       | Current version |
+| API       | `/api/v1/status` | 200 OK          |
 
 ## Validation Rules
 
@@ -55,9 +55,9 @@ Validate that the deployed application is healthy and functional.
   "skill": "deployment-smoke-tests",
   "status": "pass | fail",
   "tests": [
-    {"endpoint": "/health", "status": 200, "time_ms": 50},
-    {"endpoint": "/ready", "status": 200, "time_ms": 45},
-    {"endpoint": "/version", "status": 200, "body": "1.3.0", "time_ms": 30}
+    { "endpoint": "/health", "status": 200, "time_ms": 50 },
+    { "endpoint": "/ready", "status": 200, "time_ms": 45 },
+    { "endpoint": "/version", "status": 200, "body": "1.3.0", "time_ms": 30 }
   ],
   "total_tests": 3,
   "passed": 3,

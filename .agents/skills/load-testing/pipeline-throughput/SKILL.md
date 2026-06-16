@@ -36,20 +36,20 @@ Measure how many pipelines PIPE can execute per unit time under realistic worklo
 
 ## Sub-Skills
 
-| Skill | Purpose |
-|-------|---------|
+| Skill                                     | Purpose                                        |
+| ----------------------------------------- | ---------------------------------------------- |
 | `pipeline-throughput/concurrency-profile` | Characterize behavior at different concurrency |
-| `pipeline-throughput/latency-breakdown` | Break down latency by stage |
+| `pipeline-throughput/latency-breakdown`   | Break down latency by stage                    |
 
 ## Load Profile
 
 | Concurrency | Pipelines | Duration |
-|-------------|-----------|----------|
-| 1 | 10 | 5 min |
-| 5 | 50 | 5 min |
-| 10 | 100 | 5 min |
-| 50 | 250 | 5 min |
-| 100 | 500 | 5 min |
+| ----------- | --------- | -------- |
+| 1           | 10        | 5 min    |
+| 5           | 50        | 5 min    |
+| 10          | 100       | 5 min    |
+| 50          | 250       | 5 min    |
+| 100         | 500       | 5 min    |
 
 ## Validation Rules
 

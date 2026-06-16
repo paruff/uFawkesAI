@@ -33,12 +33,12 @@ Trigger a controlled deployment failure to test rollback behavior.
 
 ## Failure Injection Methods
 
-| Method | Description |
-|--------|-------------|
-| Invalid manifest | Deploy manifest with invalid YAML |
-| Wrong image | Deploy non-existent image tag |
-| Failing health check | Configure failing liveness probe |
-| Resource exhaustion | Deploy with insufficient resources |
+| Method               | Description                        |
+| -------------------- | ---------------------------------- |
+| Invalid manifest     | Deploy manifest with invalid YAML  |
+| Wrong image          | Deploy non-existent image tag      |
+| Failing health check | Configure failing liveness probe   |
+| Resource exhaustion  | Deploy with insufficient resources |
 
 ## Validation Rules
 

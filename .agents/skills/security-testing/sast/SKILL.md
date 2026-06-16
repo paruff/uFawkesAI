@@ -37,20 +37,20 @@ Detect insecure code patterns, vulnerabilities, and misconfigurations in OBS, PI
 
 ## Sub-Skills
 
-| Skill | Purpose |
-|-------|---------|
+| Skill          | Purpose                   |
+| -------------- | ------------------------- |
 | `sast/semgrep` | Semgrep ruleset execution |
-| `sast/codeql` | CodeQL deep analysis |
+| `sast/codeql`  | CodeQL deep analysis      |
 
 ## Severity Levels
 
-| Severity | Action |
-|----------|--------|
-| Critical | Block merge, immediate fix |
-| High | Block merge, fix within 24h |
-| Medium | Warn, fix within 1 week |
-| Low | Log, fix in next sprint |
-| Info | Log only |
+| Severity | Action                      |
+| -------- | --------------------------- |
+| Critical | Block merge, immediate fix  |
+| High     | Block merge, fix within 24h |
+| Medium   | Warn, fix within 1 week     |
+| Low      | Log, fix in next sprint     |
+| Info     | Log only                    |
 
 ## Validation Rules
 
@@ -70,8 +70,8 @@ Detect insecure code patterns, vulnerabilities, and misconfigurations in OBS, PI
 {
   "skill": "sast",
   "status": "pass | fail",
-  "semgrep": {"findings": 0, "critical": 0, "high": 0},
-  "codeql": {"findings": 0, "critical": 0, "high": 0},
+  "semgrep": { "findings": 0, "critical": 0, "high": 0 },
+  "codeql": { "findings": 0, "critical": 0, "high": 0 },
   "total_findings": 0,
   "blocked": false
 }

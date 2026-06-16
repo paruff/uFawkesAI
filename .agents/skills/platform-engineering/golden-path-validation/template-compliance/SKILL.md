@@ -65,9 +65,20 @@ project/
   "skill": "template-compliance",
   "status": "pass | fail",
   "structure": {
-    "valid_dirs": ["src/", "tests/", "manifests/", "overlays/", ".github/workflows/"],
+    "valid_dirs": [
+      "src/",
+      "tests/",
+      "manifests/",
+      "overlays/",
+      ".github/workflows/"
+    ],
     "missing_dirs": [],
-    "valid_files": ["pipeline-spec.yaml", "version.json", "Dockerfile", "README.md"],
+    "valid_files": [
+      "pipeline-spec.yaml",
+      "version.json",
+      "Dockerfile",
+      "README.md"
+    ],
     "missing_files": []
   }
 }

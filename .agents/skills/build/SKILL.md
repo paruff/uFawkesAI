@@ -10,8 +10,7 @@ metadata:
 
 # Skill: Build
 
-> **Load trigger:** `"load build skill"` 
-> **DORA:** Cap 4 (Continuous Delivery)
+> **Load trigger:** `"load build skill"` > **DORA:** Cap 4 (Continuous Delivery)
 > **Token cost:** Medium
 
 ## Purpose
@@ -29,23 +28,23 @@ Turn plan into code, manifests, pipelines, and GitOps overlays.
 
 ## Sub-Skills
 
-| Skill | Purpose |
-|-------|---------|
-| `build/code-generation` | Generate source code that satisfies specification |
-| `build/manifest-generation` | Create Kubernetes manifests |
-| `build/pipeline-generation` | Generate CI/CD pipeline configurations |
-| `build/gitops-overlay-generation` | Create environment-specific overlays |
-| `build/governance-enforcement` | Enforce organizational policies |
-| `build/template-application` | Apply project templates and conventions |
-| `build/refactoring` | Improve existing code without changing behavior |
+| Skill                             | Purpose                                           |
+| --------------------------------- | ------------------------------------------------- |
+| `build/code-generation`           | Generate source code that satisfies specification |
+| `build/manifest-generation`       | Create Kubernetes manifests                       |
+| `build/pipeline-generation`       | Generate CI/CD pipeline configurations            |
+| `build/gitops-overlay-generation` | Create environment-specific overlays              |
+| `build/governance-enforcement`    | Enforce organizational policies                   |
+| `build/template-application`      | Apply project templates and conventions           |
+| `build/refactoring`               | Improve existing code without changing behavior   |
 
 ## Dependencies
 
-| Skill | Relationship |
-|-------|-------------|
-| `plan` | Consumes task list and estimates |
-| `design` | Consumes architecture and interfaces |
-| `test` | Produces code that passes failing tests |
+| Skill    | Relationship                            |
+| -------- | --------------------------------------- |
+| `plan`   | Consumes task list and estimates        |
+| `design` | Consumes architecture and interfaces    |
+| `test`   | Produces code that passes failing tests |
 
 ## Inputs
 

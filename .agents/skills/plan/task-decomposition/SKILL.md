@@ -63,12 +63,8 @@ Break the specification and design into clear, actionable tasks and subtasks.
   "task_id": "TASK-NNN",
   "title": "Short imperative title",
   "description": "What this task accomplishes",
-  "acceptance_criteria": [
-    "Specific, testable assertion"
-  ],
-  "context_files": [
-    "path/to/file — reason"
-  ],
+  "acceptance_criteria": ["Specific, testable assertion"],
+  "context_files": ["path/to/file — reason"],
   "estimated_lines": 150,
   "assigned_agent": "build | test | docs | security",
   "depends_on": ["TASK-NNN"],

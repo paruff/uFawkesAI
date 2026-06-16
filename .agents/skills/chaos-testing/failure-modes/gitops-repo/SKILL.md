@@ -33,12 +33,12 @@ Validate OBS behavior when GitOps repo is unavailable or locked.
 
 ## Failure Modes
 
-| Mode | Duration | Expected OBS |
-|------|----------|--------------|
-| Repo locked | 60s | Wait, retry with backoff |
-| Repo unreachable | 120s | Retry, fail gracefully |
-| Auth expired | 60s | Fail, alert |
-| Disk full | 60s | Fail, alert |
+| Mode             | Duration | Expected OBS             |
+| ---------------- | -------- | ------------------------ |
+| Repo locked      | 60s      | Wait, retry with backoff |
+| Repo unreachable | 120s     | Retry, fail gracefully   |
+| Auth expired     | 60s      | Fail, alert              |
+| Disk full        | 60s      | Fail, alert              |
 
 ## Validation Rules
 
@@ -55,8 +55,8 @@ Validate OBS behavior when GitOps repo is unavailable or locked.
   "skill": "gitops-repo-failure-simulation",
   "status": "success",
   "scenarios": [
-    {"mode": "repo_locked", "retry": "pass", "backoff": "pass"},
-    {"mode": "repo_unreachable", "retry": "pass", "graceful_fail": "pass"}
+    { "mode": "repo_locked", "retry": "pass", "backoff": "pass" },
+    { "mode": "repo_unreachable", "retry": "pass", "graceful_fail": "pass" }
   ],
   "partial_commits": 0,
   "repo_corruption": 0

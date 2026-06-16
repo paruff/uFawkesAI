@@ -38,31 +38,31 @@ Assign severity levels (SEV1–SEV5) to incidents.
 
 ### Impact Factors
 
-| Factor | Low | Medium | High |
-|--------|-----|--------|------|
-| Users affected | < 10% | 10-50% | > 50% |
-| Revenue impact | None | < $1K/hr | > $1K/hr |
-| Data loss | None | Partial | Complete |
-| SLA breach | No | Approaching | Yes |
+| Factor         | Low   | Medium      | High     |
+| -------------- | ----- | ----------- | -------- |
+| Users affected | < 10% | 10-50%      | > 50%    |
+| Revenue impact | None  | < $1K/hr    | > $1K/hr |
+| Data loss      | None  | Partial     | Complete |
+| SLA breach     | No    | Approaching | Yes      |
 
 ### Blast Radius
 
-| Scope | Severity |
-|-------|----------|
-| Single pod | SEV4/SEV5 |
-| Single service | SEV3 |
-| Multiple services | SEV2 |
-| Entire cluster | SEV1 |
-| Multiple clusters | SEV1 |
+| Scope             | Severity  |
+| ----------------- | --------- |
+| Single pod        | SEV4/SEV5 |
+| Single service    | SEV3      |
+| Multiple services | SEV2      |
+| Entire cluster    | SEV1      |
+| Multiple clusters | SEV1      |
 
 ### Error Budget Burn Rate
 
 | Burn Rate | Severity |
-|-----------|----------|
-| > 14.4x | SEV1 |
-| > 6x | SEV2 |
-| > 3x | SEV3 |
-| > 1x | SEV4 |
+| --------- | -------- |
+| > 14.4x   | SEV1     |
+| > 6x      | SEV2     |
+| > 3x      | SEV3     |
+| > 1x      | SEV4     |
 
 ## Output Format
 

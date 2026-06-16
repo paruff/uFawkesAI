@@ -40,10 +40,10 @@ Validate the full pipeline success path from commit to deployment.
 
 ## Sub-Skills
 
-| Skill | Purpose |
-|-------|---------|
-| `e2e-happy-path/pipeline-execution` | Validate CI pipeline stages |
-| `e2e-happy-path/smoke-tests` | Validate deployed application |
+| Skill                               | Purpose                       |
+| ----------------------------------- | ----------------------------- |
+| `e2e-happy-path/pipeline-execution` | Validate CI pipeline stages   |
+| `e2e-happy-path/smoke-tests`        | Validate deployed application |
 
 ## Happy Path Flow
 
@@ -72,12 +72,12 @@ Validate the full pipeline success path from commit to deployment.
 {
   "skill": "e2e-happy-path",
   "status": "pass | fail",
-  "pipeline": {"status": "pass", "time_s": 300},
-  "artifacts": {"image": "pass", "sbom": "pass", "signature": "pass"},
-  "gitops_update": {"status": "pass", "commit": "abc123"},
-  "reconciliation": {"status": "pass", "time_s": 60},
-  "deployment": {"status": "pass", "replicas": 3},
-  "smoke_tests": {"status": "pass", "tests": 10}
+  "pipeline": { "status": "pass", "time_s": 300 },
+  "artifacts": { "image": "pass", "sbom": "pass", "signature": "pass" },
+  "gitops_update": { "status": "pass", "commit": "abc123" },
+  "reconciliation": { "status": "pass", "time_s": 60 },
+  "deployment": { "status": "pass", "replicas": 3 },
+  "smoke_tests": { "status": "pass", "tests": 10 }
 }
 ```
 

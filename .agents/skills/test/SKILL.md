@@ -10,8 +10,7 @@ metadata:
 
 # Skill: Test (TDD)
 
-> **Load trigger:** `"load test skill"` 
-> **DORA:** Cap 5 (Small Batches / Shift Left on Quality)
+> **Load trigger:** `"load test skill"` > **DORA:** Cap 5 (Small Batches / Shift Left on Quality)
 > **Token cost:** Low
 
 ## Purpose
@@ -36,8 +35,8 @@ Write failing tests before implementation (TDD).
 
 ## Dependencies
 
-| Skill | Relationship |
-|-------|-------------|
+| Skill  | Relationship                                   |
+| ------ | ---------------------------------------------- |
 | `spec` | Consumes specification and acceptance criteria |
 
 ## Inputs

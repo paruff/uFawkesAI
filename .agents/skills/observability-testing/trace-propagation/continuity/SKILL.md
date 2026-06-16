@@ -46,12 +46,12 @@ PIPE (build trigger)
 
 ## Propagation Headers
 
-| Header | Standard |
-|--------|----------|
-| `traceparent` | W3C Trace Context |
-| `tracestate` | W3C Trace Context |
-| `x-b3-traceid` | B3 (Zipkin) |
-| `x-request-id` | AWS X-Ray |
+| Header         | Standard          |
+| -------------- | ----------------- |
+| `traceparent`  | W3C Trace Context |
+| `tracestate`   | W3C Trace Context |
+| `x-b3-traceid` | B3 (Zipkin)       |
+| `x-request-id` | AWS X-Ray         |
 
 ## Validation Rules
 
@@ -67,12 +67,12 @@ PIPE (build trigger)
   "skill": "cross-service-trace-continuity",
   "status": "pass | fail",
   "propagation_chain": [
-    {"service": "pipe", "trace_id": "abc123", "status": "present"},
-    {"service": "obs", "trace_id": "abc123", "status": "present"},
-    {"service": "gitops", "trace_id": "abc123", "status": "broken"},
-    {"service": "cluster", "trace_id": "abc123", "status": "missing"}
+    { "service": "pipe", "trace_id": "abc123", "status": "present" },
+    { "service": "obs", "trace_id": "abc123", "status": "present" },
+    { "service": "gitops", "trace_id": "abc123", "status": "broken" },
+    { "service": "cluster", "trace_id": "abc123", "status": "missing" }
   ],
-  "breaks": [{"service": "gitops", "issue": "trace_id not propagated"}]
+  "breaks": [{ "service": "gitops", "issue": "trace_id not propagated" }]
 }
 ```
 

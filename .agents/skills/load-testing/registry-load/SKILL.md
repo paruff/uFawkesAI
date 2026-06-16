@@ -35,8 +35,8 @@ Understand how PIPE and OBS behave when pushing/pulling many images under load.
 
 ## Sub-Skills
 
-| Skill | Purpose |
-|-------|---------|
+| Skill                            | Purpose                             |
+| -------------------------------- | ----------------------------------- |
 | `registry-load/push-performance` | Measure concurrent push performance |
 | `registry-load/pull-performance` | Measure concurrent pull performance |
 
@@ -52,8 +52,16 @@ Understand how PIPE and OBS behave when pushing/pulling many images under load.
 {
   "skill": "registry-load-testing",
   "status": "pass | fail",
-  "push": {"throughput_per_min": 20, "p50_ms": 5000, "error_rate_percent": 0.5},
-  "pull": {"throughput_per_min": 50, "p50_ms": 2000, "error_rate_percent": 0.1},
+  "push": {
+    "throughput_per_min": 20,
+    "p50_ms": 5000,
+    "error_rate_percent": 0.5
+  },
+  "pull": {
+    "throughput_per_min": 50,
+    "p50_ms": 2000,
+    "error_rate_percent": 0.1
+  },
   "total_images": 100
 }
 ```

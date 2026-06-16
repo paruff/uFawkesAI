@@ -57,13 +57,13 @@ Generate a likely root cause hypothesis based on telemetry.
 
 ## Common Root Causes
 
-| Symptom | Likely Root Cause |
-|---------|-------------------|
-| Connection timeout | Network issue or downstream service down |
-| OOMKilled | Memory leak or insufficient limits |
-| 500 errors after deploy | Bad deployment, rollback |
-| Slow responses | Resource contention, database query |
-| Disk full | Log accumulation, data growth |
+| Symptom                 | Likely Root Cause                        |
+| ----------------------- | ---------------------------------------- |
+| Connection timeout      | Network issue or downstream service down |
+| OOMKilled               | Memory leak or insufficient limits       |
+| 500 errors after deploy | Bad deployment, rollback                 |
+| Slow responses          | Resource contention, database query      |
+| Disk full               | Log accumulation, data growth            |
 
 ## Output Format
 

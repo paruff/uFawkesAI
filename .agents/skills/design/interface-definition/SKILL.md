@@ -69,13 +69,13 @@ Define interfaces between components.
 
 ## API Design Standards
 
-| Standard | Convention |
-|----------|------------|
-| Versioning | URL path (`/api/v1/`) |
-| Naming | kebab-case for paths, camelCase for JSON |
-| Pagination | `?page=1&limit=20` or cursor-based |
-| Errors | `{ "error": { "code": "string", "message": "string" } }` |
-| Timestamps | ISO 8601 format |
+| Standard   | Convention                                               |
+| ---------- | -------------------------------------------------------- |
+| Versioning | URL path (`/api/v1/`)                                    |
+| Naming     | kebab-case for paths, camelCase for JSON                 |
+| Pagination | `?page=1&limit=20` or cursor-based                       |
+| Errors     | `{ "error": { "code": "string", "message": "string" } }` |
+| Timestamps | ISO 8601 format                                          |
 
 ## Output Format
 
@@ -91,7 +91,7 @@ Define interfaces between components.
           "path": "/",
           "request": {
             "email": "string",
-            "password": "string"
+            "password": "string"  # pragma: allowlist secret
           },
           "response": {
             "id": "string",

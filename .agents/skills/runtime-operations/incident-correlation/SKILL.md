@@ -35,9 +35,9 @@ Correlate multiple signals (logs, metrics, traces, events) into a single inciden
 
 ## Sub-Skills
 
-| Skill | Purpose |
-|-------|---------|
-| `incident-correlation/signal-correlation` | Correlate logs, metrics, traces |
+| Skill                                         | Purpose                              |
+| --------------------------------------------- | ------------------------------------ |
+| `incident-correlation/signal-correlation`     | Correlate logs, metrics, traces      |
 | `incident-correlation/dependency-correlation` | Use dependency graph for correlation |
 
 ## Correlation Methods
@@ -77,9 +77,9 @@ Correlate multiple signals (logs, metrics, traces, events) into a single inciden
   "skill": "incident-correlation",
   "incident_id": "INC-123",
   "signals": [
-    {"type": "alert", "source": "prometheus", "message": "High error rate"},
-    {"type": "log", "source": "loki", "message": "Connection timeout"},
-    {"type": "trace", "source": "tempo", "trace_id": "abc123"}
+    { "type": "alert", "source": "prometheus", "message": "High error rate" },
+    { "type": "log", "source": "loki", "message": "Connection timeout" },
+    { "type": "trace", "source": "tempo", "trace_id": "abc123" }
   ],
   "correlation_method": "trace-based",
   "root_cause_service": "payment-api",

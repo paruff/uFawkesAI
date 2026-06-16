@@ -35,24 +35,24 @@ Detect changes made directly to the cluster outside GitOps.
 
 ## Comparison Scope
 
-| Resource Type | Comparison |
-|--------------|------------|
-| Deployments | Image, replicas, env, resources |
-| Services | Ports, selector, type |
-| ConfigMaps | Data content |
-| Secrets | Key names (not values) |
-| Ingresses | Rules, TLS config |
-| NetworkPolicies | Rules |
+| Resource Type   | Comparison                      |
+| --------------- | ------------------------------- |
+| Deployments     | Image, replicas, env, resources |
+| Services        | Ports, selector, type           |
+| ConfigMaps      | Data content                    |
+| Secrets         | Key names (not values)          |
+| Ingresses       | Rules, TLS config               |
+| NetworkPolicies | Rules                           |
 
 ## Drift Classification
 
-| Drift | Severity | Example |
-|-------|----------|---------|
-| Image tag changed | HIGH | Manual image update |
-| Replicas changed | MEDIUM | Manual scale |
-| Config changed | HIGH | ConfigMap edited |
-| Secret added | HIGH | Secret created manually |
-| Resource limits changed | MEDIUM | Resource edited |
+| Drift                   | Severity | Example                 |
+| ----------------------- | -------- | ----------------------- |
+| Image tag changed       | HIGH     | Manual image update     |
+| Replicas changed        | MEDIUM   | Manual scale            |
+| Config changed          | HIGH     | ConfigMap edited        |
+| Secret added            | HIGH     | Secret created manually |
+| Resource limits changed | MEDIUM   | Resource edited         |
 
 ## Detection Logic
 

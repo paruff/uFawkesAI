@@ -45,9 +45,9 @@ Validate logs, metrics, and traces emitted by the deployed application.
 {
   "skill": "telemetry-validation",
   "status": "pass | fail",
-  "logs": {"structured": true, "fields_valid": true, "errors": 0},
-  "metrics": {"scraped": true, "golden_signals": "complete"},
-  "traces": {"propagating": true, "services": 4}
+  "logs": { "structured": true, "fields_valid": true, "errors": 0 },
+  "metrics": { "scraped": true, "golden_signals": "complete" },
+  "traces": { "propagating": true, "services": 4 }
 }
 ```
 

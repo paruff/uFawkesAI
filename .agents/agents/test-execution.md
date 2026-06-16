@@ -62,15 +62,15 @@ Generate the test report with pass/fail decision.
 
 Load these skills as needed:
 
-| Skill | When to Load |
-|-------|-------------|
-| `test-execution/unit-test-execution` | Running unit tests |
-| `test-execution/integration-test-execution` | Running integration tests |
-| `test-execution/e2e-test-execution` | Running end-to-end tests |
-| `test-execution/test-coverage-validation` | Validating coverage thresholds |
-| `test-execution/pipeline-test-stage-validation` | Checking CI test stages |
-| `test-execution/runtime-simulation-validation` | Smoke-testing in simulated env |
-| `test-execution/performance-smoke-testing` | Basic performance checks |
+| Skill                                           | When to Load                   |
+| ----------------------------------------------- | ------------------------------ |
+| `test-execution/unit-test-execution`            | Running unit tests             |
+| `test-execution/integration-test-execution`     | Running integration tests      |
+| `test-execution/e2e-test-execution`             | Running end-to-end tests       |
+| `test-execution/test-coverage-validation`       | Validating coverage thresholds |
+| `test-execution/pipeline-test-stage-validation` | Checking CI test stages        |
+| `test-execution/runtime-simulation-validation`  | Smoke-testing in simulated env |
+| `test-execution/performance-smoke-testing`      | Basic performance checks       |
 
 ## Language-Specific Tooling
 
@@ -91,12 +91,12 @@ Load the relevant skill for stack-specific test runners:
 
 ### Test Results
 
-| Suite | Passed | Failed | Skipped | Total |
-|-------|--------|--------|---------|-------|
-| Unit | 42 | 0 | 2 | 44 |
-| Integration | 8 | 0 | 0 | 8 |
-| E2E | 5 | 0 | 0 | 5 |
-| **Total** | **55** | **0** | **2** | **57** |
+| Suite       | Passed | Failed | Skipped | Total  |
+| ----------- | ------ | ------ | ------- | ------ |
+| Unit        | 42     | 0      | 2       | 44     |
+| Integration | 8      | 0      | 0       | 8      |
+| E2E         | 5      | 0      | 0       | 5      |
+| **Total**   | **55** | **0**  | **2**   | **57** |
 
 ### Failures
 
@@ -105,19 +105,19 @@ Load the relevant skill for stack-specific test runners:
 
 ### Coverage
 
-| Metric | Actual | Threshold | Status |
-|--------|--------|-----------|--------|
-| Line | 87% | 80% | PASS |
-| Branch | 79% | 75% | PASS |
-| Function | 92% | 85% | PASS |
+| Metric   | Actual | Threshold | Status |
+| -------- | ------ | --------- | ------ |
+| Line     | 87%    | 80%       | PASS   |
+| Branch   | 79%    | 75%       | PASS   |
+| Function | 92%    | 85%       | PASS   |
 
 ### Pipeline Test Stages
 
-| Stage | Present | Status |
-|-------|---------|--------|
-| Unit tests | Yes | PASS |
-| Integration tests | Yes | PASS |
-| E2E tests | No | MISSING |
+| Stage             | Present | Status  |
+| ----------------- | ------- | ------- |
+| Unit tests        | Yes     | PASS    |
+| Integration tests | Yes     | PASS    |
+| E2E tests         | No      | MISSING |
 
 ### Runtime Simulation
 
@@ -129,9 +129,9 @@ Load the relevant skill for stack-specific test runners:
 
 ### Findings
 
-| Severity | Finding | Action |
-|----------|---------|--------|
-| MEDIUM | E2E test stage missing from pipeline | Add stage to pipeline-spec.yaml |
+| Severity | Finding                              | Action                          |
+| -------- | ------------------------------------ | ------------------------------- |
+| MEDIUM   | E2E test stage missing from pipeline | Add stage to pipeline-spec.yaml |
 ```
 
 ## Output Contract

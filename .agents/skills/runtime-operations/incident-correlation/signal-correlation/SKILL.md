@@ -34,13 +34,13 @@ Correlate logs, metrics, and traces into a unified signal.
 
 ## Correlation Keys
 
-| Key | Source | Confidence |
-|-----|--------|-----------|
-| trace_id | Traces | HIGH |
-| request_id | Logs/Traces | HIGH |
-| span_id | Traces | HIGH |
-| error_pattern | Logs | MEDIUM |
-| timestamp_window | All | LOW |
+| Key              | Source      | Confidence |
+| ---------------- | ----------- | ---------- |
+| trace_id         | Traces      | HIGH       |
+| request_id       | Logs/Traces | HIGH       |
+| span_id          | Traces      | HIGH       |
+| error_pattern    | Logs        | MEDIUM     |
+| timestamp_window | All         | LOW        |
 
 ## Correlation Logic
 
@@ -79,9 +79,22 @@ Correlate logs, metrics, and traces into a unified signal.
       "correlation_key": "trace_id:abc123",
       "method": "trace-id",
       "signals": [
-        {"type": "trace", "source": "payment-api", "timestamp": "2025-01-15T10:30:00Z"},
-        {"type": "log", "source": "payment-api", "message": "Connection timeout"},
-        {"type": "metric", "source": "payment-api", "metric": "error_rate", "value": 0.05}
+        {
+          "type": "trace",
+          "source": "payment-api",
+          "timestamp": "2025-01-15T10:30:00Z"
+        },
+        {
+          "type": "log",
+          "source": "payment-api",
+          "message": "Connection timeout"
+        },
+        {
+          "type": "metric",
+          "source": "payment-api",
+          "metric": "error_rate",
+          "value": 0.05
+        }
       ]
     }
   ]

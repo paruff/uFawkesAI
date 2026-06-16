@@ -36,10 +36,10 @@ Ensure OpenTelemetry traces propagate across PIPE → OBS → GitOps → cluster
 
 ## Sub-Skills
 
-| Skill | Purpose |
-|-------|---------|
-| `trace-propagation-testing/span-structure` | Validate parent-child relationships |
-| `trace-propagation-testing/continuity` | Validate cross-service trace propagation |
+| Skill                                      | Purpose                                  |
+| ------------------------------------------ | ---------------------------------------- |
+| `trace-propagation-testing/span-structure` | Validate parent-child relationships      |
+| `trace-propagation-testing/continuity`     | Validate cross-service trace propagation |
 
 ## Expected Span Chain
 
@@ -72,7 +72,11 @@ Ensure OpenTelemetry traces propagate across PIPE → OBS → GitOps → cluster
   "complete_traces": 95,
   "broken_chains": 5,
   "missing_spans": [
-    {"trace_id": "abc123", "missing_service": "gitops", "missing_operation": "sync"}
+    {
+      "trace_id": "abc123",
+      "missing_service": "gitops",
+      "missing_operation": "sync"
+    }
   ]
 }
 ```

@@ -35,12 +35,12 @@ Detect incidents that span multiple clusters.
 
 ### Correlated Failures
 
-| Pattern | Classification | Severity |
-|---------|---------------|----------|
-| Same service failing in 2+ clusters | Multi-cluster incident | HIGH |
-| All services failing in 1 cluster | Cluster outage | CRITICAL |
-| All clusters affected simultaneously | Global incident | CRITICAL |
-| Same symptom in same region | Regional outage | HIGH |
+| Pattern                              | Classification         | Severity |
+| ------------------------------------ | ---------------------- | -------- |
+| Same service failing in 2+ clusters  | Multi-cluster incident | HIGH     |
+| All services failing in 1 cluster    | Cluster outage         | CRITICAL |
+| All clusters affected simultaneously | Global incident        | CRITICAL |
+| Same symptom in same region          | Regional outage        | HIGH     |
 
 ### Detection Methods
 
@@ -59,8 +59,8 @@ Detect incidents that span multiple clusters.
   "affected_clusters": ["us-east-1", "eu-west-1"],
   "symptom": "payment-api high error rate",
   "evidence": [
-    {"cluster": "us-east-1", "error_rate": 0.15},
-    {"cluster": "eu-west-1", "error_rate": 0.12}
+    { "cluster": "us-east-1", "error_rate": 0.15 },
+    { "cluster": "eu-west-1", "error_rate": 0.12 }
   ],
   "severity": "HIGH"
 }

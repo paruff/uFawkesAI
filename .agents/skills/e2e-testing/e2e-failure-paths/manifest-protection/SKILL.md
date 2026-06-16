@@ -33,13 +33,13 @@ Ensure invalid manifests never reach GitOps or the cluster.
 
 ## Invalid Manifest Types
 
-| Type | Example | Expected Behavior |
-|------|---------|-------------------|
-| Invalid YAML | Malformed syntax | Pipeline rejects |
-| Missing required field | Missing apiVersion | Pipeline rejects |
-| Invalid image tag | Empty tag | Pipeline rejects |
-| Schema violation | Wrong field type | Pipeline rejects |
-| Kustomize error | Missing base | Pipeline rejects |
+| Type                   | Example            | Expected Behavior |
+| ---------------------- | ------------------ | ----------------- |
+| Invalid YAML           | Malformed syntax   | Pipeline rejects  |
+| Missing required field | Missing apiVersion | Pipeline rejects  |
+| Invalid image tag      | Empty tag          | Pipeline rejects  |
+| Schema violation       | Wrong field type   | Pipeline rejects  |
+| Kustomize error        | Missing base       | Pipeline rejects  |
 
 ## Validation Rules
 
@@ -55,9 +55,9 @@ Ensure invalid manifests never reach GitOps or the cluster.
   "skill": "invalid-manifest-protection",
   "status": "pass | fail",
   "tests": [
-    {"type": "invalid_yaml", "rejected": true},
-    {"type": "missing_field", "rejected": true},
-    {"type": "invalid_tag", "rejected": true}
+    { "type": "invalid_yaml", "rejected": true },
+    { "type": "missing_field", "rejected": true },
+    { "type": "invalid_tag", "rejected": true }
   ],
   "all_rejected": true
 }

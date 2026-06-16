@@ -33,22 +33,22 @@ Ensure all critical services have dashboards with golden signals.
 
 ## Required Dashboards
 
-| Dashboard | Required Panels |
-|-----------|----------------|
-| PIPE Overview | Build duration, Build success rate, Active builds, Error rate |
-| OBS Overview | Reconcile duration, Queue depth, Reconcile errors |
-| GitOps Overview | Sync duration, Pending syncs, Sync errors |
-| Cluster Overview | Pod restarts, Request rate, 5xx rate, CPU/Memory |
-| Release Overview | Release frequency, Lead time, Change failure rate |
+| Dashboard        | Required Panels                                               |
+| ---------------- | ------------------------------------------------------------- |
+| PIPE Overview    | Build duration, Build success rate, Active builds, Error rate |
+| OBS Overview     | Reconcile duration, Queue depth, Reconcile errors             |
+| GitOps Overview  | Sync duration, Pending syncs, Sync errors                     |
+| Cluster Overview | Pod restarts, Request rate, 5xx rate, CPU/Memory              |
+| Release Overview | Release frequency, Lead time, Change failure rate             |
 
 ## Panel Requirements
 
-| Golden Signal | Panel Type | Metric |
-|---------------|-----------|--------|
-| Latency | Time series (p50, p95, p99) | `_duration_seconds` |
-| Traffic | Rate | `_requests_total` |
-| Errors | Rate + Percentage | `_errors_total` / `_requests_total` |
-| Saturation | Gauge | `_utilization_ratio` |
+| Golden Signal | Panel Type                  | Metric                              |
+| ------------- | --------------------------- | ----------------------------------- |
+| Latency       | Time series (p50, p95, p99) | `_duration_seconds`                 |
+| Traffic       | Rate                        | `_requests_total`                   |
+| Errors        | Rate + Percentage           | `_errors_total` / `_requests_total` |
+| Saturation    | Gauge                       | `_utilization_ratio`                |
 
 ## Validation Rules
 
@@ -65,10 +65,10 @@ Ensure all critical services have dashboards with golden signals.
   "skill": "dashboard-coverage-testing",
   "status": "pass | fail",
   "dashboards": {
-    "pipe": {"present": true, "panels": 4, "missing": []},
-    "obs": {"present": true, "panels": 4, "missing": []},
-    "gitops": {"present": false, "panels": 0, "missing": ["all"]},
-    "cluster": {"present": true, "panels": 3, "missing": ["saturation"]}
+    "pipe": { "present": true, "panels": 4, "missing": [] },
+    "obs": { "present": true, "panels": 4, "missing": [] },
+    "gitops": { "present": false, "panels": 0, "missing": ["all"] },
+    "cluster": { "present": true, "panels": 3, "missing": ["saturation"] }
   }
 }
 ```

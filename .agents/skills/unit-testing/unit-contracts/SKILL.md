@@ -36,13 +36,13 @@ Validate internal API contracts between OBS and PIPE modules.
 
 ## Contract Categories
 
-| Category | Validation | Tool |
-|----------|-----------|------|
-| Function signatures | Parameter types | TypeScript compiler |
-| Return types | Output types | TypeScript compiler |
-| Preconditions | Input validation | Zod / io-ts |
-| Postconditions | Output validation | Zod / io-ts |
-| Type-level | Type narrowing | tsd |
+| Category            | Validation        | Tool                |
+| ------------------- | ----------------- | ------------------- |
+| Function signatures | Parameter types   | TypeScript compiler |
+| Return types        | Output types      | TypeScript compiler |
+| Preconditions       | Input validation  | Zod / io-ts         |
+| Postconditions      | Output validation | Zod / io-ts         |
+| Type-level          | Type narrowing    | tsd                 |
 
 ## Contract Test Example
 

@@ -37,29 +37,29 @@ Detect unusual patterns in metrics, logs, or traces.
 
 ### Metric Anomalies
 
-| Pattern | Method | Sensitivity |
-|---------|--------|-------------|
-| Spike | Threshold breach | High |
-| Gradual increase | Rate of change | Medium |
-| Sustained high | Duration threshold | Medium |
-| Drop to zero | Zero-value detection | High |
+| Pattern          | Method               | Sensitivity |
+| ---------------- | -------------------- | ----------- |
+| Spike            | Threshold breach     | High        |
+| Gradual increase | Rate of change       | Medium      |
+| Sustained high   | Duration threshold   | Medium      |
+| Drop to zero     | Zero-value detection | High        |
 
 ### Log Anomalies
 
-| Pattern | Method | Sensitivity |
-|---------|--------|-------------|
-| Error spike | Error count rate | High |
-| New error type | Pattern uniqueness | Medium |
-| Log volume change | Volume rate | Low |
+| Pattern           | Method             | Sensitivity |
+| ----------------- | ------------------ | ----------- |
+| Error spike       | Error count rate   | High        |
+| New error type    | Pattern uniqueness | Medium      |
+| Log volume change | Volume rate        | Low         |
 
 ## Thresholds
 
-| Metric | Warning | Critical |
-|--------|---------|----------|
-| Latency p99 | > 500ms | > 1000ms |
-| Error rate | > 1% | > 5% |
-| CPU usage | > 70% | > 85% |
-| Memory usage | > 70% | > 85% |
+| Metric       | Warning | Critical |
+| ------------ | ------- | -------- |
+| Latency p99  | > 500ms | > 1000ms |
+| Error rate   | > 1%    | > 5%     |
+| CPU usage    | > 70%   | > 85%    |
+| Memory usage | > 70%   | > 85%    |
 
 ## Output Format
 

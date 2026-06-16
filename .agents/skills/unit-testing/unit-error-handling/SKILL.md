@@ -36,28 +36,28 @@ Ensure predictable and safe error behavior across OBS and PIPE.
 
 ## Error Categories
 
-| Category | Test Focus | Example |
-|----------|-----------|---------|
-| Validation errors | thrown on bad input | Invalid YAML, missing fields |
-| Network errors | retry behavior | Registry timeout, API failure |
-| State errors | invariant enforcement | Invalid pipeline state |
-| Resource errors | fallback logic | Missing file, unavailable service |
+| Category          | Test Focus            | Example                           |
+| ----------------- | --------------------- | --------------------------------- |
+| Validation errors | thrown on bad input   | Invalid YAML, missing fields      |
+| Network errors    | retry behavior        | Registry timeout, API failure     |
+| State errors      | invariant enforcement | Invalid pipeline state            |
+| Resource errors   | fallback logic        | Missing file, unavailable service |
 
 ## Error Test Patterns
 
 ```typescript
 // Validate error thrown
-expect(() => parseVersion('invalid')).toThrow('Invalid version format');
+expect(() => parseVersion("invalid")).toThrow("Invalid version format");
 
 // Validate error code
 try {
-  await pullImage('nonexistent');
+  await pullImage("nonexistent");
 } catch (e) {
-  expect(e.code).toBe('IMAGE_NOT_FOUND');
+  expect(e.code).toBe("IMAGE_NOT_FOUND");
 }
 
 // Validate retry backoff
-const retrySpy = jest.spyOn(client, 'retry');
+const retrySpy = jest.spyOn(client, "retry");
 await client.withRetry(() => failingCall());
 expect(retrySpy).toHaveBeenCalledTimes(3);
 ```

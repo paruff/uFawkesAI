@@ -36,36 +36,36 @@ Define how Fawkes agents coordinate across skills.
 
 ### Ordering
 
-| Rule | Description |
-|------|-------------|
-| Sequential | `spec` → `design` → `plan` (must be ordered) |
-| Parallel | `test-execution` + `security` (can run together) |
-| Gate | `build-review` requires all prior passing |
+| Rule       | Description                                      |
+| ---------- | ------------------------------------------------ |
+| Sequential | `spec` → `design` → `plan` (must be ordered)     |
+| Parallel   | `test-execution` + `security` (can run together) |
+| Gate       | `build-review` requires all prior passing        |
 
 ### Retry
 
-| Failure Type | Retry | Max Retries | Escalate |
-|-------------|-------|-------------|----------|
-| Transient (network) | Yes | 3 | After 3 |
-| Flaky test | Yes | 2 | After 2 |
-| Policy violation | No | 0 | Immediately |
-| Security finding | No | 0 | Immediately |
+| Failure Type        | Retry | Max Retries | Escalate    |
+| ------------------- | ----- | ----------- | ----------- |
+| Transient (network) | Yes   | 3           | After 3     |
+| Flaky test          | Yes   | 2           | After 2     |
+| Policy violation    | No    | 0           | Immediately |
+| Security finding    | No    | 0           | Immediately |
 
 ### Escalation
 
-| Level | Trigger | Action |
-|-------|---------|--------|
-| Warning | Non-blocking issue | Log, continue |
-| Block | Policy violation | Stop, notify human |
-| Critical | Security finding | Stop, block merge |
+| Level    | Trigger            | Action             |
+| -------- | ------------------ | ------------------ |
+| Warning  | Non-blocking issue | Log, continue      |
+| Block    | Policy violation   | Stop, notify human |
+| Critical | Security finding   | Stop, block merge  |
 
 ### Parallelization
 
-| Skills | Can Parallelize |
-|--------|-----------------|
-| `test-execution` + `security` | Yes |
-| `unit-test` + `lint` | Yes |
-| `build` + `test-execution` | No (test depends on build) |
+| Skills                        | Can Parallelize            |
+| ----------------------------- | -------------------------- |
+| `test-execution` + `security` | Yes                        |
+| `unit-test` + `lint`          | Yes                        |
+| `build` + `test-execution`    | No (test depends on build) |
 
 ## Output Format
 
@@ -78,9 +78,9 @@ Define how Fawkes agents coordinate across skills.
     "gates": ["build-review"]
   },
   "retry": {
-    "transient": {"retry": true, "max": 3},
-    "flaky": {"retry": true, "max": 2},
-    "policy": {"retry": false, "escalate": true}
+    "transient": { "retry": true, "max": 3 },
+    "flaky": { "retry": true, "max": 2 },
+    "policy": { "retry": false, "escalate": true }
   },
   "escalation": {
     "warning": "log",

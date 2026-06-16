@@ -36,21 +36,21 @@ Validate that the observability stack itself is healthy, complete, and capturing
 
 ## Sub-Skills
 
-| Skill | Purpose |
-|-------|---------|
+| Skill                             | Purpose                     |
+| --------------------------------- | --------------------------- |
 | `observability-health/dashboards` | Validate dashboard coverage |
-| `observability-health/alerts` | Validate alert coverage |
+| `observability-health/alerts`     | Validate alert coverage     |
 
 ## Health Checks
 
-| Component | Check | Threshold |
-|-----------|-------|-----------|
-| Prometheus | scrape targets up | 100% |
-| Prometheus | scrape duration | < 10s |
-| Loki | ingestion rate | > 0 |
-| Loki | query latency | < 5s |
-| OTel Collector | dropped spans | 0 |
-| OTel Collector | export failures | 0 |
+| Component      | Check             | Threshold |
+| -------------- | ----------------- | --------- |
+| Prometheus     | scrape targets up | 100%      |
+| Prometheus     | scrape duration   | < 10s     |
+| Loki           | ingestion rate    | > 0       |
+| Loki           | query latency     | < 5s      |
+| OTel Collector | dropped spans     | 0         |
+| OTel Collector | export failures   | 0         |
 
 ## Validation Rules
 
@@ -74,10 +74,10 @@ Validate that the observability stack itself is healthy, complete, and capturing
   "skill": "observability-health",
   "status": "healthy | degraded | unhealthy",
   "components": {
-    "prometheus": {"status": "healthy", "targets_up": 20, "targets_down": 0},
-    "loki": {"status": "healthy", "ingestion_rate": "500/sec"},
-    "otel_collector": {"status": "healthy", "dropped_spans": 0},
-    "grafana": {"status": "healthy"}
+    "prometheus": { "status": "healthy", "targets_up": 20, "targets_down": 0 },
+    "loki": { "status": "healthy", "ingestion_rate": "500/sec" },
+    "otel_collector": { "status": "healthy", "dropped_spans": 0 },
+    "grafana": { "status": "healthy" }
   },
   "missing_dashboards": [],
   "missing_alerts": []

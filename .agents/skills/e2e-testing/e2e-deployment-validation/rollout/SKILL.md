@@ -46,10 +46,10 @@ Validate Kubernetes rollout behavior.
   "skill": "rollout-validation",
   "status": "pass | fail",
   "deployment": "my-app",
-  "replicas": {"desired": 3, "ready": 3, "available": 3},
-  "probes": {"liveness": "pass", "readiness": "pass"},
+  "replicas": { "desired": 3, "ready": 3, "available": 3 },
+  "probes": { "liveness": "pass", "readiness": "pass" },
   "rollout_time_s": 60,
-  "autoscaling": {"enabled": false}
+  "autoscaling": { "enabled": false }
 }
 ```
 

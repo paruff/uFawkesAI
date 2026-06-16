@@ -33,24 +33,24 @@ Ensure all critical failure modes have alerts.
 
 ## Required Alerts
 
-| Alert | Severity | Threshold | Service |
-|-------|----------|-----------|---------|
-| `BuildFailureRateHigh` | critical | > 10% for 5m | PIPE |
-| `BuildDurationHigh` | warning | p95 > 10m for 5m | PIPE |
-| `ReconcileErrorsHigh` | critical | > 5 for 5m | OBS |
-| `ReconcileLatencyHigh` | warning | p95 > 30s for 5m | OBS |
-| `SyncErrorsHigh` | critical | > 3 for 5m | GitOps |
-| `PodRestartRateHigh` | critical | > 3 for 10m | Cluster |
-| `ErrorRateHigh` | critical | > 5% for 5m | All |
-| `SLOBudgetExhausted` | critical | < 10% remaining | All |
+| Alert                  | Severity | Threshold        | Service |
+| ---------------------- | -------- | ---------------- | ------- |
+| `BuildFailureRateHigh` | critical | > 10% for 5m     | PIPE    |
+| `BuildDurationHigh`    | warning  | p95 > 10m for 5m | PIPE    |
+| `ReconcileErrorsHigh`  | critical | > 5 for 5m       | OBS     |
+| `ReconcileLatencyHigh` | warning  | p95 > 30s for 5m | OBS     |
+| `SyncErrorsHigh`       | critical | > 3 for 5m       | GitOps  |
+| `PodRestartRateHigh`   | critical | > 3 for 10m      | Cluster |
+| `ErrorRateHigh`        | critical | > 5% for 5m      | All     |
+| `SLOBudgetExhausted`   | critical | < 10% remaining  | All     |
 
 ## Severity Levels
 
-| Level | Response Time | Notification |
-|-------|--------------|--------------|
-| critical | < 15 min | PagerDuty + Slack |
-| warning | < 1 hour | Slack |
-| info | Next business day | Log only |
+| Level    | Response Time     | Notification      |
+| -------- | ----------------- | ----------------- |
+| critical | < 15 min          | PagerDuty + Slack |
+| warning  | < 1 hour          | Slack             |
+| info     | Next business day | Log only          |
 
 ## Validation Rules
 

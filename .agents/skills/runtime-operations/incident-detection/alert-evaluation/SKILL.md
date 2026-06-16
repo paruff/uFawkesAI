@@ -44,11 +44,11 @@ Evaluate alert rules and determine if an incident should be triggered.
 
 ### Severity Validation
 
-| Alert Severity | Incident Severity | Response |
-|---------------|-------------------|----------|
-| critical | SEV1/SEV2 | Immediate |
-| warning | SEV3/SEV4 | Within 1 hour |
-| info | SEV5 | Next business day |
+| Alert Severity | Incident Severity | Response          |
+| -------------- | ----------------- | ----------------- |
+| critical       | SEV1/SEV2         | Immediate         |
+| warning        | SEV3/SEV4         | Within 1 hour     |
+| info           | SEV5              | Next business day |
 
 ### Routing
 

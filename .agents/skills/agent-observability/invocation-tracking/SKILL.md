@@ -25,13 +25,13 @@ Emit when the agent begins processing.
 
 **Attributes:**
 
-| Attribute | Type | Description |
-|-----------|------|-------------|
-| `agent.name` | string | Agent identifier (matches filename without .md) |
-| `session_id` | string | Unique invocation identifier |
-| `mode` | string | Operational mode (if agent supports multiple) |
-| `trigger` | string | What triggered this invocation (human request, CI, direct invocation) |
-| `input_files` | string[] | Files read as context for this invocation |
+| Attribute     | Type     | Description                                                           |
+| ------------- | -------- | --------------------------------------------------------------------- |
+| `agent.name`  | string   | Agent identifier (matches filename without .md)                       |
+| `session_id`  | string   | Unique invocation identifier                                          |
+| `mode`        | string   | Operational mode (if agent supports multiple)                         |
+| `trigger`     | string   | What triggered this invocation (human request, CI, direct invocation) |
+| `input_files` | string[] | Files read as context for this invocation                             |
 
 ### `agent.invocation.completed`
 
@@ -39,12 +39,12 @@ Emit when the agent finishes.
 
 **Attributes (all from started, plus):**
 
-| Attribute | Type | Description |
-|-----------|------|-------------|
-| `duration_ms` | integer | Wall-clock duration in milliseconds |
-| `total_skills_loaded` | integer | Count of skills loaded during invocation |
-| `total_findings` | integer | Count of findings produced |
-| `decision` | string | Final decision (PASS/FAIL/BLOCKED/APPROVE/REQUEST_CHANGES/ESCALATE) |
+| Attribute             | Type    | Description                                                         |
+| --------------------- | ------- | ------------------------------------------------------------------- |
+| `duration_ms`         | integer | Wall-clock duration in milliseconds                                 |
+| `total_skills_loaded` | integer | Count of skills loaded during invocation                            |
+| `total_findings`      | integer | Count of findings produced                                          |
+| `decision`            | string  | Final decision (PASS/FAIL/BLOCKED/APPROVE/REQUEST_CHANGES/ESCALATE) |
 
 ### `agent.invocation.failed`
 
@@ -52,10 +52,10 @@ Emit when the agent encounters an error it cannot recover from.
 
 **Attributes (all from started, plus):**
 
-| Attribute | Type | Description |
-|-----------|------|-------------|
-| `error` | string | Error message or summary |
-| `stage` | string | Stage where failure occurred (validate, execute, report) |
+| Attribute | Type   | Description                                              |
+| --------- | ------ | -------------------------------------------------------- |
+| `error`   | string | Error message or summary                                 |
+| `stage`   | string | Stage where failure occurred (validate, execute, report) |
 
 ## Implementation
 

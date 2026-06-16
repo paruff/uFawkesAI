@@ -62,9 +62,24 @@ git add . && git commit -m "drift: inject env drift"
   "skill": "repo-drift-injection",
   "status": "success",
   "drifts": [
-    {"type": "image_tag", "injected": "drifted", "detected": true, "corrected": true},
-    {"type": "replica_count", "injected": 5, "detected": true, "corrected": true},
-    {"type": "env_var", "injected": "DRIFT=true", "detected": true, "corrected": true}
+    {
+      "type": "image_tag",
+      "injected": "drifted",
+      "detected": true,
+      "corrected": true
+    },
+    {
+      "type": "replica_count",
+      "injected": 5,
+      "detected": true,
+      "corrected": true
+    },
+    {
+      "type": "env_var",
+      "injected": "DRIFT=true",
+      "detected": true,
+      "corrected": true
+    }
   ]
 }
 ```

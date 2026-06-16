@@ -65,12 +65,12 @@ Validate runtime behavior in a simulated environment.
 
 ## Simulation Environments
 
-| Environment | Tool | Use When |
-|-------------|------|----------|
-| Kubernetes (local) | kind / minikube | K8s manifests to validate |
-| Docker | Docker Compose | Multi-container apps |
-| Standalone | Direct execution | Simple services |
-| Mock server | WireMock / MockServer | External dependency simulation |
+| Environment        | Tool                  | Use When                       |
+| ------------------ | --------------------- | ------------------------------ |
+| Kubernetes (local) | kind / minikube       | K8s manifests to validate      |
+| Docker             | Docker Compose        | Multi-container apps           |
+| Standalone         | Direct execution      | Simple services                |
+| Mock server        | WireMock / MockServer | External dependency simulation |
 
 ## Tools
 

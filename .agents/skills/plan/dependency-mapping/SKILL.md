@@ -71,9 +71,7 @@ Determine the correct ordering and dependencies between tasks.
       "reason": "TASK-002 uses output from TASK-001"
     }
   ],
-  "parallel_groups": [
-    ["TASK-003", "TASK-004"]
-  ],
+  "parallel_groups": [["TASK-003", "TASK-004"]],
   "critical_path": ["TASK-001", "TASK-002", "TASK-005"]
 }
 ```

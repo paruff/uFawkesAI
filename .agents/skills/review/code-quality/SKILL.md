@@ -76,12 +76,12 @@ Validate code quality, formatting, and maintainability.
 
 ## Tools
 
-| Language | Linter | Formatter |
-|----------|--------|-----------|
-| TypeScript | ESLint | Prettier |
-| Python | Ruff / Flake8 | Black |
-| Go | golangci-lint | gofmt |
-| Rust | clippy | rustfmt |
+| Language   | Linter        | Formatter |
+| ---------- | ------------- | --------- |
+| TypeScript | ESLint        | Prettier  |
+| Python     | Ruff / Flake8 | Black     |
+| Go         | golangci-lint | gofmt     |
+| Rust       | clippy        | rustfmt   |
 
 ## Output Format
 

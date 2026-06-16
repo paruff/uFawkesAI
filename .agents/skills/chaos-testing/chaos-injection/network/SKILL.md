@@ -34,12 +34,12 @@ Inject network faults between PIPE, OBS, registry, and cluster.
 
 ## Network Fault Types
 
-| Fault | Parameter | Target |
-|-------|-----------|--------|
-| Latency | duration_ms | PIPE ↔ Registry |
-| Packet loss | percentage | OBS ↔ GitOps |
-| Bandwidth limit | rate | All services |
-| Partition | duration_s | PIPE ↔ OBS |
+| Fault           | Parameter   | Target           |
+| --------------- | ----------- | ---------------- |
+| Latency         | duration_ms | PIPE ↔ Registry |
+| Packet loss     | percentage  | OBS ↔ GitOps    |
+| Bandwidth limit | rate        | All services     |
+| Partition       | duration_s  | PIPE ↔ OBS      |
 
 ## Toxiproxy Config
 
@@ -51,7 +51,7 @@ Inject network faults between PIPE, OBS, registry, and cluster.
   "toxics": [
     {
       "type": "latency",
-      "attributes": {"latency": 5000}
+      "attributes": { "latency": 5000 }
     }
   ]
 }
@@ -71,12 +71,12 @@ Inject network faults between PIPE, OBS, registry, and cluster.
   "skill": "network-chaos",
   "status": "success",
   "faults_injected": [
-    {"type": "latency", "target": "pipe-registry", "value": "5000ms"},
-    {"type": "packet_loss", "target": "obs-gitops", "value": "10%"}
+    { "type": "latency", "target": "pipe-registry", "value": "5000ms" },
+    { "type": "packet_loss", "target": "obs-gitops", "value": "10%" }
   ],
   "recovery": {
-    "pipe": {"recovered": true, "time_s": 30},
-    "obs": {"recovered": true, "time_s": 45}
+    "pipe": { "recovered": true, "time_s": 30 },
+    "obs": { "recovered": true, "time_s": 45 }
   }
 }
 ```

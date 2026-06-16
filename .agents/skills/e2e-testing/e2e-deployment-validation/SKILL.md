@@ -36,9 +36,9 @@ Validate that the deployed application behaves correctly after reconciliation.
 
 ## Sub-Skills
 
-| Skill | Purpose |
-|-------|---------|
-| `e2e-deployment-validation/rollout` | Validate rollout behavior |
+| Skill                                 | Purpose                        |
+| ------------------------------------- | ------------------------------ |
+| `e2e-deployment-validation/rollout`   | Validate rollout behavior      |
 | `e2e-deployment-validation/telemetry` | Validate logs, metrics, traces |
 
 ## Validation Rules
@@ -54,11 +54,11 @@ Validate that the deployed application behaves correctly after reconciliation.
 {
   "skill": "e2e-deployment-validation",
   "status": "pass | fail",
-  "rollout": {"status": "pass", "replicas": 3, "ready": 3},
-  "health": {"liveness": "pass", "readiness": "pass"},
-  "logs": {"errors": 0, "warnings": 0},
-  "metrics": {"present": true, "golden_signals": "complete"},
-  "traces": {"propagating": true}
+  "rollout": { "status": "pass", "replicas": 3, "ready": 3 },
+  "health": { "liveness": "pass", "readiness": "pass" },
+  "logs": { "errors": 0, "warnings": 0 },
+  "metrics": { "present": true, "golden_signals": "complete" },
+  "traces": { "propagating": true }
 }
 ```
 

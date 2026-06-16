@@ -33,15 +33,15 @@ Ensure all required log fields are present across all services.
 
 ## Required Fields Check
 
-| Field | Presence Threshold | Action if Missing |
-|-------|-------------------|-------------------|
-| `timestamp` | 100% | Block |
-| `level` | 100% | Block |
-| `service` | 100% | Block |
-| `message` | 100% | Block |
-| `trace_id` | 100% | Block |
-| `span_id` | 100% | Block |
-| `version` | 95% | Warn |
+| Field       | Presence Threshold | Action if Missing |
+| ----------- | ------------------ | ----------------- |
+| `timestamp` | 100%               | Block             |
+| `level`     | 100%               | Block             |
+| `service`   | 100%               | Block             |
+| `message`   | 100%               | Block             |
+| `trace_id`  | 100%               | Block             |
+| `span_id`   | 100%               | Block             |
+| `version`   | 95%                | Warn              |
 
 ## Validation Rules
 
@@ -59,9 +59,9 @@ Ensure all required log fields are present across all services.
   "status": "pass | fail",
   "total_logs": 10000,
   "fields": {
-    "timestamp": {"present": 10000, "missing": 0, "status": "pass"},
-    "trace_id": {"present": 9995, "missing": 5, "status": "fail"},
-    "service": {"present": 10000, "missing": 0, "status": "pass"}
+    "timestamp": { "present": 10000, "missing": 0, "status": "pass" },
+    "trace_id": { "present": 9995, "missing": 5, "status": "fail" },
+    "service": { "present": 10000, "missing": 0, "status": "pass" }
   }
 }
 ```

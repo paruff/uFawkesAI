@@ -47,6 +47,7 @@ Convert each requirement into binary pass/fail criteria:
 - [ ] AC-02: Specific, testable assertion
 
 Rules:
+
 - Each AC must be independently verifiable
 - No ambiguous language ("should", "might", "good enough")
 - Include measurable outcomes where possible
@@ -68,14 +69,14 @@ Generate the specification document.
 
 Load these skills as needed:
 
-| Skill | When to Load |
-|-------|-------------|
-| `spec/requirements-extraction` | Extracting structured requirements |
-| `spec/acceptance-criteria` | Generating testable ACs |
-| `spec/policy-validation` | Validating against organizational policies |
-| `spec/pipeline-policy` | Aligning with pipeline governance |
-| `spec/template-governance` | Aligning with platform templates |
-| `spec/k8s-policy` | Kubernetes-specific requirements |
+| Skill                          | When to Load                               |
+| ------------------------------ | ------------------------------------------ |
+| `spec/requirements-extraction` | Extracting structured requirements         |
+| `spec/acceptance-criteria`     | Generating testable ACs                    |
+| `spec/policy-validation`       | Validating against organizational policies |
+| `spec/pipeline-policy`         | Aligning with pipeline governance          |
+| `spec/template-governance`     | Aligning with platform templates           |
+| `spec/k8s-policy`              | Kubernetes-specific requirements           |
 
 ## Output Format
 
@@ -89,17 +90,21 @@ As a [role], I want [capability], so that [outcome].
 ## Functional Requirements
 
 ### REQ-001: [Requirement Title]
+
 [Description of what the system must do]
 
 ### REQ-002: [Requirement Title]
+
 [Description]
 
 ## Non-Functional Requirements
 
 ### NFR-001: Performance
+
 [Response time, throughput requirements]
 
 ### NFR-002: Security
+
 [Authentication, authorization, data protection]
 
 ## Constraints
@@ -130,11 +135,11 @@ As a [role], I want [capability], so that [outcome].
 
 ## Governance Alignment
 
-| Requirement | Status | Notes |
-|-------------|--------|-------|
-| Security | COVERED | [Details] |
-| Pipeline | COVERED | [Details] |
-| K8s | N/A | Not applicable |
+| Requirement | Status  | Notes          |
+| ----------- | ------- | -------------- |
+| Security    | COVERED | [Details]      |
+| Pipeline    | COVERED | [Details]      |
+| K8s         | N/A     | Not applicable |
 
 ## Open Questions
 

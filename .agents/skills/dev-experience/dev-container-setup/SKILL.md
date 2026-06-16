@@ -37,10 +37,10 @@ Provide a reproducible, standardized development environment for all Fawkes proj
 
 ## Sub-Skills
 
-| Skill | Purpose |
-|-------|---------|
-| `dev-container-setup/toolchain-validation` | Verify tools and versions |
-| `dev-container-setup/coder-validation` | Validate Coder workspace config |
+| Skill                                      | Purpose                         |
+| ------------------------------------------ | ------------------------------- |
+| `dev-container-setup/toolchain-validation` | Verify tools and versions       |
+| `dev-container-setup/coder-validation`     | Validate Coder workspace config |
 
 ## Validation Rules
 
@@ -54,14 +54,14 @@ Provide a reproducible, standardized development environment for all Fawkes proj
 
 ### Required Tools
 
-| Tool | Version | Required |
-|------|---------|----------|
-| Node.js | ≥ 18 | Yes |
-| Python | ≥ 3.10 | If Python project |
-| kubectl | Latest | If K8s |
-| kustomize | Latest | If GitOps |
-| Fawkes CLI | Latest | Yes |
-| Docker | ≥ 20 | Yes |
+| Tool       | Version | Required          |
+| ---------- | ------- | ----------------- |
+| Node.js    | ≥ 18    | Yes               |
+| Python     | ≥ 3.10  | If Python project |
+| kubectl    | Latest  | If K8s            |
+| kustomize  | Latest  | If GitOps         |
+| Fawkes CLI | Latest  | Yes               |
+| Docker     | ≥ 20    | Yes               |
 
 ## Tools
 

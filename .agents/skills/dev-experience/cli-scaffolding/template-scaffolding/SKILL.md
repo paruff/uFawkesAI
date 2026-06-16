@@ -35,13 +35,13 @@ Generate new project components from templates.
 
 ## Template Types
 
-| Template | Output |
-|----------|--------|
-| Service | `src/<name>/index.ts`, `handler.ts`, `config.ts` |
-| Test | `tests/<name>/handler.test.ts` |
+| Template | Output                                             |
+| -------- | -------------------------------------------------- |
+| Service  | `src/<name>/index.ts`, `handler.ts`, `config.ts`   |
+| Test     | `tests/<name>/handler.test.ts`                     |
 | Manifest | `manifests/<name>/deployment.yaml`, `service.yaml` |
-| Pipeline | `pipeline-spec.yaml` |
-| GitOps | `overlays/<env>/kustomization.yaml` |
+| Pipeline | `pipeline-spec.yaml`                               |
+| GitOps   | `overlays/<env>/kustomization.yaml`                |
 
 ## Scaffolded Service Structure
 

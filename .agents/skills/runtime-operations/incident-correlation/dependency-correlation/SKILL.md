@@ -63,12 +63,12 @@ Use service dependency graph to identify upstream/downstream causes.
 
 ## Dependency Patterns
 
-| Pattern | Symptom | Root Cause |
-|---------|---------|-----------|
-| Database down | All DB-dependent services fail | Database |
-| API gateway down | All API-dependent services fail | Gateway |
-| Payment service down | Checkout fails, orders fail | Payment |
-| Cache down | Slow responses, timeouts | Cache |
+| Pattern              | Symptom                         | Root Cause |
+| -------------------- | ------------------------------- | ---------- |
+| Database down        | All DB-dependent services fail  | Database   |
+| API gateway down     | All API-dependent services fail | Gateway    |
+| Payment service down | Checkout fails, orders fail     | Payment    |
+| Cache down           | Slow responses, timeouts        | Cache      |
 
 ## Output Format
 
@@ -81,9 +81,9 @@ Use service dependency graph to identify upstream/downstream causes.
     "confidence": "HIGH"
   },
   "affected_services": [
-    {"service": "user-api", "symptom": "500 errors"},
-    {"service": "order-api", "symptom": "500 errors"},
-    {"service": "payment-api", "symptom": "Timeouts"}
+    { "service": "user-api", "symptom": "500 errors" },
+    { "service": "order-api", "symptom": "500 errors" },
+    { "service": "payment-api", "symptom": "Timeouts" }
   ],
   "blast_radius": "medium",
   "dependency_path": ["database", "user-api", "order-api", "payment-api"]

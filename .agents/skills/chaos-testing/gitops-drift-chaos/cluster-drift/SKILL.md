@@ -58,8 +58,20 @@ kubectl create configmap my-config --from-literal=key=drifted -n fawkes --dry-ru
   "skill": "cluster-drift-injection",
   "status": "success",
   "drifts": [
-    {"type": "replica_count", "injected": 5, "detected": true, "corrected": true, "time_s": 120},
-    {"type": "env_var", "injected": "drifted", "detected": true, "corrected": true, "time_s": 150}
+    {
+      "type": "replica_count",
+      "injected": 5,
+      "detected": true,
+      "corrected": true,
+      "time_s": 120
+    },
+    {
+      "type": "env_var",
+      "injected": "drifted",
+      "detected": true,
+      "corrected": true,
+      "time_s": 150
+    }
   ]
 }
 ```

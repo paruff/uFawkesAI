@@ -37,19 +37,19 @@ Continuously monitor the health of services, clusters, and pipelines.
 
 ## Sub-Skills
 
-| Skill | Purpose |
-|-------|---------|
+| Skill                              | Purpose                           |
+| ---------------------------------- | --------------------------------- |
 | `health-monitoring/service-health` | Monitor individual service health |
-| `health-monitoring/cluster-health` | Monitor cluster-level health |
+| `health-monitoring/cluster-health` | Monitor cluster-level health      |
 
 ## Health Checks
 
-| Check | Healthy | Degraded | Unhealthy |
-|-------|---------|----------|-----------|
-| Readiness probe | Passing | Intermittent | Failing |
-| Liveness probe | Passing | N/A | Failing |
-| Rollout status | Complete | In progress | Failed |
-| GitOps sync | Synced | Behind | Error |
+| Check           | Healthy  | Degraded     | Unhealthy |
+| --------------- | -------- | ------------ | --------- |
+| Readiness probe | Passing  | Intermittent | Failing   |
+| Liveness probe  | Passing  | N/A          | Failing   |
+| Rollout status  | Complete | In progress  | Failed    |
+| GitOps sync     | Synced   | Behind       | Error     |
 
 ## Monitoring Rules
 
@@ -65,11 +65,11 @@ Continuously monitor the health of services, clusters, and pipelines.
   "skill": "health-monitoring",
   "overall_status": "healthy",
   "services": {
-    "my-app": {"status": "healthy", "replicas": 3, "ready": 3},
-    "worker": {"status": "degraded", "replicas": 3, "ready": 2}
+    "my-app": { "status": "healthy", "replicas": 3, "ready": 3 },
+    "worker": { "status": "degraded", "replicas": 3, "ready": 2 }
   },
-  "cluster": {"status": "healthy", "nodes": 5, "ready": 5},
-  "gitops": {"status": "synced", "last_sync": "2025-01-15T10:30:00Z"}
+  "cluster": { "status": "healthy", "nodes": 5, "ready": 5 },
+  "gitops": { "status": "synced", "last_sync": "2025-01-15T10:30:00Z" }
 }
 ```
 

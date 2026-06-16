@@ -36,20 +36,20 @@ Validate pure functions, deterministic logic, and core algorithms in OBS and PIP
 
 ## Test Categories
 
-| Category | Focus | Example |
-|----------|-------|---------|
-| Pure functions | Input → Output | Version parser, schema validator |
-| DAG logic | Ordering, cycles | Pipeline stage ordering |
-| Parsing | Format conversion | YAML/JSON parsing, manifest normalization |
-| Branching | Conditional logic | Environment-specific behavior |
+| Category       | Focus             | Example                                   |
+| -------------- | ----------------- | ----------------------------------------- |
+| Pure functions | Input → Output    | Version parser, schema validator          |
+| DAG logic      | Ordering, cycles  | Pipeline stage ordering                   |
+| Parsing        | Format conversion | YAML/JSON parsing, manifest normalization |
+| Branching      | Conditional logic | Environment-specific behavior             |
 
 ## Performance Thresholds
 
-| Metric | Threshold |
-|--------|-----------|
-| Test execution | < 200ms per test |
-| Coverage | ≥ 80% line coverage |
-| Flakiness | 0% (deterministic) |
+| Metric         | Threshold           |
+| -------------- | ------------------- |
+| Test execution | < 200ms per test    |
+| Coverage       | ≥ 80% line coverage |
+| Flakiness      | 0% (deterministic)  |
 
 ## Validation Rules
 

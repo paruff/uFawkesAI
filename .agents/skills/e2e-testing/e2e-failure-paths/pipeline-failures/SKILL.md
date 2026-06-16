@@ -34,12 +34,12 @@ Validate that pipeline failures stop deployment safely.
 
 ## Failure Injection
 
-| Stage | Failure Type | Injection Method |
-|-------|-------------|------------------|
-| unit-test | Test failure | Intentional failing test |
-| integration-test | Test failure | Intentional failing test |
-| sast | Vulnerability found | Intentional vulnerability |
-| build | Build error | Intentional build error |
+| Stage            | Failure Type        | Injection Method          |
+| ---------------- | ------------------- | ------------------------- |
+| unit-test        | Test failure        | Intentional failing test  |
+| integration-test | Test failure        | Intentional failing test  |
+| sast             | Vulnerability found | Intentional vulnerability |
+| build            | Build error         | Intentional build error   |
 
 ## Validation Rules
 
@@ -56,8 +56,18 @@ Validate that pipeline failures stop deployment safely.
   "skill": "negative-pipeline-scenarios",
   "status": "pass | fail",
   "scenarios": [
-    {"stage": "unit-test", "failure": "test_failure", "stopped": true, "gitops_update": false},
-    {"stage": "sast", "failure": "vulnerability", "stopped": true, "gitops_update": false}
+    {
+      "stage": "unit-test",
+      "failure": "test_failure",
+      "stopped": true,
+      "gitops_update": false
+    },
+    {
+      "stage": "sast",
+      "failure": "vulnerability",
+      "stopped": true,
+      "gitops_update": false
+    }
   ],
   "all_correct": true
 }

@@ -36,10 +36,10 @@ Validate that OBS writes correct manifests to the GitOps repo.
 
 ## Sub-Skills
 
-| Skill | Purpose |
-|-------|---------|
-| `obs-to-gitops/overlay-resolution` | Validate overlay resolution |
-| `obs-to-gitops/commit-validation` | Validate Git commit structure |
+| Skill                              | Purpose                       |
+| ---------------------------------- | ----------------------------- |
+| `obs-to-gitops/overlay-resolution` | Validate overlay resolution   |
+| `obs-to-gitops/commit-validation`  | Validate Git commit structure |
 
 ## Validation Rules
 

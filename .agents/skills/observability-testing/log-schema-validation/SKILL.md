@@ -36,22 +36,22 @@ Ensure all Fawkes components (OBS, PIPE, CLI, agents) emit structured, consisten
 
 ## Sub-Skills
 
-| Skill | Purpose |
-|-------|---------|
+| Skill                                      | Purpose                            |
+| ------------------------------------------ | ---------------------------------- |
 | `log-schema-validation/field-completeness` | Ensure all required fields present |
-| `log-schema-validation/log-volume` | Ensure log volume within limits |
+| `log-schema-validation/log-volume`         | Ensure log volume within limits    |
 
 ## Required Fields
 
-| Field | Type | Format | Required |
-|-------|------|--------|----------|
-| `timestamp` | string | ISO 8601 | Yes |
-| `level` | string | info/warn/error/debug | Yes |
-| `service` | string | kebab-case | Yes |
-| `message` | string | non-empty | Yes |
-| `trace_id` | string | 32 hex chars | Yes |
-| `span_id` | string | 16 hex chars | Yes |
-| `version` | string | semver | Yes |
+| Field       | Type   | Format                | Required |
+| ----------- | ------ | --------------------- | -------- |
+| `timestamp` | string | ISO 8601              | Yes      |
+| `level`     | string | info/warn/error/debug | Yes      |
+| `service`   | string | kebab-case            | Yes      |
+| `message`   | string | non-empty             | Yes      |
+| `trace_id`  | string | 32 hex chars          | Yes      |
+| `span_id`   | string | 16 hex chars          | Yes      |
+| `version`   | string | semver                | Yes      |
 
 ## Validation Rules
 
@@ -77,9 +77,7 @@ Ensure all Fawkes components (OBS, PIPE, CLI, agents) emit structured, consisten
   "total_logs": 10000,
   "valid": 9995,
   "invalid": 5,
-  "violations": [
-    {"line": 1234, "field": "trace_id", "issue": "missing"}
-  ]
+  "violations": [{ "line": 1234, "field": "trace_id", "issue": "missing" }]
 }
 ```
 

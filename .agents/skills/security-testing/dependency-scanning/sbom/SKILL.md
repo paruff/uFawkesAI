@@ -34,10 +34,10 @@ Generate and validate Software Bill of Materials for Fawkes artifacts.
 
 ## SBOM Formats
 
-| Format | Standard | Tool |
-|--------|----------|------|
-| SPDX | Linux Foundation | Syft |
-| CycloneDX | OWASP | Syft |
+| Format    | Standard         | Tool |
+| --------- | ---------------- | ---- |
+| SPDX      | Linux Foundation | Syft |
+| CycloneDX | OWASP            | Syft |
 
 ## Generation Commands
 

@@ -192,18 +192,18 @@ Run these checks in order:
 
 Load these skills as needed:
 
-| Skill | When to Load |
-|-------|-------------|
-| `review/spec-compliance` | Validating against specification |
-| `review/design-compliance` | Validating against design |
-| `review/acceptance-criteria` | Checking acceptance criteria |
-| `review/code-quality` | Lint, format, structure checks |
-| `review/pipeline-policy` | CI/CD pipeline validation |
-| `review/k8s-policy` | Kubernetes manifest validation |
-| `review/gitops-overlay` | GitOps overlay validation |
-| `review/security-rbac` | RBAC and security validation |
-| `review/secret-governance` | Secret handling validation |
-| `review/policy-validation` | Policy-as-code validation |
+| Skill                        | When to Load                     |
+| ---------------------------- | -------------------------------- |
+| `review/spec-compliance`     | Validating against specification |
+| `review/design-compliance`   | Validating against design        |
+| `review/acceptance-criteria` | Checking acceptance criteria     |
+| `review/code-quality`        | Lint, format, structure checks   |
+| `review/pipeline-policy`     | CI/CD pipeline validation        |
+| `review/k8s-policy`          | Kubernetes manifest validation   |
+| `review/gitops-overlay`      | GitOps overlay validation        |
+| `review/security-rbac`       | RBAC and security validation     |
+| `review/secret-governance`   | Secret handling validation       |
+| `review/policy-validation`   | Policy-as-code validation        |
 
 ### Build Validation Output
 
@@ -217,82 +217,82 @@ Load these skills as needed:
 
 ### Spec Compliance
 
-| Requirement | Status | Notes |
-|-------------|--------|-------|
-| REQ-001 | PASS | Implemented correctly |
-| REQ-002 | FAIL | Missing error handling |
+| Requirement | Status | Notes                  |
+| ----------- | ------ | ---------------------- |
+| REQ-001     | PASS   | Implemented correctly  |
+| REQ-002     | FAIL   | Missing error handling |
 
 ### Design Compliance
 
-| Check | Status | Notes |
-|-------|--------|-------|
-| Architecture alignment | PASS | — |
-| Component boundaries | PASS | — |
-| Interface contracts | FAIL | Response shape differs from design |
+| Check                  | Status | Notes                              |
+| ---------------------- | ------ | ---------------------------------- |
+| Architecture alignment | PASS   | —                                  |
+| Component boundaries   | PASS   | —                                  |
+| Interface contracts    | FAIL   | Response shape differs from design |
 
 ### Acceptance Criteria
 
-| AC | Status | Notes |
-|----|--------|-------|
-| AC-01 | PASS | — |
-| AC-02 | FAIL | Edge case not handled |
+| AC    | Status | Notes                 |
+| ----- | ------ | --------------------- |
+| AC-01 | PASS   | —                     |
+| AC-02 | FAIL   | Edge case not handled |
 
 ### Code Quality
 
-| Check | Status |
-|-------|--------|
-| Lint | PASS |
-| Typecheck | PASS |
-| Formatting | PASS |
+| Check      | Status |
+| ---------- | ------ |
+| Lint       | PASS   |
+| Typecheck  | PASS   |
+| Formatting | PASS   |
 
 ### Pipeline Policy
 
-| Check | Status |
-|-------|--------|
-| Required stages | PASS |
-| Security gates | PASS |
+| Check           | Status |
+| --------------- | ------ |
+| Required stages | PASS   |
+| Security gates  | PASS   |
 
 ### K8s Policy
 
-| Check | Status |
-|-------|--------|
-| Resource limits | PASS |
-| SecurityContext | PASS |
+| Check           | Status |
+| --------------- | ------ |
+| Resource limits | PASS   |
+| SecurityContext | PASS   |
 
 ### GitOps Overlay
 
-| Check | Status |
-|-------|--------|
-| Kustomize build | PASS |
-| Image tags | PASS |
+| Check           | Status |
+| --------------- | ------ |
+| Kustomize build | PASS   |
+| Image tags      | PASS   |
 
 ### Security & RBAC
 
-| Check | Status |
-|-------|--------|
-| RBAC roles | PASS |
-| Container security | PASS |
+| Check              | Status |
+| ------------------ | ------ |
+| RBAC roles         | PASS   |
+| Container security | PASS   |
 
 ### Secret Governance
 
-| Check | Status |
-|-------|--------|
-| No plaintext secrets | PASS |
-| Rotation policies | PASS |
+| Check                | Status |
+| -------------------- | ------ |
+| No plaintext secrets | PASS   |
+| Rotation policies    | PASS   |
 
 ### Policy-as-Code
 
-| Check | Status |
-|-------|--------|
-| Manifest compliance | PASS |
-| Pipeline compliance | PASS |
+| Check               | Status |
+| ------------------- | ------ |
+| Manifest compliance | PASS   |
+| Pipeline compliance | PASS   |
 
 ### Findings
 
-| Severity | Category | Finding | Action |
-|----------|----------|---------|--------|
+| Severity | Category        | Finding                                | Action                |
+| -------- | --------------- | -------------------------------------- | --------------------- |
 | CRITICAL | spec-compliance | Missing error handling for API timeout | Implement retry logic |
-| MEDIUM | code-quality | Unused import in src/utils.ts | Remove import |
+| MEDIUM   | code-quality    | Unused import in src/utils.ts          | Remove import         |
 
 ### Overall Recommendation
 

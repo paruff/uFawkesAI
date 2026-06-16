@@ -10,8 +10,7 @@ metadata:
 
 # Skill: Test Execution
 
-> **Load trigger:** `"load test-execution skill"` 
-> **DORA:** Cap 5 (Small Batches / Shift Left on Quality)
+> **Load trigger:** `"load test-execution skill"` > **DORA:** Cap 5 (Small Batches / Shift Left on Quality)
 > **Token cost:** Low
 
 ## Purpose
@@ -28,22 +27,22 @@ Execute all relevant tests and quality gates to validate build output.
 
 ## Sub-Skills
 
-| Skill | Purpose |
-|-------|---------|
-| `test-execution/unit-test-execution` | Run unit tests and measure coverage |
-| `test-execution/integration-test-execution` | Run integration tests |
-| `test-execution/e2e-test-execution` | Run end-to-end tests |
-| `test-execution/test-coverage-validation` | Validate coverage thresholds |
-| `test-execution/pipeline-test-stage-validation` | Validate CI test stages |
-| `test-execution/runtime-simulation-validation` | Simulate runtime environment |
-| `test-execution/performance-smoke-testing` | Basic performance validation |
+| Skill                                           | Purpose                             |
+| ----------------------------------------------- | ----------------------------------- |
+| `test-execution/unit-test-execution`            | Run unit tests and measure coverage |
+| `test-execution/integration-test-execution`     | Run integration tests               |
+| `test-execution/e2e-test-execution`             | Run end-to-end tests                |
+| `test-execution/test-coverage-validation`       | Validate coverage thresholds        |
+| `test-execution/pipeline-test-stage-validation` | Validate CI test stages             |
+| `test-execution/runtime-simulation-validation`  | Simulate runtime environment        |
+| `test-execution/performance-smoke-testing`      | Basic performance validation        |
 
 ## Dependencies
 
-| Skill | Relationship |
-|-------|-------------|
-| `build` | Consumes source code and test files |
-| `test` | Validates tests written by test agent |
+| Skill   | Relationship                          |
+| ------- | ------------------------------------- |
+| `build` | Consumes source code and test files   |
+| `test`  | Validates tests written by test agent |
 
 ## Inputs
 
@@ -81,11 +80,11 @@ Execute all relevant tests and quality gates to validate build output.
 
 ## Tools
 
-| Language | Runner | Coverage |
-|----------|--------|----------|
-| TypeScript | Jest / Vitest | `--coverage` |
-| Python | pytest | `pytest-cov` |
-| Go | `go test` | `-coverprofile` |
+| Language   | Runner        | Coverage        |
+| ---------- | ------------- | --------------- |
+| TypeScript | Jest / Vitest | `--coverage`    |
+| Python     | pytest        | `pytest-cov`    |
+| Go         | `go test`     | `-coverprofile` |
 
 ## Output Format
 

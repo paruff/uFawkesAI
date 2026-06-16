@@ -34,14 +34,14 @@ Ensure all required artifacts are produced and consumed correctly.
 
 ## Required Artifacts
 
-| Artifact | Produced By | Consumed By | Format |
-|----------|-------------|-------------|--------|
-| `version.json` | build | publish, deploy | JSON |
-| `sbom.json` | security-scan | release | SPDX/CycloneDX |
-| `image_digest` | build | deploy | sha256 |
-| `signature` | publish | deploy | Cosign |
-| `manifests` | build | deploy | YAML |
-| `CHANGELOG.md` | changelog | release | Markdown |
+| Artifact       | Produced By   | Consumed By     | Format         |
+| -------------- | ------------- | --------------- | -------------- |
+| `version.json` | build         | publish, deploy | JSON           |
+| `sbom.json`    | security-scan | release         | SPDX/CycloneDX |
+| `image_digest` | build         | deploy          | sha256         |
+| `signature`    | publish       | deploy          | Cosign         |
+| `manifests`    | build         | deploy          | YAML           |
+| `CHANGELOG.md` | changelog     | release         | Markdown       |
 
 ## Validation Rules
 

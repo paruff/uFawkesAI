@@ -57,9 +57,9 @@ done
   "skill": "manifest-render-performance",
   "status": "pass | fail",
   "overlays": {
-    "dev": {"p50_ms": 100, "p95_ms": 200, "p99_ms": 300},
-    "staging": {"p50_ms": 120, "p95_ms": 250, "p99_ms": 350},
-    "prod": {"p50_ms": 150, "p95_ms": 300, "p99_ms": 400}
+    "dev": { "p50_ms": 100, "p95_ms": 200, "p99_ms": 300 },
+    "staging": { "p50_ms": 120, "p95_ms": 250, "p99_ms": 350 },
+    "prod": { "p50_ms": 150, "p95_ms": 300, "p99_ms": 400 }
   },
   "scaling_linear": true
 }

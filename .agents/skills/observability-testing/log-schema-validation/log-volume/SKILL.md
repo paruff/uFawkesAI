@@ -33,12 +33,12 @@ Ensure log volume remains within acceptable limits under load.
 
 ## Volume Thresholds
 
-| Metric | Warning | Critical |
-|--------|---------|----------|
-| Logs/sec (per service) | > 1000 | > 5000 |
-| Log burst (1s spike) | > 10x average | > 50x average |
-| Log volume (per min) | > 100KB | > 1MB |
-| Duplicate logs | > 5% | > 20% |
+| Metric                 | Warning       | Critical      |
+| ---------------------- | ------------- | ------------- |
+| Logs/sec (per service) | > 1000        | > 5000        |
+| Log burst (1s spike)   | > 10x average | > 50x average |
+| Log volume (per min)   | > 100KB       | > 1MB         |
+| Duplicate logs         | > 5%          | > 20%         |
 
 ## Validation Rules
 

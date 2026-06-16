@@ -70,7 +70,7 @@ def extract_section(report, section_title):
     in_section = False
     section_content = []
     section_level = 0
-    
+
     for line in lines:
         # Check if this line starts a section with the given title
         stripped = line.strip()
@@ -78,14 +78,14 @@ def extract_section(report, section_title):
             in_section = True
             section_level = len(line) - len(line.lstrip('#'))
             continue
-        
+
         # If we're in a section and encounter a new section at higher level, stop
         if in_section and stripped and line.startswith('#' * (section_level + 1)):
             break
-        
+
         if in_section:
             section_content.append(line)
-    
+
     return '\n'.join(section_content).strip()
 
 # Helper function to extract keywords from section content
@@ -93,7 +93,7 @@ def extract_keywords(content, field_name):
     """Extract keywords from section content based on field name."""
     # Remove markdown formatting
     text = re.sub(r'[*_`]', '', content)
-    
+
     # Extract field values based on field name
     if field_name == 'requirement':
         # Look for patterns like "REQ-1:", "REQ-1: Implement", etc.
@@ -128,7 +128,7 @@ def extract_keywords(content, field_name):
     else:
         # Generic pattern for any field
         pattern = r'(?:^|\n)' + field_name + r':\s*([^\n]+)'
-    
+
     matches = re.findall(pattern, text, re.IGNORECASE)
     return [m.strip() for m in matches if m.strip()]
 
@@ -137,18 +137,18 @@ def calculate_similarity(text1, text2):
     """Calculate similarity between two texts using simple word overlap."""
     if not text1 or not text2:
         return 0.0
-    
+
     # Normalize and split into words
     words1 = set(re.findall(r'\b\w+\b', text1.lower()))
     words2 = set(re.findall(r'\b\w+\b', text2.lower()))
-    
+
     if not words1 or not words2:
         return 0.0
-    
+
     # Calculate Jaccard similarity
     intersection = words1.intersection(words2)
     union = words1.union(words2)
-    
+
     return len(intersection) / len(union)
 
 # Run validation for each rule
@@ -162,7 +162,7 @@ for rule in rules:
     description = rule.get('description', '')
     required_sections = rule.get('required_sections', [])
     comparison_logic = rule.get('comparison_logic', {})
-    
+
     # Check if both reports exist
     if source_agent not in agent_reports or target_agent not in agent_reports:
         print(f"  ⚠ WARNING: Missing reports for rule {rule_id} (source: {source_agent}, target: {target_agent})")
@@ -176,21 +176,21 @@ for rule in rules:
         })
         all_passed = False
         continue
-    
+
     source_report = agent_reports[source_agent]
     target_report = agent_reports[target_agent]
-    
+
     # Check if required sections exist
     missing_sections = []
     for section in required_sections:
         source_section = extract_section(source_report, section)
         target_section = extract_section(target_report, section)
-        
+
         if not source_section:
             missing_sections.append(f"{section} (source)")
         if not target_section:
             missing_sections.append(f"{section} (target)")
-    
+
     if missing_sections:
         print(f"  ⚠ WARNING: Rule {rule_id} missing required sections: {', '.join(missing_sections)}")
         validation_results.append({
@@ -203,27 +203,27 @@ for rule in rules:
         })
         all_passed = False
         continue
-    
+
     # Extract keywords from source and target
     source_keywords = []
     target_keywords = []
-    
+
     for section in required_sections:
         source_section = extract_section(source_report, section)
         target_section = extract_section(target_report, section)
-        
+
         source_field = comparison_logic.get('source_field', '')
         target_field = comparison_logic.get('target_field', '')
-        
+
         source_keywords.extend(extract_keywords(source_section, source_field))
         target_keywords.extend(extract_keywords(target_section, target_field))
-    
+
     # Check if all source keywords have a match in target
     matched_keywords = []
     unmatched_keywords = []
-    
+
     similarity_threshold = comparison_logic.get('similarity_threshold', 0.7)
-    
+
     for source_kw in source_keywords:
         matched = False
         for target_kw in target_keywords:
@@ -236,10 +236,10 @@ for rule in rules:
                 })
                 matched = True
                 break
-        
+
         if not matched:
             unmatched_keywords.append(source_kw)
-    
+
     if unmatched_keywords:
         print(f"  ⚠ WARNING: Rule {rule_id} failed - {len(unmatched_keywords)} source items not found in target")
         validation_results.append({

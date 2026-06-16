@@ -37,10 +37,10 @@ Validate artifact flow and GitOps updates triggered by PIPE.
 
 ## Sub-Skills
 
-| Skill | Purpose |
-|-------|---------|
-| `pipe-to-obs/artifact-flow` | Validate artifact production and consumption |
-| `pipe-to-obs/manifest-update` | Validate manifest updates |
+| Skill                         | Purpose                                      |
+| ----------------------------- | -------------------------------------------- |
+| `pipe-to-obs/artifact-flow`   | Validate artifact production and consumption |
+| `pipe-to-obs/manifest-update` | Validate manifest updates                    |
 
 ## Integration Flow
 

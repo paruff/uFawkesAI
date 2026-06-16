@@ -38,21 +38,21 @@ Validate that test coverage meets platform thresholds.
 
 ### Default Thresholds
 
-| Metric | Minimum | Target |
-|--------|---------|--------|
-| Line coverage | 80% | 90% |
-| Branch coverage | 75% | 85% |
-| Function coverage | 85% | 95% |
-| Statement coverage | 80% | 90% |
+| Metric             | Minimum | Target |
+| ------------------ | ------- | ------ |
+| Line coverage      | 80%     | 90%    |
+| Branch coverage    | 75%     | 85%    |
+| Function coverage  | 85%     | 95%    |
+| Statement coverage | 80%     | 90%    |
 
 ### Severity Classification
 
-| Gap | Severity |
-|-----|----------|
-| Critical module below 60% | HIGH |
-| Module below threshold | MEDIUM |
-| New code below threshold | HIGH |
-| Existing code below threshold | LOW |
+| Gap                           | Severity |
+| ----------------------------- | -------- |
+| Critical module below 60%     | HIGH     |
+| Module below threshold        | MEDIUM   |
+| New code below threshold      | HIGH     |
+| Existing code below threshold | LOW      |
 
 ## Validation Rules
 

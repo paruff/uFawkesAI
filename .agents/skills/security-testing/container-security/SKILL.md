@@ -35,20 +35,20 @@ Ensure container images built by PIPE are secure, minimal, and free of vulnerabi
 
 ## Sub-Skills
 
-| Skill | Purpose |
-|-------|---------|
+| Skill                          | Purpose                          |
+| ------------------------------ | -------------------------------- |
 | `container-security/vuln-scan` | Container vulnerability scanning |
-| `container-security/signature` | Image signature verification |
+| `container-security/signature` | Image signature verification     |
 
 ## Image Requirements
 
-| Requirement | Rule |
-|-------------|------|
-| Base image | Distroless or minimal |
-| Latest tag | Not used |
-| Root user | Not running as root |
-| Ports | Only required ports exposed |
-| Secrets | No secrets in image layers |
+| Requirement | Rule                        |
+| ----------- | --------------------------- |
+| Base image  | Distroless or minimal       |
+| Latest tag  | Not used                    |
+| Root user   | Not running as root         |
+| Ports       | Only required ports exposed |
+| Secrets     | No secrets in image layers  |
 
 ## Validation Rules
 

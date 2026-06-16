@@ -35,19 +35,19 @@ Ensure all Fawkes components expose correct, meaningful, and standards-compliant
 
 ## Sub-Skills
 
-| Skill | Purpose |
-|-------|---------|
-| `metrics-validation/golden-signals` | Validate four golden signals |
-| `metrics-validation/cardinality` | Detect high-cardinality metrics |
+| Skill                               | Purpose                         |
+| ----------------------------------- | ------------------------------- |
+| `metrics-validation/golden-signals` | Validate four golden signals    |
+| `metrics-validation/cardinality`    | Detect high-cardinality metrics |
 
 ## Metric Naming Convention
 
-| Pattern | Example |
-|---------|---------|
-| `<namespace>_<subsystem>_<name>_<unit>` | `fawkes_pipe_build_duration_seconds` |
-| Counter: `_total` suffix | `fawkes_pipe_builds_total` |
-| Histogram: `_bucket`, `_sum`, `_count` | `fawkes_pipe_duration_seconds_bucket` |
-| Gauge: no suffix | `fawkes_pipe_active_builds` |
+| Pattern                                 | Example                               |
+| --------------------------------------- | ------------------------------------- |
+| `<namespace>_<subsystem>_<name>_<unit>` | `fawkes_pipe_build_duration_seconds`  |
+| Counter: `_total` suffix                | `fawkes_pipe_builds_total`            |
+| Histogram: `_bucket`, `_sum`, `_count`  | `fawkes_pipe_duration_seconds_bucket` |
+| Gauge: no suffix                        | `fawkes_pipe_active_builds`           |
 
 ## Validation Rules
 

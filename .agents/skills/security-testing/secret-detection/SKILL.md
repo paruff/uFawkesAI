@@ -37,22 +37,22 @@ Ensure no secrets leak into source code, logs, artifacts, or GitOps repos.
 
 ## Sub-Skills
 
-| Skill | Purpose |
-|-------|---------|
-| `secret-detection/gitleaks` | Gitleaks secret scanning |
+| Skill                        | Purpose                       |
+| ---------------------------- | ----------------------------- |
+| `secret-detection/gitleaks`  | Gitleaks secret scanning      |
 | `secret-detection/integrity` | Artifact integrity validation |
 
 ## Secret Types Detected
 
-| Type | Pattern |
-|------|---------|
-| API Keys | `api[_-]?key`, `apikey` |
-| Tokens | `token`, `bearer`, `jwt` |
-| Passwords | `password`, `passwd`, `pwd` |
-| Private Keys | `BEGIN.*PRIVATE KEY` |
-| AWS Keys | `AKIA[0-9A-Z]{16}` |
-| GitHub Tokens | `ghp_[0-9a-zA-Z]{36}` |
-| Slack Tokens | `xox[baprs]-[0-9a-zA-Z-]+` |
+| Type          | Pattern                     |
+| ------------- | --------------------------- |
+| API Keys      | `api[_-]?key`, `apikey`     |
+| Tokens        | `token`, `bearer`, `jwt`    |
+| Passwords     | `password`, `passwd`, `pwd` |
+| Private Keys  | `BEGIN.*PRIVATE KEY`        |
+| AWS Keys      | `AKIA[0-9A-Z]{16}`          |
+| GitHub Tokens | `ghp_[0-9a-zA-Z]{36}`       |
+| Slack Tokens  | `xox[baprs]-[0-9a-zA-Z-]+`  |
 
 ## Validation Rules
 
@@ -68,7 +68,7 @@ Ensure no secrets leak into source code, logs, artifacts, or GitOps repos.
 {
   "skill": "secret-detection",
   "status": "pass | fail",
-  "gitleaks": {"findings": 0, "critical": 0},
+  "gitleaks": { "findings": 0, "critical": 0 },
   "container_secrets": 0,
   "artifacts_verified": 5,
   "issues": []

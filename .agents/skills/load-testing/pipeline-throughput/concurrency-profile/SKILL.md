@@ -34,13 +34,13 @@ Characterize PIPE behavior at different concurrency levels.
 
 ## Concurrency Matrix
 
-| Level | Pipelines | Expected Behavior |
-|-------|-----------|-------------------|
-| 1 | 10 | Linear execution |
-| 5 | 50 | Near-linear |
-| 10 | 100 | Slight queue buildup |
-| 50 | 250 | Queue noticeable |
-| 100 | 500 | Saturation near |
+| Level | Pipelines | Expected Behavior    |
+| ----- | --------- | -------------------- |
+| 1     | 10        | Linear execution     |
+| 5     | 50        | Near-linear          |
+| 10    | 100       | Slight queue buildup |
+| 50    | 250       | Queue noticeable     |
+| 100   | 500       | Saturation near      |
 
 ## Validation Rules
 
@@ -56,11 +56,36 @@ Characterize PIPE behavior at different concurrency levels.
   "skill": "pipeline-concurrency-profiling",
   "status": "pass | fail",
   "levels": [
-    {"concurrency": 1, "queue_depth": 0, "wait_time_ms": 0, "exec_time_ms": 5000},
-    {"concurrency": 5, "queue_depth": 2, "wait_time_ms": 500, "exec_time_ms": 5500},
-    {"concurrency": 10, "queue_depth": 8, "wait_time_ms": 2000, "exec_time_ms": 7000},
-    {"concurrency": 50, "queue_depth": 40, "wait_time_ms": 10000, "exec_time_ms": 15000},
-    {"concurrency": 100, "queue_depth": 90, "wait_time_ms": 25000, "exec_time_ms": 30000}
+    {
+      "concurrency": 1,
+      "queue_depth": 0,
+      "wait_time_ms": 0,
+      "exec_time_ms": 5000
+    },
+    {
+      "concurrency": 5,
+      "queue_depth": 2,
+      "wait_time_ms": 500,
+      "exec_time_ms": 5500
+    },
+    {
+      "concurrency": 10,
+      "queue_depth": 8,
+      "wait_time_ms": 2000,
+      "exec_time_ms": 7000
+    },
+    {
+      "concurrency": 50,
+      "queue_depth": 40,
+      "wait_time_ms": 10000,
+      "exec_time_ms": 15000
+    },
+    {
+      "concurrency": 100,
+      "queue_depth": 90,
+      "wait_time_ms": 25000,
+      "exec_time_ms": 30000
+    }
   ],
   "saturation_point": 50
 }

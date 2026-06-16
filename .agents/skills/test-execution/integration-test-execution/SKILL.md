@@ -78,11 +78,11 @@ Validate interactions between components.
 
 ## Tools
 
-| Language | Runner | Notes |
-|----------|--------|-------|
+| Language   | Runner        | Notes                                   |
+| ---------- | ------------- | --------------------------------------- |
 | TypeScript | Jest / Vitest | `--integration` flag or separate config |
-| Python | pytest | Markers: `@pytest.mark.integration` |
-| Go | `go test` | Build tags: `//go:build integration` |
+| Python     | pytest        | Markers: `@pytest.mark.integration`     |
+| Go         | `go test`     | Build tags: `//go:build integration`    |
 
 ## Output Format
 
@@ -93,10 +93,7 @@ Validate interactions between components.
   "total": 8,
   "passed": 8,
   "failed": 0,
-  "integration_points_tested": [
-    "API ↔ Database",
-    "API ↔ External Service"
-  ],
+  "integration_points_tested": ["API ↔ Database", "API ↔ External Service"],
   "failures": []
 }
 ```

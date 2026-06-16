@@ -25,12 +25,12 @@ Emit each time a skill is loaded for context.
 
 **Attributes:**
 
-| Attribute | Type | Description |
-|-----------|------|-------------|
-| `skill.name` | string | Skill identifier (e.g. `security/rbac-validation`) |
-| `skill.domain` | string | Skill domain (e.g. `security`) |
-| `agent.name` | string | Agent that loaded this skill |
-| `session_id` | string | Unique invocation identifier |
+| Attribute      | Type   | Description                                        |
+| -------------- | ------ | -------------------------------------------------- |
+| `skill.name`   | string | Skill identifier (e.g. `security/rbac-validation`) |
+| `skill.domain` | string | Skill domain (e.g. `security`)                     |
+| `agent.name`   | string | Agent that loaded this skill                       |
+| `session_id`   | string | Unique invocation identifier                       |
 
 ## Usage
 

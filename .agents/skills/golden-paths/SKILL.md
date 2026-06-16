@@ -10,8 +10,7 @@ metadata:
 
 # Skill: Golden Paths
 
-> **Load trigger:** `"load golden-paths skill"` 
-> **DORA:** Cap 3 (AI-Accessible Internal Data)
+> **Load trigger:** `"load golden-paths skill"` > **DORA:** Cap 3 (AI-Accessible Internal Data)
 > **Token cost:** Low
 
 ## Purpose
@@ -28,9 +27,9 @@ Ensure projects follow Fawkes conventions for testing, security, observability, 
 
 ## Dependencies
 
-| Skill | Relationship |
-|-------|-------------|
-| `build` | Validates build output |
+| Skill    | Relationship              |
+| -------- | ------------------------- |
+| `build`  | Validates build output    |
 | `review` | Validates review findings |
 
 ## Inputs

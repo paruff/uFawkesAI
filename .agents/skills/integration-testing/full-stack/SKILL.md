@@ -36,10 +36,10 @@ Validate the entire OBS + PIPE + GitOps + K8s flow end-to-end.
 
 ## Sub-Skills
 
-| Skill | Purpose |
-|-------|---------|
+| Skill                      | Purpose                            |
+| -------------------------- | ---------------------------------- |
 | `full-stack/cluster-state` | Validate cluster state matches Git |
-| `full-stack/smoke-tests` | Validate deployed application |
+| `full-stack/smoke-tests`   | Validate deployed application      |
 
 ## Full Stack Flow
 
@@ -68,11 +68,11 @@ Validate the entire OBS + PIPE + GitOps + K8s flow end-to-end.
 {
   "skill": "full-stack-integration",
   "status": "pass | fail",
-  "pipeline": {"status": "pass", "time_s": 300},
-  "gitops_update": {"status": "pass", "commit": "abc123"},
-  "reconciliation": {"status": "pass", "time_s": 60},
-  "deployment": {"status": "pass", "replicas": 3},
-  "smoke_tests": {"status": "pass", "tests": 10}
+  "pipeline": { "status": "pass", "time_s": 300 },
+  "gitops_update": { "status": "pass", "commit": "abc123" },
+  "reconciliation": { "status": "pass", "time_s": 60 },
+  "deployment": { "status": "pass", "replicas": 3 },
+  "smoke_tests": { "status": "pass", "tests": 10 }
 }
 ```
 

@@ -63,14 +63,14 @@ Identify the components required to implement the design.
 
 ## Component Types
 
-| Type | Purpose | Example |
-|------|---------|---------|
-| API Service | Handle HTTP requests | User API, Payment API |
-| Worker | Process async jobs | Email Worker, Report Worker |
-| CLI Tool | Command-line interface | Migration Tool, Admin CLI |
-| Library | Shared code | Auth Library, Utils Library |
-| Pipeline | CI/CD automation | Build Pipeline, Deploy Pipeline |
-| Manifest | K8s resources | Deployment, Service, ConfigMap |
+| Type        | Purpose                | Example                         |
+| ----------- | ---------------------- | ------------------------------- |
+| API Service | Handle HTTP requests   | User API, Payment API           |
+| Worker      | Process async jobs     | Email Worker, Report Worker     |
+| CLI Tool    | Command-line interface | Migration Tool, Admin CLI       |
+| Library     | Shared code            | Auth Library, Utils Library     |
+| Pipeline    | CI/CD automation       | Build Pipeline, Deploy Pipeline |
+| Manifest    | K8s resources          | Deployment, Service, ConfigMap  |
 
 ## Output Format
 
@@ -97,7 +97,7 @@ Identify the components required to implement the design.
   "gitops": {
     "base": "base/",
     "overlays": ["dev", "staging", "production"],
-    "secret_management": "external-secrets"
+    "secret_management": "external-secrets"  # pragma: allowlist secret
   }
 }
 ```

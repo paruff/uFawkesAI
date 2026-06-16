@@ -9,6 +9,7 @@ Decision: FAIL
 ## Validation Results
 
 ### spec-build-consistency
+
 - Status: ❌ FAIL
 - Source Agent: spec
 - Target Agent: build
@@ -16,6 +17,7 @@ Decision: FAIL
 - Reason: Missing report files
 
 ### spec-test-coverage
+
 - Status: ❌ FAIL
 - Source Agent: spec
 - Target Agent: test
@@ -23,6 +25,7 @@ Decision: FAIL
 - Reason: Missing report files
 
 ### design-build-compliance
+
 - Status: ❌ FAIL
 - Source Agent: design
 - Target Agent: build
@@ -30,6 +33,7 @@ Decision: FAIL
 - Reason: Missing report files
 
 ### test-execution-viability
+
 - Status: ❌ FAIL
 - Source Agent: test
 - Target Agent: test-execution
@@ -40,6 +44,7 @@ Decision: FAIL
 
 All 4 rules must pass
 ❌ Cross-validation FAILED - pipeline blocked
+
 - Fix spec-build-consistency: Missing report files
 - Fix spec-test-coverage: Missing report files
 - Fix design-build-compliance: Missing report files

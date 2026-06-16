@@ -42,7 +42,7 @@ while IFS= read -r report_path; do
     design-report.md) agent_name="design" ;;
     spec-report.md) agent_name="spec" ;;
     cross-validation-report.md) agent_name="cross-validation" ;;
-    *) 
+    *)
       # Try prefix match
       base="$(basename "${report_path}")"
       agent_name="${base%-report*}"

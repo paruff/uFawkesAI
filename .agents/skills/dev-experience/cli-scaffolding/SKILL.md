@@ -36,19 +36,19 @@ Provide CLI commands that scaffold new components, pipelines, tests, and GitOps 
 
 ## Sub-Skills
 
-| Skill | Purpose |
-|-------|---------|
+| Skill                                  | Purpose                            |
+| -------------------------------------- | ---------------------------------- |
 | `cli-scaffolding/template-scaffolding` | Generate components from templates |
-| `cli-scaffolding/cli-ux` | Validate CLI user experience |
+| `cli-scaffolding/cli-ux`               | Validate CLI user experience       |
 
 ## Scaffold Commands
 
-| Command | Output |
-|---------|--------|
+| Command                          | Output                       |
+| -------------------------------- | ---------------------------- |
 | `fawkes scaffold service <name>` | New service with boilerplate |
-| `fawkes scaffold pipeline` | `pipeline-spec.yaml` |
-| `fawkes scaffold gitops <env>` | GitOps overlay structure |
-| `fawkes scaffold test <type>` | Test file with patterns |
+| `fawkes scaffold pipeline`       | `pipeline-spec.yaml`         |
+| `fawkes scaffold gitops <env>`   | GitOps overlay structure     |
+| `fawkes scaffold test <type>`    | Test file with patterns      |
 
 ## Rules
 

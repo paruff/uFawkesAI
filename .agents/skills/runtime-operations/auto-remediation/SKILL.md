@@ -37,20 +37,20 @@ Automatically fix common operational issues without human intervention.
 
 ## Sub-Skills
 
-| Skill | Purpose |
-|-------|---------|
+| Skill                                 | Purpose                         |
+| ------------------------------------- | ------------------------------- |
 | `auto-remediation/signature-matching` | Identify known failure patterns |
-| `auto-remediation/action-execution` | Execute remediation actions |
+| `auto-remediation/action-execution`   | Execute remediation actions     |
 
 ## Remediation Actions
 
-| Action | Trigger | Risk |
-|--------|---------|------|
-| Restart pod | CrashLoopBackOff | Low |
-| Rollback deployment | Health check failure | Low |
-| GitOps reconciliation | Config drift | Low |
-| Scale up | Resource exhaustion | Medium |
-| Clear stuck resource | Resource stuck in terminating | Low |
+| Action                | Trigger                       | Risk   |
+| --------------------- | ----------------------------- | ------ |
+| Restart pod           | CrashLoopBackOff              | Low    |
+| Rollback deployment   | Health check failure          | Low    |
+| GitOps reconciliation | Config drift                  | Low    |
+| Scale up              | Resource exhaustion           | Medium |
+| Clear stuck resource  | Resource stuck in terminating | Low    |
 
 ## Safety Rules
 

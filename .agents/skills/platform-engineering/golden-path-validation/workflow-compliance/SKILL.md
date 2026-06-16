@@ -34,9 +34,9 @@ Ensure GitHub Actions workflows follow Fawkes conventions.
 
 ## Required Workflows
 
-| Workflow | Trigger | Required Jobs |
-|----------|---------|---------------|
-| `ci.yml` | push, PR | lint, test, build, security |
+| Workflow | Trigger           | Required Jobs                           |
+| -------- | ----------------- | --------------------------------------- |
+| `ci.yml` | push, PR          | lint, test, build, security             |
 | `cd.yml` | push to main, tag | deploy-dev, deploy-staging, deploy-prod |
 
 ## Workflow Naming Convention

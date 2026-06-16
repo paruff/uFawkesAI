@@ -71,12 +71,12 @@ Validate Kubernetes-related design decisions.
 
 ## Design Patterns
 
-| Pattern | Use When |
-|---------|----------|
-| Deployment | Stateless workloads |
-| StatefulSet | Stateful workloads (databases, queues) |
-| DaemonSet | Node-level agents (logging, monitoring) |
-| Job/CronJob | Batch or scheduled workloads |
+| Pattern     | Use When                                |
+| ----------- | --------------------------------------- |
+| Deployment  | Stateless workloads                     |
+| StatefulSet | Stateful workloads (databases, queues)  |
+| DaemonSet   | Node-level agents (logging, monitoring) |
+| Job/CronJob | Batch or scheduled workloads            |
 
 ## Output Format
 
@@ -91,9 +91,7 @@ Validate Kubernetes-related design decisions.
       "details": "Description"
     }
   ],
-  "recommendations": [
-    "Consider adding PodDisruptionBudget for production"
-  ],
+  "recommendations": ["Consider adding PodDisruptionBudget for production"],
   "violations": []
 }
 ```

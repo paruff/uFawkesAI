@@ -25,23 +25,23 @@ Emit for each finding the agent identifies.
 
 **Attributes:**
 
-| Attribute | Type | Description |
-|-----------|------|-------------|
-| `severity` | string | CRITICAL, HIGH, MEDIUM, LOW, INFO |
-| `category` | string | Skill or check category that produced this finding |
-| `actionable` | boolean | Whether this finding requires a specific action |
-| `manual_review_needed` | boolean | Whether human judgment is required |
-| `agent.name` | string | Agent that produced this finding |
-| `session_id` | string | Unique invocation identifier |
+| Attribute              | Type    | Description                                        |
+| ---------------------- | ------- | -------------------------------------------------- |
+| `severity`             | string  | CRITICAL, HIGH, MEDIUM, LOW, INFO                  |
+| `category`             | string  | Skill or check category that produced this finding |
+| `actionable`           | boolean | Whether this finding requires a specific action    |
+| `manual_review_needed` | boolean | Whether human judgment is required                 |
+| `agent.name`           | string  | Agent that produced this finding                   |
+| `session_id`           | string  | Unique invocation identifier                       |
 
 ## Quality Metrics
 
-| Metric | Formula | Target |
-|--------|---------|--------|
-| Actionability rate | actionable findings / total findings | > 60% |
-| Manual review burden | manual_review_needed findings / total findings | < 30% |
-| Blocker density | CRITICAL+HIGH findings / total invocations | < 50% |
-| False positive rate | findings rejected by human / total findings | < 20% (requires human feedback) |
+| Metric               | Formula                                        | Target                          |
+| -------------------- | ---------------------------------------------- | ------------------------------- |
+| Actionability rate   | actionable findings / total findings           | > 60%                           |
+| Manual review burden | manual_review_needed findings / total findings | < 30%                           |
+| Blocker density      | CRITICAL+HIGH findings / total invocations     | < 50%                           |
+| False positive rate  | findings rejected by human / total findings    | < 20% (requires human feedback) |
 
 ## Usage
 

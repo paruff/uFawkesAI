@@ -10,8 +10,7 @@ metadata:
 
 # Skill: Dev Experience
 
-> **Load trigger:** `"load dev-experience skill"` 
-> **DORA:** Cap 3 (AI-Accessible Internal Data)
+> **Load trigger:** `"load dev-experience skill"` > **DORA:** Cap 3 (AI-Accessible Internal Data)
 > **Token cost:** Low
 
 ## Purpose
@@ -28,16 +27,16 @@ Set up local development environment for fast feedback loops.
 
 ## Sub-Skills
 
-| Skill | Purpose |
-|-------|---------|
+| Skill                         | Purpose                 |
+| ----------------------------- | ----------------------- |
 | `dev-experience/devcontainer` | Configure devcontainers |
-| `dev-experience/workspace` | Bootstrap workspace |
-| `dev-experience/local-sim` | Set up local simulation |
+| `dev-experience/workspace`    | Bootstrap workspace     |
+| `dev-experience/local-sim`    | Set up local simulation |
 
 ## Dependencies
 
-| Skill | Relationship |
-|-------|-------------|
+| Skill  | Relationship                      |
+| ------ | --------------------------------- |
 | (none) | Foundation skill, no dependencies |
 
 ## Inputs

@@ -63,15 +63,15 @@ After all tasks complete, validate:
 
 Load these skills as needed:
 
-| Skill | When to Load |
-|-------|-------------|
-| `build/code-generation` | Writing new source code |
-| `build/manifest-generation` | Creating K8s manifests |
-| `build/pipeline-generation` | Creating/updating pipeline-spec.yaml |
-| `build/gitops-overlay-generation` | Creating environment overlays |
-| `build/refactoring` | Modifying existing code |
-| `build/template-application` | Applying golden-path templates |
-| `build/governance-enforcement` | Validating compliance |
+| Skill                             | When to Load                         |
+| --------------------------------- | ------------------------------------ |
+| `build/code-generation`           | Writing new source code              |
+| `build/manifest-generation`       | Creating K8s manifests               |
+| `build/pipeline-generation`       | Creating/updating pipeline-spec.yaml |
+| `build/gitops-overlay-generation` | Creating environment overlays        |
+| `build/refactoring`               | Modifying existing code              |
+| `build/template-application`      | Applying golden-path templates       |
+| `build/governance-enforcement`    | Validating compliance                |
 
 ## Output Format
 
@@ -86,9 +86,9 @@ After completing all tasks, produce:
 
 ### Tasks Completed
 
-| Task | Title | Lines Changed | Status |
-|------|-------|---------------|--------|
-| TASK-001 | ... | ~150 | DONE |
+| Task     | Title | Lines Changed | Status |
+| -------- | ----- | ------------- | ------ |
+| TASK-001 | ...   | ~150          | DONE   |
 
 ### Artifacts Produced
 
@@ -99,12 +99,12 @@ After completing all tasks, produce:
 
 ### Validation Results
 
-| Check | Status |
-|-------|--------|
-| Lint | PASS |
-| Typecheck | PASS |
-| Tests | PASS |
-| Policy | PASS |
+| Check     | Status |
+| --------- | ------ |
+| Lint      | PASS   |
+| Typecheck | PASS   |
+| Tests     | PASS   |
+| Policy    | PASS   |
 
 ### Blockers
 

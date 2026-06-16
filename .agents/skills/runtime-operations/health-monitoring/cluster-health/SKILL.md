@@ -37,38 +37,38 @@ Monitor the health of the Kubernetes cluster.
 
 ### Node Health
 
-| Check | Healthy | Warning | Critical |
-|-------|---------|---------|----------|
-| Ready condition | True | False < 5 min | False > 5 min |
-| Memory pressure | False | True | True > 5 min |
-| Disk pressure | False | True | True > 5 min |
-| PID pressure | False | True | True > 5 min |
+| Check           | Healthy | Warning       | Critical      |
+| --------------- | ------- | ------------- | ------------- |
+| Ready condition | True    | False < 5 min | False > 5 min |
+| Memory pressure | False   | True          | True > 5 min  |
+| Disk pressure   | False   | True          | True > 5 min  |
+| PID pressure    | False   | True          | True > 5 min  |
 
 ### System Pods
 
-| Namespace | Expected Status |
-|-----------|----------------|
-| kube-system | All Running |
-| cert-manager | All Running |
-| ingress-nginx | All Running |
-| monitoring | All Running |
+| Namespace     | Expected Status |
+| ------------- | --------------- |
+| kube-system   | All Running     |
+| cert-manager  | All Running     |
+| ingress-nginx | All Running     |
+| monitoring    | All Running     |
 
 ### Controller Health
 
-| Controller | Healthy | Unhealthy |
-|-----------|---------|-----------|
-| kube-apiserver | Running | NotRunning |
+| Controller              | Healthy | Unhealthy  |
+| ----------------------- | ------- | ---------- |
+| kube-apiserver          | Running | NotRunning |
 | kube-controller-manager | Running | NotRunning |
-| kube-scheduler | Running | NotRunning |
-| etcd | Running | NotRunning |
+| kube-scheduler          | Running | NotRunning |
+| etcd                    | Running | NotRunning |
 
 ### Resource Usage
 
-| Resource | Healthy | Warning | Critical |
-|----------|---------|---------|----------|
-| Cluster CPU | < 70% | 70-85% | > 85% |
-| Cluster Memory | < 70% | 70-85% | > 85% |
-| Pod count | < 100 | 100-200 | > 200 |
+| Resource       | Healthy | Warning | Critical |
+| -------------- | ------- | ------- | -------- |
+| Cluster CPU    | < 70%   | 70-85%  | > 85%    |
+| Cluster Memory | < 70%   | 70-85%  | > 85%    |
+| Pod count      | < 100   | 100-200 | > 200    |
 
 ## Output Format
 
@@ -77,8 +77,8 @@ Monitor the health of the Kubernetes cluster.
   "skill": "cluster-health",
   "cluster": "production",
   "status": "healthy",
-  "nodes": {"total": 5, "ready": 5},
-  "system_pods": {"total": 15, "running": 15},
+  "nodes": { "total": 5, "ready": 5 },
+  "system_pods": { "total": 15, "running": 15 },
   "resources": {
     "cpu_percent": 65,
     "memory_percent": 70,

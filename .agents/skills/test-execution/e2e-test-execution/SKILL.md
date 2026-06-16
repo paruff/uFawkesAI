@@ -63,11 +63,11 @@ Validate full system behavior from the user's perspective.
 
 ### User Journey Mapping
 
-| Journey | Test File | Status |
-|---------|-----------|--------|
-| User signup → login → dashboard | `signup.e2e.ts` | PASS |
-| Create item → edit → delete | `crud.e2e.ts` | PASS |
-| Checkout flow → payment → confirmation | `checkout.e2e.ts` | PASS |
+| Journey                                | Test File         | Status |
+| -------------------------------------- | ----------------- | ------ |
+| User signup → login → dashboard        | `signup.e2e.ts`   | PASS   |
+| Create item → edit → delete            | `crud.e2e.ts`     | PASS   |
+| Checkout flow → payment → confirmation | `checkout.e2e.ts` | PASS   |
 
 ### Acceptance Criteria Verification
 
@@ -77,11 +77,11 @@ Validate full system behavior from the user's perspective.
 
 ## Tools
 
-| Type | Tool | Notes |
-|------|------|-------|
-| API | Supertest, httpx, httptest | HTTP-level E2E |
-| UI | Playwright, Cypress, Selenium | Browser automation |
-| CLI | Bash scripts, expect | Command-line E2E |
+| Type | Tool                          | Notes              |
+| ---- | ----------------------------- | ------------------ |
+| API  | Supertest, httpx, httptest    | HTTP-level E2E     |
+| UI   | Playwright, Cypress, Selenium | Browser automation |
+| CLI  | Bash scripts, expect          | Command-line E2E   |
 
 ## Output Format
 

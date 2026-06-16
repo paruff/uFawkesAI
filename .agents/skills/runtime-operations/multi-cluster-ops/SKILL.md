@@ -35,27 +35,27 @@ Monitor and manage multiple clusters across regions.
 
 ## Sub-Skills
 
-| Skill | Purpose |
-|-------|---------|
-| `multi-cluster-ops/cross-cluster-detection` | Detect cross-cluster incidents |
-| `multi-cluster-ops/coordination` | Coordinate multi-cluster remediation |
+| Skill                                       | Purpose                              |
+| ------------------------------------------- | ------------------------------------ |
+| `multi-cluster-ops/cross-cluster-detection` | Detect cross-cluster incidents       |
+| `multi-cluster-ops/coordination`            | Coordinate multi-cluster remediation |
 
 ## Cluster Health Checks
 
-| Check | Healthy | Warning | Critical |
-|-------|---------|---------|----------|
-| API server | responding | slow | unreachable |
-| Nodes ready | all ready | 1-2 not ready | > 2 not ready |
-| System pods | all running | some failing | most failing |
-| Certificate | valid > 30d | valid < 30d | expired |
+| Check       | Healthy     | Warning       | Critical      |
+| ----------- | ----------- | ------------- | ------------- |
+| API server  | responding  | slow          | unreachable   |
+| Nodes ready | all ready   | 1-2 not ready | > 2 not ready |
+| System pods | all running | some failing  | most failing  |
+| Certificate | valid > 30d | valid < 30d   | expired       |
 
 ## Multi-Cluster Patterns
 
-| Pattern | Description |
-|---------|-------------|
-| Active-Active | All clusters serve traffic |
+| Pattern        | Description                        |
+| -------------- | ---------------------------------- |
+| Active-Active  | All clusters serve traffic         |
 | Active-Passive | One cluster serves, others standby |
-| Regional | Clusters per region, isolated |
+| Regional       | Clusters per region, isolated      |
 
 ## Output Format
 

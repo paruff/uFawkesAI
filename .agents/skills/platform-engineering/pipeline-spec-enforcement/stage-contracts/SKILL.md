@@ -33,16 +33,16 @@ Ensure each pipeline stage meets Fawkes contract requirements.
 
 ## Stage Contracts
 
-| Stage | Required Inputs | Required Outputs |
-|-------|----------------|------------------|
-| `lint` | Source code | Lint report |
-| `unit-test` | Source code | Test results, coverage |
-| `build` | Source code, deps | Container image, manifests |
-| `security-scan` | Image, source | Scan report |
-| `integration-test` | Image, test config | Test results |
-| `e2e-test` | Image, env config | Test results |
-| `publish` | Image, version.json | Registry digest |
-| `deploy` | Manifests, version | Deployment status |
+| Stage              | Required Inputs     | Required Outputs           |
+| ------------------ | ------------------- | -------------------------- |
+| `lint`             | Source code         | Lint report                |
+| `unit-test`        | Source code         | Test results, coverage     |
+| `build`            | Source code, deps   | Container image, manifests |
+| `security-scan`    | Image, source       | Scan report                |
+| `integration-test` | Image, test config  | Test results               |
+| `e2e-test`         | Image, env config   | Test results               |
+| `publish`          | Image, version.json | Registry digest            |
+| `deploy`           | Manifests, version  | Deployment status          |
 
 ## Validation Rules
 

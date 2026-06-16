@@ -36,14 +36,14 @@ Identify known failure patterns that can be auto-remediated.
 
 ## Known Signatures
 
-| Signature | Pattern | Auto-Remediable |
-|-----------|---------|-----------------|
-| CrashLoopBackOff | Pod restart count > 5 in 10 min | Yes |
-| OOMKilled | Exit code 137 | Yes |
-| ImagePullBackOff | Image not found | No (config issue) |
-| Stuck terminating | Pod in Terminating > 5 min | Yes |
-| Memory pressure | Node memory > 90% | Yes |
-| CPU throttling | CPU throttling > 50% | Yes |
+| Signature         | Pattern                         | Auto-Remediable   |
+| ----------------- | ------------------------------- | ----------------- |
+| CrashLoopBackOff  | Pod restart count > 5 in 10 min | Yes               |
+| OOMKilled         | Exit code 137                   | Yes               |
+| ImagePullBackOff  | Image not found                 | No (config issue) |
+| Stuck terminating | Pod in Terminating > 5 min      | Yes               |
+| Memory pressure   | Node memory > 90%               | Yes               |
+| CPU throttling    | CPU throttling > 50%            | Yes               |
 
 ## Matching Rules
 
@@ -61,11 +61,11 @@ Identify known failure patterns that can be auto-remediated.
 
 ### Confidence Levels
 
-| Level | Description | Action |
-|-------|-------------|--------|
-| HIGH | Exact match to known signature | Auto-remediate |
+| Level  | Description                      | Action                         |
+| ------ | -------------------------------- | ------------------------------ |
+| HIGH   | Exact match to known signature   | Auto-remediate                 |
 | MEDIUM | Partial match, likely same issue | Auto-remediate with validation |
-| LOW | Similar pattern, uncertain | Escalate to human |
+| LOW    | Similar pattern, uncertain       | Escalate to human              |
 
 ## Output Format
 

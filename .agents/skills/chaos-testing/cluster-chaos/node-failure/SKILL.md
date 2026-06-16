@@ -33,12 +33,12 @@ Simulate node failures to validate cluster resilience.
 
 ## Node Failure Methods
 
-| Method | Tool | Impact |
-|--------|------|--------|
-| Drain | `kubectl drain` | Pods evicted, rescheduled |
-| Delete | `kubectl delete node` | Node removed, pods rescheduled |
-| Cordon | `kubectl cordon` | No new pods scheduled |
-| Chaos Mesh | NodeChaos | Automated node failure |
+| Method     | Tool                  | Impact                         |
+| ---------- | --------------------- | ------------------------------ |
+| Drain      | `kubectl drain`       | Pods evicted, rescheduled      |
+| Delete     | `kubectl delete node` | Node removed, pods rescheduled |
+| Cordon     | `kubectl cordon`      | No new pods scheduled          |
+| Chaos Mesh | NodeChaos             | Automated node failure         |
 
 ## Chaos Mesh Config
 

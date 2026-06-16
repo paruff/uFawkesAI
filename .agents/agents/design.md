@@ -85,18 +85,18 @@ Generate the design document and supporting artifacts.
 
 Load these skills as needed:
 
-| Skill | When to Load |
-|-------|-------------|
-| `design/architecture-decomposition` | Breaking spec into architecture |
-| `design/component-identification` | Identifying required components |
-| `design/interface-definition` | Defining API and data contracts |
-| `spec/template-governance` | Aligning with platform templates |
-| `spec/policy-validation` | Validating against policies |
-| `design/k8s-design-validation` | Kubernetes-specific design |
+| Skill                               | When to Load                     |
+| ----------------------------------- | -------------------------------- |
+| `design/architecture-decomposition` | Breaking spec into architecture  |
+| `design/component-identification`   | Identifying required components  |
+| `design/interface-definition`       | Defining API and data contracts  |
+| `spec/template-governance`          | Aligning with platform templates |
+| `spec/policy-validation`            | Validating against policies      |
+| `design/k8s-design-validation`      | Kubernetes-specific design       |
 
 ## Output Format
 
-```markdown
+````markdown
 # Design: [Feature Name]
 
 ## Architecture Overview
@@ -106,6 +106,7 @@ Load these skills as needed:
 ## Components
 
 ### Component: [Name]
+
 - **Purpose:** [What it does]
 - **Responsibility:** [What it owns]
 - **Interfaces:** [APIs, events]
@@ -121,6 +122,7 @@ Load these skills as needed:
 ## Interfaces
 
 ### API: [Endpoint]
+
 - **Method:** POST
 - **Path:** `/api/v1/resource`
 - **Request:** `{ "field": "type" }`
@@ -128,32 +130,35 @@ Load these skills as needed:
 - **Errors:** 400, 404, 500
 
 ### Data Model: [Name]
+
 ```json
 {
   "field": "type",
   "field": "type"
 }
 ```
+````
 
 ## Tradeoffs
 
-| Decision | Chosen | Rejected | Rationale |
-|----------|--------|----------|-----------|
-| Database | PostgreSQL | MongoDB | ACID compliance needed |
+| Decision | Chosen     | Rejected | Rationale              |
+| -------- | ---------- | -------- | ---------------------- |
+| Database | PostgreSQL | MongoDB  | ACID compliance needed |
 
 ## Risks
 
-| Risk | Severity | Mitigation |
-|------|----------|------------|
-| External API downtime | HIGH | Circuit breaker + retry |
+| Risk                  | Severity | Mitigation              |
+| --------------------- | -------- | ----------------------- |
+| External API downtime | HIGH     | Circuit breaker + retry |
 
 ## Governance Alignment
 
-| Requirement | Design Decision | Status |
-|-------------|----------------|--------|
-| Security | JWT auth + RBAC | COVERED |
-| Pipeline | Standard stages | COVERED |
-| K8s | Deployment + Service | COVERED |
+| Requirement | Design Decision      | Status  |
+| ----------- | -------------------- | ------- |
+| Security    | JWT auth + RBAC      | COVERED |
+| Pipeline    | Standard stages      | COVERED |
+| K8s         | Deployment + Service | COVERED |
+
 ```
 
 ## Output Contract
@@ -182,3 +187,4 @@ This log is required. If the file cannot be written, document why.
 - Never ignore governance constraints noted in the spec.
 - Never make technology choices without rationale.
 - If the spec has gaps, flag them before designing.
+```

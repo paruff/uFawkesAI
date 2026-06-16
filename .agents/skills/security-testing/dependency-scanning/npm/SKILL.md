@@ -59,7 +59,12 @@ trivy fs --scanners vuln --format json package-lock.json
     "low": 5
   },
   "vulnerable_packages": [
-    {"name": "lodash", "version": "4.17.20", "cve": "CVE-2021-23337", "severity": "high"}
+    {
+      "name": "lodash",
+      "version": "4.17.20",
+      "cve": "CVE-2021-23337",
+      "severity": "high"
+    }
   ]
 }
 ```

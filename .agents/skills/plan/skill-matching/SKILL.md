@@ -35,31 +35,31 @@ Map tasks to the skills required by the Build agent.
 
 ## Available Skills Registry
 
-| Skill | Agent | Use When |
-|-------|-------|----------|
-| `code-generation` | Build | Writing new source code |
-| `manifest-generation` | Build | Creating K8s manifests |
-| `pipeline-generation` | Build | Creating/updating pipeline-spec.yaml |
-| `gitops-overlay-generation` | Build | Creating environment overlays |
-| `refactoring` | Build | Modifying existing code |
-| `template-application` | Build | Applying golden-path templates |
-| `governance-enforcement` | Build | Validating compliance |
-| `test-generation` | Test | Writing tests |
-| `security/*` | Security | Security validation |
-| `adr-writer` | Any | Documenting architectural decisions |
+| Skill                       | Agent    | Use When                             |
+| --------------------------- | -------- | ------------------------------------ |
+| `code-generation`           | Build    | Writing new source code              |
+| `manifest-generation`       | Build    | Creating K8s manifests               |
+| `pipeline-generation`       | Build    | Creating/updating pipeline-spec.yaml |
+| `gitops-overlay-generation` | Build    | Creating environment overlays        |
+| `refactoring`               | Build    | Modifying existing code              |
+| `template-application`      | Build    | Applying golden-path templates       |
+| `governance-enforcement`    | Build    | Validating compliance                |
+| `test-generation`           | Test     | Writing tests                        |
+| `security/*`                | Security | Security validation                  |
+| `adr-writer`                | Any      | Documenting architectural decisions  |
 
 ## Matching Rules
 
 ### Task Type → Skill Mapping
 
-| Task Type | Primary Skill | Secondary Skills |
-|-----------|--------------|-----------------|
-| New feature code | `code-generation` | `template-application` |
-| K8s manifests | `manifest-generation` | `governance-enforcement` |
-| Pipeline changes | `pipeline-generation` | `governance-enforcement` |
-| GitOps overlays | `gitops-overlay-generation` | `governance-enforcement` |
-| Code refactor | `refactoring` | `test-generation` |
-| New component | `template-application` | `code-generation` |
+| Task Type        | Primary Skill               | Secondary Skills         |
+| ---------------- | --------------------------- | ------------------------ |
+| New feature code | `code-generation`           | `template-application`   |
+| K8s manifests    | `manifest-generation`       | `governance-enforcement` |
+| Pipeline changes | `pipeline-generation`       | `governance-enforcement` |
+| GitOps overlays  | `gitops-overlay-generation` | `governance-enforcement` |
+| Code refactor    | `refactoring`               | `test-generation`        |
+| New component    | `template-application`      | `code-generation`        |
 
 ### Validation
 

@@ -35,13 +35,13 @@ Generate `.env` files for local development.
 
 ## Variable Categories
 
-| Category | Example | Required |
-|----------|---------|----------|
-| Database | `DATABASE_URL` | Yes |
-| API Keys | `API_KEY` | Yes |
-| Service URLs | `SERVICE_URL` | Yes |
-| Feature Flags | `FEATURE_X` | No |
-| Debug | `DEBUG` | No |
+| Category      | Example        | Required |
+| ------------- | -------------- | -------- |
+| Database      | `DATABASE_URL` | Yes      |
+| API Keys      | `API_KEY`      | Yes      |
+| Service URLs  | `SERVICE_URL`  | Yes      |
+| Feature Flags | `FEATURE_X`    | No       |
+| Debug         | `DEBUG`        | No       |
 
 ## Validation Rules
 

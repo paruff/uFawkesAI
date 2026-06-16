@@ -39,12 +39,12 @@ trivy image --severity CRITICAL,HIGH --format json <image>
 
 ## CVE Severity Thresholds
 
-| Severity | Action |
-|----------|--------|
-| Critical | Block deploy, immediate fix |
-| High | Block deploy, fix within 24h |
-| Medium | Warn, fix within 1 week |
-| Low | Log, fix in next sprint |
+| Severity | Action                       |
+| -------- | ---------------------------- |
+| Critical | Block deploy, immediate fix  |
+| High     | Block deploy, fix within 24h |
+| Medium   | Warn, fix within 1 week      |
+| Low      | Log, fix in next sprint      |
 
 ## Validation Rules
 
@@ -68,7 +68,13 @@ trivy image --severity CRITICAL,HIGH --format json <image>
     "low": 5
   },
   "vulnerable_packages": [
-    {"package": "openssl", "version": "1.1.1", "cve": "CVE-2021-3711", "severity": "critical", "fix": "1.1.1k"}
+    {
+      "package": "openssl",
+      "version": "1.1.1",
+      "cve": "CVE-2021-3711",
+      "severity": "critical",
+      "fix": "1.1.1k"
+    }
   ]
 }
 ```

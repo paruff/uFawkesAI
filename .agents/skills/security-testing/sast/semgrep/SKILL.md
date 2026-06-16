@@ -33,24 +33,24 @@ Run Semgrep rulesets against Fawkes codebases.
 
 ## Rulesets
 
-| Ruleset | Purpose |
-|---------|---------|
+| Ruleset           | Purpose                      |
+| ----------------- | ---------------------------- |
 | `p/owasp-top-ten` | OWASP Top 10 vulnerabilities |
-| `p/typescript` | TypeScript security patterns |
-| `p/python` | Python security patterns |
-| `p/go` | Go security patterns |
-| `p/dockerfile` | Dockerfile best practices |
-| `p/kubernetes` | K8s manifest security |
-| `fawkes/custom` | Fawkes-specific patterns |
+| `p/typescript`    | TypeScript security patterns |
+| `p/python`        | Python security patterns     |
+| `p/go`            | Go security patterns         |
+| `p/dockerfile`    | Dockerfile best practices    |
+| `p/kubernetes`    | K8s manifest security        |
+| `fawkes/custom`   | Fawkes-specific patterns     |
 
 ## Fawkes Custom Rules
 
-| Rule ID | Pattern | Severity |
-|---------|---------|----------|
+| Rule ID                     | Pattern                    | Severity |
+| --------------------------- | -------------------------- | -------- |
 | `fawkes-no-secrets-in-code` | Hardcoded API keys, tokens | Critical |
-| `fawkes-no-plaintext-logs` | Secrets in log statements | High |
-| `fawkes-secure-env` | Env vars with secrets | Medium |
-| `fawkes-no-exec` | `exec()` with user input | High |
+| `fawkes-no-plaintext-logs`  | Secrets in log statements  | High     |
+| `fawkes-secure-env`         | Env vars with secrets      | Medium   |
+| `fawkes-no-exec`            | `exec()` with user input   | High     |
 
 ## Validation Rules
 

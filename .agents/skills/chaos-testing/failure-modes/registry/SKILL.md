@@ -33,12 +33,12 @@ Validate PIPE and OBS behavior when the registry is unavailable.
 
 ## Failure Modes
 
-| Mode | Duration | Expected PIPE | Expected OBS |
-|------|----------|---------------|--------------|
-| Complete outage | 60s | Retry, fail | Use cached digest |
-| Partial outage | 30s | Retry, succeed | Retry, succeed |
-| Slow response | 120s | Timeout, retry | Timeout, retry |
-| Auth failure | 60s | Fail, alert | Fail, alert |
+| Mode            | Duration | Expected PIPE  | Expected OBS      |
+| --------------- | -------- | -------------- | ----------------- |
+| Complete outage | 60s      | Retry, fail    | Use cached digest |
+| Partial outage  | 30s      | Retry, succeed | Retry, succeed    |
+| Slow response   | 120s     | Timeout, retry | Timeout, retry    |
+| Auth failure    | 60s      | Fail, alert    | Fail, alert       |
 
 ## Toxiproxy Config
 
@@ -66,8 +66,16 @@ Validate PIPE and OBS behavior when the registry is unavailable.
   "skill": "registry-failure-simulation",
   "status": "success",
   "scenarios": [
-    {"mode": "complete_outage", "pipe": "fail_gracefully", "obs": "cached_digest"},
-    {"mode": "partial_outage", "pipe": "retry_succeed", "obs": "retry_succeed"}
+    {
+      "mode": "complete_outage",
+      "pipe": "fail_gracefully",
+      "obs": "cached_digest"
+    },
+    {
+      "mode": "partial_outage",
+      "pipe": "retry_succeed",
+      "obs": "retry_succeed"
+    }
   ],
   "invalid_image_references": 0
 }

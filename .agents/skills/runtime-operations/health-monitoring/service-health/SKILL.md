@@ -37,30 +37,30 @@ Monitor the health of individual services.
 
 ### Probe Validation
 
-| Probe | Healthy | Unhealthy |
-|-------|---------|-----------|
-| Readiness | Ready | NotReady |
-| Liveness | Running | CrashLoopBackOff |
-| Startup | Started | Failed |
+| Probe     | Healthy | Unhealthy        |
+| --------- | ------- | ---------------- |
+| Readiness | Ready   | NotReady         |
+| Liveness  | Running | CrashLoopBackOff |
+| Startup   | Started | Failed           |
 
 ### Metric Thresholds
 
-| Metric | Healthy | Warning | Critical |
-|--------|---------|---------|----------|
-| Error rate | < 1% | 1-5% | > 5% |
-| Latency p99 | < 500ms | 500-1000ms | > 1000ms |
-| CPU usage | < 70% | 70-85% | > 85% |
-| Memory usage | < 70% | 70-85% | > 85% |
+| Metric       | Healthy | Warning    | Critical |
+| ------------ | ------- | ---------- | -------- |
+| Error rate   | < 1%    | 1-5%       | > 5%     |
+| Latency p99  | < 500ms | 500-1000ms | > 1000ms |
+| CPU usage    | < 70%   | 70-85%     | > 85%    |
+| Memory usage | < 70%   | 70-85%     | > 85%    |
 
 ### Pod Status
 
-| Status | Health |
-|--------|--------|
-| Running | Healthy |
-| Pending | Degraded |
+| Status    | Health    |
+| --------- | --------- |
+| Running   | Healthy   |
+| Pending   | Degraded  |
 | Succeeded | N/A (job) |
-| Failed | Unhealthy |
-| Unknown | Unhealthy |
+| Failed    | Unhealthy |
+| Unknown   | Unhealthy |
 
 ## Output Format
 
@@ -69,8 +69,8 @@ Monitor the health of individual services.
   "skill": "service-health",
   "service": "my-app",
   "status": "healthy",
-  "replicas": {"desired": 3, "ready": 3, "available": 3},
-  "probes": {"readiness": "passing", "liveness": "passing"},
+  "replicas": { "desired": 3, "ready": 3, "available": 3 },
+  "probes": { "readiness": "passing", "liveness": "passing" },
   "metrics": {
     "error_rate": 0.5,
     "latency_p99_ms": 250,

@@ -77,9 +77,7 @@ git commit -m "local: simulate OBS update"
   "status": "success",
   "gitops_repo": "/tmp/local-gitops",
   "overlay": "overlays/dev",
-  "updates": [
-    {"field": "image", "value": "my-app:v1.2.3"}
-  ],
+  "updates": [{ "field": "image", "value": "my-app:v1.2.3" }],
   "validation": "pass"
 }
 ```

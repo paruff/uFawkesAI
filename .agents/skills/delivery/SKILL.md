@@ -10,8 +10,7 @@ metadata:
 
 # Skill: Delivery
 
-> **Load trigger:** `"load delivery skill"` 
-> **DORA:** Cap 4 (Continuous Delivery)
+> **Load trigger:** `"load delivery skill"` > **DORA:** Cap 4 (Continuous Delivery)
 > **Token cost:** Low
 
 ## Purpose
@@ -29,10 +28,10 @@ Validate and deliver manifests for deployment.
 
 ## Dependencies
 
-| Skill | Relationship |
-|-------|-------------|
-| `build` | Consumes manifests and overlays |
-| `review` | Validates review findings |
+| Skill    | Relationship                    |
+| -------- | ------------------------------- |
+| `build`  | Consumes manifests and overlays |
+| `review` | Validates review findings       |
 
 ## Inputs
 

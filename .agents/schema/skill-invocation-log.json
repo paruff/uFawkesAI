@@ -3,7 +3,14 @@
   "title": "Agent Invocation Log",
   "description": "Structured log entry written by an agent after completing its task. One JSON object per invocation, appended to a dated log file.",
   "type": "object",
-  "required": ["agent", "session_id", "timestamp", "decision", "skills_loaded", "findings"],
+  "required": [
+    "agent",
+    "session_id",
+    "timestamp",
+    "decision",
+    "skills_loaded",
+    "findings"
+  ],
   "properties": {
     "agent": {
       "type": "string",
@@ -70,7 +77,14 @@
     },
     "decision": {
       "type": "string",
-      "enum": ["PASS", "FAIL", "BLOCKED", "APPROVE", "REQUEST_CHANGES", "ESCALATE"]
+      "enum": [
+        "PASS",
+        "FAIL",
+        "BLOCKED",
+        "APPROVE",
+        "REQUEST_CHANGES",
+        "ESCALATE"
+      ]
     },
     "blockers": {
       "type": "integer",

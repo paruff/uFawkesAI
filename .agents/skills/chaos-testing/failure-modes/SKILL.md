@@ -34,20 +34,20 @@ Validate PIPE and OBS behavior under predictable failure scenarios.
 
 ## Sub-Skills
 
-| Skill | Purpose |
-|-------|---------|
-| `failure-modes/registry` | Registry failure simulation |
+| Skill                       | Purpose                        |
+| --------------------------- | ------------------------------ |
+| `failure-modes/registry`    | Registry failure simulation    |
 | `failure-modes/gitops-repo` | GitOps repo failure simulation |
 
 ## Failure Scenarios
 
-| Scenario | Trigger | Expected Behavior |
-|----------|---------|-------------------|
-| Registry down | Network block | PIPE retries, fails gracefully |
-| GitOps repo locked | File lock | OBS waits, retries with backoff |
-| K8s API degraded | Latency injection | Controller retries, queues work |
-| DNS failure | DNS block | Service falls back to cache |
-| Disk full | Space exhaustion | Graceful shutdown, no corruption |
+| Scenario           | Trigger           | Expected Behavior                |
+| ------------------ | ----------------- | -------------------------------- |
+| Registry down      | Network block     | PIPE retries, fails gracefully   |
+| GitOps repo locked | File lock         | OBS waits, retries with backoff  |
+| K8s API degraded   | Latency injection | Controller retries, queues work  |
+| DNS failure        | DNS block         | Service falls back to cache      |
+| Disk full          | Space exhaustion  | Graceful shutdown, no corruption |
 
 ## Validation Rules
 
@@ -64,9 +64,9 @@ Validate PIPE and OBS behavior under predictable failure scenarios.
   "skill": "failure-modes",
   "status": "success",
   "scenarios": {
-    "registry_outage": {"fallback": "pass", "retry": "pass"},
-    "gitops_repo_locked": {"fallback": "pass", "backoff": "pass"},
-    "k8s_api_degraded": {"fallback": "pass", "queue": "pass"}
+    "registry_outage": { "fallback": "pass", "retry": "pass" },
+    "gitops_repo_locked": { "fallback": "pass", "backoff": "pass" },
+    "k8s_api_degraded": { "fallback": "pass", "queue": "pass" }
   },
   "invalid_gitops_updates": 0,
   "cascading_failures": 0

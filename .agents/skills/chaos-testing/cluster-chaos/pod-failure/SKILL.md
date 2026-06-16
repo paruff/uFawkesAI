@@ -33,11 +33,11 @@ Kill pods to validate controller and application recovery.
 
 ## Kill Targets
 
-| Pod | Kill Method | Expected Recovery |
-|-----|-------------|-------------------|
-| Application pod | `kubectl delete pod` | Deployment restarts pod |
-| OBS pod | `kubectl delete pod` | Deployment restarts pod |
-| PIPE pod | `kubectl delete pod` | Deployment restarts pod |
+| Pod               | Kill Method          | Expected Recovery       |
+| ----------------- | -------------------- | ----------------------- |
+| Application pod   | `kubectl delete pod` | Deployment restarts pod |
+| OBS pod           | `kubectl delete pod` | Deployment restarts pod |
+| PIPE pod          | `kubectl delete pod` | Deployment restarts pod |
 | GitOps controller | `kubectl delete pod` | Deployment restarts pod |
 
 ## Chaos Mesh Config
@@ -72,8 +72,8 @@ spec:
   "status": "success",
   "pods_killed": 3,
   "recovery": [
-    {"pod": "my-app-abc123", "killed": true, "restarted": true, "time_s": 15},
-    {"pod": "obs-def456", "killed": true, "restarted": true, "time_s": 20}
+    { "pod": "my-app-abc123", "killed": true, "restarted": true, "time_s": 15 },
+    { "pod": "obs-def456", "killed": true, "restarted": true, "time_s": 20 }
   ],
   "availability": "maintained"
 }

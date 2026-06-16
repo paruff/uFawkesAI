@@ -33,21 +33,21 @@ Detect high-cardinality metrics that can overload Prometheus.
 
 ## Cardinality Thresholds
 
-| Metric | Warning | Critical |
-|--------|---------|----------|
-| Label values (per label) | > 100 | > 1000 |
-| Total time series | > 10000 | > 50000 |
-| Histogram buckets | > 20 | > 50 |
+| Metric                   | Warning | Critical |
+| ------------------------ | ------- | -------- |
+| Label values (per label) | > 100   | > 1000   |
+| Total time series        | > 10000 | > 50000  |
+| Histogram buckets        | > 20    | > 50     |
 
 ## High-Cardinality Risk Labels
 
-| Label | Risk | Mitigation |
-|-------|------|------------|
-| `user_id` | High | Hash or bucket |
-| `request_id` | High | Remove or sample |
-| `trace_id` | Medium | Use for correlation only |
-| `version` | Low | Acceptable |
-| `environment` | Low | Acceptable |
+| Label         | Risk   | Mitigation               |
+| ------------- | ------ | ------------------------ |
+| `user_id`     | High   | Hash or bucket           |
+| `request_id`  | High   | Remove or sample         |
+| `trace_id`    | Medium | Use for correlation only |
+| `version`     | Low    | Acceptable               |
+| `environment` | Low    | Acceptable               |
 
 ## Validation Rules
 
@@ -64,9 +64,9 @@ Detect high-cardinality metrics that can overload Prometheus.
   "status": "pass | warn | fail",
   "total_time_series": 5000,
   "labels": {
-    "service": {"values": 10, "status": "pass"},
-    "environment": {"values": 3, "status": "pass"},
-    "user_id": {"values": 5000, "status": "fail"}
+    "service": { "values": 10, "status": "pass" },
+    "environment": { "values": 3, "status": "pass" },
+    "user_id": { "values": 5000, "status": "fail" }
   },
   "high_cardinality_labels": ["user_id"],
   "recommendations": ["Hash user_id values"]

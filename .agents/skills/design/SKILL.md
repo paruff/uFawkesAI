@@ -10,8 +10,7 @@ metadata:
 
 # Skill: Design
 
-> **Load trigger:** `"load design skill"` 
-> **DORA:** Cap 3 (AI-Accessible Internal Data)
+> **Load trigger:** `"load design skill"` > **DORA:** Cap 3 (AI-Accessible Internal Data)
 > **Token cost:** Low
 
 ## Purpose
@@ -29,17 +28,17 @@ Convert specification into technical design.
 
 ## Sub-Skills
 
-| Skill | Purpose |
-|-------|---------|
+| Skill                               | Purpose                        |
+| ----------------------------------- | ------------------------------ |
 | `design/architecture-decomposition` | Break down system architecture |
-| `design/component-identification` | Identify required components |
-| `design/interface-definition` | Define component interfaces |
-| `design/k8s-design-validation` | Validate Kubernetes design |
+| `design/component-identification`   | Identify required components   |
+| `design/interface-definition`       | Define component interfaces    |
+| `design/k8s-design-validation`      | Validate Kubernetes design     |
 
 ## Dependencies
 
-| Skill | Relationship |
-|-------|-------------|
+| Skill  | Relationship                            |
+| ------ | --------------------------------------- |
 | `spec` | Consumes specification and requirements |
 
 ## Inputs

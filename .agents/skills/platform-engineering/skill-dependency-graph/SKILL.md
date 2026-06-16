@@ -36,10 +36,10 @@ Define and validate the dependency graph between all Fawkes skills to enable int
 
 ## Sub-Skills
 
-| Skill | Purpose |
-|-------|---------|
-| `skill-dependency-graph/graph-validation` | Validate graph is acyclic |
-| `skill-dependency-graph/coordination` | Define cross-agent coordination rules |
+| Skill                                     | Purpose                               |
+| ----------------------------------------- | ------------------------------------- |
+| `skill-dependency-graph/graph-validation` | Validate graph is acyclic             |
+| `skill-dependency-graph/coordination`     | Define cross-agent coordination rules |
 
 ## Skill Order (Fawkes Lifecycle)
 
@@ -49,16 +49,16 @@ spec → design → plan → build → test → security → build-review → re
 
 ## Dependencies
 
-| Skill | Depends On |
-|-------|-----------|
-| `design` | `spec` |
-| `plan` | `spec`, `design` |
-| `build` | `plan`, `design` |
-| `test-execution` | `build` |
-| `security` | `build` |
-| `build-review` | `build`, `test-execution`, `security` |
-| `release-engineering` | `build-review` |
-| `cd` | `release-engineering` |
+| Skill                 | Depends On                            |
+| --------------------- | ------------------------------------- |
+| `design`              | `spec`                                |
+| `plan`                | `spec`, `design`                      |
+| `build`               | `plan`, `design`                      |
+| `test-execution`      | `build`                               |
+| `security`            | `build`                               |
+| `build-review`        | `build`, `test-execution`, `security` |
+| `release-engineering` | `build-review`                        |
+| `cd`                  | `release-engineering`                 |
 
 ## Validation Rules
 
@@ -76,7 +76,16 @@ spec → design → plan → build → test → security → build-review → re
   "total_skills": 20,
   "edges": 15,
   "cycles": [],
-  "topological_order": ["spec", "design", "plan", "build", "test", "review", "release", "deploy"]
+  "topological_order": [
+    "spec",
+    "design",
+    "plan",
+    "build",
+    "test",
+    "review",
+    "release",
+    "deploy"
+  ]
 }
 ```
 

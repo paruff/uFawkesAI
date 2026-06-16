@@ -35,21 +35,21 @@ Execute operational runbooks automatically based on incident type.
 
 ## Sub-Skills
 
-| Skill | Purpose |
-|-------|---------|
+| Skill                          | Purpose                |
+| ------------------------------ | ---------------------- |
 | `runbook-automation/selection` | Select correct runbook |
-| `runbook-automation/execution` | Execute runbook steps |
+| `runbook-automation/execution` | Execute runbook steps  |
 
 ## Runbook Library
 
-| Incident Type | Runbook | Auto-Executable |
-|--------------|---------|-----------------|
-| Pod CrashLoopBackOff | restart-pod | Yes |
-| OOMKilled | increase-memory | Yes |
-| Deployment failure | rollback-deployment | Yes |
-| Node not ready | cordon-node | Yes |
-| Disk pressure | cleanup-disk | Yes |
-| Network partition | check-network | No (needs diagnosis) |
+| Incident Type        | Runbook             | Auto-Executable      |
+| -------------------- | ------------------- | -------------------- |
+| Pod CrashLoopBackOff | restart-pod         | Yes                  |
+| OOMKilled            | increase-memory     | Yes                  |
+| Deployment failure   | rollback-deployment | Yes                  |
+| Node not ready       | cordon-node         | Yes                  |
+| Disk pressure        | cleanup-disk        | Yes                  |
+| Network partition    | check-network       | No (needs diagnosis) |
 
 ## Execution Rules
 

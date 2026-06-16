@@ -37,35 +37,35 @@ Recommend scaling actions based on resource usage.
 
 ### Horizontal Scaling (HPA)
 
-| Condition | Recommendation |
-|-----------|---------------|
-| CPU > 80% for 5 min | Increase min replicas |
-| CPU < 20% for 30 min | Decrease min replicas |
-| Custom metric threshold | Adjust HPA target |
+| Condition               | Recommendation        |
+| ----------------------- | --------------------- |
+| CPU > 80% for 5 min     | Increase min replicas |
+| CPU < 20% for 30 min    | Decrease min replicas |
+| Custom metric threshold | Adjust HPA target     |
 
 ### Vertical Scaling (VPA)
 
-| Condition | Recommendation |
-|-----------|---------------|
+| Condition                      | Recommendation        |
+| ------------------------------ | --------------------- |
 | Memory consistently near limit | Increase memory limit |
-| CPU consistently near limit | Increase CPU limit |
-| Overprovisioned resource | Decrease limit |
+| CPU consistently near limit    | Increase CPU limit    |
+| Overprovisioned resource       | Decrease limit        |
 
 ### Node Scaling
 
-| Condition | Recommendation |
-|-----------|---------------|
-| Cluster CPU > 80% | Add node |
-| Cluster memory > 80% | Add node |
-| Cluster CPU < 30% | Remove node |
+| Condition            | Recommendation |
+| -------------------- | -------------- |
+| Cluster CPU > 80%    | Add node       |
+| Cluster memory > 80% | Add node       |
+| Cluster CPU < 30%    | Remove node    |
 
 ### Resource Limit Changes
 
-| Condition | Recommendation |
-|-----------|---------------|
-| OOMKilled | Increase memory limit |
-| CPU throttling > 50% | Increase CPU limit |
-| Overprovisioned | Decrease limits |
+| Condition            | Recommendation        |
+| -------------------- | --------------------- |
+| OOMKilled            | Increase memory limit |
+| CPU throttling > 50% | Increase CPU limit    |
+| Overprovisioned      | Decrease limits       |
 
 ## Recommendation Format
 

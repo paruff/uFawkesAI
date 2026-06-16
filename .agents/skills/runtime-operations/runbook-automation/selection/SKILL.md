@@ -36,14 +36,14 @@ Select the correct runbook based on incident classification.
 
 ### Incident Type → Runbook Mapping
 
-| Incident Type | Runbook | Priority |
-|--------------|---------|----------|
-| Pod CrashLoopBackOff | restart-pod | HIGH |
-| OOMKilled | increase-memory | HIGH |
-| Deployment unhealthy | rollback-deployment | HIGH |
-| Node not ready | cordon-node | MEDIUM |
-| Disk pressure | cleanup-disk | MEDIUM |
-| Service unreachable | check-network | LOW |
+| Incident Type        | Runbook             | Priority |
+| -------------------- | ------------------- | -------- |
+| Pod CrashLoopBackOff | restart-pod         | HIGH     |
+| OOMKilled            | increase-memory     | HIGH     |
+| Deployment unhealthy | rollback-deployment | HIGH     |
+| Node not ready       | cordon-node         | MEDIUM   |
+| Disk pressure        | cleanup-disk        | MEDIUM   |
+| Service unreachable  | check-network       | LOW      |
 
 ### Applicability Validation
 
@@ -54,11 +54,11 @@ Select the correct runbook based on incident classification.
 
 ### Confidence Levels
 
-| Level | Meaning | Action |
-|-------|---------|--------|
-| HIGH | Exact match to known incident type | Execute |
-| MEDIUM | Likely match, some uncertainty | Execute with validation |
-| LOW | Uncertain match | Escalate to human |
+| Level  | Meaning                            | Action                  |
+| ------ | ---------------------------------- | ----------------------- |
+| HIGH   | Exact match to known incident type | Execute                 |
+| MEDIUM | Likely match, some uncertainty     | Execute with validation |
+| LOW    | Uncertain match                    | Escalate to human       |
 
 ## Output Format
 

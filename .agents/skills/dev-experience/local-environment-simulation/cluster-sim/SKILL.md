@@ -35,11 +35,11 @@ Run a local Kubernetes cluster for development and testing.
 
 ## Cluster Options
 
-| Tool | Use When |
-|------|----------|
-| kind | Full K8s simulation, CI testing |
-| k3d | Lightweight, fast startup |
-| minikube | Single-node development |
+| Tool     | Use When                        |
+| -------- | ------------------------------- |
+| kind     | Full K8s simulation, CI testing |
+| k3d      | Lightweight, fast startup       |
+| minikube | Single-node development         |
 
 ## Setup Commands
 

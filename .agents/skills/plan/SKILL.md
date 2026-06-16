@@ -10,8 +10,7 @@ metadata:
 
 # Skill: Plan
 
-> **Load trigger:** `"load plan skill"` 
-> **DORA:** Cap 3 + 5 (AI-Accessible Internal Data + Small Batches)
+> **Load trigger:** `"load plan skill"` > **DORA:** Cap 3 + 5 (AI-Accessible Internal Data + Small Batches)
 > **Token cost:** Low
 
 ## Purpose
@@ -29,21 +28,21 @@ Decompose intent into sequenced, bounded tasks.
 
 ## Sub-Skills
 
-| Skill | Purpose |
-|-------|---------|
-| `plan/task-decomposition` | Break down requirements into tasks |
-| `plan/dependency-mapping` | Map task dependencies |
-| `plan/effort-estimation` | Estimate task effort |
-| `plan/risk-identification` | Identify risks early |
-| `plan/skill-matching` | Match skills to tasks |
-| `plan/governance-alignment` | Ensure governance compliance |
+| Skill                       | Purpose                            |
+| --------------------------- | ---------------------------------- |
+| `plan/task-decomposition`   | Break down requirements into tasks |
+| `plan/dependency-mapping`   | Map task dependencies              |
+| `plan/effort-estimation`    | Estimate task effort               |
+| `plan/risk-identification`  | Identify risks early               |
+| `plan/skill-matching`       | Match skills to tasks              |
+| `plan/governance-alignment` | Ensure governance compliance       |
 
 ## Dependencies
 
-| Skill | Relationship |
-|-------|-------------|
-| `spec` | Consumes specification |
-| `design` | Consumes architecture |
+| Skill    | Relationship           |
+| -------- | ---------------------- |
+| `spec`   | Consumes specification |
+| `design` | Consumes architecture  |
 
 ## Inputs
 

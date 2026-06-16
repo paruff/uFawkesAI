@@ -36,20 +36,20 @@ Introduce drift into the cluster or GitOps repo to validate detection and correc
 
 ## Sub-Skills
 
-| Skill | Purpose |
-|-------|---------|
+| Skill                              | Purpose                       |
+| ---------------------------------- | ----------------------------- |
 | `gitops-drift-chaos/cluster-drift` | Modify cluster state directly |
-| `gitops-drift-chaos/repo-drift` | Modify GitOps repo directly |
+| `gitops-drift-chaos/repo-drift`    | Modify GitOps repo directly   |
 
 ## Drift Types
 
-| Type | Injection Method | Expected Detection | Expected Correction |
-|------|-----------------|-------------------|---------------------|
-| Replica count | `kubectl scale` | OBS detect | Reconcile to desired |
-| Environment vars | `kubectl set env` | OBS detect | Reconcile to desired |
-| ConfigMap | `kubectl create configmap` | OBS detect | Reconcile to desired |
-| Image tag | `git commit` | Controller detect | Sync to desired |
-| Manifest content | `git commit` | Controller detect | Sync to desired |
+| Type             | Injection Method           | Expected Detection | Expected Correction  |
+| ---------------- | -------------------------- | ------------------ | -------------------- |
+| Replica count    | `kubectl scale`            | OBS detect         | Reconcile to desired |
+| Environment vars | `kubectl set env`          | OBS detect         | Reconcile to desired |
+| ConfigMap        | `kubectl create configmap` | OBS detect         | Reconcile to desired |
+| Image tag        | `git commit`               | Controller detect  | Sync to desired      |
+| Manifest content | `git commit`               | Controller detect  | Sync to desired      |
 
 ## Validation Rules
 
@@ -66,12 +66,12 @@ Introduce drift into the cluster or GitOps repo to validate detection and correc
   "status": "success",
   "drifts_injected": 5,
   "detection": {
-    "cluster_drift": {"detected": true, "time_s": 30},
-    "repo_drift": {"detected": true, "time_s": 45}
+    "cluster_drift": { "detected": true, "time_s": 30 },
+    "repo_drift": { "detected": true, "time_s": 45 }
   },
   "correction": {
-    "cluster": {"corrected": true, "time_s": 120},
-    "repo": {"corrected": true, "time_s": 180}
+    "cluster": { "corrected": true, "time_s": 120 },
+    "repo": { "corrected": true, "time_s": 180 }
   }
 }
 ```

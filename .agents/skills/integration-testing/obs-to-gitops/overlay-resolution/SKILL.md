@@ -65,9 +65,9 @@ overlays/
   "skill": "overlay-resolution-testing",
   "status": "pass | fail",
   "overlays": {
-    "dev": {"resolve": "pass", "configmaps": "pass", "secrets": "pass", "patches": "pass"},
-    "staging": {"resolve": "pass", "configmaps": "pass", "secrets": "pass", "patches": "pass"},
-    "prod": {"resolve": "pass", "configmaps": "pass", "secrets": "pass", "patches": "pass"}
+    "dev": {"resolve": "pass", "configmaps": "pass", "secrets": "pass", "patches": "pass"},  # pragma: allowlist secret
+    "staging": {"resolve": "pass", "configmaps": "pass", "secrets": "pass", "patches": "pass"},  # pragma: allowlist secret
+    "prod": {"resolve": "pass", "configmaps": "pass", "secrets": "pass", "patches": "pass"}  # pragma: allowlist secret
   }
 }
 ```

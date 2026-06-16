@@ -39,23 +39,23 @@ Validate basic performance characteristics to detect regressions.
 
 ### Core Metrics
 
-| Metric | Description | Unit |
-|--------|-------------|------|
-| Latency (p50) | Median response time | ms |
-| Latency (p95) | 95th percentile response time | ms |
-| Latency (p99) | 99th percentile response time | ms |
-| Throughput | Requests per second | req/s |
-| Error rate | Percentage of failed requests | % |
-| Saturation | Resource utilization at peak | % |
+| Metric        | Description                   | Unit  |
+| ------------- | ----------------------------- | ----- |
+| Latency (p50) | Median response time          | ms    |
+| Latency (p95) | 95th percentile response time | ms    |
+| Latency (p99) | 99th percentile response time | ms    |
+| Throughput    | Requests per second           | req/s |
+| Error rate    | Percentage of failed requests | %     |
+| Saturation    | Resource utilization at peak  | %     |
 
 ### Regression Thresholds
 
-| Metric | Regression If... |
-|--------|-----------------|
+| Metric        | Regression If...             |
+| ------------- | ---------------------------- |
 | Latency (p50) | > 20% increase from baseline |
 | Latency (p95) | > 30% increase from baseline |
-| Throughput | > 15% decrease from baseline |
-| Error rate | > 1% increase from baseline |
+| Throughput    | > 15% decrease from baseline |
+| Error rate    | > 1% increase from baseline  |
 
 ## Test Configuration
 
@@ -95,13 +95,13 @@ Validate basic performance characteristics to detect regressions.
 
 ## Tools
 
-| Tool | Language | Notes |
-|------|----------|-------|
-| k6 | JavaScript | Lightweight, cloud-ready |
-| wrk | C | High performance |
-| ab (Apache Bench) | CLI | Simple, available everywhere |
-| locust | Python | Scriptable, distributed |
-| vegeta | Go | Fixed-rate load testing |
+| Tool              | Language   | Notes                        |
+| ----------------- | ---------- | ---------------------------- |
+| k6                | JavaScript | Lightweight, cloud-ready     |
+| wrk               | C          | High performance             |
+| ab (Apache Bench) | CLI        | Simple, available everywhere |
+| locust            | Python     | Scriptable, distributed      |
+| vegeta            | Go         | Fixed-rate load testing      |
 
 ## Output Format
 

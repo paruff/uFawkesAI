@@ -33,13 +33,13 @@ Kill or restart PIPE or OBS processes during critical operations.
 
 ## Kill Scenarios
 
-| Process | Kill Point | Expected Behavior |
-|---------|-----------|-------------------|
-| PIPE | Mid-build | Build marked failed, no partial artifact |
-| PIPE | Image push | Push retried, no orphan image |
-| OBS | Mid-reconcile | Reconcile retried, no partial write |
-| OBS | Git commit | Commit rolled back, no partial commit |
-| GitOps controller | Sync | Sync retried, no drift |
+| Process           | Kill Point    | Expected Behavior                        |
+| ----------------- | ------------- | ---------------------------------------- |
+| PIPE              | Mid-build     | Build marked failed, no partial artifact |
+| PIPE              | Image push    | Push retried, no orphan image            |
+| OBS               | Mid-reconcile | Reconcile retried, no partial write      |
+| OBS               | Git commit    | Commit rolled back, no partial commit    |
+| GitOps controller | Sync          | Sync retried, no drift                   |
 
 ## Pumba Command
 
@@ -66,8 +66,18 @@ pumba kill --name "obs-kill" obs
   "skill": "process-chaos",
   "status": "success",
   "kills": [
-    {"process": "pipe", "during": "build", "recovered": true, "recovery_time_s": 30},
-    {"process": "obs", "during": "reconcile", "recovered": true, "recovery_time_s": 45}
+    {
+      "process": "pipe",
+      "during": "build",
+      "recovered": true,
+      "recovery_time_s": 30
+    },
+    {
+      "process": "obs",
+      "during": "reconcile",
+      "recovered": true,
+      "recovery_time_s": 45
+    }
   ],
   "state_integrity": "preserved",
   "partial_writes": 0

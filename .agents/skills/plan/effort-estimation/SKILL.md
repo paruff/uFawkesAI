@@ -36,11 +36,11 @@ Estimate complexity and effort for each task.
 
 ### Complexity Levels
 
-| Level | Description | Typical Lines | Typical Time |
-|-------|-------------|---------------|--------------|
-| Simple | Single file, clear pattern | < 100 | < 1 hour |
-| Moderate | Multiple files, some decisions | 100–300 | 1–3 hours |
-| Complex | Multiple systems, architectural decisions | 300–400 | 3–6 hours |
+| Level    | Description                               | Typical Lines | Typical Time |
+| -------- | ----------------------------------------- | ------------- | ------------ |
+| Simple   | Single file, clear pattern                | < 100         | < 1 hour     |
+| Moderate | Multiple files, some decisions            | 100–300       | 1–3 hours    |
+| Complex  | Multiple systems, architectural decisions | 300–400       | 3–6 hours    |
 
 ### Risk Factors
 

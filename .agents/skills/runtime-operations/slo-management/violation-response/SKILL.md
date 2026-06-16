@@ -35,12 +35,12 @@ Trigger automated actions when SLOs are violated.
 
 ## Response Matrix
 
-| Severity | Burn Rate | Action |
-|----------|-----------|--------|
-| CRITICAL | > 14.4x | Immediate rollback + alert |
-| HIGH | > 6x | Prepare rollback + alert |
-| MEDIUM | > 3x | Investigate + monitor |
-| LOW | > 1x | Monitor only |
+| Severity | Burn Rate | Action                     |
+| -------- | --------- | -------------------------- |
+| CRITICAL | > 14.4x   | Immediate rollback + alert |
+| HIGH     | > 6x      | Prepare rollback + alert   |
+| MEDIUM   | > 3x      | Investigate + monitor      |
+| LOW      | > 1x      | Monitor only               |
 
 ## Response Actions
 

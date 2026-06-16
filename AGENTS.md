@@ -54,14 +54,14 @@ For questions → use Ask Mode (60–90% cheaper than Agent Mode).
 
 Invoke the most relevant agent directly:
 
-| Task | Agent | Example |
-|------|-------|---------|
-| "Write requirements for..." | `@spec` | "Write requirements for user authentication" |
-| "Design architecture for..." | `@design` | "Design architecture for payment processing" |
-| "Implement feature X" | `@build` | "Implement the login form component" |
-| "Write tests for..." | `@test` | "Write tests for the auth service" |
-| "Run tests and check coverage" | `@test-execution` | "Run all tests and report coverage" |
-| "Review this PR" | `@review` | "Review PR #42 for security and quality" |
+| Task                                  | Agent               | Example                                          |
+| ------------------------------------- | ------------------- | ------------------------------------------------ |
+| "Write requirements for..."           | `@spec`             | "Write requirements for user authentication"     |
+| "Design architecture for..."          | `@design`           | "Design architecture for payment processing"     |
+| "Implement feature X"                 | `@build`            | "Implement the login form component"             |
+| "Write tests for..."                  | `@test`             | "Write tests for the auth service"               |
+| "Run tests and check coverage"        | `@test-execution`   | "Run all tests and report coverage"              |
+| "Review this PR"                      | `@review`           | "Review PR #42 for security and quality"         |
 | "Validate all outputs are consistent" | `@cross-validation` | "Cross-validate spec, design, and build outputs" |
 
 ### Pipeline Sequence
@@ -78,11 +78,11 @@ spec → design → build → [test-execution || review] → cross-validation
 
 Reference a skill in your prompt to load its full instructions:
 
-| Skill | When to load |
-|-------|--------------|
+| Skill                                   | When to load                        |
+| --------------------------------------- | ----------------------------------- |
 | `.agents/skills/model-routing/SKILL.md` | When unsure which model/mode to use |
-| `.agents/skills/observability/SKILL.md` | Adding telemetry to any agent |
-| `.agents/skills/token-budget/SKILL.md` | Checking token costs |
+| `.agents/skills/observability/SKILL.md` | Adding telemetry to any agent       |
+| `.agents/skills/token-budget/SKILL.md`  | Checking token costs                |
 
 **Prompt example:** `"Use the model-routing skill before starting this task."`
 
@@ -90,12 +90,12 @@ Reference a skill in your prompt to load its full instructions:
 
 ## 7. Context Files (Read Before Generating Code)
 
-| Priority | File | What You Learn |
-|----------|------|----------------|
-| 1 | `src/types/index.ts` | All data shapes |
-| 2 | `docs/ARCHITECTURE.md` | Layer boundaries |
-| 3 | `docs/API_SURFACE.md` | Public service functions |
-| 4 | `docs/KNOWN_LIMITATIONS.md` | Do not make these worse |
+| Priority | File                        | What You Learn           |
+| -------- | --------------------------- | ------------------------ |
+| 1        | `src/types/index.ts`        | All data shapes          |
+| 2        | `docs/ARCHITECTURE.md`      | Layer boundaries         |
+| 3        | `docs/API_SURFACE.md`       | Public service functions |
+| 4        | `docs/KNOWN_LIMITATIONS.md` | Do not make these worse  |
 
 ---
 

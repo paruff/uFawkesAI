@@ -25,21 +25,21 @@ Emit when the agent produces its final decision.
 
 **Attributes:**
 
-| Attribute | Type | Description |
-|-----------|------|-------------|
-| `decision` | string | Final decision (PASS/FAIL/BLOCKED/APPROVE/REQUEST_CHANGES/ESCALATE) |
-| `blocker_count` | integer | Number of CRITICAL or HIGH severity findings |
-| `finding_count` | integer | Total number of findings |
-| `agent.name` | string | Agent that made this decision |
-| `session_id` | string | Unique invocation identifier |
+| Attribute       | Type    | Description                                                         |
+| --------------- | ------- | ------------------------------------------------------------------- |
+| `decision`      | string  | Final decision (PASS/FAIL/BLOCKED/APPROVE/REQUEST_CHANGES/ESCALATE) |
+| `blocker_count` | integer | Number of CRITICAL or HIGH severity findings                        |
+| `finding_count` | integer | Total number of findings                                            |
+| `agent.name`    | string  | Agent that made this decision                                       |
+| `session_id`    | string  | Unique invocation identifier                                        |
 
 ## Decision Trend Analysis
 
-| Trend | Meaning | Action |
-|-------|---------|--------|
-| Increasing FAIL rate | Agents are stricter or quality is dropping | Investigate root cause |
-| Decreasing FAIL rate | Agents are looser or quality is improving | Review if standards are slipping |
-| Constant APPROVE rate | Agent may not be thorough | Review findings per invocation |
+| Trend                 | Meaning                                    | Action                           |
+| --------------------- | ------------------------------------------ | -------------------------------- |
+| Increasing FAIL rate  | Agents are stricter or quality is dropping | Investigate root cause           |
+| Decreasing FAIL rate  | Agents are looser or quality is improving  | Review if standards are slipping |
+| Constant APPROVE rate | Agent may not be thorough                  | Review findings per invocation   |
 
 ## Integration
 

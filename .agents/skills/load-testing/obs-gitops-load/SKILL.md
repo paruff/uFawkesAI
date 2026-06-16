@@ -35,9 +35,9 @@ Measure how OBS behaves when performing many GitOps updates in a short time.
 
 ## Sub-Skills
 
-| Skill | Purpose |
-|-------|---------|
-| `obs-gitops-load/commit-rate` | Measure commits per minute |
+| Skill                                | Purpose                      |
+| ------------------------------------ | ---------------------------- |
+| `obs-gitops-load/commit-rate`        | Measure commits per minute   |
 | `obs-gitops-load/render-performance` | Measure manifest render time |
 
 ## Validation Rules

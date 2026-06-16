@@ -62,12 +62,12 @@ Ensure the specification aligns with platform templates and golden paths.
 
 ## Golden Path Templates
 
-| Service Type | Expected Structure |
-|-------------|-------------------|
-| API Service | `src/routes/`, `src/services/`, `src/models/` |
-| Worker | `src/handlers/`, `src/processors/` |
-| CLI Tool | `src/commands/`, `src/utils/` |
-| Library | `src/index.ts`, `src/types/` |
+| Service Type | Expected Structure                            |
+| ------------ | --------------------------------------------- |
+| API Service  | `src/routes/`, `src/services/`, `src/models/` |
+| Worker       | `src/handlers/`, `src/processors/`            |
+| CLI Tool     | `src/commands/`, `src/utils/`                 |
+| Library      | `src/index.ts`, `src/types/`                  |
 
 ## Output Format
 

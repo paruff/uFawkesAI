@@ -34,16 +34,16 @@ Ensure all required tools for Fawkes development are installed and correct versi
 
 ## Tool Requirements
 
-| Tool | Min Version | Check Command |
-|------|-------------|---------------|
-| Node.js | 18 | `node --version` |
-| Python | 3.10 | `python3 --version` |
-| kubectl | 1.28 | `kubectl version --client` |
-| kustomize | 5.0 | `kustomize version` |
-| helm | 3.12 | `helm version` |
-| Fawkes CLI | 1.0 | `fawkes --version` |
-| Docker | 20 | `docker --version` |
-| Git | 2.40 | `git --version` |
+| Tool       | Min Version | Check Command              |
+| ---------- | ----------- | -------------------------- |
+| Node.js    | 18          | `node --version`           |
+| Python     | 3.10        | `python3 --version`        |
+| kubectl    | 1.28        | `kubectl version --client` |
+| kustomize  | 5.0         | `kustomize version`        |
+| helm       | 3.12        | `helm version`             |
+| Fawkes CLI | 1.0         | `fawkes --version`         |
+| Docker     | 20          | `docker --version`         |
+| Git        | 2.40        | `git --version`            |
 
 ## Validation Rules
 
@@ -59,8 +59,20 @@ Ensure all required tools for Fawkes development are installed and correct versi
   "skill": "toolchain-validation",
   "status": "pass | fail",
   "tools": [
-    {"name": "node", "installed": true, "version": "20.11.0", "min_version": "18", "status": "pass"},
-    {"name": "kubectl", "installed": true, "version": "1.29.0", "min_version": "1.28", "status": "pass"}
+    {
+      "name": "node",
+      "installed": true,
+      "version": "20.11.0",
+      "min_version": "18",
+      "status": "pass"
+    },
+    {
+      "name": "kubectl",
+      "installed": true,
+      "version": "1.29.0",
+      "min_version": "1.28",
+      "status": "pass"
+    }
   ],
   "missing": [],
   "version_mismatches": []

@@ -36,28 +36,28 @@ Monitor and manage cluster and service capacity.
 
 ## Sub-Skills
 
-| Skill | Purpose |
-|-------|---------|
+| Skill                            | Purpose                    |
+| -------------------------------- | -------------------------- |
 | `capacity-management/saturation` | Detect resource saturation |
-| `capacity-management/scaling` | Recommend scaling actions |
+| `capacity-management/scaling`    | Recommend scaling actions  |
 
 ## Capacity Thresholds
 
-| Resource | Healthy | Warning | Critical |
-|----------|---------|---------|----------|
-| CPU usage | < 70% | 70-85% | > 85% |
-| Memory usage | < 70% | 70-85% | > 85% |
-| Disk usage | < 70% | 70-85% | > 85% |
-| Network | < 50% | 50-75% | > 75% |
+| Resource     | Healthy | Warning | Critical |
+| ------------ | ------- | ------- | -------- |
+| CPU usage    | < 70%   | 70-85%  | > 85%    |
+| Memory usage | < 70%   | 70-85%  | > 85%    |
+| Disk usage   | < 70%   | 70-85%  | > 85%    |
+| Network      | < 50%   | 50-75%  | > 75%    |
 
 ## Scaling Rules
 
-| Condition | Action |
-|-----------|--------|
-| CPU > 80% for 5 min | Scale up replicas |
-| Memory > 80% for 5 min | Increase memory limits |
-| CPU < 20% for 30 min | Scale down replicas |
-| Node count insufficient | Add nodes |
+| Condition               | Action                 |
+| ----------------------- | ---------------------- |
+| CPU > 80% for 5 min     | Scale up replicas      |
+| Memory > 80% for 5 min  | Increase memory limits |
+| CPU < 20% for 30 min    | Scale down replicas    |
+| Node count insufficient | Add nodes              |
 
 ## Output Format
 
@@ -67,8 +67,8 @@ Monitor and manage cluster and service capacity.
   "cluster": "production",
   "nodes": 5,
   "capacity": {
-    "cpu": {"total": "20 cores", "used": "14 cores", "percent": 70},
-    "memory": {"total": "80Gi", "used": "56Gi", "percent": 70}
+    "cpu": { "total": "20 cores", "used": "14 cores", "percent": 70 },
+    "memory": { "total": "80Gi", "used": "56Gi", "percent": 70 }
   },
   "services": [
     {

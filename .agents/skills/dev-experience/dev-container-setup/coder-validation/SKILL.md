@@ -45,10 +45,10 @@ Ensure devcontainers run correctly inside Coder workspaces.
 ### Resources
 
 | Resource | Minimum | Recommended |
-|----------|---------|-------------|
-| CPU | 2 cores | 4 cores |
-| Memory | 4 GB | 8 GB |
-| Disk | 20 GB | 50 GB |
+| -------- | ------- | ----------- |
+| CPU      | 2 cores | 4 cores     |
+| Memory   | 4 GB    | 8 GB        |
+| Disk     | 20 GB   | 50 GB       |
 
 ### Startup
 

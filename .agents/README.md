@@ -9,15 +9,15 @@
 
 Invoke by `@name` in OpenCode or any compatible agent host.
 
-| File                | Trigger           | What It Produces                                          | DORA Cap  |
-| ------------------- | ----------------- | --------------------------------------------------------- | --------- |
-| `spec.md`           | `@spec`           | Requirements, acceptance criteria                         | Cap 3     |
-| `design.md`         | `@design`         | Architecture, component design                            | Cap 3     |
-| `build.md`          | `@build`          | Code, manifests, pipelines, overlays                      | Cap 4     |
-| `test.md`           | `@test`           | Tests (failing-first TDD), coverage                       | Cap 5     |
-| `test-execution.md` | `@test-execution` | Run tests, validate coverage                              | Cap 5     |
-| `review.md`         | `@review`         | PR review, build validation, security (PR Review + Build Validation modes) | Cap 4 + 6 |
-| `cross-validation.md` | `@cross-validation` | Validate pairwise consistency, block pipeline if inconsistencies found | Cap 4 + 6 |
+| File                  | Trigger             | What It Produces                                                           | DORA Cap  |
+| --------------------- | ------------------- | -------------------------------------------------------------------------- | --------- |
+| `spec.md`             | `@spec`             | Requirements, acceptance criteria                                          | Cap 3     |
+| `design.md`           | `@design`           | Architecture, component design                                             | Cap 3     |
+| `build.md`            | `@build`            | Code, manifests, pipelines, overlays                                       | Cap 4     |
+| `test.md`             | `@test`             | Tests (failing-first TDD), coverage                                        | Cap 5     |
+| `test-execution.md`   | `@test-execution`   | Run tests, validate coverage                                               | Cap 5     |
+| `review.md`           | `@review`           | PR review, build validation, security (PR Review + Build Validation modes) | Cap 4 + 6 |
+| `cross-validation.md` | `@cross-validation` | Validate pairwise consistency, block pipeline if inconsistencies found     | Cap 4 + 6 |
 
 ### Agent Pipeline
 
@@ -39,14 +39,14 @@ spec → design → build → [test-execution || review] → cross-validation
 
 Invoke the most relevant agent directly:
 
-| Task | Agent |
-|------|-------|
-| "Write requirements for..." | `@spec` |
-| "Design architecture for..." | `@design` |
-| "Implement feature X" | `@build` |
-| "Write tests for..." | `@test` |
-| "Run tests and check coverage" | `@test-execution` |
-| "Review this PR" | `@review` |
+| Task                                  | Agent               |
+| ------------------------------------- | ------------------- |
+| "Write requirements for..."           | `@spec`             |
+| "Design architecture for..."          | `@design`           |
+| "Implement feature X"                 | `@build`            |
+| "Write tests for..."                  | `@test`             |
+| "Run tests and check coverage"        | `@test-execution`   |
+| "Review this PR"                      | `@review`           |
 | "Validate all outputs are consistent" | `@cross-validation` |
 
 ---
@@ -58,64 +58,64 @@ Skills are loaded on demand — they do not add to always-on context.
 
 ### Core Pipeline Skills
 
-| Folder                   | Load Trigger                        | Purpose                                                           |
-| ------------------------ | ----------------------------------- | ----------------------------------------------------------------- |
-| `spec/`                  | `@spec` requirements extraction     | Requirements, acceptance criteria, policy gates                   |
-| `design/`                | `@design` architecture              | Architecture decomposition, K8s design validation                 |
-| `plan/`                  | `@build` task planning              | Task decomposition, dependency mapping, risk ID                   |
-| `build/`                 | `@build` code generation            | Code, manifests, pipelines, overlays, governance                  |
-| `test/`                  | `@test` TDD patterns                | Failing tests, coverage priorities, language-specific examples    |
-| `test-execution/`        | `@test-execution` run tests         | Unit, integration, E2E, coverage, smoke tests                     |
-| `review/`                | `@review` compliance gates          | PR review, build validation, spec/design compliance               |
-| `delivery/`              | deployment validation               | Manifest validation, drift detection, environment promotion       |
+| Folder            | Load Trigger                    | Purpose                                                        |
+| ----------------- | ------------------------------- | -------------------------------------------------------------- |
+| `spec/`           | `@spec` requirements extraction | Requirements, acceptance criteria, policy gates                |
+| `design/`         | `@design` architecture          | Architecture decomposition, K8s design validation              |
+| `plan/`           | `@build` task planning          | Task decomposition, dependency mapping, risk ID                |
+| `build/`          | `@build` code generation        | Code, manifests, pipelines, overlays, governance               |
+| `test/`           | `@test` TDD patterns            | Failing tests, coverage priorities, language-specific examples |
+| `test-execution/` | `@test-execution` run tests     | Unit, integration, E2E, coverage, smoke tests                  |
+| `review/`         | `@review` compliance gates      | PR review, build validation, spec/design compliance            |
+| `delivery/`       | deployment validation           | Manifest validation, drift detection, environment promotion    |
 
 ### Testing Skills
 
-| Folder                   | Load Trigger                        | Purpose                                                           |
-| ------------------------ | ----------------------------------- | ----------------------------------------------------------------- |
-| `unit-testing/`          | unit test patterns                  | Core logic, mocking, error handling, contracts                    |
-| `integration-testing/`   | integration test patterns           | PIPE→OBS, OBS→GitOps, controller, full-stack                      |
-| `e2e-testing/`           | end-to-end test patterns            | Happy path, failure paths, deployment, rollback                   |
-| `observability-testing/` | telemetry validation                | Log schema, metrics, traces, dashboards, alerts                   |
+| Folder                   | Load Trigger              | Purpose                                         |
+| ------------------------ | ------------------------- | ----------------------------------------------- |
+| `unit-testing/`          | unit test patterns        | Core logic, mocking, error handling, contracts  |
+| `integration-testing/`   | integration test patterns | PIPE→OBS, OBS→GitOps, controller, full-stack    |
+| `e2e-testing/`           | end-to-end test patterns  | Happy path, failure paths, deployment, rollback |
+| `observability-testing/` | telemetry validation      | Log schema, metrics, traces, dashboards, alerts |
 
 ### Security & Compliance Skills
 
-| Folder                   | Load Trigger                        | Purpose                                                           |
-| ------------------------ | ----------------------------------- | ----------------------------------------------------------------- |
-| `security-testing/`      | security scanning & integrity       | SAST, dependency scanning, container security, secrets            |
+| Folder              | Load Trigger                  | Purpose                                                |
+| ------------------- | ----------------------------- | ------------------------------------------------------ |
+| `security-testing/` | security scanning & integrity | SAST, dependency scanning, container security, secrets |
 
 ### Runtime Operations Skills
 
-| Folder                   | Load Trigger                        | Purpose                                                           |
-| ------------------------ | ----------------------------------- | ----------------------------------------------------------------- |
-| `runtime-operations/`    | runtime ops                         | Incidents, health, drift, SLO, remediation                        |
+| Folder                | Load Trigger | Purpose                                    |
+| --------------------- | ------------ | ------------------------------------------ |
+| `runtime-operations/` | runtime ops  | Incidents, health, drift, SLO, remediation |
 
 ### Resilience Testing Skills
 
-| Folder                   | Load Trigger                        | Purpose                                                           |
-| ------------------------ | ----------------------------------- | ----------------------------------------------------------------- |
-| `chaos-testing/`         | resilience & failure injection      | Chaos injection, failure modes, drift chaos, cluster chaos        |
-| `load-testing/`          | performance & stress testing        | Pipeline throughput, GitOps load, registry load, system stress    |
+| Folder           | Load Trigger                   | Purpose                                                        |
+| ---------------- | ------------------------------ | -------------------------------------------------------------- |
+| `chaos-testing/` | resilience & failure injection | Chaos injection, failure modes, drift chaos, cluster chaos     |
+| `load-testing/`  | performance & stress testing   | Pipeline throughput, GitOps load, registry load, system stress |
 
 ### Cross-Cutting Skills
 
-| Folder                   | Load Trigger                        | Purpose                                                           |
-| ------------------------ | ----------------------------------- | ----------------------------------------------------------------- |
-| `observability/`         | agent telemetry                     | Invocation tracking, skill load, finding quality                  |
-| `agent-observability/`   | agent telemetry and observability   | Invocation tracking, skill load, finding quality                  |
-| `golden-paths/`          | validate conventions                | Testing, security, observability, release patterns                |
-| `dev-experience/`        | dev environment setup               | Devcontainers, bootstrap, local sim, CLI tools                    |
-| `model-routing/`         | route tasks to models               | Optimal model/mode selection, scope check                         |
-| `token-budget/`          | ask about token costs               | Context footprint audit and cost control                          |
-| `cross-validation/`      | cross-validation                    | Pairwise consistency validation between agent outputs             |
+| Folder                 | Load Trigger                      | Purpose                                               |
+| ---------------------- | --------------------------------- | ----------------------------------------------------- |
+| `observability/`       | agent telemetry                   | Invocation tracking, skill load, finding quality      |
+| `agent-observability/` | agent telemetry and observability | Invocation tracking, skill load, finding quality      |
+| `golden-paths/`        | validate conventions              | Testing, security, observability, release patterns    |
+| `dev-experience/`      | dev environment setup             | Devcontainers, bootstrap, local sim, CLI tools        |
+| `model-routing/`       | route tasks to models             | Optimal model/mode selection, scope check             |
+| `token-budget/`        | ask about token costs             | Context footprint audit and cost control              |
+| `cross-validation/`    | cross-validation                  | Pairwise consistency validation between agent outputs |
 
 ### Language Skills
 
-| Folder                   | Load Trigger                        | Purpose                                                           |
-| ------------------------ | ----------------------------------- | ----------------------------------------------------------------- |
-| `lang-typescript/`       | TypeScript project context          | ESLint, tsc, Jest, npm toolchain                                  |
-| `lang-python/`           | Python project context              | ruff, mypy, pytest, uv toolchain                                  |
-| `lang-go/`               | Go project context                  | golangci-lint, go test, go mod toolchain                          |
+| Folder             | Load Trigger               | Purpose                                  |
+| ------------------ | -------------------------- | ---------------------------------------- |
+| `lang-typescript/` | TypeScript project context | ESLint, tsc, Jest, npm toolchain         |
+| `lang-python/`     | Python project context     | ruff, mypy, pytest, uv toolchain         |
+| `lang-go/`         | Go project context         | golangci-lint, go test, go mod toolchain |
 
 ---
 
