@@ -1,0 +1,153 @@
+# Agent Capability Registry — v3
+# Machine-readable capability declarations for agent routing and dependency tracking.
+# Schema (informal): each agent has name, description, capabilities[], inputs[], outputs[], consumes_from[], dora_caps[]
+
+agents:
+  - name: spec
+    description: "Convert intent into structured specification with requirements, acceptance criteria, and policy alignment"
+    capabilities:
+      - requirements-extraction
+      - acceptance-criteria-definition
+      - policy-alignment
+      - constraint-documentation
+    inputs:
+      - human-intent
+      - policy-documents
+    outputs:
+      - specification-document
+      - acceptance-criteria
+    consumes_from: []
+    dora_caps: [3]
+
+  - name: design
+    description: "Convert specification into actionable technical design with architecture, components, interfaces, and data flows"
+    capabilities:
+      - architecture-decomposition
+      - component-definition
+      - interface-contracts
+      - data-modeling
+      - tradeoff-analysis
+    inputs:
+      - specification-document
+    outputs:
+      - design-document
+      - architecture-decisions
+    consumes_from: [spec]
+    dora_caps: [3]
+
+  - name: build
+    description: "Turn plan into code, manifests, pipelines, and GitOps overlays"
+    capabilities:
+      - code-generation
+      - manifest-generation
+      - pipeline-generation
+      - overlay-generation
+      - implementation
+    inputs:
+      - design-document
+      - specification-document
+    outputs:
+      - source-code
+      - kubernetes-manifests
+      - pipeline-configs
+      - gitops-overlays
+    consumes_from: [design]
+    dora_caps: [4]
+
+  - name: test
+    description: "Write failing tests before implementation, increase coverage, generate test patterns"
+    capabilities:
+      - tdd-test-writing
+      - coverage-gap-analysis
+      - test-pattern-generation
+      - test-refactoring
+    inputs:
+      - source-code
+      - specification-document
+      - api-surface
+    outputs:
+      - test-suites
+      - coverage-improvements
+    consumes_from: [spec]
+    dora_caps: [5]
+
+  - name: test-execution
+    description: "Execute all relevant tests and quality gates to validate build output"
+    capabilities:
+      - unit-test-execution
+      - integration-test-execution
+      - e2e-test-execution
+      - coverage-validation
+      - smoke-testing
+      - linting
+    inputs:
+      - source-code
+      - test-suites
+    outputs:
+      - test-report
+      - coverage-report
+    consumes_from: [build]
+    dora_caps: [5]
+
+  - name: review
+    description: "Review PR and build output for quality, security, and compliance. Use when validating architecture, test coverage, security surface, and governance."
+    capabilities:
+      # PR Review Mode
+      - pr-review
+      - architecture-violation-detection
+      - test-gap-analysis
+      - security-surface-identification
+      - secrets-scanning
+      - dependency-review
+      - auth-review
+      - data-handling-review
+      # Build Validation Mode
+      - spec-compliance-verification
+      - design-compliance-verification
+      - acceptance-criteria-validation
+      - code-quality-assessment
+      - pipeline-policy-validation
+      - k8s-policy-validation
+      - gitops-overlay-validation
+      - rbac-validation
+      - secret-governance
+      - policy-validation
+    inputs:
+      - pull-request-diff
+      - build-output
+      - specification-document
+      - design-document
+      - test-report
+      - manifests
+      - pipeline-configs
+    outputs:
+      - review-report
+      - findings
+      - recommendations
+    consumes_from: [build, test-execution]
+    modes:
+      - pr-review
+      - build-validation
+    dora_caps: [1, 4, 6]
+
+  - name: cross-validation
+    description: "Validate pairwise consistency between agent outputs and block pipeline if any inconsistency found"
+    capabilities:
+      - cross-validation-execution
+      - pipeline-blocking
+      - inconsistency-detection
+      - validation-reporting
+      - recommendation-generation
+    inputs:
+      - spec-report
+      - design-report
+      - build-report
+      - test-report
+      - test-execution-report
+      - review-report
+    outputs:
+      - cross-validation-report
+      - validation-results
+      - pipeline-decision
+    consumes_from: [spec, design, build, test, test-execution, review]
+    dora_caps: [4, 6]

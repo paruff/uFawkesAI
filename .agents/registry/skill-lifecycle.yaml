@@ -1,0 +1,329 @@
+# Skill Lifecycle Registry
+# Canonical source of truth for all uFawkesAI skills.
+# Schema: .agents/schema/skill-lifecycle.json
+#
+# Status values: active, stable, beta, draft, deprecated, experimental
+# Version follows semver.
+#
+# Core Pipeline: spec → design → build → test → test-execution → review → delivery
+
+skills:
+  # ============================================
+  # Core Pipeline Skills
+  # ============================================
+
+  spec:
+    status: stable
+    version: 1.1.0
+    dependencies: []
+    load_trigger: "load spec skill"
+    sub_skills:
+      - spec/requirements-extraction
+      - spec/acceptance-criteria
+      - spec/policy-validation
+      - spec/pipeline-policy
+      - spec/k8s-policy
+      - spec/template-governance
+
+  design:
+    status: stable
+    version: 1.1.0
+    dependencies:
+      - spec
+    load_trigger: "load design skill"
+    sub_skills:
+      - design/architecture-decomposition
+      - design/component-identification
+      - design/interface-definition
+      - design/k8s-design-validation
+
+  plan:
+    status: stable
+    version: 1.1.0
+    dependencies:
+      - spec
+      - design
+    load_trigger: "load plan skill"
+    sub_skills:
+      - plan/task-decomposition
+      - plan/dependency-mapping
+      - plan/effort-estimation
+      - plan/risk-identification
+      - plan/skill-matching
+      - plan/governance-alignment
+
+  test:
+    status: stable
+    version: 1.1.0
+    dependencies:
+      - spec
+    load_trigger: "load test skill"
+    sub_skills: []
+
+  build:
+    status: stable
+    version: 1.1.0
+    dependencies:
+      - design
+    load_trigger: "load build skill"
+    sub_skills:
+      - build/code-generation
+      - build/manifest-generation
+      - build/pipeline-generation
+      - build/gitops-overlay-generation
+      - build/governance-enforcement
+      - build/template-application
+      - build/refactoring
+
+  test-execution:
+    status: stable
+    version: 1.1.0
+    dependencies:
+      - build
+      - test
+    load_trigger: "load test-execution skill"
+    sub_skills:
+      - test-execution/unit-test-execution
+      - test-execution/integration-test-execution
+      - test-execution/e2e-test-execution
+      - test-execution/test-coverage-validation
+      - test-execution/pipeline-test-stage-validation
+      - test-execution/runtime-simulation-validation
+      - test-execution/performance-smoke-testing
+
+  review:
+    status: stable
+    version: 2.0.0
+    dependencies:
+      - build
+      - test-execution
+    load_trigger: "load review skill"
+    sub_skills:
+      - review/spec-compliance
+      - review/design-compliance
+      - review/code-quality
+      - review/acceptance-criteria
+      - review/security-rbac
+      - review/secret-governance
+      - review/policy-validation
+      - review/k8s-policy
+      - review/pipeline-policy
+      - review/gitops-overlay
+    modes:
+      - pr-review
+      - build-validation
+
+  delivery:
+    status: stable
+    version: 1.1.0
+    dependencies:
+      - build
+      - review
+    load_trigger: "load delivery skill"
+    sub_skills: []
+
+  # ============================================
+  # Cross-Cutting Skills
+  # ============================================
+
+  observability:
+    status: active
+    version: 1.0.0
+    dependencies: []
+    load_trigger: "load observability skill"
+    sub_skills: []
+
+  cross-validation:
+    status: active
+    version: 1.0.0
+    dependencies:
+      - spec
+      - design
+      - build
+      - test
+      - test-execution
+      - review
+    load_trigger: "load cross-validation skill"
+    sub_skills: []
+
+  token-budget:
+    status: active
+    version: 1.0.0
+    dependencies: []
+    load_trigger: "load token-budget skill"
+    sub_skills: []
+
+  # ============================================
+  # Language Skills
+  # ============================================
+
+  lang-typescript:
+    status: stable
+    version: 1.0.0
+    dependencies: []
+    load_trigger: "TypeScript project context"
+    sub_skills: []
+
+  lang-python:
+    status: stable
+    version: 1.0.0
+    dependencies: []
+    load_trigger: "Python project context"
+    sub_skills: []
+
+  lang-go:
+    status: stable
+    version: 1.0.0
+    dependencies: []
+    load_trigger: "Go project context"
+    sub_skills: []
+
+  # ============================================
+  # Testing Skills
+  # ============================================
+
+  unit-testing:
+    status: active
+    version: 1.0.0
+    dependencies: []
+    load_trigger: "load unit-testing skill"
+    sub_skills:
+      - unit-testing/unit-contracts
+      - unit-testing/unit-core-logic
+      - unit-testing/unit-error-handling
+      - unit-testing/unit-mocking
+
+  integration-testing:
+    status: active
+    version: 1.0.0
+    dependencies: []
+    load_trigger: "load integration-testing skill"
+    sub_skills:
+      - integration-testing/full-stack
+      - integration-testing/gitops-to-controller
+      - integration-testing/obs-to-gitops
+      - integration-testing/pipe-to-obs
+
+  e2e-testing:
+    status: active
+    version: 1.0.0
+    dependencies: []
+    load_trigger: "load e2e-testing skill"
+    sub_skills:
+      - e2e-testing/e2e-deployment-validation
+      - e2e-testing/e2e-failure-paths
+      - e2e-testing/e2e-happy-path
+      - e2e-testing/e2e-rollback
+
+  observability-testing:
+    status: active
+    version: 1.0.0
+    dependencies: []
+    load_trigger: "load observability-testing skill"
+    sub_skills:
+      - observability-testing/log-schema-validation
+      - observability-testing/metrics-validation
+      - observability-testing/observability-health
+      - observability-testing/trace-propagation
+
+  # ============================================
+  # Security & Compliance Skills
+  # ============================================
+
+  security-testing:
+    status: active
+    version: 1.0.0
+    dependencies: []
+    load_trigger: "load security-testing skill"
+    sub_skills:
+      - security-testing/container-security
+      - security-testing/dependency-scanning
+      - security-testing/sast
+      - security-testing/secret-detection
+
+  # ============================================
+  # Runtime Operations Skills
+  # ============================================
+
+  runtime-operations:
+    status: active
+    version: 1.0.0
+    dependencies: []
+    load_trigger: "load runtime-operations skill"
+    sub_skills:
+      - runtime-operations/auto-remediation
+      - runtime-operations/capacity-management
+      - runtime-operations/drift-detection
+      - runtime-operations/health-monitoring
+      - runtime-operations/incident-correlation
+      - runtime-operations/incident-detection
+      - runtime-operations/incident-triage
+      - runtime-operations/multi-cluster-ops
+      - runtime-operations/runbook-automation
+      - runtime-operations/slo-management
+
+  # ============================================
+  # Resilience Testing Skills
+  # ============================================
+
+  chaos-testing:
+    status: active
+    version: 1.0.0
+    dependencies: []
+    load_trigger: "load chaos-testing skill"
+    sub_skills:
+      - chaos-testing/chaos-injection
+      - chaos-testing/cluster-chaos
+      - chaos-testing/failure-modes
+      - chaos-testing/gitops-drift-chaos
+
+  load-testing:
+    status: active
+    version: 1.0.0
+    dependencies: []
+    load_trigger: "load load-testing skill"
+    sub_skills:
+      - load-testing/obs-gitops-load
+      - load-testing/pipeline-throughput
+      - load-testing/registry-load
+      - load-testing/system-stress
+
+  # ============================================
+  # Platform Skills
+  # ============================================
+
+  golden-paths:
+    status: active
+    version: 1.0.0
+    dependencies: []
+    load_trigger: "load golden-paths skill"
+    sub_skills: []
+
+  dev-experience:
+    status: stable
+    version: 1.0.0
+    dependencies: []
+    load_trigger: "load dev-experience skill"
+    sub_skills:
+      - dev-experience/cli-scaffolding
+      - dev-experience/dev-container-setup
+      - dev-experience/local-environment-simulation
+      - dev-experience/workspace-bootstrap
+
+  model-routing:
+    status: active
+    version: 1.0.0
+    dependencies: []
+    load_trigger: "load model-routing skill"
+    sub_skills: []
+
+  agent-observability:
+    status: active
+    version: 1.0.0
+    dependencies: []
+    load_trigger: "load agent-observability skill"
+    sub_skills:
+      - agent-observability/invocation-tracking
+      - agent-observability/skill-load-events
+      - agent-observability/finding-quality
+      - agent-observability/decision-logging

@@ -1,0 +1,72 @@
+# Cross-Validation Rules Registry
+# Defines pairwise validation rules between agent outputs
+# Schema (informal): each rule defines source/target agents, validation type, and comparison logic
+#
+# Validation types:
+# - requirement_coverage — source requirements must be covered in target output
+# - acceptance_criteria_coverage — source acceptance criteria must have corresponding tests
+# - architecture_compliance — target must follow source architecture decisions
+# - test_viability — source tests must be viable in target execution
+#
+# Rules are applied by the cross-validation runner to agent reports.
+
+rules:
+  - rule_id: spec-build-consistency
+    source_agent: spec
+    target_agent: build
+    validation_type: requirement_coverage
+    description: "All spec requirements must be addressed in build output"
+    required_sections:
+      - "Functional Requirements"
+      - "Acceptance Criteria"
+    comparison_logic:
+      extract_keywords: true
+      require_all_keywords: true
+      source_field: "requirement"
+      target_field: "task"
+      similarity_threshold: 0.8
+
+  - rule_id: spec-test-coverage
+    source_agent: spec
+    target_agent: test
+    validation_type: acceptance_criteria_coverage
+    description: "All spec acceptance criteria must have corresponding tests"
+    required_sections:
+      - "Acceptance Criteria"
+    comparison_logic:
+      extract_keywords: true
+      require_all_keywords: true
+      source_field: "criterion"
+      target_field: "test"
+      similarity_threshold: 0.7
+
+  - rule_id: design-build-compliance
+    source_agent: design
+    target_agent: build
+    validation_type: architecture_compliance
+    description: "Build must follow architecture decisions from design"
+    required_sections:
+      - "Architecture Overview"
+      - "Components"
+      - "Tradeoffs"
+    comparison_logic:
+      extract_keywords: true
+      require_all_keywords: true
+      source_field: "decision"
+      target_field: "implementation"
+      similarity_threshold: 0.8
+
+  - rule_id: test-execution-viability
+    source_agent: test
+    target_agent: test-execution
+    validation_type: test_viability
+    description: "All tests must be viable and passing in test-execution"
+    required_sections:
+      - "Test Results"
+      - "Coverage"
+    comparison_logic:
+      extract_keywords: true
+      require_all_keywords: true
+      source_field: "test"
+      target_field: "result"
+      similarity_threshold: 0.7

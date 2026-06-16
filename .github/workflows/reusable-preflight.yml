@@ -129,7 +129,7 @@ jobs:
         uses: actions/github-script@v9
         with:
           script: |
-            const conventionalRegex = /^(feat|fix|docs|style|refactor|test|chore|ci|perf|build|revert)(\(.+\))?: .{1,72}$/;
+            const conventionalRegex = /^(feat|fix|docs|style|refactor|test|chore|ci|perf|build|revert)(\(.+\))?: .{1,120}$/;
             const mergeCommitRegex = /^Merge /;
 
             let commits;
@@ -163,7 +163,7 @@ jobs:
             if (failures > 0) {
               core.setFailed(
                 `❌ ${failures} commit(s) don't follow Conventional Commits format.\n` +
-                `Expected: type(scope): description\n` +
+                `Expected: type(scope): description (max 120 chars)\n` +
                 `Types: feat, fix, docs, style, refactor, test, chore, ci, perf, build, revert`
               );
             } else {
