@@ -8,12 +8,12 @@
   --test-report path/to/test-report.md \
   --test-execution-report path/to/test-execution-report.md \
   --review-report path/to/review-report.md
-# Outputs: .agents/logs/cross-validation-report.json
+# Outputs: .agents/logs/cross-validation-report.md
 
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 RULES_REGISTRY="${REPO_ROOT}/.agents/registry/cross-validation.yaml"
 OUT_DIR="${REPO_ROOT}/.agents/logs"
 
@@ -264,23 +264,49 @@ for rule in rules:
             "matched_keywords": matched_keywords
         })
 
-# Generate cross-validation report
-cross_validation_report = {
-    "skill": "cross-validation",
-    "generated_at": datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M:%SZ"),
-    "validation_rules": len(rules),
-    "passed_rules": sum(1 for r in validation_results if r.get("passed", False)),
-    "failed_rules": sum(1 for r in validation_results if not r.get("passed", False)),
-    "results": validation_results,
-    "decision": "PASS" if all_passed else "FAIL"
-}
+# Generate cross-validation report in markdown format
+report_lines = []
+report_lines.append("# Cross-Validation Report")
+report_lines.append("")
+report_lines.append(f"Generated: {datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%SZ')}")
+report_lines.append(f"Validation Rules: {len(rules)}")
+report_lines.append(f"Passed Rules: {sum(1 for r in validation_results if r.get('passed', False))}")
+report_lines.append(f"Failed Rules: {sum(1 for r in validation_results if not r.get('passed', False))}")
+report_lines.append(f"Decision: {'PASS' if all_passed else 'FAIL'}")
+report_lines.append("")
+report_lines.append("## Validation Results")
+report_lines.append("")
+for result in validation_results:
+    status = "✅ PASS" if result.get("passed", False) else "❌ FAIL"
+    report_lines.append(f"### {result['rule_id']}")
+    report_lines.append(f"- Status: {status}")
+    report_lines.append(f"- Source Agent: {result['source_agent']}")
+    report_lines.append(f"- Target Agent: {result['target_agent']}")
+    report_lines.append(f"- Description: {result['description']}")
+    if not result.get("passed", False):
+        report_lines.append(f"- Reason: {result.get('reason', 'Validation failed')}")
+    report_lines.append("")
 
-# Write cross-validation report
-report_path = os.path.join(out_dir, "cross-validation-report.json")
+report_lines.append("## Findings")
+report_lines.append("")
+if all_passed:
+    report_lines.append("All 4 rules must pass")
+    report_lines.append("✅ Cross-validation PASSED - pipeline can proceed to delivery")
+else:
+    report_lines.append("All 4 rules must pass")
+    report_lines.append("❌ Cross-validation FAILED - pipeline blocked")
+    for result in validation_results:
+        if not result.get("passed", False):
+            report_lines.append(f"- Fix {result['rule_id']}: {result.get('reason', 'Validation failed')}")
+
+report_content = "\n".join(report_lines)
+
+# Write markdown report
+report_path = os.path.join(out_dir, "cross-validation-report.md")
 with open(report_path, "w") as f:
-    json.dump(cross_validation_report, f, indent=2)
+    f.write(report_content)
 
-print(f"  Wrote {report_path} ({cross_validation_report['passed_rules']}/{cross_validation_report['validation_rules']} rules passed)")
+print(f"  Wrote {report_path}")
 
 if all_passed:
     print(f"  ✅ Cross-validation PASSED - pipeline can proceed to delivery")
