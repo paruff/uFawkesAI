@@ -62,6 +62,6 @@ communities = cluster(G)
 to_json(G, communities, str(out / 'graph.json'))
 print(f'Graph: {G.number_of_nodes()} nodes, {G.number_of_edges()} edges')
 " 2>&1 && \
-git add -f graphify-out/graph.json 2>/dev/null && \
+git add -f graphify-out/graph.json graphify-out/cost.json graphify-out/manifest.json 2>/dev/null && \
 echo "post-commit-graphify: done" || \
 echo "post-commit-graphify: rebuild failed (non-fatal)"
