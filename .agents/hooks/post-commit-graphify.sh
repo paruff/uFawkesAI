@@ -58,8 +58,8 @@ root = Path('${REPO_ROOT}')
 out = root / 'graphify-out'
 
 # Run detect to find changed files since last manifest
-from graphify.detect import detect, load_manifest
-from graphify.extract import collect_files, extract
+from graphify.detect import detect, load_manifest, save_manifest
+from graphify.extract import extract
 
 manifest = load_manifest()
 result = detect(root)
@@ -84,7 +84,6 @@ if not changed:
 print(f'Changed: {len(changed)} files')
 
 # Update manifest timestamps
-from graphify.detect import save_manifest
 save_manifest(result.get('all_files') or result['files'])
 
 # Re-run extraction on changed code files only
@@ -111,16 +110,10 @@ if code_files and (out / '.graphify_ast.json').exists():
             seen.add(n['id'])
     extraction['edges'].extend(new_ast['edges'])
 
-# Rebuild graph
+# Rebuild graph JSON only (skip report/html — fragile, slow, needs full detect data)
 from graphify.build import build_from_json
-from graphify.cluster import cluster, score_all
-from graphify.analyze import god_nodes, surprising_connections, suggest_questions
-from graphify.report import generate
+from graphify.cluster import cluster
 from graphify.export import to_json
-
-labels_path = out / '.graphify_labels.json'
-labels = json.loads(labels_path.read_text(encoding='utf-8')) if labels_path.exists() else {}
-int_labels = {int(k): v for k, v in labels.items()}
 
 G = build_from_json(extraction)
 if G.number_of_nodes() == 0:
@@ -128,27 +121,15 @@ if G.number_of_nodes() == 0:
     sys.exit(1)
 
 communities = cluster(G)
-cohesion = score_all(G, communities)
-gods = god_nodes(G)
-surprises = surprising_connections(G, communities)
-tokens = {'input': extraction.get('input_tokens', 0), 'output': extraction.get('output_tokens', 0)}
-questions = suggest_questions(G, communities, int_labels)
-
-detect_data = json.loads((out / '.graphify_detect.json').read_text(encoding='utf-8')) if (out / '.graphify_detect.json').exists() else {'total_files': 0}
-
-report = generate(G, communities, cohesion, int_labels, gods, surprises, detect_data, tokens, '.', suggested_questions=questions)
-(out / 'GRAPH_REPORT.md').write_text(report, encoding='utf-8')
 to_json(G, communities, str(out / 'graph.json'))
 print(f'Graph updated: {G.number_of_nodes()} nodes, {G.number_of_edges()} edges')
+print('Run: graphify cluster-only . to regenerate report + html')
 " 2>&1; then
   # Stage persistent outputs for the next commit
   git add -f \
     graphify-out/graph.json \
-    graphify-out/GRAPH_REPORT.md \
-    graphify-out/graph.html \
     graphify-out/cost.json \
     graphify-out/manifest.json \
-    graphify-out/.graphify_labels.json \
     2>/dev/null || true
 
   echo "post-commit-graphify: done — outputs staged for next commit"
