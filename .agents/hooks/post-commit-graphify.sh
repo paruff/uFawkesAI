@@ -74,7 +74,7 @@ for f in all_files:
     p = Path(f)
     if not p.exists():
         continue
-    if f not in manifest or p.stat().st_mtime > manifest.get(f, 0):
+    if f not in manifest or p.stat().st_mtime > manifest.get(f, {}).get('mtime', 0):
         changed.append(f)
 
 if not changed:
