@@ -2,6 +2,9 @@
 # Install: make pre-commit-setup
 # Run manually: pre-commit run --all-files
 
+# Exclude machine-generated graphify outputs from all hooks
+exclude: graphify-out/
+
 repos:
   # ============================================================================
   # General Code Quality

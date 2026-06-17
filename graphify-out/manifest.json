@@ -1,0 +1,1132 @@
+{
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/assertions/agent-output-schema.json": {
+    "mtime": 1781604132.6957061,
+    "ast_hash": "efa9592c2935257e0d3ccba43b85d837",
+    "semantic_hash": "efa9592c2935257e0d3ccba43b85d837"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/assertions/assertion-runner.sh": {
+    "mtime": 1781603424.0097084,
+    "ast_hash": "3128b4e3930b76b371f84fc98588955a",
+    "semantic_hash": "3128b4e3930b76b371f84fc98588955a"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/assertions/cross-validation-runner.sh": {
+    "mtime": 1781604120.9445539,
+    "ast_hash": "1bb0c3af90e34cea64b5767d23a36b1c",
+    "semantic_hash": "1bb0c3af90e34cea64b5767d23a36b1c"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/hooks/pre-commit-agent.sh": {
+    "mtime": 1781604120.9092793,
+    "ast_hash": "a25314440b93fc7130480236a483ce1d",
+    "semantic_hash": "a25314440b93fc7130480236a483ce1d"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/schema/handoff.json": {
+    "mtime": 1781600782.1416526,
+    "ast_hash": "4cab4e72e3c8be5c099878ed2d574465",
+    "semantic_hash": "4cab4e72e3c8be5c099878ed2d574465"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/schema/skill-invocation-log.json": {
+    "mtime": 1781604129.7409246,
+    "ast_hash": "6d5805198d9ff361219ad72e4f686927",
+    "semantic_hash": "6d5805198d9ff361219ad72e4f686927"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/schema/skill-lifecycle.json": {
+    "mtime": 1781525176.4630463,
+    "ast_hash": "1d20e8cfadd661564658f7bfcd2c8ac4",
+    "semantic_hash": "1d20e8cfadd661564658f7bfcd2c8ac4"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.devcontainer/devcontainer-lock.json": {
+    "mtime": 1781077962.870247,
+    "ast_hash": "776d62d90de0046e391a46dad0f9dd73",
+    "semantic_hash": "776d62d90de0046e391a46dad0f9dd73"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.devcontainer/devcontainer.json": {
+    "mtime": 1781077962.870482,
+    "ast_hash": "ff8c2d974941e3ae492ffcd99a1257ef",
+    "semantic_hash": "ff8c2d974941e3ae492ffcd99a1257ef"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.github/hooks/commit-msg": {
+    "mtime": 1781077962.875119,
+    "ast_hash": "9b9d0705084e99f08a0e2829fd71f3a0",
+    "semantic_hash": "9b9d0705084e99f08a0e2829fd71f3a0"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.github/hooks/pre-push": {
+    "mtime": 1781077962.8753228,
+    "ast_hash": "0d29005cdbfacb6c7ebd903b3a959c1c",
+    "semantic_hash": "0d29005cdbfacb6c7ebd903b3a959c1c"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.markdownlint.json": {
+    "mtime": 1781178667.7996042,
+    "ast_hash": "74567472a5595b58e3de955957dec341",
+    "semantic_hash": "74567472a5595b58e3de955957dec341"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.vscode/settings.json": {
+    "mtime": 1781438749.5403893,
+    "ast_hash": "6814cf2f329c615239f50e3f954c9824",
+    "semantic_hash": "6814cf2f329c615239f50e3f954c9824"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/package.json": {
+    "mtime": 1781077962.8898635,
+    "ast_hash": "42134a79a9b90778b47aa7df871745ee",
+    "semantic_hash": "42134a79a9b90778b47aa7df871745ee"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/scripts/agent-metrics.sh": {
+    "mtime": 1781523833.8005784,
+    "ast_hash": "e5df0576c4be7719f968aba52c794cb0",
+    "semantic_hash": "e5df0576c4be7719f968aba52c794cb0"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/scripts/agent-skill-graph.sh": {
+    "mtime": 1781525172.020191,
+    "ast_hash": "e01364882aa07fd29a10c2cbd02f14c8",
+    "semantic_hash": "e01364882aa07fd29a10c2cbd02f14c8"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/scripts/preflight.sh": {
+    "mtime": 1781077962.890209,
+    "ast_hash": "240ff782740c09d70ac30bf37b154c26",
+    "semantic_hash": "240ff782740c09d70ac30bf37b154c26"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/scripts/setup.sh": {
+    "mtime": 1781077962.890585,
+    "ast_hash": "4b01f36bc1c0462a77f405ee47134f16",
+    "semantic_hash": "4b01f36bc1c0462a77f405ee47134f16"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/scripts/verify.sh": {
+    "mtime": 1781077962.891298,
+    "ast_hash": "02f0ec9371dae997cb2c411428149730",
+    "semantic_hash": "02f0ec9371dae997cb2c411428149730"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/scripts/weekly-metrics.sh": {
+    "mtime": 1781077962.8915908,
+    "ast_hash": "b2fa678a93e8d266ba3e6322d7e35b35",
+    "semantic_hash": "b2fa678a93e8d266ba3e6322d7e35b35"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/templates/tests/acceptance/test_pipeline_acceptance.py": {
+    "mtime": 1781509031.6017525,
+    "ast_hash": "fd2c90caf9e5df0b4a5bac5098fc4a9d",
+    "semantic_hash": "fd2c90caf9e5df0b4a5bac5098fc4a9d"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/templates/tests/integration/test_docker_compose_integration.py": {
+    "mtime": 1781508875.2101085,
+    "ast_hash": "ba51a70bbd96fd8147c5706276565e2a",
+    "semantic_hash": "ba51a70bbd96fd8147c5706276565e2a"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/templates/tests/smoke/test_jenkins_health.py": {
+    "mtime": 1781438685.0657504,
+    "ast_hash": "0f11901f517f93b203d7be47b6bfb309",
+    "semantic_hash": "0f11901f517f93b203d7be47b6bfb309"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/templates/tests/unit/conftest.py": {
+    "mtime": 1781509001.2068112,
+    "ast_hash": "80aad45a707a788812761c637021e2f6",
+    "semantic_hash": "80aad45a707a788812761c637021e2f6"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/templates/tests/unit/test_docker_compose_validation.py": {
+    "mtime": 1781508978.331245,
+    "ast_hash": "faefbf5d4a110a1307646a17a4b425ad",
+    "semantic_hash": "faefbf5d4a110a1307646a17a4b425ad"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/templates/tests/unit/test_jenkinsfile_validation.py": {
+    "mtime": 1781508861.382842,
+    "ast_hash": "bdeac58301f30dfa63bb249f36297899",
+    "semantic_hash": "bdeac58301f30dfa63bb249f36297899"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/templates/tests/unit/test_k8s_validation.py": {
+    "mtime": 1781438655.0279098,
+    "ast_hash": "4a1507c7ebebae2ce6874fb981f81d07",
+    "semantic_hash": "4a1507c7ebebae2ce6874fb981f81d07"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/templates/tests/unit/test_workflow_validation.py": {
+    "mtime": 1781508987.531689,
+    "ast_hash": "56aaeb65da988b4cf5dbb23a22d2a491",
+    "semantic_hash": "56aaeb65da988b4cf5dbb23a22d2a491"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/README.md": {
+    "mtime": 1781604133.0231967,
+    "ast_hash": "577ed1ff868b5a19728765b4c3b747f0",
+    "semantic_hash": "577ed1ff868b5a19728765b4c3b747f0"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/agents/build.md": {
+    "mtime": 1781604133.834712,
+    "ast_hash": "13d2d69a4b285dfb7df5339576e2701e",
+    "semantic_hash": "13d2d69a4b285dfb7df5339576e2701e"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/agents/cross-validation.md": {
+    "mtime": 1781604121.1729982,
+    "ast_hash": "aa934c20f6e5e36f1083c888193c9ed3",
+    "semantic_hash": "aa934c20f6e5e36f1083c888193c9ed3"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/agents/design.md": {
+    "mtime": 1781604134.787658,
+    "ast_hash": "2691ead9d03e14b9d99209e4b7e851bd",
+    "semantic_hash": "2691ead9d03e14b9d99209e4b7e851bd"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/agents/discover.md": {
+    "mtime": 1781678370.006206,
+    "ast_hash": "fa300161a77d0d6bdb7a51d1c4650672",
+    "semantic_hash": "fa300161a77d0d6bdb7a51d1c4650672"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/agents/learn.md": {
+    "mtime": 1781678688.1203418,
+    "ast_hash": "b5d2bd6219894c871eebdcac03bbb68a",
+    "semantic_hash": "b5d2bd6219894c871eebdcac03bbb68a"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/agents/measure.md": {
+    "mtime": 1781678662.3451462,
+    "ast_hash": "7b98e4445f9a2786fc939ecdde845228",
+    "semantic_hash": "7b98e4445f9a2786fc939ecdde845228"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/agents/release.md": {
+    "mtime": 1781678400.2756135,
+    "ast_hash": "63c78f4acd69823471063eff1480c4af",
+    "semantic_hash": "63c78f4acd69823471063eff1480c4af"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/agents/review.md": {
+    "mtime": 1781604134.4251304,
+    "ast_hash": "89b64fa52c10c59af350c25a606ba11e",
+    "semantic_hash": "89b64fa52c10c59af350c25a606ba11e"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/agents/spec.md": {
+    "mtime": 1781604130.5211804,
+    "ast_hash": "1337eef047591b01ffc01d5ce0906ecd",
+    "semantic_hash": "1337eef047591b01ffc01d5ce0906ecd"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/agents/test-execution.md": {
+    "mtime": 1781604133.2014008,
+    "ast_hash": "171c0cc8b327ee25d57b328381741504",
+    "semantic_hash": "171c0cc8b327ee25d57b328381741504"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/agents/test.md": {
+    "mtime": 1781522393.996212,
+    "ast_hash": "35b38128a752b8c710d0907a5fbaa660",
+    "semantic_hash": "35b38128a752b8c710d0907a5fbaa660"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/assertions/minimal-report.yaml": {
+    "mtime": 1781603493.4989085,
+    "ast_hash": "e3a5d5cdd7c8d657c09e1ffbd0192ff0",
+    "semantic_hash": "e3a5d5cdd7c8d657c09e1ffbd0192ff0"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/logs/cross-validation-report.md": {
+    "mtime": 1781604131.815149,
+    "ast_hash": "cb05a081e2d1190da0ea547a1b5215b0",
+    "semantic_hash": "cb05a081e2d1190da0ea547a1b5215b0"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/registry/agent-capabilities.yaml": {
+    "mtime": 1781600848.26933,
+    "ast_hash": "6d9e5e8f2be69fed0030759bcb7760e9",
+    "semantic_hash": "6d9e5e8f2be69fed0030759bcb7760e9"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/registry/cross-validation.yaml": {
+    "mtime": 1781600926.438067,
+    "ast_hash": "d9649b1375ab21da030fc144fdf1a5d4",
+    "semantic_hash": "d9649b1375ab21da030fc144fdf1a5d4"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/registry/skill-lifecycle.yaml": {
+    "mtime": 1781600980.8356724,
+    "ast_hash": "8f6269b4fe3b8b288c502db9d6006b4e",
+    "semantic_hash": "8f6269b4fe3b8b288c502db9d6006b4e"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/AI-policy-lifecycle/SKILL.md": {
+    "mtime": 1781680139.474648,
+    "ast_hash": "a196e320182aaa622402eb705b818d08",
+    "semantic_hash": "a196e320182aaa622402eb705b818d08"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/ROI-reporting/SKILL.md": {
+    "mtime": 1781680138.1069078,
+    "ast_hash": "db18766cea21695e5bdddebd9dccf207",
+    "semantic_hash": "db18766cea21695e5bdddebd9dccf207"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/agent-observability/SKILL.md": {
+    "mtime": 1781604133.2215075,
+    "ast_hash": "4bd27c786700a004253e3bbfdc59bac7",
+    "semantic_hash": "4bd27c786700a004253e3bbfdc59bac7"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/agent-observability/decision-logging/SKILL.md": {
+    "mtime": 1781604132.1689553,
+    "ast_hash": "dd1335d4badbf6cc77fceb995b5321e0",
+    "semantic_hash": "dd1335d4badbf6cc77fceb995b5321e0"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/agent-observability/finding-quality/SKILL.md": {
+    "mtime": 1781604131.9752188,
+    "ast_hash": "2bbe7a0cc608275bde061084c35a17b2",
+    "semantic_hash": "2bbe7a0cc608275bde061084c35a17b2"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/agent-observability/invocation-tracking/SKILL.md": {
+    "mtime": 1781604131.0093205,
+    "ast_hash": "133e5973d0752fe319a8472231c36701",
+    "semantic_hash": "133e5973d0752fe319a8472231c36701"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/agent-observability/skill-load-events/SKILL.md": {
+    "mtime": 1781604129.718511,
+    "ast_hash": "ddae04e89e9742f87a7479306eab7934",
+    "semantic_hash": "ddae04e89e9742f87a7479306eab7934"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/ai-stance/SKILL.md": {
+    "mtime": 1781680140.6500356,
+    "ast_hash": "3e023670a03676da9b85f5a9a24dd8cb",
+    "semantic_hash": "3e023670a03676da9b85f5a9a24dd8cb"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/ai-stance/audit.md": {
+    "mtime": 1781683563.0885465,
+    "ast_hash": "630f418f644bedb7c579cb48475e2684",
+    "semantic_hash": "630f418f644bedb7c579cb48475e2684"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/ai-stance/diff.md": {
+    "mtime": 1781683560.973403,
+    "ast_hash": "286e60db80f59eb97202221ffe2885fd",
+    "semantic_hash": "286e60db80f59eb97202221ffe2885fd"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/ai-stance/template.md": {
+    "mtime": 1781683561.2778842,
+    "ast_hash": "36dd1595680b56a08dbc045dab9e8427",
+    "semantic_hash": "36dd1595680b56a08dbc045dab9e8427"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/context-engineering/SKILL.md": {
+    "mtime": 1781680140.6678703,
+    "ast_hash": "209559017456d219065a784b8161deda",
+    "semantic_hash": "209559017456d219065a784b8161deda"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/context-engineering/audit.md": {
+    "mtime": 1781683563.1834128,
+    "ast_hash": "81818ced257da6b1852f1df6f47cd97b",
+    "semantic_hash": "81818ced257da6b1852f1df6f47cd97b"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/context-engineering/rebuild.md": {
+    "mtime": 1781683562.4604216,
+    "ast_hash": "89a2ef1de14c24376f3999e186e935dc",
+    "semantic_hash": "89a2ef1de14c24376f3999e186e935dc"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/context-engineering/startup.md": {
+    "mtime": 1781683561.659154,
+    "ast_hash": "e9a3206ba830af8fa397bff9942dcec4",
+    "semantic_hash": "e9a3206ba830af8fa397bff9942dcec4"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/cross-validation/SKILL.md": {
+    "mtime": 1781604121.1930475,
+    "ast_hash": "3be248b759ea53f8ef1873bd1d85925f",
+    "semantic_hash": "3be248b759ea53f8ef1873bd1d85925f"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/design/SKILL.md": {
+    "mtime": 1781604132.1429136,
+    "ast_hash": "c04439644918ecc62b41b7824a875d02",
+    "semantic_hash": "c04439644918ecc62b41b7824a875d02"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/design/architecture-decomposition/SKILL.md": {
+    "mtime": 1781604134.2089202,
+    "ast_hash": "1f6a0bd74370d98b8043e91e2067786b",
+    "semantic_hash": "1f6a0bd74370d98b8043e91e2067786b"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/design/component-identification/SKILL.md": {
+    "mtime": 1781604131.7391396,
+    "ast_hash": "355df72b205c2601793b6e8de072b7eb",
+    "semantic_hash": "355df72b205c2601793b6e8de072b7eb"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/design/interface-definition/SKILL.md": {
+    "mtime": 1781604133.034979,
+    "ast_hash": "02d80dd7547fb38a0269722a424765a2",
+    "semantic_hash": "02d80dd7547fb38a0269722a424765a2"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/design/k8s-design-validation/SKILL.md": {
+    "mtime": 1781604130.131992,
+    "ast_hash": "d232674965c0d92eca2ce67e72c23cac",
+    "semantic_hash": "d232674965c0d92eca2ce67e72c23cac"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/dev-experience/SKILL.md": {
+    "mtime": 1781604133.699301,
+    "ast_hash": "13a98b77e1406dc32fa5899ecb3573d6",
+    "semantic_hash": "13a98b77e1406dc32fa5899ecb3573d6"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/dev-experience/cli-scaffolding/SKILL.md": {
+    "mtime": 1781604134.2074628,
+    "ast_hash": "014763912bf4c8015068f3081b4430ea",
+    "semantic_hash": "014763912bf4c8015068f3081b4430ea"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/dev-experience/cli-scaffolding/cli-ux/SKILL.md": {
+    "mtime": 1781604133.3786373,
+    "ast_hash": "73df01acfa722daf82130852a5a5914f",
+    "semantic_hash": "73df01acfa722daf82130852a5a5914f"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/dev-experience/cli-scaffolding/template-scaffolding/SKILL.md": {
+    "mtime": 1781604129.8650937,
+    "ast_hash": "ebf021ace044a0bb7621270ad677fbf5",
+    "semantic_hash": "ebf021ace044a0bb7621270ad677fbf5"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/dev-experience/dev-container-setup/SKILL.md": {
+    "mtime": 1781604130.703456,
+    "ast_hash": "1606f57b70e2fb8fd7c856459834022a",
+    "semantic_hash": "1606f57b70e2fb8fd7c856459834022a"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/dev-experience/dev-container-setup/coder-validation/SKILL.md": {
+    "mtime": 1781604133.9932022,
+    "ast_hash": "13a2ba1b3dfdf9932d87c57ea86fe55f",
+    "semantic_hash": "13a2ba1b3dfdf9932d87c57ea86fe55f"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/dev-experience/dev-container-setup/toolchain-validation/SKILL.md": {
+    "mtime": 1781604133.7196507,
+    "ast_hash": "176c4a8318da87b09330d01fd5b86e1d",
+    "semantic_hash": "176c4a8318da87b09330d01fd5b86e1d"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/dev-experience/local-environment-simulation/SKILL.md": {
+    "mtime": 1781604133.5013494,
+    "ast_hash": "c60a425080e987de42015462416c93fb",
+    "semantic_hash": "c60a425080e987de42015462416c93fb"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/dev-experience/local-environment-simulation/cluster-sim/SKILL.md": {
+    "mtime": 1781604132.5391343,
+    "ast_hash": "aa71bea3aee5e46d949493152653f0ea",
+    "semantic_hash": "aa71bea3aee5e46d949493152653f0ea"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/dev-experience/local-environment-simulation/gitops-sim/SKILL.md": {
+    "mtime": 1781604130.614911,
+    "ast_hash": "4df09d208808060ee2098cdd4c85c9be",
+    "semantic_hash": "4df09d208808060ee2098cdd4c85c9be"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/dev-experience/workspace-bootstrap/SKILL.md": {
+    "mtime": 1781604131.8550644,
+    "ast_hash": "162a5fd52a80bbc8c3e77c96d7fcceff",
+    "semantic_hash": "162a5fd52a80bbc8c3e77c96d7fcceff"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/dev-experience/workspace-bootstrap/dependencies/SKILL.md": {
+    "mtime": 1781604133.1357193,
+    "ast_hash": "869c7894e32baf8b878d6c576c97448c",
+    "semantic_hash": "869c7894e32baf8b878d6c576c97448c"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/dev-experience/workspace-bootstrap/env-generation/SKILL.md": {
+    "mtime": 1781604130.987496,
+    "ast_hash": "65448c89c1d55ec984a22f0bde459168",
+    "semantic_hash": "65448c89c1d55ec984a22f0bde459168"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/discovery-advanced/SKILL.md": {
+    "mtime": 1781680138.9788191,
+    "ast_hash": "4c2141913d724927b1bc22721e3fdd1d",
+    "semantic_hash": "4c2141913d724927b1bc22721e3fdd1d"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/discovery/SKILL.md": {
+    "mtime": 1781680139.9554572,
+    "ast_hash": "beb8885de3779610d15ae4ba24c6028c",
+    "semantic_hash": "beb8885de3779610d15ae4ba24c6028c"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/discovery/assumption-test.md": {
+    "mtime": 1781683563.9251227,
+    "ast_hash": "d05e76d7f47a4900cd9c8987f9e89974",
+    "semantic_hash": "d05e76d7f47a4900cd9c8987f9e89974"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/discovery/persona-deep-dive.md": {
+    "mtime": 1781683561.2941263,
+    "ast_hash": "c94c35c2e17664f03428be8b28d7677a",
+    "semantic_hash": "c94c35c2e17664f03428be8b28d7677a"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/discovery/prior-art-search.md": {
+    "mtime": 1781683564.0501046,
+    "ast_hash": "8f2fc2de0a5ac3983ebad0fad5bdadaa",
+    "semantic_hash": "8f2fc2de0a5ac3983ebad0fad5bdadaa"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/documentation/SKILL.md": {
+    "mtime": 1781680138.6461565,
+    "ast_hash": "2a04d8460bcc34c4a8522100f4c24331",
+    "semantic_hash": "2a04d8460bcc34c4a8522100f4c24331"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/documentation/audit.md": {
+    "mtime": 1781683564.1715808,
+    "ast_hash": "fb196911f98972e414726f4d14f13f5c",
+    "semantic_hash": "fb196911f98972e414726f4d14f13f5c"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/documentation/ci-integration.md": {
+    "mtime": 1781683560.8541431,
+    "ast_hash": "92aa2ac3f1c52af05268dcaafaeb51d6",
+    "semantic_hash": "92aa2ac3f1c52af05268dcaafaeb51d6"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/documentation/cross-repo-links.md": {
+    "mtime": 1781683561.582095,
+    "ast_hash": "112fe24492682d3b486a79f07d5e6303",
+    "semantic_hash": "112fe24492682d3b486a79f07d5e6303"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/documentation/suite-audit.md": {
+    "mtime": 1781683562.4945488,
+    "ast_hash": "d38ec3cea8d0b689888f4fc3caac27a1",
+    "semantic_hash": "d38ec3cea8d0b689888f4fc3caac27a1"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/dojo-content/SKILL.md": {
+    "mtime": 1781681464.930319,
+    "ast_hash": "52d71137af8b28e928f65c1fbc8f586a",
+    "semantic_hash": "52d71137af8b28e928f65c1fbc8f586a"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/dojo-content/audit.md": {
+    "mtime": 1781683561.8049958,
+    "ast_hash": "c8d1ee5ff99c1cc78cbe13bdfaa6016a",
+    "semantic_hash": "c8d1ee5ff99c1cc78cbe13bdfaa6016a"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/dojo-content/lab-verify.md": {
+    "mtime": 1781683561.5496757,
+    "ast_hash": "bf20dde9c968a58f456c8135f193b312",
+    "semantic_hash": "bf20dde9c968a58f456c8135f193b312"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/dora-measurement/SKILL.md": {
+    "mtime": 1781680137.9501333,
+    "ast_hash": "916db02717cab633e9b1213cff65e952",
+    "semantic_hash": "916db02717cab633e9b1213cff65e952"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/e2e-testing/e2e-deployment-validation/SKILL.md": {
+    "mtime": 1781604130.5313933,
+    "ast_hash": "e9ffc2921f6ac1f149d92f0c8e4d4320",
+    "semantic_hash": "e9ffc2921f6ac1f149d92f0c8e4d4320"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/e2e-testing/e2e-deployment-validation/rollout/SKILL.md": {
+    "mtime": 1781604132.0068643,
+    "ast_hash": "ad54f59194f362f700e43d3ae1d234b4",
+    "semantic_hash": "ad54f59194f362f700e43d3ae1d234b4"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/e2e-testing/e2e-deployment-validation/telemetry/SKILL.md": {
+    "mtime": 1781604134.1919851,
+    "ast_hash": "769df6d0b788d2935081da9b766df7f1",
+    "semantic_hash": "769df6d0b788d2935081da9b766df7f1"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/e2e-testing/e2e-failure-paths/SKILL.md": {
+    "mtime": 1781604131.3370678,
+    "ast_hash": "96d4397381e59442f0e84f3df1c4934f",
+    "semantic_hash": "96d4397381e59442f0e84f3df1c4934f"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/e2e-testing/e2e-failure-paths/manifest-protection/SKILL.md": {
+    "mtime": 1781604133.6882243,
+    "ast_hash": "178aa287ed4bb91acb24cb072339be07",
+    "semantic_hash": "178aa287ed4bb91acb24cb072339be07"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/e2e-testing/e2e-failure-paths/pipeline-failures/SKILL.md": {
+    "mtime": 1781604131.2168157,
+    "ast_hash": "2cbccb16e01f13031b1e6b8f778368fd",
+    "semantic_hash": "2cbccb16e01f13031b1e6b8f778368fd"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/e2e-testing/e2e-happy-path/SKILL.md": {
+    "mtime": 1781604131.3398776,
+    "ast_hash": "c63ee1be40290b5168f5bf55db38c151",
+    "semantic_hash": "c63ee1be40290b5168f5bf55db38c151"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/e2e-testing/e2e-happy-path/pipeline-execution/SKILL.md": {
+    "mtime": 1781604132.5467637,
+    "ast_hash": "3dc8a61a5648a633eb43f80f2f85961a",
+    "semantic_hash": "3dc8a61a5648a633eb43f80f2f85961a"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/e2e-testing/e2e-happy-path/smoke-tests/SKILL.md": {
+    "mtime": 1781604131.0090115,
+    "ast_hash": "0767c0a63b024e3dea879335704cb4b8",
+    "semantic_hash": "0767c0a63b024e3dea879335704cb4b8"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/e2e-testing/e2e-rollback/SKILL.md": {
+    "mtime": 1781604131.2313116,
+    "ast_hash": "cbd94864733baa42cbe66886d399119f",
+    "semantic_hash": "cbd94864733baa42cbe66886d399119f"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/e2e-testing/e2e-rollback/state-validation/SKILL.md": {
+    "mtime": 1781508256.521619,
+    "ast_hash": "00a06323100473a11974d57b6ddec5ac",
+    "semantic_hash": "00a06323100473a11974d57b6ddec5ac"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/e2e-testing/e2e-rollback/trigger/SKILL.md": {
+    "mtime": 1781604131.167525,
+    "ast_hash": "d927ad93dc7b042c1a343526ad24850d",
+    "semantic_hash": "d927ad93dc7b042c1a343526ad24850d"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/integration-testing/full-stack/SKILL.md": {
+    "mtime": 1781604132.6465268,
+    "ast_hash": "370e79ebcf3c36fb1c725b2605ce991d",
+    "semantic_hash": "370e79ebcf3c36fb1c725b2605ce991d"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/integration-testing/full-stack/cluster-state/SKILL.md": {
+    "mtime": 1781508121.147144,
+    "ast_hash": "d2c9e71cb82a945001aac348829cf856",
+    "semantic_hash": "d2c9e71cb82a945001aac348829cf856"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/integration-testing/full-stack/smoke-tests/SKILL.md": {
+    "mtime": 1781604132.4323776,
+    "ast_hash": "97fdbc9de583f6eecb0459d577e208cd",
+    "semantic_hash": "97fdbc9de583f6eecb0459d577e208cd"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/integration-testing/gitops-to-controller/SKILL.md": {
+    "mtime": 1781604133.190068,
+    "ast_hash": "333955135f4ace0bdcc9707186d6f6b4",
+    "semantic_hash": "333955135f4ace0bdcc9707186d6f6b4"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/integration-testing/gitops-to-controller/argo/SKILL.md": {
+    "mtime": 1781508111.2971134,
+    "ast_hash": "3bba544d2a940622aa5a0925690b2b6c",
+    "semantic_hash": "3bba544d2a940622aa5a0925690b2b6c"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/integration-testing/gitops-to-controller/flux/SKILL.md": {
+    "mtime": 1781508105.952399,
+    "ast_hash": "01d308d7a0e00d3a22cfbb21562a9553",
+    "semantic_hash": "01d308d7a0e00d3a22cfbb21562a9553"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/integration-testing/obs-to-gitops/SKILL.md": {
+    "mtime": 1781604134.5516636,
+    "ast_hash": "dd26b6e7bec6284b43b350798ce3531a",
+    "semantic_hash": "dd26b6e7bec6284b43b350798ce3531a"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/integration-testing/obs-to-gitops/commit-validation/SKILL.md": {
+    "mtime": 1781508097.879084,
+    "ast_hash": "05934216dfcc8950a1b087d4f05f4733",
+    "semantic_hash": "05934216dfcc8950a1b087d4f05f4733"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/integration-testing/obs-to-gitops/overlay-resolution/SKILL.md": {
+    "mtime": 1781604093.596428,
+    "ast_hash": "9d30405f4b12ca3e81f507ca25ef8d89",
+    "semantic_hash": "9d30405f4b12ca3e81f507ca25ef8d89"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/integration-testing/pipe-to-obs/SKILL.md": {
+    "mtime": 1781604130.8957076,
+    "ast_hash": "3616cf7164906910ed0d66d72e145c24",
+    "semantic_hash": "3616cf7164906910ed0d66d72e145c24"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/integration-testing/pipe-to-obs/artifact-flow/SKILL.md": {
+    "mtime": 1781604131.0939097,
+    "ast_hash": "f018abca66ed98961c9d7f4c1ce36e4d",
+    "semantic_hash": "f018abca66ed98961c9d7f4c1ce36e4d"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/integration-testing/pipe-to-obs/manifest-update/SKILL.md": {
+    "mtime": 1781604131.4789495,
+    "ast_hash": "6ec38d552b858d955ed105213e153f68",
+    "semantic_hash": "6ec38d552b858d955ed105213e153f68"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/lang-go/SKILL.md": {
+    "mtime": 1781438749.5248737,
+    "ast_hash": "30b4faa54582993677d2b521362eeb7d",
+    "semantic_hash": "30b4faa54582993677d2b521362eeb7d"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/lang-python/SKILL.md": {
+    "mtime": 1781438749.5254755,
+    "ast_hash": "454acebb68130b84bf922532763f3b46",
+    "semantic_hash": "454acebb68130b84bf922532763f3b46"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/lang-typescript/SKILL.md": {
+    "mtime": 1781438749.526029,
+    "ast_hash": "39ecd2c72f0e7861f00843465c24229e",
+    "semantic_hash": "39ecd2c72f0e7861f00843465c24229e"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/model-routing/SKILL.md": {
+    "mtime": 1781604133.597515,
+    "ast_hash": "2ec55214c218fc500dc20802a8bae881",
+    "semantic_hash": "2ec55214c218fc500dc20802a8bae881"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/plan/SKILL.md": {
+    "mtime": 1781604134.892942,
+    "ast_hash": "d49673b32ecdd7c00142feb227e9853a",
+    "semantic_hash": "d49673b32ecdd7c00142feb227e9853a"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/plan/dependency-mapping/SKILL.md": {
+    "mtime": 1781604132.662561,
+    "ast_hash": "a79860db51e67b0f343198f42ce15b40",
+    "semantic_hash": "a79860db51e67b0f343198f42ce15b40"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/plan/effort-estimation/SKILL.md": {
+    "mtime": 1781604133.3626785,
+    "ast_hash": "9f79aef50689f4da7846ad6dd6ec36d0",
+    "semantic_hash": "9f79aef50689f4da7846ad6dd6ec36d0"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/plan/governance-alignment/SKILL.md": {
+    "mtime": 1781504926.1437552,
+    "ast_hash": "cd849c9125b7a69119e7c651a233fef5",
+    "semantic_hash": "cd849c9125b7a69119e7c651a233fef5"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/plan/risk-identification/SKILL.md": {
+    "mtime": 1781504919.5968714,
+    "ast_hash": "5299116df2b59afa8a3349b2cad04c58",
+    "semantic_hash": "5299116df2b59afa8a3349b2cad04c58"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/plan/skill-matching/SKILL.md": {
+    "mtime": 1781604131.6594744,
+    "ast_hash": "debe1cc85c67f30e2d09621bdc65335b",
+    "semantic_hash": "debe1cc85c67f30e2d09621bdc65335b"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/plan/task-decomposition/SKILL.md": {
+    "mtime": 1781604131.999097,
+    "ast_hash": "944dabb1dbc617d7d7459f0974955d25",
+    "semantic_hash": "944dabb1dbc617d7d7459f0974955d25"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/platform-feedback/SKILL.md": {
+    "mtime": 1781680140.0563784,
+    "ast_hash": "c66dd8fa9a83c768b5eb9de25c4201be",
+    "semantic_hash": "c66dd8fa9a83c768b5eb9de25c4201be"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/release/SKILL.md": {
+    "mtime": 1781680138.588932,
+    "ast_hash": "5ffaf0316e81891eca60ab9691b52e0e",
+    "semantic_hash": "5ffaf0316e81891eca60ab9691b52e0e"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/review/SKILL.md": {
+    "mtime": 1781604133.8176005,
+    "ast_hash": "d5e86fa46f28a3253daab752fea435c7",
+    "semantic_hash": "d5e86fa46f28a3253daab752fea435c7"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/review/acceptance-criteria/SKILL.md": {
+    "mtime": 1781604130.9725575,
+    "ast_hash": "37037ffb2c90f598af8d53cad6c271dc",
+    "semantic_hash": "37037ffb2c90f598af8d53cad6c271dc"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/review/code-quality/SKILL.md": {
+    "mtime": 1781604134.8549702,
+    "ast_hash": "954c77b921858cc2258d85b8df6a325d",
+    "semantic_hash": "954c77b921858cc2258d85b8df6a325d"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/review/design-compliance/SKILL.md": {
+    "mtime": 1781505291.6057298,
+    "ast_hash": "6053d368d0af75ec13dfdb65f2d9416e",
+    "semantic_hash": "6053d368d0af75ec13dfdb65f2d9416e"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/review/gitops-overlay/SKILL.md": {
+    "mtime": 1781505326.0889528,
+    "ast_hash": "7d9bb73cc6da335caa3dac4567da4330",
+    "semantic_hash": "7d9bb73cc6da335caa3dac4567da4330"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/review/k8s-policy/SKILL.md": {
+    "mtime": 1781505319.288874,
+    "ast_hash": "5078d4136e3b96a5f541aa18d97126f0",
+    "semantic_hash": "5078d4136e3b96a5f541aa18d97126f0"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/review/pipeline-policy/SKILL.md": {
+    "mtime": 1781505312.986179,
+    "ast_hash": "9bd2f32c18e57d2ca224ea4684d9cc4b",
+    "semantic_hash": "9bd2f32c18e57d2ca224ea4684d9cc4b"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/review/policy-validation/SKILL.md": {
+    "mtime": 1781505342.839198,
+    "ast_hash": "afea56fa6774bcfc8c664188d99a8dec",
+    "semantic_hash": "afea56fa6774bcfc8c664188d99a8dec"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/review/secret-governance/SKILL.md": {
+    "mtime": 1781505337.9619222,
+    "ast_hash": "7b9b8b2cccb5fa20c0eae8c90932dec7",
+    "semantic_hash": "7b9b8b2cccb5fa20c0eae8c90932dec7"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/review/security-rbac/SKILL.md": {
+    "mtime": 1781505332.1855621,
+    "ast_hash": "53b3b2073003d356bf01e2eece7b1642",
+    "semantic_hash": "53b3b2073003d356bf01e2eece7b1642"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/review/spec-compliance/SKILL.md": {
+    "mtime": 1781505287.0932968,
+    "ast_hash": "1c992802eb5e5f37b130aac7db1de61e",
+    "semantic_hash": "1c992802eb5e5f37b130aac7db1de61e"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/security-testing/container-security/SKILL.md": {
+    "mtime": 1781604130.8577929,
+    "ast_hash": "f41c72ad1e40e819962d9ca9328ed80b",
+    "semantic_hash": "f41c72ad1e40e819962d9ca9328ed80b"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/security-testing/container-security/signature/SKILL.md": {
+    "mtime": 1781604132.2848206,
+    "ast_hash": "914716257397321047198f3203469f16",
+    "semantic_hash": "914716257397321047198f3203469f16"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/security-testing/container-security/vuln-scan/SKILL.md": {
+    "mtime": 1781604130.768649,
+    "ast_hash": "0ece8c875fe897d50afcc0d835fdbdb4",
+    "semantic_hash": "0ece8c875fe897d50afcc0d835fdbdb4"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/security-testing/dependency-scanning/SKILL.md": {
+    "mtime": 1781604131.7522502,
+    "ast_hash": "795ac9da1808f938544ceffcd0e7077f",
+    "semantic_hash": "795ac9da1808f938544ceffcd0e7077f"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/security-testing/dependency-scanning/npm/SKILL.md": {
+    "mtime": 1781604130.0712638,
+    "ast_hash": "398ba88b9b449b6b5da6f1ce5cd1c8e2",
+    "semantic_hash": "398ba88b9b449b6b5da6f1ce5cd1c8e2"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/security-testing/dependency-scanning/sbom/SKILL.md": {
+    "mtime": 1781604132.718574,
+    "ast_hash": "24752483ed1f03cecc587bb657b4363a",
+    "semantic_hash": "24752483ed1f03cecc587bb657b4363a"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/security-testing/sast/SKILL.md": {
+    "mtime": 1781604131.5901053,
+    "ast_hash": "518d27f8ad0ca1ee4d5011275e21dec1",
+    "semantic_hash": "518d27f8ad0ca1ee4d5011275e21dec1"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/security-testing/sast/codeql/SKILL.md": {
+    "mtime": 1781604132.207002,
+    "ast_hash": "d195771a9bf96d51d7b7ea8973ebd7e1",
+    "semantic_hash": "d195771a9bf96d51d7b7ea8973ebd7e1"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/security-testing/sast/semgrep/SKILL.md": {
+    "mtime": 1781604134.1506355,
+    "ast_hash": "f302dc03d227ed8d3c4e669b92ee786d",
+    "semantic_hash": "f302dc03d227ed8d3c4e669b92ee786d"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/security-testing/secret-detection/SKILL.md": {
+    "mtime": 1781604134.151827,
+    "ast_hash": "1a66e62ac2f64c337380ea0475ccb198",
+    "semantic_hash": "1a66e62ac2f64c337380ea0475ccb198"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/security-testing/secret-detection/gitleaks/SKILL.md": {
+    "mtime": 1781507628.6622334,
+    "ast_hash": "5aa6d585fce9109970970b3ddc0558e8",
+    "semantic_hash": "5aa6d585fce9109970970b3ddc0558e8"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/security-testing/secret-detection/integrity/SKILL.md": {
+    "mtime": 1781604132.3249297,
+    "ast_hash": "58e82cfd4cca9e6c9d11b0e6f1803cd5",
+    "semantic_hash": "58e82cfd4cca9e6c9d11b0e6f1803cd5"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/spec/SKILL.md": {
+    "mtime": 1781604134.3881738,
+    "ast_hash": "ae1e347b8f2faa3cfd79268421d3925d",
+    "semantic_hash": "ae1e347b8f2faa3cfd79268421d3925d"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/spec/acceptance-criteria/SKILL.md": {
+    "mtime": 1781604131.04206,
+    "ast_hash": "8091cef826fb1c5924da6cb453e811c5",
+    "semantic_hash": "8091cef826fb1c5924da6cb453e811c5"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/spec/k8s-policy/SKILL.md": {
+    "mtime": 1781505483.9218028,
+    "ast_hash": "f7072f0322342689b8b06be17508985c",
+    "semantic_hash": "f7072f0322342689b8b06be17508985c"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/spec/pipeline-policy/SKILL.md": {
+    "mtime": 1781505470.2360585,
+    "ast_hash": "525a40897bd3cc3b6eb792eb86fd57a3",
+    "semantic_hash": "525a40897bd3cc3b6eb792eb86fd57a3"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/spec/policy-validation/SKILL.md": {
+    "mtime": 1781505465.4891517,
+    "ast_hash": "e13723853a9661cc714e26528a5cc44a",
+    "semantic_hash": "e13723853a9661cc714e26528a5cc44a"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/spec/requirements-extraction/SKILL.md": {
+    "mtime": 1781505453.0690794,
+    "ast_hash": "9ae662ad262f781ce6288bff06b2aecc",
+    "semantic_hash": "9ae662ad262f781ce6288bff06b2aecc"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/spec/template-governance/SKILL.md": {
+    "mtime": 1781604132.4195795,
+    "ast_hash": "31ee96bbe6645b5526343be894771cea",
+    "semantic_hash": "31ee96bbe6645b5526343be894771cea"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/test-execution/SKILL.md": {
+    "mtime": 1781604133.653201,
+    "ast_hash": "a25c781aaa6fc04a96a1dfcab37df945",
+    "semantic_hash": "a25c781aaa6fc04a96a1dfcab37df945"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/test-execution/e2e-test-execution/SKILL.md": {
+    "mtime": 1781604132.442923,
+    "ast_hash": "e35da9efbd50923d93235076cf0a0df9",
+    "semantic_hash": "e35da9efbd50923d93235076cf0a0df9"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/test-execution/integration-test-execution/SKILL.md": {
+    "mtime": 1781604133.9978864,
+    "ast_hash": "509a8a6fee3a70ccbc6581d040453915",
+    "semantic_hash": "509a8a6fee3a70ccbc6581d040453915"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/test-execution/performance-smoke-testing/SKILL.md": {
+    "mtime": 1781604133.537761,
+    "ast_hash": "af85d8c8e36f6df704920830d9b6253e",
+    "semantic_hash": "af85d8c8e36f6df704920830d9b6253e"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/test-execution/pipeline-test-stage-validation/SKILL.md": {
+    "mtime": 1781604131.0200036,
+    "ast_hash": "3af9cf0cdaaed27477a01676a9994709",
+    "semantic_hash": "3af9cf0cdaaed27477a01676a9994709"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/test-execution/runtime-simulation-validation/SKILL.md": {
+    "mtime": 1781604132.895148,
+    "ast_hash": "0a4dcacb3b864679b39a541d08e6ea32",
+    "semantic_hash": "0a4dcacb3b864679b39a541d08e6ea32"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/test-execution/test-coverage-validation/SKILL.md": {
+    "mtime": 1781604133.0054324,
+    "ast_hash": "60bb73e54fce2b1b1e24892499836cf4",
+    "semantic_hash": "60bb73e54fce2b1b1e24892499836cf4"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/test-execution/unit-test-execution/SKILL.md": {
+    "mtime": 1781604132.2633216,
+    "ast_hash": "f7b6a260ea7956b5f3b84cca521bd447",
+    "semantic_hash": "f7b6a260ea7956b5f3b84cca521bd447"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/test/SKILL.md": {
+    "mtime": 1781604131.7838926,
+    "ast_hash": "b0da4dc92c5d02d084bcd0a2887a654d",
+    "semantic_hash": "b0da4dc92c5d02d084bcd0a2887a654d"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/token-budget/SKILL.md": {
+    "mtime": 1781438749.5311146,
+    "ast_hash": "f60541aec6b49968bf89ea0e3702130c",
+    "semantic_hash": "f60541aec6b49968bf89ea0e3702130c"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/unit-testing/unit-contracts/SKILL.md": {
+    "mtime": 1781604133.8303452,
+    "ast_hash": "63adf3ad616d5e38a028d234a98a863e",
+    "semantic_hash": "63adf3ad616d5e38a028d234a98a863e"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/unit-testing/unit-core-logic/SKILL.md": {
+    "mtime": 1781604132.2519145,
+    "ast_hash": "f98b1f13e3a73105cca17a7265e74e61",
+    "semantic_hash": "f98b1f13e3a73105cca17a7265e74e61"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/unit-testing/unit-error-handling/SKILL.md": {
+    "mtime": 1781604132.3918455,
+    "ast_hash": "5dca809c43a92f9fa8f1cf186b9b01c1",
+    "semantic_hash": "5dca809c43a92f9fa8f1cf186b9b01c1"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/unit-testing/unit-mocking/SKILL.md": {
+    "mtime": 1781604131.9276156,
+    "ast_hash": "6be5663bb56538266cc7713f87314a6c",
+    "semantic_hash": "6be5663bb56538266cc7713f87314a6c"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/skills/value-stream-mapping/SKILL.md": {
+    "mtime": 1781680139.4688702,
+    "ast_hash": "6e62fe04e5ae9d6fceab53b8f9f83b1b",
+    "semantic_hash": "6e62fe04e5ae9d6fceab53b8f9f83b1b"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.cursor/rules/AGENTS.md": {
+    "mtime": 1781680133.1787145,
+    "ast_hash": "521a1a794b82963b55cfa38be89f9e4d",
+    "semantic_hash": "521a1a794b82963b55cfa38be89f9e4d"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.github/FUNDING.yml": {
+    "mtime": 1781077962.8715289,
+    "ast_hash": "d23367985a1e5ffabe76f4bd912b58f3",
+    "semantic_hash": "d23367985a1e5ffabe76f4bd912b58f3"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.github/ISSUE_TEMPLATE/bug.yml": {
+    "mtime": 1781438749.5318441,
+    "ast_hash": "5bccebe6565b0bd88abdef19bfcd24c7",
+    "semantic_hash": "5bccebe6565b0bd88abdef19bfcd24c7"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.github/ISSUE_TEMPLATE/bug_report.yml": {
+    "mtime": 1781077962.8720841,
+    "ast_hash": "c5cb0d293ebbd2fc32307d0580a3bfbd",
+    "semantic_hash": "c5cb0d293ebbd2fc32307d0580a3bfbd"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.github/ISSUE_TEMPLATE/dojo-module.yml": {
+    "mtime": 1781077962.8723452,
+    "ast_hash": "6fc4c133284332bd8aa23d1860813198",
+    "semantic_hash": "6fc4c133284332bd8aa23d1860813198"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.github/ISSUE_TEMPLATE/feature.yml": {
+    "mtime": 1781077962.872616,
+    "ast_hash": "7b5883ae8cc867011e732c03c5193277",
+    "semantic_hash": "7b5883ae8cc867011e732c03c5193277"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.github/ISSUE_TEMPLATE/new_prompt.yml": {
+    "mtime": 1781077962.8730414,
+    "ast_hash": "b5055fc9749c5798710aa0b2a9ee36d9",
+    "semantic_hash": "b5055fc9749c5798710aa0b2a9ee36d9"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.github/PULL_REQUEST_TEMPLATE.md": {
+    "mtime": 1781438749.5324829,
+    "ast_hash": "d1c8f30a9044f0c8504fb3042b21261e",
+    "semantic_hash": "d1c8f30a9044f0c8504fb3042b21261e"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.github/copilot-instructions.md": {
+    "mtime": 1781680133.1787145,
+    "ast_hash": "521a1a794b82963b55cfa38be89f9e4d",
+    "semantic_hash": "521a1a794b82963b55cfa38be89f9e4d"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.github/dependabot.yml": {
+    "mtime": 1781077962.8748486,
+    "ast_hash": "98864b8f68fccb0d4fd4087d82064c4f",
+    "semantic_hash": "98864b8f68fccb0d4fd4087d82064c4f"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.github/instructions/feature.instructions.md": {
+    "mtime": 1781438749.5330274,
+    "ast_hash": "78643ee2bac367d1a63d7bb18dcb23e9",
+    "semantic_hash": "78643ee2bac367d1a63d7bb18dcb23e9"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.github/instructions/testing.instructions.md": {
+    "mtime": 1781438749.5335343,
+    "ast_hash": "c4aa73c7ceff25a8d5d7721a43f5f59d",
+    "semantic_hash": "c4aa73c7ceff25a8d5d7721a43f5f59d"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.github/workflows/ci-quality.yml": {
+    "mtime": 1781438749.5362232,
+    "ast_hash": "4d3dc203a8cc6009815a605f9554503c",
+    "semantic_hash": "4d3dc203a8cc6009815a605f9554503c"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.github/workflows/ci.yml": {
+    "mtime": 1781438749.5370271,
+    "ast_hash": "48025df60c19f6b7f65f1e67d9abab93",
+    "semantic_hash": "48025df60c19f6b7f65f1e67d9abab93"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.github/workflows/dependency-review.yml": {
+    "mtime": 1781077962.8804154,
+    "ast_hash": "263897a802c89b732bda5b03c5975de1",
+    "semantic_hash": "263897a802c89b732bda5b03c5975de1"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.github/workflows/doc-freshness.yml": {
+    "mtime": 1781438749.537815,
+    "ast_hash": "6f6e3bdf66aba295d099850a73893a7f",
+    "semantic_hash": "6f6e3bdf66aba295d099850a73893a7f"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.github/workflows/reusable-lint.yml": {
+    "mtime": 1781438749.5383976,
+    "ast_hash": "00334425e8ef46f6ae427108408c5ad8",
+    "semantic_hash": "00334425e8ef46f6ae427108408c5ad8"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.github/workflows/reusable-preflight.yml": {
+    "mtime": 1781604590.796804,
+    "ast_hash": "2973b33e0d426a1f56ffa7852efe5df2",
+    "semantic_hash": "2973b33e0d426a1f56ffa7852efe5df2"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.pipeline.yml": {
+    "mtime": 1781438749.5396738,
+    "ast_hash": "da5daa65caa5582bb7d3d78d64feacaf",
+    "semantic_hash": "da5daa65caa5582bb7d3d78d64feacaf"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.pre-commit-config.yaml": {
+    "mtime": 1781178667.8004425,
+    "ast_hash": "af1058d5f129a5146b7b06c0458cb8dc",
+    "semantic_hash": "af1058d5f129a5146b7b06c0458cb8dc"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/AGENTS.md": {
+    "mtime": 1781680133.1787145,
+    "ast_hash": "521a1a794b82963b55cfa38be89f9e4d",
+    "semantic_hash": "521a1a794b82963b55cfa38be89f9e4d"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/CHANGELOG.md": {
+    "mtime": 1781438749.5421832,
+    "ast_hash": "ee303f69b1ac50ed39ef5e5683ae4c2e",
+    "semantic_hash": "ee303f69b1ac50ed39ef5e5683ae4c2e"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/CLAUDE.md": {
+    "mtime": 1781680133.1787145,
+    "ast_hash": "521a1a794b82963b55cfa38be89f9e4d",
+    "semantic_hash": "521a1a794b82963b55cfa38be89f9e4d"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/CONTRIBUTING.md": {
+    "mtime": 1781438749.5431306,
+    "ast_hash": "9772d42520291aadd430a91ffed002c4",
+    "semantic_hash": "9772d42520291aadd430a91ffed002c4"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/README.md": {
+    "mtime": 1781438749.5441113,
+    "ast_hash": "7702767a424b5a223fcb4fc18a935579",
+    "semantic_hash": "7702767a424b5a223fcb4fc18a935579"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/SECURITY.md": {
+    "mtime": 1781438749.5450227,
+    "ast_hash": "479bc21e14a736634c393a0081cbef8f",
+    "semantic_hash": "479bc21e14a736634c393a0081cbef8f"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/TEMPLATE-DESIGN.md": {
+    "mtime": 1781438749.5459685,
+    "ast_hash": "f60a27d896fffc48d283ef722a5daa34",
+    "semantic_hash": "f60a27d896fffc48d283ef722a5daa34"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/docs/AGENT_METRICS.md": {
+    "mtime": 1781604130.4109573,
+    "ast_hash": "9ccd7b24a9c3169882ac06e943b180d9",
+    "semantic_hash": "9ccd7b24a9c3169882ac06e943b180d9"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/docs/AGENT_TELEMETRY.md": {
+    "mtime": 1781604134.981191,
+    "ast_hash": "f6854ae725be929c195659d9be70df3c",
+    "semantic_hash": "f6854ae725be929c195659d9be70df3c"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/docs/AI_POLICY.md": {
+    "mtime": 1781438749.5468192,
+    "ast_hash": "ab421cd928dde53dbaf30a62a114d47b",
+    "semantic_hash": "ab421cd928dde53dbaf30a62a114d47b"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/docs/API_SURFACE.md": {
+    "mtime": 1781438749.5475614,
+    "ast_hash": "f22b66ece203d2ff96db30135064fc6d",
+    "semantic_hash": "f22b66ece203d2ff96db30135064fc6d"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/docs/CHANGE_IMPACT_MAP.md": {
+    "mtime": 1781438749.5484114,
+    "ast_hash": "29c8c45ebd2a3140fd99f7fcc77bfb3e",
+    "semantic_hash": "29c8c45ebd2a3140fd99f7fcc77bfb3e"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/docs/COPILOT_BILLING_HANDOFF_PROMPT.md": {
+    "mtime": 1781438749.549282,
+    "ast_hash": "cac3d5ead774729e7528f7694dbfbd9e",
+    "semantic_hash": "cac3d5ead774729e7528f7694dbfbd9e"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/docs/COPILOT_BILLING_HANDOFF_PROMPT_LOCAL.md": {
+    "mtime": 1781438749.550451,
+    "ast_hash": "2b7e877f74e096482a92cc2befb7537e",
+    "semantic_hash": "2b7e877f74e096482a92cc2befb7537e"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/docs/COPILOT_BILLING_HANDOFF_PROMPT_SCRIPTS.md": {
+    "mtime": 1781438749.55141,
+    "ast_hash": "14490c36717d5ac54c735a05bfecc3b9",
+    "semantic_hash": "14490c36717d5ac54c735a05bfecc3b9"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/docs/COPILOT_COST_GUIDE.md": {
+    "mtime": 1781438749.5521677,
+    "ast_hash": "381f961dec01465a32c40530d4c9d7ed",
+    "semantic_hash": "381f961dec01465a32c40530d4c9d7ed"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/docs/DATA_MODEL.md": {
+    "mtime": 1781438749.552737,
+    "ast_hash": "1391a6bb949baedaeae073bcccf30279",
+    "semantic_hash": "1391a6bb949baedaeae073bcccf30279"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/docs/DEVCONTAINER.md": {
+    "mtime": 1781438749.5535712,
+    "ast_hash": "d0d26308bd38dba8de86760a6626976c",
+    "semantic_hash": "d0d26308bd38dba8de86760a6626976c"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/docs/DEVEX_LOG.md": {
+    "mtime": 1781438749.5543656,
+    "ast_hash": "60c6290ac2dcc2aafbc782d3b2039c16",
+    "semantic_hash": "60c6290ac2dcc2aafbc782d3b2039c16"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/docs/GOLDEN_PATH.md": {
+    "mtime": 1781438749.5552847,
+    "ast_hash": "f91498ddb296b8d7b2ad2fc9bd72d875",
+    "semantic_hash": "f91498ddb296b8d7b2ad2fc9bd72d875"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/docs/KNOWN_LIMITATIONS.md": {
+    "mtime": 1781438749.5559497,
+    "ast_hash": "fced2e1b0647d8c070e89959379347df",
+    "semantic_hash": "fced2e1b0647d8c070e89959379347df"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/docs/METRICS.md": {
+    "mtime": 1781438749.557007,
+    "ast_hash": "c9138852e86dd9d14dec15dab83ab21f",
+    "semantic_hash": "c9138852e86dd9d14dec15dab83ab21f"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/docs/MODEL_ROUTING_GUIDE.md": {
+    "mtime": 1781438749.5576894,
+    "ast_hash": "79bc75efc15c5611f2ebbc00c8b99927",
+    "semantic_hash": "79bc75efc15c5611f2ebbc00c8b99927"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/docs/PROMPT_LIBRARY.md": {
+    "mtime": 1781438749.5587814,
+    "ast_hash": "6caef1eb9d518d6cce122a99306e9121",
+    "semantic_hash": "6caef1eb9d518d6cce122a99306e9121"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/docs/RUNBOOKS.md": {
+    "mtime": 1781438749.5595684,
+    "ast_hash": "4a9f3c4cd50320a30100c065965b078e",
+    "semantic_hash": "4a9f3c4cd50320a30100c065965b078e"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/docs/TEAM_ARCHETYPE.md": {
+    "mtime": 1781438749.5601513,
+    "ast_hash": "dd5d605abd2e0b28d744dab74e7a904d",
+    "semantic_hash": "dd5d605abd2e0b28d744dab74e7a904d"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/docs/UFAWKES_INTEGRATION.md": {
+    "mtime": 1781438749.5609515,
+    "ast_hash": "e926d518123d9882e1c515c5e58f2ee9",
+    "semantic_hash": "e926d518123d9882e1c515c5e58f2ee9"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/docs/VALUE_STREAM_MAP.md": {
+    "mtime": 1781438749.5617201,
+    "ast_hash": "0132a7e07e72a959a33b5343de2fcb33",
+    "semantic_hash": "0132a7e07e72a959a33b5343de2fcb33"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/docs/copilot-agent-starter-PASTE-BOOK.md": {
+    "mtime": 1781438749.563901,
+    "ast_hash": "d2e076ca5ba0fb23be0e8a2ddce56478",
+    "semantic_hash": "d2e076ca5ba0fb23be0e8a2ddce56478"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/templates/tests/README.md": {
+    "mtime": 1781604130.2500827,
+    "ast_hash": "8e6724e94981aaa41d9a86b75f4824a6",
+    "semantic_hash": "8e6724e94981aaa41d9a86b75f4824a6"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/hooks/post-commit-graphify.sh": {
+    "mtime": 1781688337.7146695,
+    "ast_hash": "704f6c3a555713b18d1fc6cd4ffcc8f8",
+    "semantic_hash": "704f6c3a555713b18d1fc6cd4ffcc8f8"
+  }
+}

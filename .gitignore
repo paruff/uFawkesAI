@@ -7,3 +7,13 @@ node_modules/
 !CLAUDE.md
 !.cursorrules
 !.github/copilot-instructions.md
+
+# Graphify — ignore working files, track persistent outputs
+graphify-out/*
+!graphify-out/graph.json
+!graphify-out/graph.html
+!graphify-out/GRAPH_REPORT.md
+!graphify-out/cost.json
+!graphify-out/manifest.json
+!graphify-out/.graphify_labels.json
+!graphify-out/.graphify_extract.json
