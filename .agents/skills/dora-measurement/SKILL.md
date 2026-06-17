@@ -10,8 +10,7 @@ metadata:
 
 # Skill: DORA Measurement
 
-> **Load trigger:** `"load dora-measurement skill"`
-> **DORA:** AI Capability 2 (Healthy data ecosystems) + Capability 7 (Quality internal platforms)
+> **Load trigger:** `"load dora-measurement skill"` > **DORA:** AI Capability 2 (Healthy data ecosystems) + Capability 7 (Quality internal platforms)
 > **Token cost:** Medium (queries external endpoints)
 
 ## Purpose

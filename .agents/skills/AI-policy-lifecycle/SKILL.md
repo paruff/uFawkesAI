@@ -10,8 +10,7 @@ metadata:
 
 # Skill: AI Policy Lifecycle
 
-> **Load trigger:** `"load ai-policy-lifecycle skill"`
-> **DORA:** AI Capability 1 (Clear and communicated AI stance)
+> **Load trigger:** `"load ai-policy-lifecycle skill"` > **DORA:** AI Capability 1 (Clear and communicated AI stance)
 > **Token cost:** Low
 
 ## Purpose

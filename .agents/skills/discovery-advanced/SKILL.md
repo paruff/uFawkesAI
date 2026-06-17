@@ -10,8 +10,7 @@ metadata:
 
 # Skill: Discovery Advanced
 
-> **Load trigger:** `"load discovery-advanced skill"`
-> **DORA:** AI Capability 6 (User-centric focus)
+> **Load trigger:** `"load discovery-advanced skill"` > **DORA:** AI Capability 6 (User-centric focus)
 > **Token cost:** Medium
 > **Prerequisite:** `discovery` skill must have run first. This skill extends it.
 

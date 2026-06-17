@@ -10,8 +10,7 @@ metadata:
 
 # Skill: Value Stream Mapping
 
-> **Load trigger:** `"load value-stream-mapping skill"`
-> **DORA:** AI Capability 2 (Healthy data ecosystems) + AI Capability 7 (Quality internal platforms)
+> **Load trigger:** `"load value-stream-mapping skill"` > **DORA:** AI Capability 2 (Healthy data ecosystems) + AI Capability 7 (Quality internal platforms)
 > **Token cost:** Medium
 > **Prerequisite:** At least one dora-measurement snapshot must exist.
 

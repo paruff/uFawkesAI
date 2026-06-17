@@ -10,8 +10,7 @@ metadata:
 
 # Skill: Platform Feedback
 
-> **Load trigger:** `"load platform-feedback skill"`
-> **DORA:** AI Capability 7 (Quality internal platforms)
+> **Load trigger:** `"load platform-feedback skill"` > **DORA:** AI Capability 7 (Quality internal platforms)
 > **Token cost:** Low
 
 ## Purpose

@@ -87,20 +87,24 @@ spec → design → build → [test-execution || review] → cross-validation
 ## 7. CI/CD Context
 
 ### Commit Format
+
 - Conventional Commits required: `type(scope): description` (max 120 chars)
 - Types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`, `ci`, `perf`, `build`, `revert`
 
 ### Pre-commit Hooks
+
 - `pre-commit run --all-files` must pass before pushing
 - Gitleaks and detect-secrets scan for secrets — use `# pragma: allowlist secret` for false positives
 - If updating `.secrets.baseline`, run `detect-secrets scan > .secrets.baseline`
 
 ### Cross-Validation
+
 - Runner: `.agents/assertions/cross-validation-runner.sh`
 - Output: `.agents/logs/cross-validation-report.md`
 - Validates 4 rules: spec-build, spec-test, design-build, test-test-execution
 
 ### Assertion Runner
+
 - Validates agent reports against contracts in `minimal-report.yaml`
 - Command: `.agents/assertions/assertion-runner.sh <report.md> <agent-name>`
 - Pre-commit hook auto-validates any staged `*-report.md` files

@@ -10,8 +10,7 @@ metadata:
 
 # Skill: Context Engineering
 
-> **Load trigger:** `"load context-engineering skill"`
-> **DORA:** AI Capability 3 (AI-accessible internal data)
+> **Load trigger:** `"load context-engineering skill"` > **DORA:** AI Capability 3 (AI-accessible internal data)
 > **Token cost:** Low
 
 ## Purpose
@@ -48,17 +47,17 @@ which graphify && graphify --version
 Every uFawkes\* repo must maintain these files for AI-accessible context.
 Missing files are flagged as corpus gaps, not silently ignored.
 
-| File                                        | Required                         | Purpose                                       |
-| ------------------------------------------- | -------------------------------- | --------------------------------------------- |
-| `README.md`                                 | ✅ Mandatory                     | What this is, quick start, current status     |
-| `AGENTS.md`                                 | ✅ Mandatory                     | Agent suite, skill list, handoff protocol     |
-| `ARCHITECTURE.md` or `docs/ARCHITECTURE.md` | ✅ Mandatory                     | System design, component relationships        |
-| `CONTRIBUTING.md`                           | ✅ Mandatory                     | How to contribute — must not be a placeholder |
-| `AI_STANCE.md`                              | ✅ Mandatory                     | AI policy (see ai-stance skill)               |
-| `tests/README.md` or equivalent             | ✅ Mandatory                     | How to run tests, what they cover             |
-| `CHANGELOG.md`                              | ✅ Mandatory                     | Release history                               |
+| File                                        | Required                          | Purpose                                       |
+| ------------------------------------------- | --------------------------------- | --------------------------------------------- |
+| `README.md`                                 | ✅ Mandatory                      | What this is, quick start, current status     |
+| `AGENTS.md`                                 | ✅ Mandatory                      | Agent suite, skill list, handoff protocol     |
+| `ARCHITECTURE.md` or `docs/ARCHITECTURE.md` | ✅ Mandatory                      | System design, component relationships        |
+| `CONTRIBUTING.md`                           | ✅ Mandatory                      | How to contribute — must not be a placeholder |
+| `AI_STANCE.md`                              | ✅ Mandatory                      | AI policy (see ai-stance skill)               |
+| `tests/README.md` or equivalent             | ✅ Mandatory                      | How to run tests, what they cover             |
+| `CHANGELOG.md`                              | ✅ Mandatory                      | Release history                               |
 | `DORA-event-format.md`                      | ⚠ Required when uFawkesObs wired | Deployment event schema for DORA metrics      |
-| `docs/PROMPT_LIBRARY.md`                    | Optional                         | Tested prompt templates (see uFawkesObs)      |
+| `docs/PROMPT_LIBRARY.md`                    | Optional                          | Tested prompt templates (see uFawkesObs)      |
 
 ## Per-Repo Corpus Extensions
 

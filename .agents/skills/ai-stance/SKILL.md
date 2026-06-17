@@ -10,8 +10,7 @@ metadata:
 
 # Skill: AI Stance
 
-> **Load trigger:** `"load ai-stance skill"`
-> **DORA:** AI Capability 1 (Clear and communicated AI stance)
+> **Load trigger:** `"load ai-stance skill"` > **DORA:** AI Capability 1 (Clear and communicated AI stance)
 > **Token cost:** Low
 
 ## Purpose

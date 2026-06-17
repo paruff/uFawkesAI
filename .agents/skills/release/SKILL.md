@@ -10,8 +10,7 @@ metadata:
 
 # Skill: Release
 
-> **Load trigger:** `"load release skill"`
-> **DORA:** AI Capability 4 (Strong version control) + Core: Continuous Delivery
+> **Load trigger:** `"load release skill"` > **DORA:** AI Capability 4 (Strong version control) + Core: Continuous Delivery
 > **Token cost:** Low
 
 ## Purpose
