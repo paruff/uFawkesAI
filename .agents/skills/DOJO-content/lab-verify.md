@@ -11,8 +11,7 @@ metadata:
 
 # Sub-Skill: Dojo Content — Lab Verify
 
-> **Load trigger:** `"load dojo-content/lab-verify skill"`
-> **DORA:** AI Capability 7 (Quality internal platforms) + Core: Test automation
+> **Load trigger:** `"load dojo-content/lab-verify skill"` > **DORA:** AI Capability 7 (Quality internal platforms) + Core: Test automation
 > **Token cost:** Low
 > **When to use:** Before publishing any new or updated module. Required — not optional.
 
@@ -107,12 +106,12 @@ EOF
 
 ### Step 4 — Evaluate pass/fail
 
-| Outcome                                                    | Action                                                                    |
-| ---------------------------------------------------------- | ------------------------------------------------------------------------- |
-| All steps complete, evidence produced, no external lookups | ✅ PASS — set `lab_verified` date                                         |
+| Outcome                                                    | Action                                                                     |
+| ---------------------------------------------------------- | -------------------------------------------------------------------------- |
+| All steps complete, evidence produced, no external lookups | ✅ PASS — set `lab_verified` date                                          |
 | Steps complete but required one external lookup            | ⚠ CONDITIONAL — update module to include the missing info, then re-verify |
-| Any step failed                                            | ❌ FAIL — fix the module, do not set `lab_verified` until re-verified     |
-| Actual time > 120% of stated time                          | ❌ FAIL — update time estimate and re-verify                              |
+| Any step failed                                            | ❌ FAIL — fix the module, do not set `lab_verified` until re-verified      |
+| Actual time > 120% of stated time                          | ❌ FAIL — update time estimate and re-verify                               |
 
 ### Step 5 — Update the module
 

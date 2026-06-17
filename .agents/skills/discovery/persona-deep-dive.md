@@ -11,8 +11,7 @@ metadata:
 
 # Sub-Skill: Discovery — Persona Deep Dive
 
-> **Load trigger:** `"load discovery/persona-deep-dive skill"`
-> **DORA:** AI Capability 6 (User-centric focus)
+> **Load trigger:** `"load discovery/persona-deep-dive skill"` > **DORA:** AI Capability 6 (User-centric focus)
 > **Token cost:** Low
 > **When to use:** Persona is ambiguous, or two personas have equally strong claims.
 

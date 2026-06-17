@@ -11,8 +11,7 @@ metadata:
 
 # Sub-Skill: Discovery — Prior Art Search
 
-> **Load trigger:** `"load discovery/prior-art-search skill"`
-> **DORA:** AI Capability 5 (Working in small batches) + AI Capability 3 (AI-accessible internal data)
+> **Load trigger:** `"load discovery/prior-art-search skill"` > **DORA:** AI Capability 5 (Working in small batches) + AI Capability 3 (AI-accessible internal data)
 > **Token cost:** Low
 > **When to use:** End of every discovery session, before writing spec.
 

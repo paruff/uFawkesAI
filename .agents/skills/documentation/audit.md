@@ -11,8 +11,7 @@ metadata:
 
 # Sub-Skill: Documentation — Audit
 
-> **Load trigger:** `"load documentation/audit skill"`
-> **DORA:** AI Capability 3 (AI-accessible internal data)
+> **Load trigger:** `"load documentation/audit skill"` > **DORA:** AI Capability 3 (AI-accessible internal data)
 > **Token cost:** Low
 > **When to use:** Pre-release, post-migration, or when context-engineering/audit flags gaps.
 

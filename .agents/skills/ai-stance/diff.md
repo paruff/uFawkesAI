@@ -11,8 +11,7 @@ metadata:
 
 # Sub-Skill: AI Stance — Diff
 
-> **Load trigger:** `"load ai-stance/diff skill"`
-> **DORA:** AI Capability 1 (Clear and communicated AI stance)
+> **Load trigger:** `"load ai-stance/diff skill"` > **DORA:** AI Capability 1 (Clear and communicated AI stance)
 > **Token cost:** Low
 > **When to use:** Quarterly cross-repo check, or when adopting a new tool suite-wide.
 

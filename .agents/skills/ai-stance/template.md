@@ -11,8 +11,7 @@ metadata:
 
 # Sub-Skill: AI Stance — Template
 
-> **Load trigger:** `"load ai-stance/template skill"`
-> **DORA:** AI Capability 1 (Clear and communicated AI stance)
+> **Load trigger:** `"load ai-stance/template skill"` > **DORA:** AI Capability 1 (Clear and communicated AI stance)
 > **Token cost:** Low
 > **When to use:** Repo has no `AI_STANCE.md`. Run once per repo.
 

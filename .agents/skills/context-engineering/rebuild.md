@@ -11,8 +11,7 @@ metadata:
 
 # Sub-Skill: Context Engineering — Rebuild
 
-> **Load trigger:** `"load context-engineering/rebuild skill"`
-> **DORA:** AI Capability 3 (AI-accessible internal data)
+> **Load trigger:** `"load context-engineering/rebuild skill"` > **DORA:** AI Capability 3 (AI-accessible internal data)
 > **Token cost:** Low
 > **When to use:** Corpus stale, major doc updates, before high-stakes sessions.
 

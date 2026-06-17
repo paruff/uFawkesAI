@@ -11,8 +11,7 @@ metadata:
 
 # Sub-Skill: Documentation — CI Integration
 
-> **Load trigger:** `"load documentation/ci-integration skill"`
-> **DORA:** AI Capability 4 (Strong version control) + Core: Continuous Integration
+> **Load trigger:** `"load documentation/ci-integration skill"` > **DORA:** AI Capability 4 (Strong version control) + Core: Continuous Integration
 > **Token cost:** Low
 > **When to use:** When adding the standard GitHub pipeline to a repo (roadmap item 0.10/0.12).
 

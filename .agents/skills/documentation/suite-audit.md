@@ -11,8 +11,7 @@ metadata:
 
 # Sub-Skill: Documentation — Suite Audit
 
-> **Load trigger:** `"load documentation/suite-audit skill"`
-> **DORA:** AI Capability 3 (AI-accessible internal data)
+> **Load trigger:** `"load documentation/suite-audit skill"` > **DORA:** AI Capability 3 (AI-accessible internal data)
 > **Token cost:** Low
 > **When to use:** Quarterly, or before adding a new repo to the portfolio.
 
@@ -128,11 +127,11 @@ done
 
 ## Reading the Matrix
 
-| Symbol | Meaning                                      |
-| ------ | -------------------------------------------- |
-| ✅     | File exists and has substantive content      |
+| Symbol  | Meaning                                      |
+| ------- | -------------------------------------------- |
+| ✅      | File exists and has substantive content      |
 | ⚠ stub | File exists but contains placeholder content |
-| ❌     | File is missing entirely                     |
+| ❌      | File is missing entirely                     |
 
 **Action rule:** Any ❌ in a required file (README, CHANGELOG, CONTRIBUTING, AI_STANCE, AGENTS) is a tier-1 issue. Any ⚠ stub is tier-2. Any ❌ in an optional file (ARCHITECTURE, suite links) is tier-2.
 

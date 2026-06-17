@@ -11,8 +11,7 @@ metadata:
 
 # Sub-Skill: AI Stance — Audit
 
-> **Load trigger:** `"load ai-stance/audit skill"`
-> **DORA:** AI Capability 1 (Clear and communicated AI stance)
+> **Load trigger:** `"load ai-stance/audit skill"` > **DORA:** AI Capability 1 (Clear and communicated AI stance)
 > **Token cost:** Low
 > **When to use:** Quarterly review, after tool adoption, or before release.
 

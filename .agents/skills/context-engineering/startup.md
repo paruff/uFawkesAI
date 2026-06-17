@@ -11,8 +11,7 @@ metadata:
 
 # Sub-Skill: Context Engineering — Startup
 
-> **Load trigger:** `"load context-engineering/startup skill"`
-> **DORA:** AI Capability 3 (AI-accessible internal data)
+> **Load trigger:** `"load context-engineering/startup skill"` > **DORA:** AI Capability 3 (AI-accessible internal data)
 > **Token cost:** Low
 > **When to use:** First thing, every session, every repo. Non-negotiable.
 

@@ -11,8 +11,7 @@ metadata:
 
 # Sub-Skill: Discovery — Assumption Test
 
-> **Load trigger:** `"load discovery/assumption-test skill"`
-> **DORA:** AI Capability 6 (User-centric focus) + AI Capability 5 (Working in small batches)
+> **Load trigger:** `"load discovery/assumption-test skill"` > **DORA:** AI Capability 6 (User-centric focus) + AI Capability 5 (Working in small batches)
 > **Token cost:** Low
 > **When to use:** Riskiest assumption is high-stakes and currently unvalidated.
 

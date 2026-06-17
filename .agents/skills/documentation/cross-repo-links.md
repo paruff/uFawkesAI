@@ -11,8 +11,7 @@ metadata:
 
 # Sub-Skill: Documentation — Cross-Repo Links
 
-> **Load trigger:** `"load documentation/cross-repo-links skill"`
-> **DORA:** AI Capability 3 (AI-accessible internal data)
+> **Load trigger:** `"load documentation/cross-repo-links skill"` > **DORA:** AI Capability 3 (AI-accessible internal data)
 > **Token cost:** Low
 > **When to use:** Implementing roadmap item 0.6, or when suite-audit shows missing suite links.
 

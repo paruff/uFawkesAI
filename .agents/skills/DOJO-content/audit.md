@@ -11,8 +11,7 @@ metadata:
 
 # Sub-Skill: Dojo Content — Audit
 
-> **Load trigger:** `"load dojo-content/audit skill"`
-> **DORA:** AI Capability 7 (Quality internal platforms)
+> **Load trigger:** `"load dojo-content/audit skill"` > **DORA:** AI Capability 7 (Quality internal platforms)
 > **Token cost:** Low
 > **When to use:** Learner reports a broken lab, new belt release, or quarterly Dojo maintenance.
 
