@@ -16,3 +16,4 @@ graphify-out/*
 !graphify-out/cost.json
 !graphify-out/manifest.json
 !graphify-out/.graphify_labels.json
+!graphify-out/.graphify_extract.json

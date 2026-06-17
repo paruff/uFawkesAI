@@ -1123,5 +1123,10 @@
     "mtime": 1781604130.2500827,
     "ast_hash": "8e6724e94981aaa41d9a86b75f4824a6",
     "semantic_hash": "8e6724e94981aaa41d9a86b75f4824a6"
+  },
+  "/Users/philruff/projects/github/paruff/uFawkesAI/.agents/hooks/post-commit-graphify.sh": {
+    "mtime": 1781688337.7146695,
+    "ast_hash": "704f6c3a555713b18d1fc6cd4ffcc8f8",
+    "semantic_hash": "704f6c3a555713b18d1fc6cd4ffcc8f8"
   }
 }
