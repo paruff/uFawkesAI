@@ -10,8 +10,7 @@ metadata:
 
 # Skill: DOJO Content
 
-> **Load trigger:** `"load dojo-content skill"`
-> **DORA:** AI Capability 3 (AI-assisted development)
+> **Load trigger:** `"load dojo-content skill"` > **DORA:** AI Capability 3 (AI-assisted development)
 > **Token cost:** Low
 
 ## Purpose
@@ -20,32 +19,38 @@ Create educational content for DOJO sessions focused on platform engineering bes
 
 ## When to Run
 
-| Situation | Run DOJO content? |
-|-----------|-------------------|
-| New platform capability launched | Yes |
-| DORA metrics show regression | Yes |
-| Developer feedback indicates knowledge gap | Yes |
-| Quarterly DOJO session scheduled | Yes |
+| Situation                                  | Run DOJO content? |
+| ------------------------------------------ | ----------------- |
+| New platform capability launched           | Yes               |
+| DORA metrics show regression               | Yes               |
+| Developer feedback indicates knowledge gap | Yes               |
+| Quarterly DOJO session scheduled           | Yes               |
 
 ## Content Structure
 
 ```markdown
 ## Title
+
 [One-line description]
 
 ## Learning Objective
+
 [What developers will know/do after this session]
 
 ## Prerequisites
+
 - [Required knowledge]
 
 ## Content
+
 [Main material - 500-1000 words]
 
 ## Hands-on Exercise
+
 [Practical activity]
 
 ## Key Takeaways
+
 - [3-5 bullet points]
 ```
 
