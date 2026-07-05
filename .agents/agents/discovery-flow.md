@@ -11,6 +11,10 @@ mode: primary
 # what discovery-flow can invoke.
 permission:
   task:
+    discover: allow
+    spec: allow
+    design: allow
+    plan: allow
     feature-flow: allow
     "*": deny
 ---
