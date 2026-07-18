@@ -51,6 +51,8 @@ jobs:
     runs-on: ubuntu-latest
     if: always()
     steps:
+      - name: job-start
+        run: echo "job-start $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
       - name: Check all stages
         run: |
           if [ "${{ needs.preflight.result }}" == "failure" ] || \
@@ -72,5 +74,7 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### DORA Metrics" >> $GITHUB_STEP_SUMMARY
           echo "- **Pre-flight time**: ~1 min" >> $GITHUB_STEP_SUMMARY
-          echo "- **Lint time**: ~3 min" >> $GITHUB_STEP_SUMMARY
-          echo "- **Total time**: ~4 min" >> $GITHUB_STEP_SUMMARY
+           echo "- **Lint time**: ~3 min" >> $GITHUB_STEP_SUMMARY
+           echo "- **Total time**: ~4 min" >> $GITHUB_STEP_SUMMARY
+      - name: job-finish
+        run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
