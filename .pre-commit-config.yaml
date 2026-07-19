@@ -10,7 +10,7 @@ repos:
   # General Code Quality
   # ============================================================================
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.5.0
+    rev: v6.0.0
     hooks:
       - id: trailing-whitespace
         name: Trim trailing whitespace
@@ -35,7 +35,7 @@ repos:
   # YAML Linting
   # ============================================================================
   - repo: https://github.com/adrienverge/yamllint
-    rev: v1.33.0
+    rev: v1.38.0
     hooks:
       - id: yamllint
         name: Lint YAML files
@@ -46,34 +46,23 @@ repos:
   # Markdown Linting
   # ============================================================================
   - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.38.0
+    rev: v0.49.1
     hooks:
       - id: markdownlint
         name: Lint Markdown files
         args: ["--config", ".markdownlint.json", "--fix"]
 
   # ============================================================================
-  # Prettier (JSON/YAML/Markdown Formatting)
-  # ============================================================================
-  - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: v3.1.0
-    hooks:
-      - id: prettier
-        name: Format with Prettier
-        types_or: [json, yaml, markdown]
-        args: ["--write", "--ignore-unknown"]
-
-  # ============================================================================
   # Security Scanning
   # ============================================================================
   - repo: https://github.com/gitleaks/gitleaks
-    rev: v8.18.1
+    rev: v8.30.1
     hooks:
       - id: gitleaks
         name: Detect secrets with Gitleaks
 
   - repo: https://github.com/Yelp/detect-secrets
-    rev: v1.4.0
+    rev: v1.5.0
     hooks:
       - id: detect-secrets
         name: Detect secrets
