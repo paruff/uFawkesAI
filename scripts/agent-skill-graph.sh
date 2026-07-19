@@ -20,7 +20,8 @@ fi
 
 mkdir -p "${OUT_DIR}"
 
-export SNAPSHOT_UTC="$(date -u +"%Y-%m-%d %H:%M:%SZ")"
+SNAPSHOT_UTC="$(date -u +"%Y-%m-%d %H:%M:%SZ")"
+export SNAPSHOT_UTC
 
 echo "Building skill dependency graph from lifecycle registry..."
 echo ""
