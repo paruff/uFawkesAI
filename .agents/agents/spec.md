@@ -80,7 +80,7 @@ Generate the specification document.
 Load these skills as needed:
 
 | Skill                          | When to Load                               |
-| ------------------------------- | -------------------------------------------- |
+| ------------------------------ | ------------------------------------------ |
 | `spec/requirements-extraction` | Extracting structured requirements         |
 | `spec/acceptance-criteria`     | Generating testable ACs                    |
 | `spec/policy-validation`       | Validating against organizational policies |

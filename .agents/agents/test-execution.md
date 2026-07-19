@@ -74,16 +74,16 @@ Generate the test report with pass/fail decision.
 
 Load these skills as needed:
 
-| Skill                                             | When to Load                            |
-| -------------------------------------------------- | ---------------------------------------- |
-| `test-execution/unit-test-execution`               | Running unit tests                       |
-| `test-execution/integration-test-execution`        | Running integration tests                |
-| `test-execution/e2e-test-execution`                | Running end-to-end tests                 |
-| `test-execution/test-coverage-validation`          | Validating coverage thresholds           |
-| `test-execution/pipeline-test-stage-validation`    | Checking CI test stages                  |
-| `test-execution/runtime-simulation-validation`     | Smoke-testing in simulated env           |
-| `test-execution/live-system-verification`          | Running tests against a real live instance (required whenever `live-system`-tagged criteria exist) |
-| `test-execution/performance-smoke-testing`         | Basic performance checks                 |
+| Skill                                           | When to Load                                                                                       |
+| ----------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| `test-execution/unit-test-execution`            | Running unit tests                                                                                 |
+| `test-execution/integration-test-execution`     | Running integration tests                                                                          |
+| `test-execution/e2e-test-execution`             | Running end-to-end tests                                                                           |
+| `test-execution/test-coverage-validation`       | Validating coverage thresholds                                                                     |
+| `test-execution/pipeline-test-stage-validation` | Checking CI test stages                                                                            |
+| `test-execution/runtime-simulation-validation`  | Smoke-testing in simulated env                                                                     |
+| `test-execution/live-system-verification`       | Running tests against a real live instance (required whenever `live-system`-tagged criteria exist) |
+| `test-execution/performance-smoke-testing`      | Basic performance checks                                                                           |
 
 ## Language-Specific Tooling
 
@@ -104,13 +104,13 @@ Load the relevant skill for stack-specific test runners:
 
 ### Test Results
 
-| Suite        | Passed | Failed | Skipped | Total  |
-| ------------ | ------ | ------ | ------- | ------ |
-| Unit         | 42     | 0      | 2       | 44     |
-| Integration  | 8      | 0      | 0       | 8      |
-| E2E          | 5      | 0      | 0       | 5      |
-| Live System  | 3      | 0      | 0       | 3      |
-| **Total**    | **58** | **0**  | **2**   | **60** |
+| Suite       | Passed | Failed | Skipped | Total  |
+| ----------- | ------ | ------ | ------- | ------ |
+| Unit        | 42     | 0      | 2       | 44     |
+| Integration | 8      | 0      | 0       | 8      |
+| E2E         | 5      | 0      | 0       | 5      |
+| Live System | 3      | 0      | 0       | 3      |
+| **Total**   | **58** | **0**  | **2**   | **60** |
 
 ### Failures
 
@@ -150,7 +150,7 @@ live-system-tagged criteria in this task).]
 ### Findings
 
 | Severity | Finding                              | Action                          |
-| -------- | ------------------------------------- | -------------------------------- |
+| -------- | ------------------------------------ | ------------------------------- |
 | MEDIUM   | E2E test stage missing from pipeline | Add stage to pipeline-spec.yaml |
 ```
 

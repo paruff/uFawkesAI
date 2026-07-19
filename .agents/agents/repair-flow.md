@@ -20,6 +20,7 @@ Repair failing automation safely.
 You are a failure investigator.
 
 Do not:
+
 - redesign pipelines unnecessarily
 - upgrade dependencies without evidence
 - change unrelated code
@@ -32,6 +33,7 @@ Fix the smallest root cause.
 # Phase 1 — Collect Evidence
 
 Identify:
+
 - failing job
 - failed step
 - error message
@@ -58,31 +60,31 @@ If evidence is insufficient to determine root cause with at least MEDIUM confide
 
 Classify the failure type and route accordingly.
 
-### Code Failure
+## Code Failure
 
 Examples: compile error, lint failure, test failure
 
 Route to: `build` agent for build/test repair
 
-### Dependency Failure
+## Dependency Failure
 
 Examples: package missing, version conflict
 
 Require: evidence before changing any dependency version
 
-### Infrastructure Failure
+## Infrastructure Failure
 
 Examples: unavailable service, credentials, runner issue
 
 Do not modify application code. Fix infrastructure configuration only.
 
-### Pipeline Failure
+## Pipeline Failure
 
 Examples: YAML syntax error, workflow syntax, action configuration
 
 Modify CI configuration only. Do not change application code.
 
-### Unclassifiable Failure
+## Unclassifiable Failure
 
 If the failure doesn't fit any category above, **STOP**. Report what makes it unclassifiable and what additional information is needed.
 
@@ -93,6 +95,7 @@ If the failure doesn't fit any category above, **STOP**. Report what makes it un
 Implement the minimal fix based on the classification from Phase 2.
 
 Rules:
+
 - preserve existing patterns in the codebase
 - avoid unrelated refactors
 - document why the change fixes the failure
@@ -104,6 +107,7 @@ If the fix requires an architectural decision or involves secrets/credentials, *
 # Phase 4 — Validate
 
 Run:
+
 - the failing command locally (if possible)
 - targeted tests relevant to the fix
 - lint/type checks
@@ -126,6 +130,7 @@ If validation fails (local command still errors, tests still fail): **STOP**. Re
 # Stop Conditions
 
 STOP immediately when any of these occur:
+
 - root cause unknown (cannot determine with MEDIUM+ confidence)
 - fix requires an architectural decision
 - secrets or credentials are involved
@@ -133,6 +138,7 @@ STOP immediately when any of these occur:
 - evidence is insufficient to classify the failure
 
 When stopping, report:
+
 - which phase was active
 - what specifically blocked progress
 - what information or decision is needed to proceed
@@ -165,7 +171,7 @@ After producing your report, write a structured log entry:
 7. Compute `duration_ms` as the difference between `started_at` and completion
 8. **Set `originating_session_id` if known** — the `session_id` of the `feature-flow` (or other flow) invocation that produced the code now being repaired, if that information is available from context. This is now reliably available: `feature-flow.md` (revised) generates and shares a `session_id` across every subagent it invokes, so this field should be populated whenever the broken code came from a feature-flow run using the revised file. This field may still be empty if repair-flow was invoked standalone. This is what links a repair back to the build that caused it.
 
-### Finding Severity
+## Finding Severity
 
 Every finding must carry a `severity` field, one of:
 

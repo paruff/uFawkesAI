@@ -34,6 +34,7 @@ Deliver an existing planned change safely, on a feature branch, ready for trunk 
 You are not a discovery agent.
 
 Do not:
+
 - invent requirements
 - redesign architecture
 - expand scope
@@ -81,6 +82,7 @@ Each acceptance criterion in `tasks.json` should be tagged with a `test_type`:
 it — see Phase 3.5.
 
 **Validation output:**
+
 ```
 Feature Readiness
   Branch:         <branch name>
@@ -101,6 +103,7 @@ Invoke the `build` agent with `specification.md`, `design.md`, and `tasks.json`,
 and the session_id from Phase 0.
 
 Build responsibilities:
+
 - implement tasks in dependency order
 - follow existing project patterns
 - minimize changes (scope discipline)
@@ -110,6 +113,7 @@ Build responsibilities:
 **Required artifact:** `build-report.md`
 
 Build report must include:
+
 - Summary of work done
 - Files changed
 - Tasks completed with status
@@ -130,6 +134,7 @@ happens after push and is handled by `repair-flow` if it disagrees with this
 local result.
 
 Verify:
+
 - all acceptance criteria pass
 - no regression risk
 - expected behavior matches requirements
@@ -138,6 +143,7 @@ Verify:
 **Required artifact:** `test-report.md`
 
 **Test result:**
+
 - PASS: continue to Phase 3.5
 - FAIL: **STOP**. Report which acceptance criteria failed. Do not proceed.
 
@@ -160,6 +166,7 @@ including raw command/HTTP output for every claim, per the same evidence
 discipline `verification.md` already applies to Phase 4.5.
 
 **Result:**
+
 - PASS (or N/A, explicitly noted): continue to Phase 4
 - FAIL: **STOP**. Report which live-system criteria failed and what evidence
   contradicted the claim. Do not proceed.
@@ -171,6 +178,7 @@ discipline `verification.md` already applies to Phase 4.5.
 Invoke the `review` agent with `design.md`, `build-report.md`, and `test-report.md`.
 
 Review checks:
+
 - **Correctness:** implementation matches requirements
 - **Scope:** no unnecessary changes
 - **Maintainability:** follows project patterns
@@ -179,6 +187,7 @@ Review checks:
 **Required artifact:** `review-report.md`
 
 **Review result:**
+
 - APPROVED: continue to Phase 4.5
 - REQUEST CHANGES / ESCALATE: **STOP**. Surface requested changes to the user. Do not proceed.
 
@@ -193,11 +202,12 @@ This is the evidence-based gate, distinct from Phase 4's pattern-based review.
 Verification checks the claims made in earlier reports against actual evidence:
 file existence, test execution output, build success, diff-matches-plan. It does
 not re-judge style or architecture — that already happened in Phase 4. It judges
-whether what was *reported* is actually *true*.
+whether what was _reported_ is actually _true_.
 
 **Required artifact:** verification output (per `verification.md`'s schema)
 
 **Verification result:**
+
 - PASS: continue to Phase 4.6
 - FAIL (any `verified_false` claim, or missing required evidence): **STOP**.
   Report the specific unverified or false claims. Do not proceed. This is not
@@ -214,11 +224,12 @@ Invoke the `cross-validation` agent with `specification.md`, `design.md`,
 This is the final consistency gate before delivery prep. It checks that
 review's and verification's findings are mutually consistent with the
 original spec and design — not just internally correct, but correct
-*relative to what was actually asked for*.
+_relative to what was actually asked for_.
 
 **Required artifact:** cross-validation report (per `cross-validation.md`'s schema)
 
 **Cross-validation result:**
+
 - PASS: continue to Phase 5
 - FAIL: **STOP**. Report the specific inconsistencies. Do not proceed.
 
@@ -230,7 +241,7 @@ Only after cross-validation is PASS:
 
 1. **Commit message** — follow Conventional Commits v1.0.0 per
    `docs/COMMIT_CONVENTIONS.md`: `type(scope): summary`, e.g. `feat(auth): add
-   token refresh`. Use `fix`, `feat`, `docs`, `refactor`, `test`, `chore`,
+token refresh`. Use `fix`, `feat`, `docs`, `refactor`, `test`, `chore`,
    `build`, `ci`, or `perf`. Add a `BREAKING CHANGE:` footer for breaking
    changes.
 2. **Push the feature branch:** `git push origin <branch-name>`
@@ -272,6 +283,7 @@ This log is required. If the file cannot be written, document why.
 # Stop Conditions
 
 STOP immediately when any of these occur:
+
 - required input files missing (Phase 1)
 - on trunk with no branch created and branch creation fails (Phase 0)
 - tests fail (Phase 3)
@@ -283,6 +295,7 @@ STOP immediately when any of these occur:
 - acceptance criteria cannot be verified
 
 When stopping, report:
+
 - which phase failed
 - what specifically failed
 - what is needed to unblock

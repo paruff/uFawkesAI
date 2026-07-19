@@ -94,7 +94,7 @@ Generate the design document and supporting artifacts.
 Load these skills as needed:
 
 | Skill                               | When to Load                     |
-| ------------------------------------ | ----------------------------------- |
+| ----------------------------------- | -------------------------------- |
 | `design/architecture-decomposition` | Breaking spec into architecture  |
 | `design/component-identification`   | Identifying required components  |
 | `design/interface-definition`       | Defining API and data contracts  |
@@ -158,13 +158,13 @@ Load these skills as needed:
 ## Risks
 
 | Risk                  | Severity | Mitigation              |
-| ---------------------- | -------- | ------------------------- |
+| --------------------- | -------- | ----------------------- |
 | External API downtime | HIGH     | Circuit breaker + retry |
 
 ## Governance Alignment
 
 | Requirement | Design Decision      | Status  |
-| ----------- | --------------------- | ------- |
+| ----------- | -------------------- | ------- |
 | Security    | JWT auth + RBAC      | COVERED |
 | Pipeline    | Standard stages      | COVERED |
 | K8s         | Deployment + Service | COVERED |
@@ -212,3 +212,4 @@ This log is required. If the file cannot be written, document why.
 - Never make technology choices without rationale.
 - Never leave a component's runtime/deployed status unstated.
 - If the spec has gaps, flag them before designing.
+```

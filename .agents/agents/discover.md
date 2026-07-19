@@ -29,7 +29,7 @@ Model v2025.1.
 ## Trigger Conditions
 
 | Trigger              | Description                                                       |
-| --------------------- | ------------------------------------------------------------------ |
+| -------------------- | ----------------------------------------------------------------- |
 | New feature proposed | Any item moving from Backlog → This Week on the project board     |
 | Migration planned    | Before any infrastructure change that affects developer workflow  |
 | User complaint filed | Issue labeled `ux` or `developer-experience`                      |

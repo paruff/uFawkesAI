@@ -14,14 +14,14 @@ Source: https://www.conventionalcommits.org/en/v1.0.0/
 
 **Allowed types:**
 
-| Type       | Use for                                              |
-| ---------- | ----------------------------------------------------- |
-| `feat`     | a new feature (mandatory type per spec)                |
-| `fix`      | a bug fix (mandatory type per spec)                    |
-| `docs`     | documentation only                                     |
-| `style`    | formatting, no logic change                            |
+| Type       | Use for                                                 |
+| ---------- | ------------------------------------------------------- |
+| `feat`     | a new feature (mandatory type per spec)                 |
+| `fix`      | a bug fix (mandatory type per spec)                     |
+| `docs`     | documentation only                                      |
+| `style`    | formatting, no logic change                             |
 | `refactor` | code change that neither fixes a bug nor adds a feature |
-| `test`     | adding or correcting tests                             |
+| `test`     | adding or correcting tests                              |
 | `chore`    | tooling, dependency bumps, maintenance                  |
 | `build`    | build system or external dependency changes             |
 | `ci`       | CI configuration changes                                |
@@ -50,21 +50,22 @@ enforced by `test.md`'s Output Contract.
 
 ## Branching — trunk-based development
 
-DORA's *AI Capabilities Model* (2025) names trunk-based development explicitly
+DORA's _AI Capabilities Model_ (2025) names trunk-based development explicitly
 under "Strong version control practices": minimize long-lived branches,
 integrate frequently, commit to trunk at least once per day as part of
 working in small batches.
 
 **Branch prefixes**, aligned to commit types:
 
-| Prefix       | Use for                          | Handled by (from `discovery-flow.md`) |
-| ------------- | --------------------------------- | --------------------------------------- |
-| `feature/`   | new functionality                  | Workflow A → B                          |
-| `fix/`       | bug fixes                          | Workflow C / D                          |
-| `chore/`     | maintenance, non-functional change | Workflow C                              |
-| `hotfix/`    | urgent production repair           | Workflow D                              |
+| Prefix     | Use for                            | Handled by (from `discovery-flow.md`) |
+| ---------- | ---------------------------------- | ------------------------------------- |
+| `feature/` | new functionality                  | Workflow A → B                        |
+| `fix/`     | bug fixes                          | Workflow C / D                        |
+| `chore/`   | maintenance, non-functional change | Workflow C                            |
+| `hotfix/`  | urgent production repair           | Workflow D                            |
 
 **Discipline:**
+
 - Branches should be short-lived — DORA's guidance is oriented around daily
   trunk integration, not a specific hard "max age" number. Pick a threshold
   that fits your team and enforce it consistently rather than adopting a

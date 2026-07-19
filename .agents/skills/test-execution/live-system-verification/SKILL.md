@@ -37,8 +37,8 @@ environment was not confirmed at time of writing:
 `<FILL IN: the exact command(s) to bring up a real, running instance of the
 component(s) under test for your stack. Examples of what this might look
 like, NOT prescriptions — verify against your own infra before using any of
-these: `docker compose -f docker-compose.yml up -d`, or applying GitOps
-overlays to an ephemeral kind/k3d cluster, or a `kubectl apply -k
+these:`docker compose -f docker-compose.yml up -d`, or applying GitOps
+overlays to an ephemeral kind/k3d cluster, or a`kubectl apply -k
 overlays/ephemeral/`. Do not guess at your own command from this list —
 confirm it works locally before wiring it into this skill.>`
 

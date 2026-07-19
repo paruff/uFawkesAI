@@ -1,10 +1,11 @@
 # Alignment with DORA's AI research
 
 Grounded in two reports fetched directly for this plan:
-- DORA, *2025 AI Capabilities Model* (Google, retrieved 2026)
-- DORA, *ROI of AI-assisted Software Development* (v2026.1, Google)
 
-A third, *2025 State of AI-assisted Software Development*, is cited
+- DORA, _2025 AI Capabilities Model_ (Google, retrieved 2026)
+- DORA, _ROI of AI-assisted Software Development_ (v2026.1, Google)
+
+A third, _2025 State of AI-assisted Software Development_, is cited
 extensively by both of the above but was not independently fetched in full
 for this plan — check it directly at https://dora.dev/dora-report-2025 for
 the underlying survey methodology and full statistics.
@@ -22,18 +23,18 @@ measurable cost — developers spending time reviewing AI output because trust
 is low, which deepens the "J-Curve" productivity dip during adoption. Your
 `verification.md` / `cross-validation.md` split, and now the live-system
 verification phase, are direct countermeasures. Important nuance: DORA's
-framing of the verification tax is about *reviewing generated code*, not
-specifically about *testing against a live running system* — the live-system
+framing of the verification tax is about _reviewing generated code_, not
+specifically about _testing against a live running system_ — the live-system
 gap is an adjacent problem you identified independently, not something DORA's
 report calls out by name. I don't have a verified DORA citation for "test
 against live systems specifically" — treat that as sound engineering
 judgment, not a research-backed capability.
 
 **Working in small batches**: DORA found this improves product performance
-but has a measured *negative* effect on self-reported individual
+but has a measured _negative_ effect on self-reported individual
 effectiveness (their hypothesis: decomposition overhead offsets raw
 generation speed). Relevant because adding more phase gates (Phase 3.5, the
-permission allowlists) will very plausibly *feel* slower even while it
+permission allowlists) will very plausibly _feel_ slower even while it
 improves the metrics that actually matter. DORA's own framing: expect an
 initial adoption dip (approximately 15% productivity drop over about three
 months in their sample ROI model) as "tuition cost," not a sign the system is
