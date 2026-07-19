@@ -55,7 +55,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 2
     steps:
-      - uses: actions/checkout@v7
+      - name: job-start
+        run: echo "job-start $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+      - uses: actions/checkout@v6
       - name: Verify symlinks
         run: |
           test -L CLAUDE.md
@@ -68,6 +70,8 @@ jobs:
           test "$(readlink .github/copilot-instructions.md)" = "../AGENTS.md"
           test "$(readlink .cursorrules)" = "AGENTS.md"
           echo "✅ Agent symlinks resolve correctly"
+      - name: job-finish
+        run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
 
   # ════════════════════════════════════════════════════════════════════════════
   # GATE 2: Lint (placeholder - actual linting in reusable-lint.yml)
@@ -77,8 +81,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 2
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
+      - name: job-start
+        run: echo "job-start $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
           node-version: "22.x"
           cache: "npm"
@@ -87,6 +93,8 @@ jobs:
         run: |
           npm run lint
           echo "✅ Lint passed (placeholder)"
+      - name: job-finish
+        run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
 
   # ════════════════════════════════════════════════════════════════════════════
   # GATE 3: Type Check (placeholder)
@@ -96,8 +104,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 2
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
+      - name: job-start
+        run: echo "job-start $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
           node-version: "22.x"
           cache: "npm"
@@ -106,6 +116,8 @@ jobs:
         run: |
           npm run typecheck
           echo "✅ TypeScript passed (placeholder)"
+      - name: job-finish
+        run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
 
   # ════════════════════════════════════════════════════════════════════════════
   # GATE 4: Tests + Coverage (placeholder)
@@ -115,8 +127,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 2
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
+      - name: job-start
+        run: echo "job-start $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
           node-version: "22.x"
           cache: "npm"
@@ -131,6 +145,8 @@ jobs:
           # Example for Jest: configured in jest.config.js with coverageThreshold
           # This step fails if coverage drops below 80%
           echo "Coverage threshold: 80% (configured in jest.config.js)"
+      - name: job-finish
+        run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
 
   # ════════════════════════════════════════════════════════════════════════════
   # GATE 5: Architecture Boundary Check (placeholder)
@@ -140,8 +156,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 2
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
+      - name: job-start
+        run: echo "job-start $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
           node-version: "22.x"
           cache: "npm"
@@ -150,6 +168,8 @@ jobs:
         run: |
           npm run lint:architecture
           echo "✅ Architecture boundaries respected (placeholder)"
+      - name: job-finish
+        run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
 
   # ════════════════════════════════════════════════════════════════════════════
   # SUMMARY: All gates must pass for merge
@@ -169,6 +189,8 @@ jobs:
     runs-on: ubuntu-latest
     if: always()
     steps:
+      - name: job-start
+        run: echo "job-start $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
       - name: Check all gates
         run: |
           if [ "${{ needs.preflight.result }}" == "failure" ] || \
@@ -200,5 +222,7 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### DORA Metrics" >> $GITHUB_STEP_SUMMARY
           echo "- **Total gates**: 7" >> $GITHUB_STEP_SUMMARY
-          echo "- **Parallel execution**: Yes" >> $GITHUB_STEP_SUMMARY
-          echo "- **Estimated time**: ~5 min" >> $GITHUB_STEP_SUMMARY
+           echo "- **Parallel execution**: Yes" >> $GITHUB_STEP_SUMMARY
+           echo "- **Estimated time**: ~5 min" >> $GITHUB_STEP_SUMMARY
+      - name: job-finish
+        run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ')"

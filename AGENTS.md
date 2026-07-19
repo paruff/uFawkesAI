@@ -109,9 +109,22 @@ spec → design → build → [test-execution || review] → cross-validation
 - Command: `.agents/assertions/assertion-runner.sh <report.md> <agent-name>`
 - Pre-commit hook auto-validates any staged `*-report.md` files
 
+### Deployment Lifecycle Gates
+
+- **Main CI guard** — `.github/workflows/main-ci-guard.yml` blocks PR merges to `main` until the `ci-quality.yml` workflow passes
+- **Observability built-in** — every workflow job logs `job-start` / `job-finish` timestamps for traceability of build times, test results, and deploy status
+
 ---
 
-## 8. See Also
+## 8. Context Files
+
+| File | Why |
+|---|---|
+| `docs/PR_STANDARD.md` | PR naming rules, CI requirements, branch discipline |
+
+---
+
+## 9. See Also
 
 - `.agents/README.md` — Full agent and skill documentation
 - `.agents/registry/` — Agent capabilities, cross-validation rules, skill lifecycle

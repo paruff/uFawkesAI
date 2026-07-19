@@ -15,7 +15,9 @@ jobs:
     name: "📄 Documentation Freshness"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - name: job-start
+        run: echo "job-start $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -92,3 +94,5 @@ jobs:
             } else {
               console.log('ℹ️ No instruction or script changes detected — skipping');
             }
+      - name: job-finish
+        run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
