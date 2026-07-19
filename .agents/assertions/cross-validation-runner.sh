@@ -2,12 +2,12 @@
 # cross-validation-runner.sh — Cross-agent validation
 # Validates pairwise consistency between agent outputs
 # Usage: bash .agents/assertions/cross-validation-runner.sh \
-  --spec-report path/to/spec-report.md \
-  --design-report path/to/design-report.md \
-  --build-report path/to/build-report.md \
-  --test-report path/to/test-report.md \
-  --test-execution-report path/to/test-execution-report.md \
-  --review-report path/to/review-report.md
+#   --spec-report path/to/spec-report.md \
+#   --design-report path/to/design-report.md \
+#   --build-report path/to/build-report.md \
+#   --test-report path/to/test-report.md \
+#   --test-execution-report path/to/test-execution-report.md \
+#   --review-report path/to/review-report.md
 # Outputs: .agents/logs/cross-validation-report.md
 
 set -euo pipefail

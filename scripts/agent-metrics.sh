@@ -20,7 +20,8 @@ done
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 LOG_DIR="${REPO_ROOT}/.agents/logs"
-export SNAPSHOT_UTC="$(date -u +"%Y-%m-%d %H:%M:%SZ")"
+SNAPSHOT_UTC="$(date -u +"%Y-%m-%d %H:%M:%SZ")"
+export SNAPSHOT_UTC
 
 if [ ! -d "${LOG_DIR}" ]; then
   echo "No .agents/logs/ directory found. Create it and add invocation logs to get started."

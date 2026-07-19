@@ -1,80 +1,62 @@
-# Pre-commit hooks for uFawkes product suite repos
-# Install: make pre-commit-setup
-# Run manually: pre-commit run --all-files
-
-# Exclude machine-generated graphify outputs from all hooks
 exclude: graphify-out/
 
 repos:
-  # ============================================================================
-  # General Code Quality
-  # ============================================================================
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.5.0
+    rev: v5.0.0
     hooks:
       - id: trailing-whitespace
-        name: Trim trailing whitespace
       - id: end-of-file-fixer
-        name: Fix end of files
       - id: check-yaml
-        name: Check YAML syntax
+        args: ["--allow-multiple-documents"]
       - id: check-json
-        name: Check JSON syntax
       - id: check-added-large-files
-        name: Check for large files
         args: ["--maxkb=1024"]
       - id: check-merge-conflict
-        name: Check for merge conflicts
       - id: mixed-line-ending
-        name: Fix mixed line endings
         args: ["--fix=lf"]
       - id: detect-private-key
-        name: Detect private keys
 
-  # ============================================================================
-  # YAML Linting
-  # ============================================================================
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.11.0
+    hooks:
+      - id: ruff
+        args: ["--fix"]
+      - id: ruff-format
+
   - repo: https://github.com/adrienverge/yamllint
-    rev: v1.33.0
+    rev: v1.35.1
     hooks:
       - id: yamllint
-        name: Lint YAML files
         args: ["-c", ".yamllint"]
-        types: [yaml]
 
-  # ============================================================================
-  # Markdown Linting
-  # ============================================================================
   - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.38.0
+    rev: v0.44.0
     hooks:
       - id: markdownlint
-        name: Lint Markdown files
         args: ["--config", ".markdownlint.json", "--fix"]
 
-  # ============================================================================
-  # Prettier (JSON/YAML/Markdown Formatting)
-  # ============================================================================
   - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: v3.1.0
+    rev: v4.0.0-alpha.8
     hooks:
       - id: prettier
-        name: Format with Prettier
         types_or: [json, yaml, markdown]
         args: ["--write", "--ignore-unknown"]
 
-  # ============================================================================
-  # Security Scanning
-  # ============================================================================
   - repo: https://github.com/gitleaks/gitleaks
     rev: v8.18.1
     hooks:
       - id: gitleaks
-        name: Detect secrets with Gitleaks
 
   - repo: https://github.com/Yelp/detect-secrets
     rev: v1.4.0
     hooks:
       - id: detect-secrets
-        name: Detect secrets
         args: ["--baseline", ".secrets.baseline"]
+
+  - repo: local
+    hooks:
+      - id: commit-msg
+        name: Conventional Commit
+        entry: scripts/commit-msg.sh
+        language: script
+        stages: [commit-msg]

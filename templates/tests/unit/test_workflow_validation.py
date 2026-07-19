@@ -3,9 +3,7 @@
 Customize this file for your project's specific workflow requirements.
 """
 
-import pytest
 import yaml
-from pathlib import Path
 
 
 class TestWorkflowValidation:
@@ -34,7 +32,9 @@ class TestWorkflowValidation:
         for f in workflow_files:
             with open(f) as fh:
                 config = yaml.safe_load(fh)
-                assert "on" in config or True in config, f"{f.name} missing 'on' trigger"
+                assert "on" in config or True in config, (
+                    f"{f.name} missing 'on' trigger"
+                )
 
     def test_all_have_jobs(self, workflow_files):
         """All workflows must have a 'jobs' section."""
@@ -108,7 +108,10 @@ class TestWorkflowValidation:
                             if "uses" in step:
                                 action = step["uses"]
                                 # Allow official actions and well-known third-party actions
-                                assert any(action.startswith(prefix) for prefix in allowed_actions), (
+                                assert any(
+                                    action.startswith(prefix)
+                                    for prefix in allowed_actions
+                                ), (
                                     f"{f.name} job '{job_name}' uses non-standard action: {action}"
                                 )
 
@@ -123,6 +126,7 @@ class TestWorkflowValidation:
                         # Only check direct jobs, not reusable workflow calls
                         if "timeout-minutes" not in job_config:
                             import warnings
+
                             warnings.warn(
                                 f"{f.name} job '{job_name}' has no timeout-minutes",
                                 UserWarning,
