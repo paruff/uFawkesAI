@@ -60,12 +60,12 @@ rate(github_pr_merged_total{repo=~"REPO"}[${WINDOW}d]) * 604800
 
 **DORA tier thresholds:**
 
-| Tier   | Value                            |
-| ------ | -------------------------------- |
-| Elite  | On-demand (multiple deploys/day) |
-| High   | 1/week to 1/day                  |
-| Medium | 1/month to 1/week                |
-| Low    | Less than 1/month                |
+| Tier | Value |
+| --- | --- |
+| Elite | On-demand (multiple deploys/day) |
+| High | 1/week to 1/day |
+| Medium | 1/month to 1/week |
+| Low | Less than 1/month |
 
 ### 2. Lead Time for Changes
 
@@ -96,10 +96,10 @@ histogram_quantile(0.50, rate(github_pr_time_to_merge_seconds_bucket[${WINDOW}d]
 
 **DORA tier thresholds:**
 
-| Tier   | Value             |
-| ------ | ----------------- |
-| Elite  | < 1 hour          |
-| High   | 1 day to 1 week   |
+| Tier | Value |
+| --- | --- |
+| Elite | < 1 hour |
+| High | 1 day to 1 week |
 | Medium | 1 week to 1 month |
 | Low    | > 1 month         |
 
@@ -131,12 +131,12 @@ Percentage of deployments causing a production failure requiring remediation.
 
 **DORA tier thresholds:**
 
-| Tier   | Value   |
-| ------ | ------- |
-| Elite  | 0–5%    |
-| High   | 5–10%   |
-| Medium | 10–15%  |
-| Low    | 15–100% |
+| Tier | Value |
+| --- | --- |
+| Elite | 0–5% |
+| High | 5–10% |
+| Medium | 10–15% |
+| Low | 15–100% |
 
 ### 4. Time to Restore (MTTR)
 
@@ -166,10 +166,10 @@ histogram_quantile(0.50, rate(incident_resolution_time_seconds_bucket[${WINDOW}d
 
 **DORA tier thresholds:**
 
-| Tier   | Value           |
-| ------ | --------------- |
-| Elite  | < 1 hour        |
-| High   | < 1 day         |
+| Tier | Value |
+| --- | --- |
+| Elite | < 1 hour |
+| High | < 1 day |
 | Medium | 1 day to 1 week |
 | Low    | > 1 week        |
 
