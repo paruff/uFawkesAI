@@ -34,6 +34,13 @@ repos:
   # ============================================================================
   # YAML Linting
   # ============================================================================
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.15.22
+    hooks:
+      - id: ruff
+        args: ["--fix"]
+      - id: ruff-format
+
   - repo: https://github.com/adrienverge/yamllint
     rev: v1.38.0
     hooks:
@@ -67,3 +74,11 @@ repos:
       - id: detect-secrets
         name: Detect secrets
         args: ["--baseline", ".secrets.baseline"]
+
+  - repo: local
+    hooks:
+      - id: commit-msg
+        name: Conventional Commit
+        entry: scripts/commit-msg.sh
+        language: script
+        stages: [commit-msg]
