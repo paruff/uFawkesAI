@@ -3,10 +3,8 @@
 Customize this file for your project's specific Jenkinsfile requirements.
 """
 
-import pytest
 import re
 import warnings
-from pathlib import Path
 
 
 class TestJenkinsfileValidation:
@@ -60,8 +58,8 @@ class TestJenkinsfileValidation:
     def test_has_timeout(self, jenkinsfile_content):
         """Jenkinsfile should have a timeout to prevent hung builds."""
         has_timeout = (
-            re.search(r"timeout\s*\(", jenkinsfile_content) is not None or
-            re.search(r"buildDiscarder", jenkinsfile_content) is not None
+            re.search(r"timeout\s*\(", jenkinsfile_content) is not None
+            or re.search(r"buildDiscarder", jenkinsfile_content) is not None
         )
         # Soft assertion - warn but don't fail
         if not has_timeout:

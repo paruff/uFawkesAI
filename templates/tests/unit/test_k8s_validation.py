@@ -5,7 +5,6 @@ Customize this file for your project's specific K8s requirements.
 
 import pytest
 import yaml
-from pathlib import Path
 
 
 class TestK8sManifestsValidation:
@@ -41,23 +40,17 @@ class TestK8sManifestsValidation:
     def test_all_have_api_version(self, k8s_configs):
         """All K8s resources must have apiVersion."""
         for filename, config in k8s_configs:
-            assert "apiVersion" in config, (
-                f"{filename} missing 'apiVersion'"
-            )
+            assert "apiVersion" in config, f"{filename} missing 'apiVersion'"
 
     def test_all_have_kind(self, k8s_configs):
         """All K8s resources must have kind."""
         for filename, config in k8s_configs:
-            assert "kind" in config, (
-                f"{filename} missing 'kind'"
-            )
+            assert "kind" in config, f"{filename} missing 'kind'"
 
     def test_all_have_metadata(self, k8s_configs):
         """All K8s resources must have metadata."""
         for filename, config in k8s_configs:
-            assert "metadata" in config, (
-                f"{filename} missing 'metadata'"
-            )
+            assert "metadata" in config, f"{filename} missing 'metadata'"
 
     def test_metadata_has_name(self, k8s_configs):
         """All K8s resources must have metadata.name."""
@@ -103,6 +96,7 @@ class TestK8sManifestsValidation:
         # Warn but don't fail - some resources may not need labels
         if resources_without_labels:
             import warnings
+
             warnings.warn(
                 f"Resources without labels: {', '.join(resources_without_labels)}",
                 UserWarning,

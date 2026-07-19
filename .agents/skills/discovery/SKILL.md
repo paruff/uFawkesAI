@@ -24,13 +24,13 @@ harm to team performance. Speed is irrelevant if moving in the wrong direction.
 
 ## When to Run
 
-| Situation                                                | Run discovery?                                   |
-| -------------------------------------------------------- | ------------------------------------------------ |
-| New feature proposed                                     | ✅ Always                                        |
-| Infrastructure migration that affects developer workflow | ✅ Yes — the developer _is_ the user             |
+| Situation                                                | Run discovery?                                  |
+| -------------------------------------------------------- | ----------------------------------------------- |
+| New feature proposed                                     | ✅ Always                                       |
+| Infrastructure migration that affects developer workflow | ✅ Yes — the developer _is_ the user            |
 | Bug fix                                                  | ⚠ Only if the fix changes user-visible behavior |
-| Dependency update, doc fix, test addition                | ❌ Skip — no user behavior change                |
-| New Dojo belt module                                     | ✅ Yes — the learner is the user                 |
+| Dependency update, doc fix, test addition                | ❌ Skip — no user behavior change               |
+| New Dojo belt module                                     | ✅ Yes — the learner is the user                |
 
 ## Persona Reference Table
 

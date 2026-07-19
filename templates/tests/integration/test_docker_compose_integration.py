@@ -4,10 +4,8 @@ Customize this file for your project's specific integration test requirements.
 """
 
 import pytest
-import yaml
 import subprocess
 import time
-import requests
 from pathlib import Path
 
 
@@ -71,6 +69,7 @@ class TestDockerComposeIntegration:
         if result.returncode == 0:
             # Parse JSON output to check for port conflicts
             import json
+
             ports_seen = {}
             for line in result.stdout.strip().split("\n"):
                 if not line:
