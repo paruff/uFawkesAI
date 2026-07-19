@@ -101,7 +101,7 @@ histogram_quantile(0.50, rate(github_pr_time_to_merge_seconds_bucket[${WINDOW}d]
 | Elite | < 1 hour |
 | High | 1 day to 1 week |
 | Medium | 1 week to 1 month |
-| Low | > 1 month |
+| Low    | > 1 month         |
 
 ### 3. Change Failure Rate
 
@@ -171,7 +171,7 @@ histogram_quantile(0.50, rate(incident_resolution_time_seconds_bucket[${WINDOW}d
 | Elite | < 1 hour |
 | High | < 1 day |
 | Medium | 1 day to 1 week |
-| Low | > 1 week |
+| Low    | > 1 week        |
 
 ## ROI Translation (2026 DORA ROI Report Framework)
 
