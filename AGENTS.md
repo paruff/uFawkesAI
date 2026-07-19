@@ -88,7 +88,7 @@ spec → design → build → [test-execution || review] → cross-validation
 
 ### Commit Format
 
-- Conventional Commits required: `type(scope): description` (max 120 chars)
+- Conventional Commits required: `type(scope): description` (max 72 chars)
 - Types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`, `ci`, `perf`, `build`, `revert`
 
 ### Pre-commit Hooks

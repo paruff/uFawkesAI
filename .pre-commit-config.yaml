@@ -16,9 +16,6 @@ repos:
         args: ["--fix=lf"]
       - id: detect-private-key
 
-  # ============================================================================
-  # YAML Linting
-  # ============================================================================
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.15.22
     hooks:
@@ -38,9 +35,6 @@ repos:
       - id: markdownlint
         args: ["--config", ".markdownlint.json", "--fix"]
 
-  # ============================================================================
-  # Security Scanning
-  # ============================================================================
   - repo: https://github.com/gitleaks/gitleaks
     rev: v8.30.1
     hooks:
