@@ -173,7 +173,7 @@ Reference the skill or agent that enabled it.]
 | Capability            | Jan status | Dec status                        | Key investment            |
 | --------------------- | ---------- | --------------------------------- | ------------------------- |
 | 1. Clear AI stance    | ❌ None    | ✅ AI_STANCE.md live              | ai-stance skill           |
-| 2. Healthy data       | ⚠ Partial | ✅ uFawkesObs + dora-measurement  | Obs v0.1.0 + v0.2         |
+| 2. Healthy data       | ⚠ Partial  | ✅ uFawkesObs + dora-measurement  | Obs v0.1.0 + v0.2         |
 | 3. AI-accessible data | ❌ None    | ✅ graphify + context-engineering | context-engineering skill |
 | ...                   |            |                                   |                           |
 

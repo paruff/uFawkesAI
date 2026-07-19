@@ -1,7 +1,6 @@
 ---
 name: spec
 description: "Convert a human request into a clear, structured specification with requirements, acceptance criteria, and policy alignment. Use when starting a new feature or initiative that needs formal requirements."
-model: claude-sonnet-4-6
 ---
 
 # Spec Agent
@@ -15,6 +14,11 @@ Read these files first:
 1. `AGENTS.md` — project identity, governance rules, what agents may/must not do
 2. `docs/GOLDEN_PATH.md` — canonical idea→deploy workflow (if exists)
 3. Existing `specification.md` files (if any — avoid duplicating work)
+4. `discovery-brief.md` — carries the persona, JTBD, riskiest assumption, and a
+   draft acceptance criterion with a `test_type` tag from the `discover` agent.
+   Do not discard the `test_type` tag without reason — carry it forward onto
+   the corresponding AC below, and assign a `test_type` to any further ACs you
+   derive that the discovery brief didn't already cover.
 
 If any file is missing, note it and proceed with what is available.
 
@@ -43,14 +47,20 @@ Decompose the intent into structured requirements:
 
 Convert each requirement into binary pass/fail criteria:
 
-- [ ] AC-01: Specific, testable assertion
-- [ ] AC-02: Specific, testable assertion
+- [ ] AC-01: Specific, testable assertion — `test_type: unit | integration | live-system`
+- [ ] AC-02: Specific, testable assertion — `test_type: unit | integration | live-system`
 
 Rules:
 
 - Each AC must be independently verifiable
 - No ambiguous language ("should", "might", "good enough")
 - Include measurable outcomes where possible
+- Each AC must carry a `test_type` tag. Default to whatever `discover.md`
+  already assigned for the AC it corresponds to; for any new AC you introduce
+  here, assign the tag yourself using the same judgment call `discover.md`
+  applies — a one-sentence reasoning is not required here (it was already
+  captured upstream), but do not tag an AC touching a deployed/runtime
+  component as `unit` just because that's the default — check first.
 
 ### Step 4 — Validate Against Governance
 
@@ -129,9 +139,9 @@ As a [role], I want [capability], so that [outcome].
 
 ## Acceptance Criteria
 
-- [ ] AC-01: [Specific, testable assertion]
-- [ ] AC-02: [Specific, testable assertion]
-- [ ] AC-03: [Specific, testable assertion]
+- [ ] AC-01: [Specific, testable assertion] — `test_type: unit | integration | live-system`
+- [ ] AC-02: [Specific, testable assertion] — `test_type: unit | integration | live-system`
+- [ ] AC-03: [Specific, testable assertion] — `test_type: unit | integration | live-system`
 
 ## Governance Alignment
 
@@ -151,6 +161,7 @@ As a [role], I want [capability], so that [outcome].
 Your report MUST satisfy this contract. Self-validate before finishing.
 
 - Required sections: Specification:, Functional Requirements, Acceptance Criteria, Governance Alignment
+- Every Acceptance Criteria line item must carry a `test_type` tag
 - Schema: `.agents/assertions/agent-output-schema.json`
 - Runner: `bash .agents/assertions/assertion-runner.sh <report.md> spec`
 
@@ -160,14 +171,28 @@ After producing your report, write a structured log entry:
 
 1. Append one JSON object to `.agents/logs/YYYY-MM-DD.jsonl` (one line per invocation)
 2. Follow the schema in `.agents/schema/skill-invocation-log.json`
-3. Include: agent name, session_id (unique identifier), skills loaded, findings, decision, blockers
-4. For each finding, set `actionable` and `manual_review_needed` accurately
+3. Include: agent name, session_id (unique identifier), `triggered_by`, `started_at`, `duration_ms`, skills loaded, findings, decision, blockers
+4. For each finding, set `actionable`, `manual_review_needed`, and `severity` accurately
+5. Set `triggered_by` to whichever orchestrator invoked this agent: `"discovery-flow"` (the typical case for spec), or `"manual"` if invoked directly by the user
+6. Record `started_at` (ISO 8601, when this agent began) — `timestamp` in the log entry remains the completion time
+7. Compute `duration_ms` as the difference between `started_at` and completion
+
+### Finding Severity
+
+Every finding must carry a `severity` field, one of:
+
+- `blocker` — prevented the task from completing as planned; required a fix before proceeding
+- `defect` — a real problem that was found and fixed within this invocation, but did not block completion
+- `note` — informational; no fix required
+
+Do not default to `defect` when uncertain — if a finding did not require any change to resolve, it is a `note`, not a `defect`.
 
 This log is required. If the file cannot be written, document why.
 
 ## Hard Rules
 
 - Never produce a specification without acceptance criteria.
+- Never produce an acceptance criterion without a `test_type` tag.
 - Never leave ambiguous requirements — flag for clarification.
 - Never assume governance compliance — validate it.
 - Never add features not requested without noting it as scope expansion.

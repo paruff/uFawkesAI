@@ -98,6 +98,4 @@ class TestPipelineAcceptance:
             "Failed to start",
         ]
         for error in critical_errors:
-            assert error not in result.stdout, (
-                f"Log contains critical error: {error}"
-            )
+            assert error not in result.stdout, f"Log contains critical error: {error}"

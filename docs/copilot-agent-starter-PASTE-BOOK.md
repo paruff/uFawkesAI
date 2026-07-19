@@ -1343,7 +1343,7 @@ steps: - name: Check all gates
 run: |
 if [ "${{ needs.lint.result }}" != "success" ] || \
  [ "${{ needs.typecheck.result }}" != "success" ] || \
- [ "${{ needs.test.result }}" != "success" ] || \
+[ "${{ needs.test.result }}" != "success" ] || \
  [ "${{ needs.architecture.result }}" != "success" ]; then
 echo "❌ One or more CI gates failed"
 exit 1
@@ -2680,10 +2680,10 @@ echo ""
 # ─────────────────────────────────────────
 
 TOTAL_LINES=$(git log --since="${DAYS} days ago" --pretty=tformat: --numstat \
- | grep -v "^-" | awk '{ add += $1; del += $2 } END { print add+del }' 2>/dev/null || echo "0")
+| grep -v "^-" | awk '{ add += $1; del += $2 } END { print add+del }' 2>/dev/null || echo "0")
 
 REVERT_LINES=$(git log --since="${DAYS} days ago" --grep="revert" -i --pretty=tformat: --numstat \
- | grep -v "^-" | awk '{ add += $1; del += $2 } END { print add+del }' 2>/dev/null || echo "0")
+| grep -v "^-" | awk '{ add += $1; del += $2 } END { print add+del }' 2>/dev/null || echo "0")
 
 if [ "$TOTAL_LINES" -gt 0 ]; then
 REWORK_RATE=$(echo "scale=1; $REVERT_LINES \* 100 / $TOTAL_LINES" | bc 2>/dev/null || echo "?")
@@ -2696,9 +2696,9 @@ STATUS="${RED}❌${NC}"
 NOTE="STOP features — fix instructions first"
 elif (( $(echo "$REWORK_RATE > 10" | bc -l 2>/dev/null || echo 0) )); then
 STATUS="${YELLOW}⚠️ ${NC}"
-  NOTE="Watch — review AGENTS.md for pattern drift"
+NOTE="Watch — review AGENTS.md for pattern drift"
 else
-  STATUS="${GREEN}✅${NC}"
+STATUS="${GREEN}✅${NC}"
 NOTE="Healthy"
 fi
 echo -e " ${STATUS} Rework rate: ${REWORK_RATE}% [target: <10%] — $NOTE"
@@ -2728,7 +2728,7 @@ print(f'{lines:.0f}')
 " 2>/dev/null || echo "?")
 
 if [ "$COVERAGE" != "?" ] && [ "$COVERAGE" -lt 80 ]; then
-echo -e " ${YELLOW}⚠️ ${NC} Test coverage:        ${COVERAGE}%  [target: ≥80%]"
+echo -e " ${YELLOW}⚠️ ${NC} Test coverage: ${COVERAGE}%  [target: ≥80%]"
   elif [ "$COVERAGE" != "?" ]; then
 echo -e " ${GREEN}✅${NC} Test coverage: ${COVERAGE}% [target: ≥80%]"
 else

@@ -3,10 +3,8 @@
 Customize this file for your project's specific Docker Compose requirements.
 """
 
-import pytest
 import re
 import yaml
-from pathlib import Path
 
 
 class TestDockerComposeValidation:
@@ -48,6 +46,7 @@ class TestDockerComposeValidation:
         # Warn but don't fail - some services may not need healthchecks
         if services_without_healthcheck:
             import warnings
+
             warnings.warn(
                 f"Services without healthcheck: {', '.join(services_without_healthcheck)}",
                 UserWarning,
@@ -83,6 +82,6 @@ class TestDockerComposeValidation:
         if "volumes" in docker_compose_config:
             for volume_name in docker_compose_config["volumes"]:
                 # Named volumes don't start with / or .
-                assert not volume_name.startswith("/") and not volume_name.startswith("."), (
-                    f"Volume '{volume_name}' should be a named volume, not a host path"
-                )
+                assert not volume_name.startswith("/") and not volume_name.startswith(
+                    "."
+                ), f"Volume '{volume_name}' should be a named volume, not a host path"

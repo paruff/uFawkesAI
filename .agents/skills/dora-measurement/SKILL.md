@@ -59,8 +59,9 @@ rate(github_pr_merged_total{repo=~"REPO"}[${WINDOW}d]) * 604800
 ```
 
 **DORA tier thresholds:**
+
 | Tier | Value |
-|---|---|
+| --- | --- |
 | Elite | On-demand (multiple deploys/day) |
 | High | 1/week to 1/day |
 | Medium | 1/month to 1/week |
@@ -94,12 +95,13 @@ histogram_quantile(0.50, rate(github_pr_time_to_merge_seconds_bucket[${WINDOW}d]
 ```
 
 **DORA tier thresholds:**
+
 | Tier | Value |
-|---|---|
+| --- | --- |
 | Elite | < 1 hour |
 | High | 1 day to 1 week |
 | Medium | 1 week to 1 month |
-| Low | > 1 month |
+| Low    | > 1 month         |
 
 ### 3. Change Failure Rate
 
@@ -128,8 +130,9 @@ Percentage of deployments causing a production failure requiring remediation.
 ```
 
 **DORA tier thresholds:**
+
 | Tier | Value |
-|---|---|
+| --- | --- |
 | Elite | 0–5% |
 | High | 5–10% |
 | Medium | 10–15% |
@@ -162,12 +165,13 @@ histogram_quantile(0.50, rate(incident_resolution_time_seconds_bucket[${WINDOW}d
 ```
 
 **DORA tier thresholds:**
+
 | Tier | Value |
-|---|---|
+| --- | --- |
 | Elite | < 1 hour |
 | High | < 1 day |
 | Medium | 1 day to 1 week |
-| Low | > 1 week |
+| Low    | > 1 week        |
 
 ## ROI Translation (2026 DORA ROI Report Framework)
 

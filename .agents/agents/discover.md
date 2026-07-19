@@ -6,6 +6,9 @@ compatibility: Claude Code, GitHub Copilot, OpenCode, Cursor, Codex, Gemini CLI
 metadata:
   author: paruff
   suite: uFawkesAI
+# model field intentionally removed — see docs/MODEL_ROUTING.md. Not pinning
+# a provider/model here keeps this file portable across OpenRouter, Nvidia,
+# OpenCode Zen, or whatever a given contributor has quota with.
 ---
 
 # Agent: Discover
@@ -54,6 +57,16 @@ Model v2025.1.
 4. **Write the acceptance criterion** — one given/when/then statement that, if true,
    confirms the job is done. Must be testable by the `test-execution` agent.
 
+   **Also tag it with a `test_type`** — `unit`, `integration`, or `live-system` —
+   based on whether confirming the job truly done requires observing a real
+   running instance of the system. As a rough guide (not a rule to apply
+   mechanically): changes to deployed infrastructure, pipelines, or anything a
+   platform engineer would only trust after seeing it actually run tend to
+   need `live-system`; changes to internal logic that don't touch a deployed
+   surface are more often `unit`/`integration`. This is a judgment call for
+   this specific brief, not a lookup table — state your reasoning in one
+   sentence alongside the tag.
+
 5. **Map to DORA outcome** — which DORA AI Capability or Core DevOps capability does
    this improve? How will improvement be measured? (Which metric, measured in uFawkesObs?)
 
@@ -83,6 +96,8 @@ The spec agent MUST NOT begin without a discovery brief.
   "jtbd": "When I ..., I want to ..., so I can ...",
   "riskiest_assumption": "string",
   "acceptance_criterion": "Given ... When ... Then ...",
+  "test_type": "unit | integration | live-system",
+  "test_type_reasoning": "string — one sentence on why this tag was chosen",
   "dora_capability": "string",
   "dora_metric": "string",
   "measurement_source": "uFawkesObs | uFawkesDORA | manual",
@@ -101,6 +116,7 @@ The spec agent MUST NOT begin without a discovery brief.
   "jtbd": "string",
   "riskiest_assumption": "string",
   "acceptance_criterion": "string",
+  "test_type": "unit | integration | live-system",
   "dora_capability": "string",
   "dora_metric": "string",
   "prior_art_found": true,
@@ -115,6 +131,7 @@ The spec agent MUST NOT begin without a discovery brief.
 - [ ] JTBD statement complete (situation / motivation / outcome all present)
 - [ ] Riskiest assumption stated in one sentence
 - [ ] Acceptance criterion testable (spec agent can write a test from it directly)
+- [ ] Acceptance criterion tagged with a `test_type` and a one-sentence reasoning
 - [ ] DORA capability and metric named
 - [ ] Prior art check complete
 - [ ] discovery-brief.md written and passed to spec agent

@@ -35,9 +35,9 @@ Sections marked ✅ are required for release. Sections marked ⚠ are required w
 | **What This Is Not** | ✅       | 1-2 sentences. Explicit scope boundary prevents misuse.                    |
 | **Status**           | ✅       | Current version, what works today, what's next. Update every release.      |
 | **Quick Start**      | ✅       | Commands to go from clone to running in <5 min. Must actually work.        |
-| **Architecture**     | ⚠       | Link to ARCHITECTURE.md or a brief component diagram.                      |
+| **Architecture**     | ⚠        | Link to ARCHITECTURE.md or a brief component diagram.                      |
 | **Testing**          | ✅       | How to run tests. Expected output. What the tests cover.                   |
-| **DORA Capability**  | ⚠       | Which DORA capability this repo addresses and how.                         |
+| **DORA Capability**  | ⚠        | Which DORA capability this repo addresses and how.                         |
 | **Contributing**     | ✅       | Link to CONTRIBUTING.md. CONTRIBUTING.md must not be a placeholder.        |
 | **Suite Context**    | ✅       | Where this fits in the uFawkes portfolio. Links to fawkes and ufawkes.dev. |
 | **License**          | ✅       | License type and link.                                                     |
@@ -75,7 +75,7 @@ This repo is part of the [uFawkes platform suite](https://ufawkes.dev).
 | `AGENTS.md`                                 | ✅       | Lists current skills and agent roles       |
 | `ARCHITECTURE.md` or `docs/ARCHITECTURE.md` | ✅       | Present and not a stub                     |
 | `LICENSE`                                   | ✅       | Present                                    |
-| `.github/CODEOWNERS`                        | ⚠       | Present (roadmap item 0.10)                |
+| `.github/CODEOWNERS`                        | ⚠        | Present (roadmap item 0.10)                |
 | `tests/README.md`                           | ✅       | Explains how to run tests                  |
 
 ## Placeholder Detection
