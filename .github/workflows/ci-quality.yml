@@ -30,7 +30,7 @@ jobs:
   # ════════════════════════════════════════════════════════════════════════════
   preflight:
     name: "✈️ Pre-flight"
-    uses: paruff/ufawkespipe/.github/workflows/reusable-preflight.yml@v1.1.0
+    uses: paruff/ufawkespipe/.github/workflows/reusable-preflight.yml@v1.2.0
     with:
       pr-size-limit: 400
       commit-format: conventional
