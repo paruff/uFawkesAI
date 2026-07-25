@@ -37,7 +37,7 @@ jobs:
   # ════════════════════════════════════════════════════════════════════════════
   lint:
     name: "🔍 Lint"
-    uses: paruff/ufawkespipe/.github/workflows/reusable-lint.yml@v1.1.0
+    uses: paruff/ufawkespipe/.github/workflows/reusable-lint.yml@v1.2.0
     with:
       auto-detect: true
       emergency-bypass: true
