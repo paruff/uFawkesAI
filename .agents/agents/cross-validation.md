@@ -1,6 +1,5 @@
 ---
 name: cross-validation
-model: claude-sonnet-4-6
 license: MIT
 compatibility: "uFawkesAI"
 metadata:

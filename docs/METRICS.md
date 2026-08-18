@@ -90,7 +90,7 @@ git log --since="28 days ago" --format="%H %ae %s" | head -50
 - `AGENTS.md` growing too large (run `npm run token-audit`)
 - Developers using Agent Mode for questions (see `docs/MODEL_ROUTING_GUIDE.md`)
 - Vague prompts causing multi-turn retry loops
-- Wrong model selection (Opus for tasks Sonnet handles fine)
+- Wrong model selection (frontier-tier model for tasks a mid-tier model handles fine)
 
 **Correlation insight:** If rework rate and credit burn rate both increase together,
 the root cause is almost always `AGENTS.md` quality or team prompt discipline.

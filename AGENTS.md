@@ -10,9 +10,9 @@
 
 - AI agents implement. Humans decide.
 - No AI-generated code merges without human review and approval.
-- Use **Ask Mode** for questions. **Agent Mode** only for multi-file tasks.
+- Use your agent's read-only/question mode for questions; reserve multi-file/agentic mode for multi-file tasks.
 - Read `docs/MODEL_ROUTING_GUIDE.md` before choosing a model or mode.
-- Read `docs/COPILOT_COST_GUIDE.md` to understand token cost before starting.
+- GitHub Copilot users: read `docs/COPILOT_COST_GUIDE.md` to understand token cost before starting.
 
 **Data policy:** No customer PII in AI prompts.
 
@@ -22,7 +22,7 @@
 
 **Product:** uFawkesAI — Agent orchestration framework for platform engineering
 **Stack:** TypeScript · Node 20 · GitHub Actions · OpenTelemetry
-**Key constraints:** 7 agents, 25 skills, humans = routing layer
+**Key constraints:** 7 core pipeline agents + 7 flow/meta agents (14 total, see `.agents/README.md`), 31 skill areas, humans = routing layer
 
 ---
 
@@ -30,7 +30,7 @@
 
 1. No secrets, API keys, or credentials in any file.
 2. No merging your own PR.
-3. No modifying `AGENTS.md` or `.github/copilot-instructions.md`.
+3. No modifying `AGENTS.md` — the source file. Its symlinked aliases (`CLAUDE.md`, `.cursorrules`, `.github/copilot-instructions.md`, `.cursor/rules/AGENTS.md`) always mirror it; edit the source only.
 4. Run pre-commit hooks before committing (`pre-commit run --all-files`).
 5. All agent outputs must satisfy contracts in `.agents/assertions/minimal-report.yaml`.
 
@@ -44,7 +44,7 @@ Before starting any task touching > 3 files:
 2. List files you plan to read.
 3. Say: "Confirm I should proceed? (moderate/high credit cost)"
 
-For questions → use Ask Mode (60–90% cheaper than Agent Mode).
+For questions → use your agent's read-only/question mode (60–90% cheaper than agentic mode).
 
 ---
 
@@ -69,6 +69,8 @@ spec → design → build → [test-execution || review] → cross-validation
   │                    ↑
   └──── test ──────────┘
 ```
+
+7 more flow/meta agents (`discover`, `discovery-flow`, `feature-flow`, `learn`, `measure`, `release`, `repair-flow`) live in `.agents/agents/` — see `.agents/README.md` for the full routing table; omitted here to keep this always-loaded file lean.
 
 ---
 

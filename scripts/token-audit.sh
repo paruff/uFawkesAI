@@ -32,7 +32,7 @@ estimate_tokens() {
 }
 
 # ── Credit cost estimation ─────────────────────────────────────────────────────
-# Assumes Sonnet-class model at ~$0.003/1K input tokens as representative baseline
+# Assumes a representative mid-tier model at ~$0.003/1K input tokens as baseline (check your provider's current rate card)
 estimate_monthly_cost() {
   local tokens="$1"
   local requests_per_day="${2:-20}"   # default: 20 agent interactions/day

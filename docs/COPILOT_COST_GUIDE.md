@@ -50,11 +50,14 @@ This file loads on **every single request**. Every line is billed every time.
 
 ### 3. Model Selection — Up to 10x Cost Difference
 
-| Model tier                             | Cost  | Use for                            |
-| -------------------------------------- | ----- | ---------------------------------- |
-| GPT-4o mini / Haiku 4.5 / Gemini Flash | 1x    | Q&A, simple edits, docs            |
-| GPT-4o / Claude Sonnet                 | 3–5x  | Feature implementation             |
-| Claude Opus / GPT-5                    | 8–12x | Architecture, security review only |
+Copilot's available models change frequently — check your Copilot settings
+for the current lineup and route by tier, not by name:
+
+| Model tier             | Cost  | Use for                            |
+| ------------------------ | ----- | ----------------------------------- |
+| Fast/cheap tier         | 1x    | Q&A, simple edits, docs            |
+| Mid tier                | 3–5x  | Feature implementation             |
+| Frontier/premium tier   | 8–12x | Architecture, security review only |
 
 ---
 
@@ -96,14 +99,14 @@ This file loads on **every single request**. Every line is billed every time.
 ### Scenario A: Moderate Copilot Pro user ($10/month budget)
 
 - 200 tab completions: **free**
-- 10 Ask Mode questions on Sonnet: ~$0.20
-- 5 single-file edits on GPT-4o mini: ~$0.15
-- 2 feature implementations on GPT-4o: ~$1.50
+- 10 Ask Mode questions on a mid tier model: ~$0.20
+- 5 single-file edits on a fast/cheap tier model: ~$0.15
+- 2 feature implementations on a mid tier model: ~$1.50
 - **Total: ~$1.85** — well within $10 budget ✅
 
 ### Scenario B: Heavy Agent Mode user (danger zone)
 
-- 5 Agent Mode sessions on Opus, each touching 10 files: ~$3–5 each = **$15–25**
+- 5 Agent Mode sessions on a frontier/premium tier model, each touching 10 files: ~$3–5 each = **$15–25**
 - 3 Copilot Code Reviews: ~$1.50 each (now burns Actions minutes too)
 - **Total: $19–30** — blows $10 budget, likely blows $39 budget ⚠️
 
@@ -139,9 +142,9 @@ This file loads on **every single request**. Every line is billed every time.
 FREE:          Tab completion, Next Edit Suggestions
 CHEAP (Ask):   Questions, explanations, small lookups
 MEDIUM (Edit): Single-file changes, targeted fixes
-EXPENSIVE:     Agent Mode multi-file, Code Review, Opus/GPT-5
+EXPENSIVE:     Agent Mode multi-file, Code Review, frontier/premium tier
 
-AGENTS.md:     Keep under 80 lines — it's billed on EVERY request
+AGENTS.md:     Keep it lean — every line is billed on EVERY request
 Skills:        Load on demand only — free until referenced
 .copilotignore: Excluded files = zero tokens, configure it
 ```

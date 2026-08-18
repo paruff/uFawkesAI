@@ -30,7 +30,7 @@ gaps systematically.
 | **Missing tool**       | opencode listed in 7 repos but not in uFawkesSec             | 🟡 Medium   |
 | **Guardrail mismatch** | Same tool, different guardrail conditions in different repos | 🟡 Medium   |
 | **Review date skew**   | Some repos reviewed 5 days ago, one reviewed 200 days ago    | 🟢 Low      |
-| **Version skew**       | claude-sonnet-4-6 in 6 repos, older model in 2 repos         | 🟡 Medium   |
+| **Version skew**       | <model-id> in 6 repos, older model in 2 repos         | 🟡 Medium   |
 
 ## Comparison Protocol
 
@@ -62,7 +62,7 @@ done
 
 echo ""
 echo "=== Permitted tools comparison ==="
-for tool in opencode graphify ponytail "claude-sonnet" "GitHub Copilot"; do
+for tool in opencode graphify ponytail "claude" "GitHub Copilot"; do
   echo "--- ${tool} ---"
   for repo in "${REPOS[@]}"; do
     STANCE="../${repo}/AI_STANCE.md"
@@ -107,7 +107,7 @@ Missing AI_STANCE.md: [list repos]
 
 | Issue                        | Repos affected | Recommended resolution          |
 | ---------------------------- | -------------- | ------------------------------- |
-| [tool] version skew          | [repos]        | Update all to claude-sonnet-4-6 |
+| [tool] version skew          | [repos]        | Update all to the current model |
 | Missing from permitted tools | [repos]        | Add [tool] to permitted list    |
 
 ### Review date status
@@ -163,7 +163,7 @@ Reference: ai-stance/diff run on [DATE]" \
       "tool": "claude",
       "repos_current": ["fawkes", "uFawkesObs", "uFawkesAI"],
       "repos_stale": ["uFawkesPipe"],
-      "recommended": "Update uFawkesPipe to claude-sonnet-4-6"
+      "recommended": "Update uFawkesPipe to the current model"
     }
   ],
   "review_overdue_repos": [],

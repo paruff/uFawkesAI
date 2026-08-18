@@ -41,7 +41,7 @@ remediation steps, not just a pass/fail.
 - [ ] All actively-used tools are listed
 - [ ] No EOL or deprecated tools remain in the Permitted list
 - [ ] graphify variant confirmed (not `[CONFIRM_VARIANT]` placeholder)
-- [ ] claude-sonnet-4-6 is current model (check against Anthropic's current model list)
+- [ ] <model-id in AI_STANCE.md> is current (check against provider's current model list)
 - [ ] No tool is in Allowed that should have guardrails given current usage patterns
 
 ### Dimension 4 — Role applicability
@@ -85,7 +85,7 @@ echo "=== Role applicability ==="
 grep -qi "agent\|human" "$STANCE" | grep -qi "applies" && echo "PASS: role applicability stated" || echo "WARN: verify role applicability section"
 
 echo "=== Tool currency ==="
-grep "claude-sonnet-4-6" "$STANCE" && echo "INFO: check if claude-sonnet-4-6 is still current at anthropic.com/models"
+grep -E "claude-[a-z0-9-]+" "$STANCE" && echo "INFO: check the matched model id against the provider's current model list"
 grep "CONFIRM_VARIANT" "$STANCE" && echo "FAIL: graphify variant not confirmed"
 
 echo "=== Overdue review ==="

@@ -22,12 +22,15 @@ AI-assisted velocity gains are visible at the organizational level — not absor
 "downstream disorder" (DORA ROI 2026). Feeds the learn agent when anomalies are detected
 and the plan agent when capability gaps are identified.
 
-This agent runs on a schedule. It does not wait to be asked.
+This agent runs on a schedule. It does not wait to be asked. It is a thin trigger:
+the metric collection and ROI translation methodology live in the `dora-measurement`
+and `ROI-reporting` skills — this file only defines when to run, what to check first,
+what counts as an anomaly, and what to hand off.
 
 ## Trigger Conditions
 
 | Trigger               | Frequency                 | Source                                                   |
-| --------------------- | ------------------------- | -------------------------------------------------------- |
+| --------------------- | ------------------------- | --------------------------------------------------------- |
 | Monthly cadence       | 1st of each month         | Scheduled (cron or manual)                               |
 | Post-release          | After each GitHub Release | Filed by release agent (issue label: `dora-measurement`) |
 | Anomaly investigation | Ad hoc                    | Filed by learn agent or human observation                |
@@ -35,6 +38,7 @@ This agent runs on a schedule. It does not wait to be asked.
 ## Pre-conditions
 
 - [ ] Load `dora-measurement` skill: `"load dora-measurement skill"`
+- [ ] Load `ROI-reporting` skill: `"load roi-reporting skill"`
 - [ ] uFawkesObs is running: `curl -s http://localhost:9090/-/healthy` returns `OK`
 - [ ] Prometheus retention covers the measurement window (default: 30 days)
 - [ ] Loki is running and log ingestion is current
@@ -43,41 +47,21 @@ This agent runs on a schedule. It does not wait to be asked.
 
 ## Responsibilities
 
-### Phase 1 — Collect (automated)
+### Phase 1 — Collect and translate (delegate to skills)
 
-Query uFawkesObs for the four DORA delivery metrics over the measurement window
-(default: last 30 days, configurable). See `dora-measurement` skill for exact
-Prometheus queries and Loki log patterns.
+Follow the `dora-measurement` skill to compute the four DORA delivery metrics
+(Deployment Frequency, Lead Time for Changes, Change Failure Rate, Time to Restore)
+over the measurement window, using its Prometheus/Loki queries and proxy-metric
+fallback. Do not invent data — if `dora-measurement` flags `proxy_metrics: true`,
+carry that flag through unchanged.
 
-| Metric                | Source                                                             | Query type       |
-| --------------------- | ------------------------------------------------------------------ | ---------------- |
-| Deployment Frequency  | Prometheus `deployment_events_total`                               | Rate over window |
-| Lead Time for Changes | Loki deployment logs + git commit timestamps                       | Histogram        |
-| Change Failure Rate   | Prometheus `deployment_failures_total` / `deployment_events_total` | Ratio            |
-| Time to Restore       | Loki incident + resolution log pairs                               | Duration         |
+Then follow the `ROI-reporting` skill to translate the resulting snapshot into the
+five-dimension ROI framework (cost efficiency, productivity, developer experience,
+user experience, business growth), expressed in plain language.
 
-**Note:** If deployment event sources are not yet wired from uFawkesPipe, use
-available proxy metrics (build frequency, PR merge rate) and flag explicitly as
-`proxy_metrics: true` in the output. Do not invent data. Do not omit the flag.
+### Phase 2 — Compare and flag anomalies (agent-specific — not in either skill)
 
-### Phase 2 — Compute ROI translation
-
-Map metric values to the 2026 DORA ROI report's five-dimension framework:
-
-| Dimension            | Metric driver                              | Signal                               |
-| -------------------- | ------------------------------------------ | ------------------------------------ |
-| Cost efficiency      | Change failure rate ↓                      | Rework cost avoided                  |
-| Productivity         | Lead time ↓ + Deployment frequency ↑       | Features shipped per week            |
-| Developer experience | Time to restore ↓ + Deployment frequency ↑ | Incident burden reduction            |
-| User experience      | Change failure rate ↓                      | Stability visible to end users       |
-| Business growth      | All four metrics improving                 | Platform velocity → product velocity |
-
-Express each dimension as: current value, 30-day trend (↑/↓/→), and one-line
-interpretation in plain language (not metric jargon).
-
-### Phase 3 — Compare and flag anomalies
-
-Compare current snapshot to:
+Compare the current snapshot to:
 
 1. Previous monthly snapshot (trend)
 2. DORA industry benchmarks (Elite / High / Medium / Low from dora.dev/research)
@@ -86,10 +70,12 @@ Compare current snapshot to:
 Flag any metric that regressed >10% month-over-month OR is in "Low" tier.
 Each flag becomes a learn agent input.
 
-### Phase 4 — Produce outputs
+### Phase 3 — Produce outputs and hand off
 
-Write `dora-snapshot-YYYY-MM.json` (machine-readable, Grafana-importable).
-Write `dora-snapshot-YYYY-MM.md` (human-readable, dev.to/LinkedIn source material).
+Write `dora-snapshot-YYYY-MM.json` and `dora-snapshot-YYYY-MM.md` per the
+`dora-measurement` skill's output format, extended with this agent's own
+`anomalies` / `learn_agent_input` / `plan_agent_issues` fields (see Output Format
+below — these fields are unique to this agent and not part of the skill's contract).
 File GitHub issues for any anomaly flags (label: `dora-regression`).
 Pass improvement items to plan agent (label: `capability-improvement`).
 
@@ -147,8 +133,8 @@ Pass improvement items to plan agent (label: `capability-improvement`).
 
 ## Success Criteria
 
-- [ ] All four DORA metrics computed (or proxy flag set)
-- [ ] ROI dimensions populated in plain language
+- [ ] All four DORA metrics computed (or proxy flag set) — via `dora-measurement` skill
+- [ ] ROI dimensions populated in plain language — via `ROI-reporting` skill
 - [ ] Trend vs. previous snapshot computed
 - [ ] DORA tier assessed for each metric
 - [ ] Anomalies flagged as GitHub issues
