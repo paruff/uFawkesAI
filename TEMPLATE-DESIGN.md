@@ -1,4 +1,4 @@
-# Copilot Agent Starter Template — Design Rationale
+# uFawkesAI Template — Design Rationale
 
 > This document explains **why** every file in this template exists and which DORA research
 > principle it implements. Read this before customising the template for your project.
@@ -41,16 +41,14 @@ budget for the learning phase — and these control systems are that budget.
 | `.github/skills/`                              | Agent Skills standard             | On-demand modular capabilities                                               |
 | `CLAUDE.md`                                    | Claude Code — primary config file | Symlink to AGENTS.md                                                         |
 | `.cursorrules`                                 | Cursor — primary config file      | Symlink to AGENTS.md                                                         |
-| `.github/agents/docs-agent.md`                 | AI Cap 2 — Prompt Engineering     | Specialist for documentation generation                                      |
-| `.github/agents/test-agent.md`                 | AI Cap 2                          | Specialist for test generation                                               |
-| `.github/agents/review-agent.md`               | DORA 2025 — Review Speed          | Specialist for code review (REVIEW-01)                                       |
-| `.github/agents/security-agent.md`             | AI Cap 1 — AI Policy              | Specialist for security review                                               |
+| `.agents/agents/` (14 files)                   | AI Cap 2 — Prompt Engineering     | Specialist agent profiles: 7 core pipeline agents (spec, design, build, test, test-execution, review, cross-validation) + 7 flow/meta agents — see `.agents/README.md` |
+| `.agents/agents/review.md`                     | DORA 2025 — Review Speed          | PR review + build validation specialist (REVIEW-01)                          |
 | `.github/instructions/feature.instructions.md` | AI Cap 3                          | Scoped to src/\*\*; injected for feature work                                |
 | `.github/instructions/testing.instructions.md` | AI Cap 3                          | Scoped to tests/\*\*; injected for test work                                 |
 | `.github/PULL_REQUEST_TEMPLATE.md`             | DORA 2025 — Review Speed          | Structured AI-Assisted Review Block (REVIEW-01)                              |
 | `.github/workflows/ci-quality.yml`             | DORA 2025 — Control Systems       | CI gate with PR size blocking (INSTAB-01)                                    |
 | `.github/workflows/doc-freshness.yml`          | DORA 2025 — Living Docs           | Posts reminder when services change without doc update                       |
-| `docs/ARCHITECTURE.md`                         | DORA 2025 — Loosely Coupled       | Layer boundaries enforced by ESLint (ARCH-01)                                |
+| `docs/ARCHITECTURE.md`                         | DORA 2025 — Loosely Coupled       | Layer boundaries as convention today; wire a linter's import rules to them if you add application source (ARCH-01) |
 | `docs/GOLDEN_PATH.md`                          | DORA 2025 — Platform Eng          | 10-step idea→deploy workflow (PLAT-02)                                       |
 | `docs/PROMPT_LIBRARY.md`                       | AI Cap 2 — Prompt Engineering     | Versioned task-specific prompt templates (AIOPS-04)                          |
 | `docs/METRICS.md`                              | DORA 2025 — Rework Rate           | Rework rate, change failure rate, PR revision rate (METRICS-02)              |
@@ -111,8 +109,9 @@ As AGENTS.md becomes the universal standard (60,000+ open-source projects,
 Linux Foundation), a second layer of modular, on-demand capabilities has emerged —
 Agent Skills (SKILL.md files). Unlike AGENTS.md which is always loaded, Skills load
 only when explicitly referenced, preserving the agent's limited instruction budget.
-**Template response:** `.github/skills/` directory with three starter skills:
-dora-metrics, security-review, and test-generation.
+**Template response:** `.agents/skills/` directory, 31 skill areas (124 `SKILL.md`
+files total) spanning spec, design, build, test, test-execution, review,
+security-testing, dora-measurement, and more — see `.agents/README.md`.
 
 ---
 

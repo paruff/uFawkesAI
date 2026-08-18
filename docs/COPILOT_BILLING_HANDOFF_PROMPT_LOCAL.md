@@ -1,8 +1,8 @@
-# Copilot Billing Handoff — Local Model Prompt (Gemma 4 E4B / Ollama)
+# Copilot Billing Handoff — Local Model Prompt (small local model / Ollama)
 
 #
 
-# USE THIS WHEN: running Claude Code with Ollama + Gemma 4 E4B locally
+# USE THIS WHEN: running Claude Code with Ollama + a small local model, locally
 
 # DOES NOT NEED: Copilot credits, internet connection, API keys
 
@@ -12,11 +12,11 @@
 
 # SETUP FIRST (one time)
 
-# ollama run gemma4:e4b
+# ollama run <your-local-model>   # e.g. a small, fast Ollama model — check ollama.com/library for current options
 
 # /set parameter num_ctx 32768
 
-# /save gemma4:e4b-32k
+# /save <your-local-model>-32k
 
 # /bye
 
@@ -24,9 +24,9 @@
 
 # THEN RUN
 
-# OLLAMA_MODEL=gemma4:e4b-32k claude # Claude Code pointed at local Ollama
+# OLLAMA_MODEL=<your-local-model>-32k claude # Claude Code pointed at local Ollama
 
-# # or open Continue.dev in VS Code with gemma4:e4b-32k configured
+# # or open Continue.dev in VS Code with <your-local-model>-32k configured
 
 # # Paste the prompt below
 
@@ -177,10 +177,10 @@ Include these sections:
   Rows: Question/explanation → Ask Mode, Single-file edit → Edit Mode,
   Multi-file feature → Agent Mode, Architecture/security → Agent Mode + frontier
 - Model Decision Table: 3-row table (Complexity | Model | Examples)
-  Rows: Low → Haiku/Flash/GPT-4o mini, Medium → Sonnet/GPT-4o, High → Opus/GPT-5
+  Rows: Low → fast/cheap tier, Medium → mid tier, High → frontier/premium tier
 - Scope Check Protocol: numbered list of 4 items the agent must state before
   starting any Agent Mode task, ending with "wait for human confirmation"
-- Local Model Alternative: 3-row table (Task | Local Gemma 4 E4B | Copilot | Use)
+- Local Model Alternative: 3-row table (Task | Local small model | Copilot | Use)
   covering: docs/changelogs, simple explanations, multi-file features
 - One-sentence routing rule (make it memorable)
 - Link to docs/MODEL_ROUTING_GUIDE.md
@@ -306,7 +306,7 @@ Include these sections:
    4-row table: What you typed | Mode used | Actual cost | Better approach
 
 6. The Local Model Strategy
-   A 6-row table: Task | Local (Gemma 4 E4B) | Copilot | Recommendation
+   A 6-row table: Task | Local (small model) | Copilot | Recommendation
 
 7. Dojo Connection
    2 bullet points linking Dojo belt levels to cost-saving habits
@@ -354,7 +354,7 @@ Format as a clean markdown report. Nothing else.
 
 ### Why separate sessions?
 
-Gemma 4 E4B on 16 GB degrades after ~6K tokens of generation.
+A small local model on 16 GB degrades after ~6K tokens of generation — verify against your chosen model.
 Each part above stays well under that limit.
 Running them separately also means a bad generation in one part
 does not corrupt the others.
@@ -364,7 +364,7 @@ does not corrupt the others.
 See: docs/COPILOT_BILLING_HANDOFF_PROMPT_SCRIPTS.md
 That prompt handles: scripts/token-audit.sh, scripts/setup.sh hardening,
 .github/workflows/placeholder-audit.yml, npm run preflight
-Those require Copilot or Claude Code via API — not local Gemma 4.
+Those require Copilot or Claude Code via API — not a local small model.
 
 ### Validating output
 

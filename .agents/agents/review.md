@@ -1,7 +1,6 @@
 ---
 name: review
 description: "Review PR and build output for quality, security, and compliance. Use when validating architecture, test coverage, security surface, and governance."
-model: claude-sonnet-4-6
 ---
 
 # Review Agent (Consolidated)

@@ -1,7 +1,6 @@
 ---
 name: build
 description: "Turns design into actual code, manifests, pipelines, and GitOps overlays. Use when implementing features, generating new code, manifests, or pipeline configurations."
-model: claude-sonnet-4-6
 ---
 
 # Build Agent

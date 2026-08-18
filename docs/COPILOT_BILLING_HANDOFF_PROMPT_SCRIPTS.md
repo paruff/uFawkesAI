@@ -6,7 +6,7 @@
 
 # RUN AFTER: COPILOT_BILLING_HANDOFF_PROMPT_LOCAL.md (the docs are already done)
 
-# COST: Medium — use Sonnet/GPT-4o, NOT Opus (over-powered for this task)
+# COST: Medium — use a mid-tier model, NOT frontier/premium (over-powered for this task)
 
 #
 
@@ -58,7 +58,7 @@ Requirements:
   Add a comment: "4 chars ≈ 1 token (±15% of actual tokenizer)"
 - Monthly cost function: `estimate_monthly_cost(tokens, requests_per_day)`
   Formula: `tokens × requests_per_day × 22_working_days × 0.000003`
-  (represents Sonnet-class at $0.003/1K input tokens)
+  (represents current mid-tier pricing — check your provider's rate card)
 - Sections to output (each separated by a header line):
   1. "Always-On Context" — measure AGENTS.md, .github/copilot-instructions.md, CLAUDE.md
      For each: filename, tokens, lines, GREEN/YELLOW/RED status

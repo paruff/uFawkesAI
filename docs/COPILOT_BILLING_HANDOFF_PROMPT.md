@@ -40,7 +40,7 @@ For each instruction file, report:
 - Line count
 - Estimated token count (characters / 4)
 - Estimated monthly cost at 20 agent interactions/day × 22 working days
-  using Sonnet-class pricing (~$0.003 per 1K input tokens)
+  using current mid-tier model pricing (check your provider's rate card)
 - Top 3 sections that could move to on-demand skills
 
 ## Step 2: Produce These Deliverables
@@ -211,7 +211,7 @@ Then wait for confirmation before proceeding.
 
 1. Open your repo in VS Code
 2. Switch to **Agent Mode** (not Ask or Edit)
-3. Select **Claude Sonnet or GPT-4o** (not Opus — this task doesn't need it)
+3. Select a **mid-tier model** (not frontier/premium — this task doesn't need it)
 4. Paste the prompt above
 5. Review the Step 3 confirmation, then approve
 
@@ -284,7 +284,7 @@ A complete retrofit of a typical repo produces:
 
 **Typical result:** 40–60% reduction in always-on context tokens.
 At moderate agentic use (20 tasks/day, 22 working days), this saves
-$8–18/developer/month on Sonnet-class models — before any mode-routing improvements.
+$8–18/developer/month on mid-tier models — before any mode-routing improvements.
 
 ---
 

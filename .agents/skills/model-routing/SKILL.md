@@ -36,11 +36,11 @@ Route tasks to the optimal model and mode based on complexity, cost, and require
 
 ## Decision: Model Second
 
-| Complexity | Model                           | Examples                             |
-| ---------- | ------------------------------- | ------------------------------------ |
-| Low        | GPT-4o mini / Haiku 4.5 / Flash | Q&A, docs, simple fixes              |
-| Medium     | GPT-4o / Claude Sonnet          | Feature implementation               |
-| High       | Claude Opus / GPT-5             | Architecture, security, rework > 20% |
+| Complexity | Model tier             | Examples                             |
+| ---------- | ------------------------ | ------------------------------------- |
+| Low        | Fast/cheap tier        | Q&A, docs, simple fixes              |
+| Medium     | Mid tier               | Feature implementation               |
+| High       | Frontier/premium tier  | Architecture, security, rework > 20% |
 
 ## Scope Check (Required Before Agent Mode)
 
@@ -55,8 +55,8 @@ Then wait for human confirmation.
 
 ## Local Model Alternative (Zero Credit Cost)
 
-For docs, changelogs, simple explanations — Ollama + Gemma 4 E4B is sufficient.
-Use Copilot credits for tasks requiring frontier model quality.
+For docs, changelogs, simple explanations — a small local model via Ollama is
+sufficient. Use hosted credits for tasks requiring frontier/premium tier quality.
 
 ## Full Guide
 

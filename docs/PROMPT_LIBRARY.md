@@ -317,7 +317,7 @@ single prioritised next step.
 - Recommends more than one next step → ask it to pick the highest-leverage action only
 
 **Version:** 1.0
-**Tested with:** Claude Code (Sonnet 4.6), GitHub Copilot (GPT-5.1)
+**Tested with:** Claude Code, GitHub Copilot
 **Test date:** 2026-05-10
 **Known limitations:** Requires docs/METRICS.md to have at least one completed monthly entry.
 
@@ -355,7 +355,7 @@ classification and (if needed) per-file churn counts from git.
   issue describing the needed update (agents must not modify AGENTS.md directly)
 
 **Version:** 1.0
-**Tested with:** Claude Code (Sonnet 4.6), GitHub Copilot (GPT-5.1)
+**Tested with:** Claude Code, GitHub Copilot
 **Test date:** 2026-05-10
 **Known limitations:** Requires a git history of at least 14 days; shallow clones may
 return inaccurate results.
@@ -392,7 +392,7 @@ description.
   for specific metric names and threshold values
 
 **Version:** 1.0
-**Tested with:** Claude Code (Sonnet 4.6), GitHub Copilot (GPT-5.1)
+**Tested with:** Claude Code, GitHub Copilot
 **Test date:** 2026-05-10
 **Known limitations:** Most useful on PRs > 200 changed lines or with cross-cutting
 architectural changes.
@@ -424,7 +424,7 @@ a concrete split plan with sub-PR scopes.
 - Split plan has more than 3 sub-PRs → acceptable, but flag for PM review
 
 **Version:** 1.0
-**Tested with:** Claude Code (Sonnet 4.6), GitHub Copilot (GPT-5.1)
+**Tested with:** Claude Code, GitHub Copilot
 **Test date:** 2026-05-10
 **Known limitations:** Line count check is approximate when binary files are included.
 
@@ -468,7 +468,7 @@ ASCII or Mermaid syntax.
 - More than 3 concurrent tasks proposed → reject, ask it to serialize some tasks
 
 **Version:** 1.0
-**Tested with:** Claude Code (Sonnet 4.6), GitHub Copilot (GPT-5.1)
+**Tested with:** Claude Code, GitHub Copilot
 **Test date:** 2026-05-10
 **Known limitations:** Works best when the feature issue has explicit acceptance criteria.
 Ambiguous issues produce poor decompositions.
@@ -508,7 +508,7 @@ plus a summary of any conflicts found and how they were resolved.
   the "What I was NOT sure about" section
 
 **Version:** 1.0
-**Tested with:** Claude Code (Sonnet 4.6), GitHub Copilot (GPT-5.1)
+**Tested with:** Claude Code, GitHub Copilot
 **Test date:** 2026-05-10
 **Known limitations:** Requires all sub-agent branches to be pushed before synthesis.
 Works best when sub-tasks have non-overlapping file scopes.
@@ -544,7 +544,7 @@ or re-scope one agent's work).
   explicit file list per branch
 
 **Version:** 1.0
-**Tested with:** Claude Code (Sonnet 4.6), GitHub Copilot (GPT-5.1)
+**Tested with:** Claude Code, GitHub Copilot
 **Test date:** 2026-05-10
 **Known limitations:** Relies on git being available in the agent's environment.
 Detects file-level overlaps only — does not detect import-level or semantic conflicts.
@@ -572,7 +572,7 @@ derived automatically from git history.
 file, explaining why it is being monitored.
 
 **Version:** 1.0
-**Tested with:** Claude Code (Sonnet 4.6), GitHub Copilot (GPT-5.1)
+**Tested with:** Claude Code, GitHub Copilot
 **Test date:** 2026-05-10
 **Known limitations:** Rework rate is derived from git history, not runtime
 instrumentation. This prompt adds a documentation tracking note, not code hooks.
@@ -601,7 +601,7 @@ recommendation.
   checklist run even if all items pass
 
 **Version:** 1.0
-**Tested with:** Claude Code (Sonnet 4.6), GitHub Copilot (GPT-5.1)
+**Tested with:** Claude Code, GitHub Copilot
 **Test date:** 2026-05-10
 **Known limitations:** Does not replace a human security review for auth flows or
 cryptographic changes. Always escalate CRITICAL findings to a human.
@@ -634,7 +634,7 @@ implementation is written and passes after.
 - No edge cases → re-prompt asking for at least two edge-case scenarios
 
 **Version:** 1.0
-**Tested with:** Claude Code (Sonnet 4.6), GitHub Copilot (GPT-5.1)
+**Tested with:** Claude Code, GitHub Copilot
 **Test date:** 2026-05-10
 **Known limitations:** Generated tests assume Jest + ts-jest. Adjust import paths if
 using a different test runner.

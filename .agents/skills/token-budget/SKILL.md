@@ -73,12 +73,12 @@ Do not pre-load all skills at session start.
 **Strategy 4 — Checkpoint long sessions**
 For sessions likely to exceed 20K tokens, create a checkpoint issue:
 "Continue from: [state summary]" and start a fresh session.
-Gemma 4 E4B at num_ctx 32768 will drift on chains > 4–5 steps.
+Small local models will drift on chains > 4–5 steps — verify context window and behavior for your specific model.
 
 **Strategy 5 — Use the right model**
 
-- Routing, preflight, quick checks → local model (Gemma 4 E4B)
-- Complex code generation → GitHub Copilot Business (Sonnet)
+- Routing, preflight, quick checks → small local model
+- Complex code generation → hosted agent, mid/frontier tier
 - Orchestration and planning → Claude Code via Anthropic API
 - Never use Copilot Business for simple lookups — it costs per token.
 

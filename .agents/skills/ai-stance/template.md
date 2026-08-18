@@ -41,7 +41,7 @@ parent `ai-stance` skill:
 
 ```
 Suite defaults cover:
-✅ opencode, graphify [confirm variant], ponytail, Claude Sonnet 4.6
+✅ opencode, graphify [confirm variant], ponytail, <current Claude model>
 ✅ Standard prohibited list (PII, secrets, bypass pre-commit/branch protection)
 ✅ Standard guardrails (human review before merge, session logging)
 
@@ -88,7 +88,7 @@ and user research decisions. All AI assistance is logged via opencode session hi
 | Tool | Model / version | Scope |
 |---|---|---|
 | opencode | latest stable | Primary agentic development tool |
-| Claude | claude-sonnet-4-6 | Skill authoring, code review, content generation |
+| Claude | <current Claude model — check anthropic.com/models> | Skill authoring, code review, content generation |
 | graphify | [CONFIRM_VARIANT] | Context corpus building — verify variant before use |
 | ponytail | latest stable | YAGNI enforcement in all agent sessions |
 | GitHub Copilot | current | IDE code completion |

@@ -79,7 +79,7 @@ The generated `AI_STANCE.md` must answer all four:
 | Tool                   | Version / model   | Permitted scope                                    |
 | ---------------------- | ----------------- | -------------------------------------------------- |
 | opencode               | Latest stable     | All repos — primary agentic development tool       |
-| Claude (Anthropic API) | claude-sonnet-4-6 | All repos — skill and agent authoring, code review |
+| Claude (Anthropic API) | <current model — check anthropic.com/models> | All repos — skill and agent authoring, code review |
 | graphify               | [confirm variant] | All repos — context corpus building                |
 | ponytail               | Latest stable     | All repos — YAGNI enforcement                      |
 | GitHub Copilot         | Current           | IDE completion only                                |
@@ -115,7 +115,7 @@ not to replace human judgment on architecture and security decisions."]
 | Tool           | Model / version   | Scope                               |
 | -------------- | ----------------- | ----------------------------------- |
 | opencode       | latest            | Agentic development sessions        |
-| Claude         | claude-sonnet-4-6 | Skill authoring, review, generation |
+| Claude         | <current model> | Skill authoring, review, generation |
 | graphify       | [variant]         | Context corpus                      |
 | ponytail       | latest            | YAGNI enforcement                   |
 | GitHub Copilot | current           | IDE completion                      |

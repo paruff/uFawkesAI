@@ -56,7 +56,7 @@ gh issue list --repo paruff/REPO_NAME --label "ai-policy" --state open
 For each tool in the Permitted tools table:
 
 - Is it still actively maintained? (check for archived repo, EOL notice)
-- Has the version/model changed? (claude-sonnet-4-6 → newer model?)
+- Has the version/model changed? (<model-id> → newer model? (check provider's current model list))
 - Have new capabilities been added that change its risk profile?
 - Are there new tools in active use that aren't in the table?
 
@@ -155,7 +155,7 @@ gh issue create \
     {
       "type": "tool_updated",
       "tool": "claude",
-      "change": "Model updated to claude-sonnet-4-6",
+      "change": "Model updated to <model-id>",
       "bucket": "permitted-with-guardrails"
     }
   ],

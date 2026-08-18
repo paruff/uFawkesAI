@@ -12,7 +12,7 @@ AI agents start every session blank. They do not know your conventions, architec
 - `AGENTS.md` — universal agent instruction file, auto-loaded by Copilot, Claude Code, Cursor, Codex, Gemini CLI, Windsurf, and Devin
 - `CLAUDE.md` symlink — so Claude Code gets the same instructions without a separate file
 - `.github/copilot-instructions.md` symlink — Copilot's preferred path
-- `.github/agents/` — 4 specialist agent profiles: docs, test, review, security
+- `.agents/agents/` — 14 agent profiles: 7 core pipeline agents (spec, design, build, test, test-execution, review, cross-validation) + 7 flow/meta agents
 - `.github/instructions/` — scoped instruction files for feature and test work
 - `docs/PROMPT_LIBRARY.md` — tested prompts for every repeating task, versioned
 - `docs/GOLDEN_PATH.md` — 10-step idea→deploy workflow
@@ -20,15 +20,17 @@ AI agents start every session blank. They do not know your conventions, architec
 - CI workflow with PR size blocking (400 lines), doc freshness monitoring
 - `scripts/weekly-metrics.sh` — rework rate, PR revision rate, CI cycle time in one view
 
-## June 2026: Built for the New Token Billing Model
+## GitHub Copilot users: built for the token billing model
 
 GitHub Copilot moved to token-based billing on June 1, 2026.
-This template is pre-optimized for the new cost model:
+This template is pre-optimized for that cost model — the pieces below are
+GitHub Copilot-specific; every other agent (Claude Code, Cursor, Codex, etc.)
+gets its cost/mode guidance from `docs/MODEL_ROUTING_GUIDE.md` instead.
 
 | File                          | What it saves                                        |
 | ----------------------------- | ---------------------------------------------------- |
-| `AGENTS.md` (88 lines)        | ~61% always-on context vs. typical 226-line files    |
-| `.github/skills/`             | On-demand only — zero cost until referenced          |
+| `AGENTS.md` (135 lines)       | Lean, always-on context vs. typical 226-line files   |
+| `.agents/skills/`              | On-demand only — zero cost until referenced          |
 | `.copilotignore`              | Excludes lock files, build artifacts, generated code |
 | `scripts/token-audit.sh`      | Shows your token footprint before the bill arrives   |
 | `docs/COPILOT_COST_GUIDE.md`  | Billing model explained for developers               |
@@ -36,14 +38,14 @@ This template is pre-optimized for the new cost model:
 
 Run `npm run token-audit` after setup to see your baseline.
 
-## Copilot Billing Retrofit Prompts
+## GitHub Copilot users: billing retrofit prompts
 
 Two ready-to-use prompts let you apply uFawkesAI's token optimization
 to **any existing repo** — not just new projects.
 
 | Prompt                                           | Tool                  | What it produces                                         | Cost   |
 | ------------------------------------------------ | --------------------- | -------------------------------------------------------- | ------ |
-| `docs/COPILOT_BILLING_HANDOFF_PROMPT_LOCAL.md`   | Ollama + Gemma 4 E4B  | AGENTS.md, 4 skill files, .copilotignore, 2 cost guides  | Free   |
+| `docs/COPILOT_BILLING_HANDOFF_PROMPT_LOCAL.md`   | Ollama + a local model | AGENTS.md, 4 skill files, .copilotignore, 2 cost guides  | Free   |
 | `docs/COPILOT_BILLING_HANDOFF_PROMPT_SCRIPTS.md` | Copilot / Claude Code | token-audit.sh, setup.sh hardening, CI placeholder check | ~$0.50 |
 
 Run the local prompt first (zero cost), then the scripts prompt for the bash work.
@@ -141,17 +143,19 @@ Use the **Feature — Assign to Agent** issue template (`.github/ISSUE_TEMPLATE/
 
 ## Part of the uFawkes family
 
-uFawkesAI is the AI plane in a five-stack delivery system: it sets policy, context, guardrails, and workflows so every other stack can move faster with less rework.
+uFawkesAI is the AI plane in the uFawkes stack family: it sets policy, context, guardrails, and workflows so every other stack can move faster with less rework.
 
 Integration entry point: [`docs/UFAWKES_INTEGRATION.md`](./docs/UFAWKES_INTEGRATION.md)
 
-| Stack       | Role                                       | Link                                                                |
-| ----------- | ------------------------------------------ | ------------------------------------------------------------------- |
-| uFawkesAI   | AI plane (agent policy, context, controls) | [paruff/uFawkesAI](https://github.com/paruff/uFawkesAI)             |
-| uFawkesPipe | CI/CD and delivery pipeline plane          | [paruff/uFawkesPipe](https://github.com/paruff/uFawkesPipe)         |
-| uFawkesObs  | Observability and reliability plane        | [paruff/uFawkesObs](https://github.com/paruff/uFawkesObs)           |
-| uFawkesApp  | Product application plane                  | [uFawkesApp (planned)](https://github.com/paruff/uFawkesAI/issues)  |
-| uFawkesData | Data and analytics plane                   | [uFawkesData (planned)](https://github.com/paruff/uFawkesAI/issues) |
+| Stack                    | Role                                                      | Link                                                                 |
+| ------------------------- | ----------------------------------------------------------- | ----------------------------------------------------------------------- |
+| uFawkesAI                | AI plane (agent policy, context, controls)                 | [paruff/uFawkesAI](https://github.com/paruff/uFawkesAI)             |
+| uFawkesPipe              | CI/CD and delivery pipeline plane                           | [paruff/uFawkesPipe](https://github.com/paruff/uFawkesPipe)         |
+| uFawkesObs               | Observability and reliability plane                         | [paruff/uFawkesObs](https://github.com/paruff/uFawkesObs)           |
+| uFawkesDORA              | Delivery metrics and engineering effectiveness plane        | [uFawkesDORA (planned)](https://github.com/paruff/uFawkesAI/issues) |
+| uFawkesApp / uFawkesData | Product and data plane pair (implementation + analytics)   | [planned](https://github.com/paruff/uFawkesAI/issues)               |
+
+**Product Suite Roadmap**: [fawkes/ROADMAP.md](https://github.com/paruff/fawkes/blob/main/ROADMAP.md)
 
 Quick integration hooks:
 
@@ -172,18 +176,3 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md) (planned in AI-006).
 ## License
 
 MIT
-
-## uFawkes Stack Ecosystem
-
-uFawkesAI is part of the [uFawkes](https://ufawkes.dev) platform engineering ecosystem:
-
-| Stack           | Description                                          | Link                                            |
-| --------------- | ---------------------------------------------------- | ----------------------------------------------- |
-| **uFawkesObs**  | Observability — Prometheus, Grafana, AI dashboards   | [GitHub](https://github.com/paruff/ufawkesobs)  |
-| **uFawkesPipe** | CI/CD — Jenkins, Buildpacks, DevSecOps               | [GitHub](https://github.com/paruff/ufawkespipe) |
-| **uFawkesDORA** | DORA metrics — dashboards, VSM, delivery performance | [GitHub](https://github.com/paruff/ufawkesdora) |
-| **uFawkesSec**  | Security — policy-as-code, supply chain, guardrails  | [GitHub](https://github.com/paruff/ufawkessec)  |
-| **uFawkesDevX** | Developer experience — golden paths, IDP templates   | [GitHub](https://github.com/paruff/ufawkesdevx) |
-| **uFawkesAI**   | AI agent templates — golden path scaffolding         | [GitHub](https://github.com/paruff/ufawkesai)   |
-
-**Product Suite Roadmap**: [fawkes/ROADMAP.md](https://github.com/paruff/fawkes/blob/main/ROADMAP.md)

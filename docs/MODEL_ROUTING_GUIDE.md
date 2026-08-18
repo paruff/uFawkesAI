@@ -1,6 +1,8 @@
 # Model Routing Guide
 
-> **Purpose:** Choose the right Copilot mode and model before starting any task.
+> **Purpose:** Choose the right agent mode and model before starting any task,
+> regardless of which agent host you're using (Copilot, Claude Code, Cursor,
+> Codex, Gemini CLI, Windsurf, Devin — see the mapping table below).
 > Wrong choices cost 5–10x more for identical output.
 > This guide pays for itself on the first agent session.
 
@@ -8,70 +10,90 @@
 
 ## The Decision Tree
 
+The four mode categories below are tool-agnostic. Map them to your specific
+agent host using the table underneath.
+
 ```
 START: What do I need to do?
 │
 ├── I have a QUESTION (explain, what is, how does, why)
-│   └── → ASK MODE + cheapest model (Haiku / Flash / GPT-4o mini)
-│       Savings: 60–90% vs Agent Mode
+│   └── → READ-ONLY/QUESTION MODE + your host's fast/cheap tier
+│       Savings: 60–90% vs agentic mode
 │
 ├── I need to EDIT ONE FILE
-│   └── → EDIT MODE + mid-tier model (Sonnet / GPT-4o)
-│       Savings: 30–50% vs Agent Mode
+│   └── → SINGLE-FILE EDIT MODE + your host's mid tier
+│       Savings: 30–50% vs agentic mode
 │
 ├── I need to implement a FEATURE (multiple files)
 │   ├── Straightforward, clear spec
-│   │   └── → AGENT MODE + mid-tier model (Sonnet / GPT-4o)
+│   │   └── → AGENTIC/MULTI-FILE MODE + your host's mid tier
 │   └── Complex, architectural, security-sensitive
-│       └── → AGENT MODE + frontier model (Opus / GPT-5)
+│       └── → AGENTIC/MULTI-FILE MODE + your host's frontier/premium tier
 │           ⚠️ Confirm scope first — list files, get human approval
 │
 └── I need a CODE REVIEW
     ├── Quick smell-check on one file
-    │   └── → ASK MODE + mid-tier (paste the file, ask for review)
+    │   └── → READ-ONLY/QUESTION MODE + mid-tier (paste the file, ask for review)
     └── Full PR review
-        └── → Copilot Code Review (burns Actions minutes + credits)
+        └── → your host's automated PR review feature (burns CI minutes + credits)
             Only use on PRs that are ready to merge
 ```
 
+### Mode mapping by agent host
+
+| Category             | GitHub Copilot       | Claude Code                            | Cursor            |
+| --------------------- | ---------------------- | ----------------------------------------- | ------------------- |
+| Read-only/question    | Ask Mode              | default chat (no file writes)            | Chat              |
+| Single-file edit      | Edit Mode             | default with scoped request              | Composer (1 file) |
+| Agentic/multi-file    | Agent Mode            | default agentic loop / Plan Mode         | Composer (Agent)  |
+| Automated PR review   | Copilot Code Review   | `code-reviewer` agent / `/code-review`   | Bugbot / PR review |
+
+Other hosts (Codex, Gemini CLI, Windsurf, Devin) map onto the same four
+categories under their own naming — check their docs for the equivalent mode.
+
 ---
 
-## Model Selection Table
+## Model Tier Selection Table
 
-| Task                | Model                   | Approx cost/task | Notes                       |
-| ------------------- | ----------------------- | ---------------- | --------------------------- |
-| Q&A, explanation    | GPT-4o mini / Haiku 4.5 | $0.01–0.05       | Default for questions       |
-| Docs writing        | GPT-4o mini / Flash     | $0.02–0.08       | Cheap, perfectly capable    |
-| Single-file edit    | GPT-4o / Sonnet         | $0.05–0.20       | Good quality/cost balance   |
-| Feature (3–5 files) | GPT-4o / Sonnet         | $0.20–0.80       | Most common work            |
-| Feature (10+ files) | Sonnet / Opus           | $0.50–2.00       | Confirm scope first         |
-| Architecture review | Opus / GPT-5            | $1.00–5.00       | Reserve for real complexity |
-| Security audit      | Opus / GPT-5            | $1.00–3.00       | Worth the cost here         |
-| Rework rate > 20%   | Opus / GPT-5            | varies           | Fix AGENTS.md first         |
+Every major agent host (Copilot, Claude Code, Cursor, Codex, Gemini CLI) offers
+roughly three cost/capability tiers. Named models shift often enough that
+pinning this guide to specific ones goes stale within months — route by tier
+and check your host's current model list for which model fills each tier.
+
+| Task                | Tier            | Relative cost/task | Notes                       |
+| ------------------- | ---------------- | ------------------- | --------------------------- |
+| Q&A, explanation    | Fast/cheap       | Lowest              | Default for questions       |
+| Docs writing        | Fast/cheap       | Low                 | Cheap, perfectly capable    |
+| Single-file edit    | Mid              | Moderate            | Good quality/cost balance   |
+| Feature (3–5 files) | Mid              | Moderate            | Most common work            |
+| Feature (10+ files) | Mid → frontier   | Moderate–high       | Confirm scope first         |
+| Architecture review | Frontier/premium | Highest             | Reserve for real complexity |
+| Security audit      | Frontier/premium | Highest             | Worth the cost here         |
+| Rework rate > 20%   | Frontier/premium | Varies              | Fix AGENTS.md first         |
 
 ---
 
 ## Mode Cheat Sheet
 
-### Ask Mode
+### Read-only/question mode
 
 - **Use for:** Questions, explanations, lookups, understanding code
 - **Charged as:** Single inference, small context
 - **Cost multiplier:** 1x (baseline)
 - **When NOT to use:** Anything that requires file writes
 
-### Edit Mode
+### Single-file edit mode
 
 - **Use for:** Targeted changes to 1–2 files with a clear spec
 - **Charged as:** Moderate inference, focused context
-- **Cost multiplier:** 2–3x Ask
+- **Cost multiplier:** 2–3x read-only
 - **When NOT to use:** Don't know exactly which file needs changing
 
-### Agent Mode
+### Agentic/multi-file mode
 
 - **Use for:** Multi-file features, refactors, anything requiring tool calls
 - **Charged as:** Multiple inference rounds + tool calls + large context
-- **Cost multiplier:** 5–20x Ask depending on scope
+- **Cost multiplier:** 5–20x read-only depending on scope
 - **When NOT to use:** For questions. Ever.
 
 ---
@@ -106,21 +128,23 @@ This single habit reduces wasted Agent Mode runs by ~40%.
 
 ## The Local Model Strategy (Zero Credit Cost)
 
-For low-stakes tasks, your Ollama + Gemma 4 E4B local setup is a legitimate
-cost-avoidance tool:
+For low-stakes tasks, a local model via Ollama (or similar) is a legitimate
+cost-avoidance tool. Small local models are fine for drafting and mechanical
+work but weaken fast on multi-file reasoning — pick whichever small model
+your hardware runs well and validate it against your own tasks:
 
-| Task                              | Local (Gemma 4 E4B) | Copilot | Recommendation     |
-| --------------------------------- | ------------------- | ------- | ------------------ |
-| Drafting docs, changelogs         | ✅ Fine             | credits | Use local          |
-| Explaining code snippets          | ✅ Fine             | credits | Use local          |
-| Simple regex / one-liners         | ✅ Fine             | credits | Use local          |
-| Multi-file feature implementation | ⚠️ Weaker           | credits | Use Copilot        |
-| Architecture decisions            | ❌ Not reliable     | credits | Use Copilot + Opus |
-| Security review                   | ❌ Not reliable     | credits | Use Copilot + Opus |
+| Task                              | Local small model | Hosted agent | Recommendation           |
+| --------------------------------- | ------------------ | ------------- | -------------------------- |
+| Drafting docs, changelogs         | ✅ Fine            | credits       | Use local                 |
+| Explaining code snippets          | ✅ Fine            | credits       | Use local                 |
+| Simple regex / one-liners         | ✅ Fine            | credits       | Use local                 |
+| Multi-file feature implementation | ⚠️ Weaker          | credits       | Use hosted agent           |
+| Architecture decisions            | ❌ Not reliable    | credits       | Use hosted agent, frontier/premium tier |
+| Security review                   | ❌ Not reliable    | credits       | Use hosted agent, frontier/premium tier |
 
 **Setup tip:** Point `OLLAMA_HOST` and use VS Code's Ollama extension or
-OpenCode CLI for local tasks. Reserve Copilot credits for tasks requiring
-frontier model quality.
+OpenCode CLI for local tasks. Reserve hosted-agent credits for tasks requiring
+frontier/premium tier quality.
 
 ---
 
@@ -135,6 +159,6 @@ Learning the right habits before you code prevents expensive retries:
 
 ## Related Files
 
-- `docs/COPILOT_COST_GUIDE.md` — full billing explanation
-- `.github/skills/model-routing/SKILL.md` — agent-loadable version of this guide
+- `docs/COPILOT_COST_GUIDE.md` — full billing explanation (GitHub Copilot users)
+- `.agents/skills/model-routing/SKILL.md` — agent-loadable version of this guide
 - `docs/PROMPT_LIBRARY.md` — every prompt has a `Recommended model:` field
