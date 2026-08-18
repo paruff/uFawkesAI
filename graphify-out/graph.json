@@ -1003,7 +1003,7 @@
       "source_file": ".agents/schema/skill-invocation-log.json",
       "source_location": "L15",
       "_origin": "ast",
-      "community": 70,
+      "community": 42,
       "norm_label": "agent",
       "id": "schema_skill_invocation_log_properties_agent"
     },
@@ -1013,7 +1013,7 @@
       "source_file": ".agents/schema/skill-invocation-log.json",
       "source_location": "L16",
       "_origin": "ast",
-      "community": 70,
+      "community": 42,
       "norm_label": "type",
       "id": "schema_skill_invocation_log_agent_type"
     },
@@ -1023,7 +1023,7 @@
       "source_file": ".agents/schema/skill-invocation-log.json",
       "source_location": "L17",
       "_origin": "ast",
-      "community": 70,
+      "community": 42,
       "norm_label": "description",
       "id": "schema_skill_invocation_log_agent_description"
     },
@@ -1533,7 +1533,7 @@
       "source_file": ".agents/schema/skill-invocation-log.json",
       "source_location": "L78",
       "_origin": "ast",
-      "community": 42,
+      "community": 70,
       "norm_label": "decision",
       "id": "schema_skill_invocation_log_properties_decision"
     },
@@ -1543,7 +1543,7 @@
       "source_file": ".agents/schema/skill-invocation-log.json",
       "source_location": "L79",
       "_origin": "ast",
-      "community": 42,
+      "community": 70,
       "norm_label": "type",
       "id": "schema_skill_invocation_log_decision_type"
     },
@@ -1553,7 +1553,7 @@
       "source_file": ".agents/schema/skill-invocation-log.json",
       "source_location": "L80",
       "_origin": "ast",
-      "community": 42,
+      "community": 70,
       "norm_label": "enum",
       "id": "schema_skill_invocation_log_decision_enum"
     },
@@ -26078,5 +26078,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "7a10dfed82fc55b1455a7bcb85d15caac4525a7e"
+  "built_at_commit": "4722b0da768a010171c26ef2cedc6fd453e0aa1f"
 }
