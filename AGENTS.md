@@ -110,6 +110,7 @@ spec → design → build → [test-execution || review] → cross-validation
 - Validates agent reports against contracts in `minimal-report.yaml`
 - Command: `.agents/assertions/assertion-runner.sh <report.md> <agent-name>`
 - Pre-commit hook auto-validates any staged `*-report.md` files
+- Never swallow an exception inside the runner (or any validator template it scaffolds) without logging what broke — a silently-caught exception makes "validation never ran" indistinguishable from "validation ran clean."
 
 ### Deployment Lifecycle Gates
 
