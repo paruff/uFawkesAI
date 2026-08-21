@@ -26,7 +26,7 @@ jobs:
   # ════════════════════════════════════════════════════════════════════════════
   preflight:
     name: "✈️ Pre-flight"
-    uses: paruff/ufawkespipe/.github/workflows/reusable-preflight.yml@v1.2.0
+    uses: ./.github/workflows/reusable-preflight.yml
     with:
       pr-size-limit: 400
       commit-format: conventional
@@ -37,7 +37,7 @@ jobs:
   # ════════════════════════════════════════════════════════════════════════════
   lint:
     name: "🔍 Lint"
-    uses: paruff/ufawkespipe/.github/workflows/reusable-lint.yml@v1.2.0
+    uses: ./.github/workflows/reusable-lint.yml
     with:
       auto-detect: true
       emergency-bypass: true

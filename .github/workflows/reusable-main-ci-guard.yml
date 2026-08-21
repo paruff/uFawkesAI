@@ -1,0 +1,65 @@
+# Vendored copy — source: paruff/ufawkespipe@v1.2.0 .github/workflows/reusable-main-ci-guard.yml
+# Vendored on 2026-08-21 so this template's CI has no runtime dependency on an
+# external org's reusable-workflow repo. Re-sync manually if ufawkespipe cuts a
+# new tag with fixes you want (diff against paruff/ufawkespipe .github/workflows/reusable-main-ci-guard.yml).
+#
+name: Reusable Main CI Guard
+
+on:
+  workflow_call:
+    inputs:
+      workflow-id:
+        description: "Workflow filename (e.g., ci-pipeline.yml) to check on main"
+        required: true
+        type: string
+      workflow-name:
+        description: "Human-readable workflow name for error messages"
+        required: false
+        type: string
+        default: "CI Pipeline"
+
+permissions: {}  # deny all at workflow level; grant per job below
+
+jobs:
+  check-main-ci:
+    permissions:
+      contents: read
+      actions: read
+    name: "🛡️ Main CI Health"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "job-start"
+        run: echo "job-start:$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+
+      - name: Check latest ${{ inputs.workflow-name }} run on main
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3  # v9.0.0
+        with:
+          script: |
+            const { data: runs } = await github.rest.actions.listWorkflowRuns({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: "${{ inputs.workflow-id }}",
+              branch: "main",
+              status: "completed",
+              per_page: 1
+            });
+
+            if (runs.workflow_runs.length === 0) {
+              core.setFailed("No completed ${{ inputs.workflow-name }} runs found on main");
+              return;
+            }
+
+            const latest = runs.workflow_runs[0];
+            core.info(`Latest main CI run: ${latest.html_url}`);
+            core.info(`Conclusion: ${latest.conclusion}`);
+
+            if (latest.conclusion !== "success") {
+              core.setFailed(
+                `${{ inputs.workflow-name }} on main is ${latest.conclusion}. ` +
+                `Fix main CI before merging PRs. ${latest.html_url}`
+              );
+            }
+
+      - name: "job-finish"
+        if: always()
+        run: echo "job-finish:$(date -u +%Y-%m-%dT%H:%M:%SZ)"
