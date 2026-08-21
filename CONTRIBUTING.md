@@ -60,7 +60,7 @@ The contribution process is designed to be highly automated and quality-gated.
 - 🧪 **Tests & Coverage**: `npm run test:coverage` runs all unit and integration tests. The minimum required coverage threshold is 80%.
 - 🏗️ **Architecture Boundaries**: `npm run lint:architecture` enforces adherence to defined architectural layers and boundaries.
 
-**Note:** The `ci.yml` file also validates that `AGENTS.md` does not exceed 300 lines (it issues a warning at 250 lines).
+**Note:** `scripts/verify.sh` checks that `AGENTS.md` does not exceed 300 lines (warns at 250) — it is not yet wired into CI, so run it manually: `./scripts/verify.sh`.
 
 ## Contribution Areas → Dojo Module Map
 
@@ -87,7 +87,7 @@ Your PR changed more than 400 lines. Split it into smaller PRs. If the change is
 Run `shellcheck scripts/<your-script>.sh` locally. Fix all warnings before pushing. The CI gate is not lenient.
 
 **AGENTS.md line count warning.**
-`ci.yml` warns at 250 lines and blocks at 300. Move content to a skill file in `.github/skills/` and load it on demand instead.
+`scripts/verify.sh` warns at 250 lines and blocks at 300 — run it locally before pushing (not yet enforced in CI). Move content to a skill file in `.github/skills/` and load it on demand instead.
 
 **Symlink check failed.**
 Run `./scripts/setup.sh` to recreate symlinks. This usually means you cloned without running setup.

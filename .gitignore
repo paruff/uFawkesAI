@@ -3,6 +3,9 @@ node_modules/
 # macOS
 .DS_Store
 
+# Serena MCP local tool state
+.serena/
+
 # Ensure agent instruction symlinks remain tracked
 !CLAUDE.md
 !.cursorrules
