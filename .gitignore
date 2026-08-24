@@ -3,6 +3,10 @@ node_modules/
 # macOS
 .DS_Store
 
+# Agent tooling logs and CI report scratch files
+.agents/logs/
+ci-*.md
+
 # Ensure agent instruction symlinks remain tracked
 !CLAUDE.md
 !.cursorrules
