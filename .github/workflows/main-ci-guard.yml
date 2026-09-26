@@ -38,7 +38,7 @@ jobs:
               workflow_id: 'ci-quality.yml',
               branch: 'main',
               status: 'completed',
-              per_page: 20,
+              per_page: 100,
             });
 
             if (runs.workflow_runs.length === 0) {
@@ -52,7 +52,7 @@ jobs:
 
             if (!currentMainRun) {
               core.setFailed(
-                `No completed CI Quality Gate run found for current main HEAD ${mainHeadSha}.`,
+                `No completed CI Quality Gate run found for current main HEAD ${mainHeadSha} in the latest 100 runs.`,
               );
               return;
             }
