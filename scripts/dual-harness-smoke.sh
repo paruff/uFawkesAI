@@ -40,20 +40,22 @@ test -f ".claude/skills/testing-rules/SKILL.md" || fail "testing-rules skill mis
 test -f ".opencode/skills/testing-rules/SKILL.md" || fail "testing-rules skill missing at OpenCode path"
 
 echo "== 6. One hook: the protected-path blocker actually blocks =="
-if CLAUDE_TOOL_TARGET=".env.local" node -e "
-  const path=require('path');
-  const cfg=require('./scripts/hooks/protected-paths.json');
-  const p=process.env.CLAUDE_TOOL_TARGET||'';
-  const n=path.normalize(p).replace(/\\\\/g,'/');
-  const parts=n.split('/').filter(Boolean);
-  const b=parts[parts.length-1]||'';
-  const r=cfg.protectedBasenamePatterns.map(s=>new RegExp(s));
-  const segs=cfg.protectedPathSegments||[];
-  if(segs.some(s=>parts.includes(s))||r.some(x=>x.test(b))){ process.exit(2);} process.exit(0);
-"; then
-  fail "protected-path hook did not block .env.local"
-fi
-echo "  protected-path hook correctly blocked .env.local"
+# Run the real PreToolUse command from .claude/settings.json, fed the same
+# stdin JSON Claude Code sends, so this test cannot drift from the hook.
+hook_cmd="$(node -e "
+  const s=require('./.claude/settings.json');
+  const e=(s.hooks.PreToolUse||[]).find(m=>m.matcher==='Edit|Write');
+  process.stdout.write(((e&&e.hooks)||[])[0]?.command||'');
+")"
+test -n "$hook_cmd" || fail "PreToolUse Edit|Write hook missing or malformed in .claude/settings.json"
+run_hook() { printf '{"tool_name":"Write","tool_input":{"file_path":"%s"}}' "$1" | bash -c "$hook_cmd" 2>/dev/null; }
+set +e
+run_hook "$PWD/.env.local"; blocked=$?
+run_hook "$PWD/README.md"; allowed=$?
+set -e
+test "$blocked" -eq 2 || fail "protected-path hook did not block .env.local (exit $blocked)"
+test "$allowed" -eq 0 || fail "protected-path hook blocked README.md (exit $allowed)"
+echo "  protected-path hook correctly blocked .env.local and allowed README.md"
 
 echo "== 7. One command's definition is present for both harnesses: /verify =="
 test -f ".opencode/commands/verify.md" || fail "verify command definition missing"
