@@ -1,6 +1,6 @@
 # MCP Configuration Notes
 
-The MCP server definitions live in `/home/runner/work/uFawkesAI/uFawkesAI/opencode.json`.
+The MCP server definitions live in `opencode.json` at the repository root.
 
 Set these environment variables before using remote/local MCP integrations:
 
