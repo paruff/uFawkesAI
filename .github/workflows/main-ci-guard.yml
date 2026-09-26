@@ -1,8 +1,6 @@
 name: Main CI Guard
 
-# Blocks PR merges to main until the main CI workflow passes.
-# This is the primary merge gate — no PR can land on main without
-# successful completion of the referenced CI workflow.
+# Blocks PR merges to main until the primary CI workflow has a successful run.
 
 on:
   pull_request:
@@ -12,11 +10,64 @@ on:
 
 permissions:
   contents: read
-  pull-requests: read
+  actions: read
 
 jobs:
   main-ci-guard:
     name: "🛡️ Main CI Guard"
-    uses: ./.github/workflows/reusable-main-ci-guard.yml
-    with:
-      workflow-id: ci-quality.yml
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: job-start
+        run: echo "job-start $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+
+      - name: Check latest CI Quality Gate run on main
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        with:
+          script: |
+            const { data: mainBranch } = await github.rest.repos.getBranch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              branch: 'main',
+            });
+            const mainHeadSha = mainBranch.commit.sha;
+
+            const { data: runs } = await github.rest.actions.listWorkflowRuns({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'ci-quality.yml',
+              branch: 'main',
+              status: 'completed',
+              per_page: 100,
+            });
+
+            if (runs.workflow_runs.length === 0) {
+              core.setFailed('No completed CI Quality Gate runs found on main');
+              return;
+            }
+
+            const currentMainRun = runs.workflow_runs.find(
+              (run) => run.head_sha === mainHeadSha,
+            );
+
+            if (!currentMainRun) {
+              core.setFailed(
+                `No completed CI Quality Gate run found for current main HEAD ${mainHeadSha} in the latest 100 runs.`,
+              );
+              return;
+            }
+
+            core.info(`Current main HEAD: ${mainHeadSha}`);
+            core.info(`CI run for main HEAD: ${currentMainRun.html_url}`);
+            core.info(`Conclusion: ${currentMainRun.conclusion}`);
+
+            if (currentMainRun.conclusion !== 'success') {
+              core.setFailed(
+                `CI Quality Gate for current main HEAD is ${currentMainRun.conclusion}. ` +
+                  `Fix main CI before merging PRs. ${currentMainRun.html_url}`,
+              );
+            }
+
+      - name: job-finish
+        if: always()
+        run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
