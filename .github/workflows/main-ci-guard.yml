@@ -17,6 +17,6 @@ permissions:
 jobs:
   main-ci-guard:
     name: "🛡️ Main CI Guard"
-    uses: paruff/ufawkespipe/.github/workflows/reusable-main-ci-guard.yml@v1.2.0
+    uses: ./.github/workflows/reusable-main-ci-guard.yml
     with:
       workflow-id: ci-quality.yml
