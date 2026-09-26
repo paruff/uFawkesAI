@@ -1,7 +1,7 @@
 import { execFileSync } from "node:child_process";
 import path from "node:path";
 
-const PROTECTED = [/^\.env(\..+)?$/, /\.pem$/, /\.key$/, /^credentials\..+$/, /^\.git\//];
+const PROTECTED_BASENAME = [/^\.env(\..+)?$/, /\.pem$/, /\.key$/, /^credentials\..+$/];
 const FORMATTERS: Array<{ ext: string; cmd: string[] }> = [
   { ext: ".ts", cmd: ["npx", "-y", "prettier", "--write"] },
   { ext: ".js", cmd: ["npx", "-y", "prettier", "--write"] },
@@ -11,8 +11,11 @@ const FORMATTERS: Array<{ ext: string; cmd: string[] }> = [
 ];
 
 function isProtected(targetPath: string): boolean {
-  const normalized = targetPath.replace(/^\.?\//, "");
-  return PROTECTED.some((re) => re.test(normalized));
+  const normalized = path.normalize(targetPath).replace(/\\/g, "/");
+  const segments = normalized.split("/").filter(Boolean);
+  const basename = segments[segments.length - 1] ?? "";
+  if (segments.includes(".git")) return true;
+  return PROTECTED_BASENAME.some((re) => re.test(basename));
 }
 
 export default {
