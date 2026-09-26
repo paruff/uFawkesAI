@@ -62,6 +62,14 @@ budget for the learning phase — and these control systems are that budget.
 | `docs/AI_POLICY.md`                            | AI Cap 1 — AI Policy              | Clear AI stance; psychological safety (PSYCH-01)                             |
 | `scripts/weekly-metrics.sh`                    | DORA 2025 — Rework Rate           | Single-screen metrics summary (METRICS-02)                                   |
 | `.vscode/settings.json`                        | AI Cap 3 — Context Eng.           | Auto-loads copilot-instructions.md in every session                          |
+| `.mcp.json`                                     | Dual-Harness — MCP Config         | Claude Code's MCP server registrations, mirroring `opencode.json`'s server set |
+| `.opencode/skills/*-rules/SKILL.md`             | Agent Skills standard             | Testing/security/api-design/gitops rules, migrated from `rules/*.md` to on-demand skills; visible at `.claude/skills/` via symlink |
+| `scripts/hooks/protected-paths.json`            | Dual-Harness — Shared Hook Data   | Protected-path list read by both `.claude/settings.json` and `.opencode/plugins/ai-sdlc-hooks.ts` |
+| `scripts/AGENTS.md` + `scripts/CLAUDE.md`       | OpenCode "Rules" / Claude Code memory | Directory-scoped rule example — loads only when working under `scripts/` |
+| `scripts/check-harness-parity.sh`               | Dual-Harness — Anti-Shadowing     | CI check: `.claude`↔`.opencode` symlinks intact, MCP server sets match, no reserved-name collisions |
+| `scripts/dual-harness-smoke.sh`                 | Dual-Harness — CI Smoke Test      | Proves one example each of MCP server, skill, hook, command, and rule works under both harnesses |
+| `.devcontainer/devcontainer.json`               | Dual-Harness — Devcontainer       | Installs both `opencode` and Claude Code CLIs, version-pinned, non-root `remoteUser` |
+| `.github/workflows/ci-quality.yml` (`dual-harness-smoke` job) | Dual-Harness — CI Gate | Runs `scripts/dual-harness-smoke.sh` inside the built devcontainer on every push/PR |
 
 ---
 

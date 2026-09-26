@@ -74,6 +74,27 @@ jobs:
         run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
 
   # ════════════════════════════════════════════════════════════════════════════
+  # GATE 6: Dual-Harness Smoke Test
+  # Builds the devcontainer and proves OpenCode + Claude Code both work
+  # against the same config — see docs/ai-sdlc/spec.md R6.
+  # ════════════════════════════════════════════════════════════════════════════
+  dual-harness-smoke:
+    name: "🧩 Dual-Harness Smoke Test"
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: job-start
+        run: echo "job-start $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Build devcontainer and run smoke test
+        uses: devcontainers/ci@513af61f4de4f75d37e4438f184ba4358f0fc1ca # v0.3
+        with:
+          push: never
+          runCmd: bash scripts/dual-harness-smoke.sh
+      - name: job-finish
+        run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+
+  # ════════════════════════════════════════════════════════════════════════════
   # GATE 2: Lint (placeholder - actual linting in reusable-lint.yml)
   # ════════════════════════════════════════════════════════════════════════════
   lint-placeholder:
@@ -181,6 +202,7 @@ jobs:
         preflight,
         lint,
         symlink-check,
+        dual-harness-smoke,
         lint-placeholder,
         typecheck,
         test,
@@ -196,6 +218,7 @@ jobs:
           if [ "${{ needs.preflight.result }}" == "failure" ] || \
              [ "${{ needs.lint.result }}" == "failure" ] || \
              [ "${{ needs.symlink-check.result }}" == "failure" ] || \
+             [ "${{ needs.dual-harness-smoke.result }}" == "failure" ] || \
              [ "${{ needs.lint-placeholder.result }}" == "failure" ] || \
              [ "${{ needs.typecheck.result }}" == "failure" ] || \
              [ "${{ needs.test.result }}" == "failure" ] || \
@@ -215,13 +238,14 @@ jobs:
           echo "| Pre-flight | ${{ needs.preflight.result == 'success' && '✅ Pass' || (needs.preflight.result == 'skipped' && '⏭️ Skipped' || '❌ Fail') }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Lint | ${{ needs.lint.result == 'success' && '✅ Pass' || (needs.lint.result == 'skipped' && '⏭️ Skipped' || '❌ Fail') }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Symlinks | ${{ needs.symlink-check.result == 'success' && '✅ Pass' || '❌ Fail' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Dual-Harness Smoke | ${{ needs.dual-harness-smoke.result == 'success' && '✅ Pass' || '❌ Fail' }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Lint (Placeholder) | ${{ needs.lint-placeholder.result == 'success' && '✅ Pass' || '❌ Fail' }} |" >> $GITHUB_STEP_SUMMARY
           echo "| TypeScript | ${{ needs.typecheck.result == 'success' && '✅ Pass' || '❌ Fail' }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Tests | ${{ needs.test.result == 'success' && '✅ Pass' || '❌ Fail' }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Architecture | ${{ needs.architecture.result == 'success' && '✅ Pass' || '❌ Fail' }} |" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### DORA Metrics" >> $GITHUB_STEP_SUMMARY
-          echo "- **Total gates**: 7" >> $GITHUB_STEP_SUMMARY
+          echo "- **Total gates**: 8" >> $GITHUB_STEP_SUMMARY
            echo "- **Parallel execution**: Yes" >> $GITHUB_STEP_SUMMARY
            echo "- **Estimated time**: ~5 min" >> $GITHUB_STEP_SUMMARY
       - name: job-finish

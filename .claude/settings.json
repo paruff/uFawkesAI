@@ -3,7 +3,7 @@
     "PreToolUse": [
       {
         "matcher": "Edit|Write",
-        "command": "node -e \"const path=require('path'); const p=process.env.CLAUDE_TOOL_TARGET||''; const n=path.normalize(p).replace(/\\\\/g,'/'); const parts=n.split('/').filter(Boolean); const b=parts[parts.length-1]||''; const r=[/^\\.env(\\..+)?$/, /\\.pem$/, /\\.key$/, /^credentials(\\..+)?$/]; if(parts.includes('.git')||r.some(x=>x.test(b))){ console.error('Blocked edit to protected path: '+p); process.exit(2);} process.exit(0);\""
+        "command": "node -e \"const path=require('path'); const cfg=require('./scripts/hooks/protected-paths.json'); const p=process.env.CLAUDE_TOOL_TARGET||''; const n=path.normalize(p).replace(/\\\\/g,'/'); const parts=n.split('/').filter(Boolean); const b=parts[parts.length-1]||''; const r=cfg.protectedBasenamePatterns.map(s=>new RegExp(s)); const segs=cfg.protectedPathSegments||[]; if(segs.some(s=>parts.includes(s))||r.some(x=>x.test(b))){ console.error('Blocked edit to protected path: '+p); process.exit(2);} process.exit(0);\""
       }
     ],
     "PostToolUse": [

@@ -1,0 +1,9 @@
+{
+  "protectedBasenamePatterns": [
+    "^\\.env(\\..+)?$",
+    "\\.pem$",
+    "\\.key$",
+    "^credentials(\\..+)?$"
+  ],
+  "protectedPathSegments": [".git"]
+}
