@@ -1,7 +1,12 @@
 import { execFileSync } from "node:child_process";
+import { readFileSync } from "node:fs";
 import path from "node:path";
 
-const PROTECTED_BASENAME = [/^\.env(\..+)?$/, /\.pem$/, /\.key$/, /^credentials(\..+)?$/];
+const PROTECTED_PATHS_CONFIG = JSON.parse(
+  readFileSync(path.join(process.cwd(), "scripts/hooks/protected-paths.json"), "utf-8")
+) as { protectedBasenamePatterns: string[]; protectedPathSegments?: string[] };
+const PROTECTED_BASENAME = PROTECTED_PATHS_CONFIG.protectedBasenamePatterns.map((s) => new RegExp(s));
+const PROTECTED_SEGMENTS = PROTECTED_PATHS_CONFIG.protectedPathSegments ?? [".git"];
 const FORMATTERS: Array<{ ext: string; cmd: string[] }> = [
   { ext: ".ts", cmd: ["npx", "-y", "prettier", "--write"] },
   { ext: ".js", cmd: ["npx", "-y", "prettier", "--write"] },
@@ -14,7 +19,7 @@ function isProtected(targetPath: string): boolean {
   const normalized = path.normalize(targetPath).replace(/\\/g, "/");
   const segments = normalized.split("/").filter(Boolean);
   const basename = segments[segments.length - 1] ?? "";
-  if (segments.includes(".git")) return true;
+  if (PROTECTED_SEGMENTS.some((seg) => segments.includes(seg))) return true;
   return PROTECTED_BASENAME.some((re) => re.test(basename));
 }
 

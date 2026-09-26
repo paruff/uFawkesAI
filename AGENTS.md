@@ -20,8 +20,9 @@
 
 ## 2. Project Identity
 
-**Product:** uFawkesAI — Agent orchestration framework for platform engineering
+**Product:** uFawkesAI — an agent orchestration framework for platform engineering, packaged as a template so its patterns (agents, skills, hooks, rules, dual-harness config) are directly reusable by other projects.
 **Stack:** TypeScript · Node 20 · GitHub Actions · OpenTelemetry
+**Harnesses:** OpenCode and Claude Code are first-class, dual-verified by `scripts/dual-harness-smoke.sh` in CI (see `docs/ai-sdlc/spec.md` R1); Cursor/Copilot/Gemini compatibility files are kept in sync automatically via symlink to this file.
 **Key constraints:** 7 core pipeline agents + 7 flow/meta agents (14 total, see `.agents/README.md`), 31 skill areas, humans = routing layer
 
 ---

@@ -9,7 +9,7 @@
       "installOhMyZsh": true
     }
   },
-  "postCreateCommand": "npm ci && ./scripts/setup.sh",
+  "postCreateCommand": "npm ci && ./scripts/setup.sh && npm install -g opencode-ai@1.18.30 @anthropic-ai/claude-code@2.1.283",
   "customizations": {
     "vscode": {
       "extensions": [
