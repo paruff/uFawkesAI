@@ -1,7 +1,7 @@
 import { execFileSync } from "node:child_process";
 import path from "node:path";
 
-const PROTECTED_BASENAME = [/^\.env(\..+)?$/, /\.pem$/, /\.key$/, /^credentials\..+$/];
+const PROTECTED_BASENAME = [/^\.env(\..+)?$/, /\.pem$/, /\.key$/, /^credentials(\..+)?$/];
 const FORMATTERS: Array<{ ext: string; cmd: string[] }> = [
   { ext: ".ts", cmd: ["npx", "-y", "prettier", "--write"] },
   { ext: ".js", cmd: ["npx", "-y", "prettier", "--write"] },
