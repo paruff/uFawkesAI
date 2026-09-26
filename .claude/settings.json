@@ -1,0 +1,22 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "command": "node -e \"const p=process.env.CLAUDE_TOOL_TARGET||''; const r=[/^\\.env(\\..+)?$/, /\\.pem$/, /\\.key$/, /^credentials\\..+$/, /^\\.git\\//]; const n=p.replace(/^\\.?\\//,''); if(r.some(x=>x.test(n))){ console.error('Blocked edit to protected path: '+p); process.exit(2);} process.exit(0);\""
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "command": "bash -lc 'f=\"${CLAUDE_TOOL_TARGET}\"; [ -z \"$f\" ] && exit 0; case \"$f\" in *.ts|*.js) npx -y prettier --write \"$f\";; *.py) black \"$f\";; *.go) gofmt -w \"$f\";; *.rs) rustfmt \"$f\";; *) true;; esac'"
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "compact",
+        "command": "echo \"Use the project's package manager. Run /verify before claiming completion. Never edit protected files.\""
+      }
+    ]
+  }
+}
