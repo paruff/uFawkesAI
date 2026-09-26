@@ -1,0 +1,78 @@
+name: DevSecOps Image — Build & Verify
+
+# Builds the uFawkes DevSecOps toolchain image (docs/ai-sdlc/devsecops-image/)
+# natively on amd64 and arm64, then proves it inside the image with no
+# network: locked versions, gate accept/reject fixtures, offline pre-commit.
+# A second no-cache build must report an identical toolchain (determinism).
+# No push here — publishing, signing and attestation come in a later PR.
+
+on:
+  pull_request:
+    paths:
+      - "images/devsecops/**"
+      - "scripts/image-lock-refresh.sh"
+      - ".github/workflows/image-build.yml"
+  push:
+    branches: [main]
+    paths:
+      - "images/devsecops/**"
+      - "scripts/image-lock-refresh.sh"
+      - ".github/workflows/image-build.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: image-build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  core:
+    name: "🐳 core (${{ matrix.arch }})"
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: amd64
+            runner: ubuntu-24.04
+          - arch: arm64
+            runner: ubuntu-24.04-arm
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 45
+    steps:
+      - name: job-start
+        run: echo "job-start $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+
+      - name: Build core
+        run: docker buildx build --load --target core -t devsecops-core:ci images/devsecops
+
+      - name: Verify toolchain (network disabled)
+        run: |
+          docker run --rm --network none \
+            -v "$PWD/images/devsecops/tests:/tests:ro" \
+            devsecops-core:ci /tests/verify-tools.sh core
+
+      - name: Determinism — rebuild without cache and compare
+        run: |
+          fingerprint() {
+            docker run --rm --network none "$1" bash -c '
+              cat /etc/ufawkes/tools.json
+              uv pip freeze --python /opt/ufawkes/venv
+              npm ls --prefix /opt/ufawkes/node --all --json'
+          }
+          fingerprint devsecops-core:ci >first.txt
+          docker buildx build --load --no-cache --target core -t devsecops-core:rebuild images/devsecops
+          fingerprint devsecops-core:rebuild >second.txt
+          diff -u first.txt second.txt
+          echo "✅ Identical toolchain across two clean builds"
+
+      - name: Image size
+        if: always()
+        run: docker image ls devsecops-core --format '{{.Tag}} {{.Size}}' | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: job-finish
+        if: always()
+        run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
