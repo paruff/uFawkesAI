@@ -9,7 +9,7 @@
     "PostToolUse": [
       {
         "matcher": "Edit|Write",
-        "command": "bash -lc 'f=\"${CLAUDE_TOOL_TARGET}\"; [ -z \"$f\" ] && exit 0; case \"$f\" in *.ts|*.js) npx -y prettier --write \"$f\";; *.py) black \"$f\";; *.go) gofmt -w \"$f\";; *.rs) rustfmt \"$f\";; *) true;; esac'"
+        "command": "node -e \"const {spawnSync}=require('child_process'); const path=require('path'); const f=process.env.CLAUDE_TOOL_TARGET||''; if(!f) process.exit(0); const ext=path.extname(f); const map={'.ts':['npx','-y','prettier','--write',f],'.js':['npx','-y','prettier','--write',f],'.py':['black',f],'.go':['gofmt','-w',f],'.rs':['rustfmt',f]}; const cmd=map[ext]; if(!cmd) process.exit(0); const r=spawnSync(cmd[0],cmd.slice(1),{stdio:'inherit'}); process.exit(r.status ?? 1);\""
       }
     ],
     "SessionStart": [
