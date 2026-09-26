@@ -26,9 +26,9 @@ PASSES=0
 WARNINGS=0
 FAILURES=0
 
-pass()  { echo -e "  ${PASS} $1"; ((PASSES++));   }
-warn()  { echo -e "  ${WARN} $1"; ((WARNINGS++)); }
-fail()  { echo -e "  ${FAIL} $1"; ((FAILURES++)); }
+pass()  { echo -e "  ${PASS} $1"; PASSES=$((PASSES + 1));   }
+warn()  { echo -e "  ${WARN} $1"; WARNINGS=$((WARNINGS + 1)); }
+fail()  { echo -e "  ${FAIL} $1"; FAILURES=$((FAILURES + 1)); }
 info()  { echo -e "  ${INFO} $1"; }
 section() { echo -e "\n${BOLD}${CYAN}── $1 ${RESET}$(printf '─%.0s' $(seq 1 $((54 - ${#1}))))${RESET}"; }
 
@@ -72,7 +72,7 @@ done
 
 # .github/skills directory
 section "  On-demand Skills"
-SKILLS_DIR=".github/skills"
+SKILLS_DIR=".agents/skills"
 if [[ -d "$SKILLS_DIR" ]]; then
   skill_count=$(find "$SKILLS_DIR" -name "SKILL.md" | wc -l | tr -d ' ')
   if [[ "$skill_count" -ge 1 ]]; then
@@ -94,7 +94,7 @@ else
   fail "$placeholder_count unfilled [PLACEHOLDER] strings remain:"
   grep -rn "\[PLACEHOLDER" --include="*.md" . \
     2>/dev/null | grep -v node_modules | grep -v ".git" \
-    | head -10 | while read -r line; do info "  $line"; done
+    | sed -n "1,10p" | while read -r line; do info "  $line"; done
 fi
 
 # AGENTS.md line count
@@ -189,7 +189,7 @@ if command -v wc &>/dev/null; then
     | xargs wc -c 2>/dev/null \
     | sort -rn \
     | grep -v " total$" \
-    | head -10 \
+    | sed -n "1,10p" \
     | while read -r size filepath; do
         tokens=$(( size / 4 ))
         printf "  %6d tokens  %s\n" "$tokens" "$filepath"
@@ -215,7 +215,7 @@ for script in scripts/setup.sh scripts/token-audit.sh scripts/weekly-metrics.sh;
     pass "$script — executable, syntax OK"
   else
     fail "$script — syntax error detected"
-    bash -n "$script" 2>&1 | head -5 | while read -r line; do info "  $line"; done
+    bash -n "$script" 2>&1 | sed -n "1,5p" | while read -r line; do info "  $line"; done
   fi
 done
 
@@ -232,7 +232,7 @@ if command -v shellcheck &>/dev/null; then
       pass "shellcheck $script — clean"
     else
       warn "shellcheck $script — warnings found (run shellcheck manually)"
-      ((sc_issues++))
+      sc_issues=$((sc_issues + 1))
     fi
   done
 else
@@ -260,14 +260,14 @@ workflow_errors=0
 if [[ -d ".github/workflows" ]]; then
   for wf in .github/workflows/*.yml; do
     [[ -f "$wf" ]] || continue
-    ((workflow_count++))
+    workflow_count=$((workflow_count + 1))
     # Basic YAML validity via python if available
     if command -v python3 &>/dev/null; then
       if python3 -c "import yaml; yaml.safe_load(open('$wf'))" 2>/dev/null; then
         pass "$wf — valid YAML"
       else
         fail "$wf — YAML parse error"
-        ((workflow_errors++))
+        workflow_errors=$((workflow_errors + 1))
       fi
     else
       # Fallback: check file is non-empty and has 'on:' and 'jobs:'
@@ -275,7 +275,7 @@ if [[ -d ".github/workflows" ]]; then
         pass "$wf — structure OK (install python3 for full validation)"
       else
         fail "$wf — missing 'on:' or 'jobs:' key"
-        ((workflow_errors++))
+        workflow_errors=$((workflow_errors + 1))
       fi
     fi
   done

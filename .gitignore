@@ -3,6 +3,10 @@ node_modules/
 # macOS
 .DS_Store
 
+# Agent tooling logs and CI report scratch files
+.agents/logs/
+ci-*.md
+
 # Serena MCP local tool state
 .serena/
 

@@ -1,4 +1,4 @@
-.PHONY: pre-commit-setup pre-commit-run validate help
+.PHONY: pre-commit-setup pre-commit-run validate help clean
 
 help: ## Show this help message
 	@grep -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2}'
@@ -12,3 +12,8 @@ pre-commit-run: ## Run all pre-commit hooks
 	@pre-commit run --all-files
 
 validate: pre-commit-run ## Validate all files (alias for pre-commit-run)
+
+clean: ## Remove node_modules and agent tooling node_modules (both gitignored)
+	rm -rf node_modules/
+	rm -rf .opencode/node_modules/
+	@echo "Cleaned node_modules"
