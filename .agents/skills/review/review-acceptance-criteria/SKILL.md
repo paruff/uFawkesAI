@@ -1,5 +1,5 @@
 ---
-name: acceptance-criteria
+name: review-acceptance-criteria
 description: "Validate that build output satisfies all acceptance criteria. Use when checking each AC for pass/fail status."
 license: MIT
 compatibility: Claude Code, GitHub Copilot, OpenCode, Cursor, Codex, Gemini CLI
@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Acceptance Criteria Validation
 
-> **Load trigger:** `"load acceptance-criteria skill"` > **DORA:** Cap 5 (Small Batches / Shift Left on Quality)
+> **Load trigger:** `"load review-acceptance-criteria skill"` > **DORA:** Cap 5 (Small Batches / Shift Left on Quality)
 > **Token cost:** Low
 
 ## Purpose
@@ -68,7 +68,7 @@ Validate that the build output satisfies all acceptance criteria.
 
 ```json
 {
-  "skill": "acceptance-criteria",
+  "skill": "review-acceptance-criteria",
   "status": "pass | fail",
   "total": 12,
   "passed": 10,

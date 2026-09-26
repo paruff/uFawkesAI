@@ -191,18 +191,18 @@ Run these checks in order:
 
 Load these skills as needed:
 
-| Skill                        | When to Load                     |
-| ---------------------------- | -------------------------------- |
-| `review/spec-compliance`     | Validating against specification |
-| `review/design-compliance`   | Validating against design        |
-| `review/acceptance-criteria` | Checking acceptance criteria     |
-| `review/code-quality`        | Lint, format, structure checks   |
-| `review/pipeline-policy`     | CI/CD pipeline validation        |
-| `review/k8s-policy`          | Kubernetes manifest validation   |
-| `review/gitops-overlay`      | GitOps overlay validation        |
-| `review/security-rbac`       | RBAC and security validation     |
-| `review/secret-governance`   | Secret handling validation       |
-| `review/policy-validation`   | Policy-as-code validation        |
+| Skill                               | When to Load                     |
+| ----------------------------------- | -------------------------------- |
+| `review/spec-compliance`            | Validating against specification |
+| `review/design-compliance`          | Validating against design        |
+| `review/review-acceptance-criteria` | Checking acceptance criteria     |
+| `review/code-quality`               | Lint, format, structure checks   |
+| `review/pipeline-policy`            | CI/CD pipeline validation        |
+| `review/k8s-policy`                 | Kubernetes manifest validation   |
+| `review/gitops-overlay`             | GitOps overlay validation        |
+| `review/security-rbac`              | RBAC and security validation     |
+| `review/secret-governance`          | Secret handling validation       |
+| `review/policy-validation`          | Policy-as-code validation        |
 
 ### Build Validation Output
 

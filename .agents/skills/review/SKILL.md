@@ -57,18 +57,18 @@ Consumes build output and validates:
 
 ## Sub-Skills
 
-| Skill                        | Purpose                        |
-| ---------------------------- | ------------------------------ |
-| `review/spec-compliance`     | Validate against specification |
-| `review/design-compliance`   | Validate against architecture  |
-| `review/code-quality`        | Assess code quality            |
-| `review/acceptance-criteria` | Validate acceptance criteria   |
-| `review/security-rbac`       | RBAC validation                |
-| `review/secret-governance`   | Secret management review       |
-| `review/policy-validation`   | Policy-as-code validation      |
-| `review/k8s-policy`          | Kubernetes policy compliance   |
-| `review/pipeline-policy`     | Pipeline policy validation     |
-| `review/gitops-overlay`      | GitOps overlay validation      |
+| Skill                               | Purpose                        |
+| ----------------------------------- | ------------------------------ |
+| `review/spec-compliance`            | Validate against specification |
+| `review/design-compliance`          | Validate against architecture  |
+| `review/code-quality`               | Assess code quality            |
+| `review/review-acceptance-criteria` | Validate acceptance criteria   |
+| `review/security-rbac`              | RBAC validation                |
+| `review/secret-governance`          | Secret management review       |
+| `review/policy-validation`          | Policy-as-code validation      |
+| `review/k8s-policy`                 | Kubernetes policy compliance   |
+| `review/pipeline-policy`            | Pipeline policy validation     |
+| `review/gitops-overlay`             | GitOps overlay validation      |
 
 ## Dependencies
 

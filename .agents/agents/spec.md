@@ -79,14 +79,14 @@ Generate the specification document.
 
 Load these skills as needed:
 
-| Skill                          | When to Load                               |
-| ------------------------------ | ------------------------------------------ |
-| `spec/requirements-extraction` | Extracting structured requirements         |
-| `spec/acceptance-criteria`     | Generating testable ACs                    |
-| `spec/policy-validation`       | Validating against organizational policies |
-| `spec/pipeline-policy`         | Aligning with pipeline governance          |
-| `spec/template-governance`     | Aligning with platform templates           |
-| `spec/k8s-policy`              | Kubernetes-specific requirements           |
+| Skill                           | When to Load                               |
+| ------------------------------- | ------------------------------------------ |
+| `spec/requirements-extraction`  | Extracting structured requirements         |
+| `spec/spec-acceptance-criteria` | Generating testable ACs                    |
+| `spec/policy-validation`        | Validating against organizational policies |
+| `spec/pipeline-policy`          | Aligning with pipeline governance          |
+| `spec/template-governance`      | Aligning with platform templates           |
+| `spec/k8s-policy`               | Kubernetes-specific requirements           |
 
 ## Output Format
 

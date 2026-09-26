@@ -19,7 +19,7 @@ skills:
     load_trigger: "load spec skill"
     sub_skills:
       - spec/requirements-extraction
-      - spec/acceptance-criteria
+      - spec/spec-acceptance-criteria
       - spec/policy-validation
       - spec/pipeline-policy
       - spec/k8s-policy
@@ -102,7 +102,7 @@ skills:
       - review/spec-compliance
       - review/design-compliance
       - review/code-quality
-      - review/acceptance-criteria
+      - review/review-acceptance-criteria
       - review/security-rbac
       - review/secret-governance
       - review/policy-validation

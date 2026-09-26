@@ -1,5 +1,5 @@
 ---
-name: acceptance-criteria
+name: spec-acceptance-criteria
 description: "Generate clear, testable acceptance criteria for the specification. Use when converting requirements into binary pass/fail assertions."
 license: MIT
 compatibility: Claude Code, GitHub Copilot, OpenCode, Cursor, Codex, Gemini CLI
@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Acceptance Criteria Generation
 
-> **Load trigger:** `"load acceptance-criteria skill"` > **DORA:** Cap 5 (Small Batches / Shift Left on Quality)
+> **Load trigger:** `"load spec-acceptance-criteria skill"` > **DORA:** Cap 5 (Small Batches / Shift Left on Quality)
 > **Token cost:** Low
 
 ## Purpose
