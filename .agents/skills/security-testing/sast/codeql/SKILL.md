@@ -46,6 +46,9 @@ Run CodeQL queries to detect deep security vulnerabilities.
 | `security-extended`    | Broad security coverage |
 | `security-and-quality` | Security + code quality |
 
+**Enforcement: advisory.** No workflow in this repository runs CodeQL.
+These criteria are reported, not enforced.
+
 ## Validation Rules
 
 - [ ] Database built successfully

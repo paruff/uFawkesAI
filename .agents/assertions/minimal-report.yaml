@@ -1,7 +1,13 @@
 # Agent Output Contracts
 # Each agent's report must satisfy its contract before being considered complete.
 # Schema: .agents/assertions/agent-output-schema.json
-# Runner: bash .agents/assertions/assertion-runner.sh <report.md> <agent-name>
+# Runner: bash .agents/assertions/assertion-runner.sh <report.md> <contract-key>
+#
+# Keys are report kinds, not agent names. Under the current taxonomy the owning
+# agent is @planner, @builder, @verifier, or @operator — but a contract is
+# enforced against the shape of a report, so the key stays the report kind.
+# The report-filename -> key mapping lives in .agents/hooks/pre-commit-agent.sh.
+# An unknown key is a hard failure, not a silent pass.
 
 agents:
   build:

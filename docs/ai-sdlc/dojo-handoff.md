@@ -121,7 +121,7 @@ Validate it before opening the PR:
    "No gaps" opens nothing.
 2. **The cycle restarts:** someone commits the draft (edited as needed —
    humans decide intent) in a PR that says `Closes #<issue>`, then
-   continues at `@spec`.
+   continues at the `spec` stage.
 3. **Daily:** any `intent` issue still open after **one sprint** is labelled
    `intent-overdue`, with a comment. The sprint is the `learn` agent's
    weekly cadence: 7 days, set by the repo variable `DOJO_SPRINT_DAYS`.

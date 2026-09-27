@@ -8,6 +8,11 @@ metadata:
   suite: uFawkesAI
 ---
 
+> ⚠️ **UNREACHABLE:** the `fawkes` CLI documented below does not exist in this repository.
+> There is no `fawkes` binary on PATH and no `bin` entry in `package.json`,
+> so these commands cannot be run. Kept as a design reference only — do not
+> follow them as runnable steps.
+
 # Skill: Toolchain Validation
 
 > **Load trigger:** `"load toolchain-validation skill"` > **DORA:** Cap 3 (AI-Accessible Internal Data)

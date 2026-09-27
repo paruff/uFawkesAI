@@ -17,7 +17,7 @@ metadata:
 
 A 15-minute structured exercise that surfaces the real user need behind a proposed
 change, the riskiest assumption embedded in it, and one testable acceptance criterion.
-Output is `discovery-brief.md` — mandatory input to the spec agent.
+Output is `discovery-brief.md` — mandatory input to the `spec` skill.
 
 DORA AI Capabilities Model v2025.1: Teams adopting AI without user-centric focus see
 harm to team performance. Speed is irrelevant if moving in the wrong direction.
@@ -82,7 +82,7 @@ Write: `Riskiest assumption: [one sentence, falsifiable]`
 
 One given/when/then statement. Must be:
 
-- Testable by the test-execution agent (not just "user feels better")
+- Testable by the `test-execution` skill (not just "user feels better")
 - Specific enough that a binary pass/fail is possible
 - Grounded in the JTBD from Step 2
 
@@ -163,7 +163,7 @@ status: ready-for-spec
 
 ## Notes
 
-[Any context that will help the spec agent — constraints, dependencies, related issues]
+[Any context that will help the `spec` skill — constraints, dependencies, related issues]
 ```
 
 ## Output Format

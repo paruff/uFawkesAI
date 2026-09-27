@@ -1,4 +1,17 @@
-# AI Policy — [PROJECT NAME]
+# AI Policy — starter template for downstream repositories
+
+> **Status in this repository:** this is a **template, not policy**.
+>
+> The authoritative AI stance for `paruff/uFawkesAI` is **[`AI_STANCE.md`](../AI_STANCE.md)**
+> at the repository root, maintained by the `ai-stance` skill and reviewed
+> quarterly. This file exists so that repositories copied from this template
+> have a starting point to fill in for themselves.
+>
+> Do not treat the placeholders below as resolved for this repository. Copy
+> this file into a new project and replace every `[PLACEHOLDER]` and
+> `[PROJECT NAME]` with that project's own answers, or adopt `AI_STANCE.md`
+> as the policy format directly — it carries the same content in the
+> three-bucket structure that the `ai-stance` audit checks.
 
 > DORA AI Cap 1 finding: "A clear AI stance provides psychological safety for
 > experimentation. Ambiguity around AI use creates friction, reduces adoption,
@@ -8,7 +21,8 @@
 > code — and having appropriate skepticism is correct. The policy response is
 > clarity, not mandated trust."
 >
-> This document is the official AI policy for this project. Reviewed quarterly.
+> Once filled in for a downstream project, this document becomes that
+> project's official AI policy and is reviewed quarterly.
 
 ---
 
@@ -23,13 +37,15 @@ human judgment, architectural decisions, or quality accountability.
 
 ## What AI Is Used For
 
+_(template: replace with that project's actual usage)_
+
 | Use Case                      | Tool                 | Human Oversight                       |
 | ----------------------------- | -------------------- | ------------------------------------- |
 | Code generation from PM specs | GitHub Copilot agent | Human review before merge             |
-| Test generation               | `@test-agent`        | Human confirms tests are meaningful   |
-| Documentation generation      | `@docs-agent`        | Human reviews for accuracy            |
-| Code review pre-screening     | `@review-agent`      | Human makes final review decision     |
-| Security scanning             | `@security-agent`    | Human escalates all CRITICAL findings |
+| Test generation               | `@builder` (`test` skill) | Human confirms tests are meaningful   |
+| Documentation generation      | Any agent session    | Human reviews for accuracy            |
+| Code review pre-screening     | `@verifier`          | Human makes final review decision     |
+| Security scanning             | `security-testing` skills | Human escalates all CRITICAL findings |
 | Debugging assistance          | Copilot Chat         | Human verifies the fix                |
 
 ---

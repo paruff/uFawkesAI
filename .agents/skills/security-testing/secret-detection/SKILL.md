@@ -32,8 +32,14 @@ Ensure no secrets leak into source code, logs, artifacts, or GitOps repos.
 
 ## Outputs
 
-- `secrets.json`
-- `integrity.json`
+| Artifact         | Produced by                                                      | Blocking |
+| ---------------- | ---------------------------------------------------------------- | -------- |
+| `secrets.json`   | `scripts/check-secret-detection.sh` (source tree, PR-gating)       | Yes      |
+| `integrity.json` | `secret-detection/integrity` (artifact/SBOM/signature checks)     | Not yet wired |
+
+`integrity.json` is declared by this skill but has no runner yet. Until one
+exists it is listed as `not_run_by_this_validator` in `secrets.json` rather
+than reported as a passing zero.
 
 ## Sub-Skills
 

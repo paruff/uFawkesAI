@@ -1,0 +1,134 @@
+---
+repo: paruff/uFawkesAI
+suite: uFawkesAI
+stance_type: platform-engineering-template
+owner: Phil Ruff
+last_reviewed: 2026-09-27
+next_review_due: 2026-12-27
+review_cadence: quarterly
+---
+
+# AI Stance — uFawkesAI
+
+This is the living AI stance for the `paruff/uFawkesAI` template repository. It is
+the authoritative policy document. `docs/AI_POLICY.md` is an unfilled starting
+template for new repositories and is not policy for this one.
+
+**Last reviewed:** 2026-09-27
+**Next review due:** 2026-12-27 (quarterly)
+
+---
+
+## 1. Expectation of Use
+
+AI is a routine part of how this repository is built and maintained. There are
+four execution-boundary agents — `@planner`, `@builder`, `@verifier`,
+`@operator` — and agents implement, humans decide. AI output is never merged
+without human review, and no agent merges its own work.
+
+This repository is a **template and configuration repo**: it contains no
+application source, no build output, and no CLI. Its product is the agent
+framework itself — instructions, skills, workflows, hooks, rules, and dual
+harness configuration. That distinction drives the guardrails in section 3.
+
+## 2. Organizational Support
+
+AI use here is backed by repository infrastructure, not convention:
+
+- `AGENTS.md` is the single always-loaded policy source, symlinked to
+  `CLAUDE.md`, `.cursorrules`, `.cursor/rules/AGENTS.md`, and
+  `.github/copilot-instructions.md`.
+- Four execution-boundary agents, nine stage skills, three workflows, and nine
+  commands are defined under `.agents/`.
+- The `ai-stance` and `ai-policy-lifecycle` skills own this document and its
+  quarterly review.
+- A pre-commit hook suite runs on every commit, including gitleaks and
+  detect-secrets.
+- Contract assertions in `.agents/assertions/` validate agent reports.
+
+Enforcement that actually exists today, verified against `.github/workflows/`:
+
+| Gate                              | Workflow               | Mechanism                                      |
+| --------------------------------- | ---------------------- | ---------------------------------------------- |
+| Secrets, pre-commit               | local pre-commit hooks | exits non-zero on a finding                    |
+| Secret-detection contract         | `agent-ci.yml`         | exits non-zero if the validator cannot go red  |
+| Repo-wide secret scan            | `secret-scan.yml`      | gitleaks, exits non-zero on a finding          |
+| Dependency review                 | `dependency-review.yml` | gates newly introduced vulnerable or unlicensed deps |
+| Merge to `main`                   | `main-ci-guard.yml`    | blocks until `ci-quality` passes               |
+| Container CVEs                    | `image-build.yml`, `image-release.yml` | Trivy writes to the job summary only — advisory |
+| Static analysis (SAST)            | none                   | no workflow runs Semgrep or CodeQL — advisory   |
+
+Anything not in that table is a reporting target, not a gate. Recording a
+finding in a report does not enforce anything on its own.
+
+## 3. Permitted Tools
+
+| Tool             | Version / status                                                | Purpose                                     |
+| ---------------- | --------------------------------------------------------------- | ------------------------------------------- |
+| opencode         | 1.18.32 (pinned by the dual-harness smoke test)                  | Primary agentic development tool           |
+| Claude Code      | 2.1.283 (pinned by the dual-harness smoke test)                  | Skill authoring, code review, content      |
+| Claude model     | not pinned in this repository; selected per session             | Reasoning backend                           |
+| GitHub Copilot   | current                                                          | IDE code completion                         |
+
+---
+
+## 4. Three-Bucket Classification
+
+### Prohibited
+
+- Sending PII, credentials, customer data, or proprietary infrastructure
+  configuration to any public AI model.
+- Committing AI-generated code without `pre-commit run --all-files` passing.
+- Bypassing branch protection rules, or an agent merging its own pull request.
+- AI-generated security, compliance, or policy documents published without
+  qualified human review.
+- AI-authored changes to the agent framework itself — `.agents/agents/`,
+  `.agents/skills/`, `.agents/workflows/`, `.claude/settings.json`, or
+  `.opencode/plugins/` — without explicit human sign-off. These files govern
+  what every future contributor and every automated agent is permitted to do,
+  and the hook entry points execute shell commands.
+- Publishing an enforcement claim that this repository does not implement. This
+  is a template: a skill that claims it "blocks merge" propagates a false
+  guarantee into every repository copied from here.
+- Editing the secret-detection validator to make a known-finding test pass.
+
+### Permitted with Guardrails
+
+| Use                                                     | Guardrail                                                                 |
+| ------------------------------------------------------- | ------------------------------------------------------------------------- |
+| AI-generated code merged to `main`                       | Human review required; pre-commit and the enforced gates in section 2 must pass |
+| AI-assisted spec and design documents                    | `discovery-brief.md` must exist first                                      |
+| AI-authored agent, skill, or workflow definitions        | `scripts/check-harness-parity.sh` and `scripts/dual-harness-smoke.sh` must pass |
+| AI-authored hook or secret-scanner changes               | `scripts/test-check-secret-detection.sh` and the hook end-to-end tests must pass |
+| Agent sessions modifying infrastructure                   | Evidence gate passed by `@verifier`; human approval before release         |
+| AI-generated release notes and PR bodies                  | Human review before publishing                                             |
+| AI-generated content in Dojo modules                     | Disclose to learners that AI assisted in authoring                         |
+| opencode sessions in this repository                      | Load `AGENTS.md` and the relevant skill at session start                   |
+
+### Allowed
+
+- AI-assisted code completion in any file outside the Prohibited scope.
+- AI-generated first drafts of blog posts, dev.to articles, and LinkedIn posts.
+- AI-assisted GitHub issue triage, labeling, and grouping.
+- AI-generated test stubs, completed and verified by a human.
+- Asking an AI tool to explain existing code, skills, or documentation.
+- AI assistance in drafting this file, provided a human reviews and edits it.
+
+## 5. Role Applicability
+
+This stance applies to every human contributor and every AI agent working in
+this repository, including opencode sessions, Claude Code sessions, GitHub
+Copilot, Cursor, any CI automation, and any future agent added to the suite.
+
+Agents must:
+
+1. Load the `ai-stance` skill and confirm this file exists before beginning
+   work.
+2. Load `AGENTS.md` and the stage-relevant skill at session start.
+3. Halt and request explicit human authorization before any action that falls
+   into the Prohibited bucket, rather than proceeding on judgement.
+4. Report findings as evidence with a source, and never describe an
+   unvalidated finding as an enforced gate.
+
+Humans remain accountable for every merge, every release, and every quarterly
+review of this document.

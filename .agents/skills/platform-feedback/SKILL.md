@@ -26,7 +26,7 @@ externally validated.
 
 **Scope boundary:** This skill collects feedback on the _platform_ from its _users_.
 Feedback on the _product_ (what users are building on the platform) is handled by
-the `discovery` skill and the learn agent.
+the `discovery` skill and the `learn` skill.
 
 ## Cadence
 
@@ -135,9 +135,9 @@ After the feedback window closes (2 weeks after posting):
 3. **Count Q3 removal candidates** — anything mentioned by >1 respondent is a signal
 4. **Compare to previous quarter** — trend matters more than absolute value
 
-## Output → Plan Agent
+## Output → `@planner`
 
-Each analysis session produces at most 3 action items for the plan agent:
+Each analysis session produces at most 3 action items for `@planner`:
 
 - One for the highest-friction theme (Q2)
 - One for the most-requested removal (Q3)

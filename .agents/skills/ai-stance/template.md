@@ -41,7 +41,7 @@ parent `ai-stance` skill:
 
 ```
 Suite defaults cover:
-✅ opencode, graphify [confirm variant], ponytail, <current Claude model>
+✅ opencode, ponytail, <current Claude model>
 ✅ Standard prohibited list (PII, secrets, bypass pre-commit/branch protection)
 ✅ Standard guardrails (human review before merge, session logging)
 
@@ -89,7 +89,6 @@ and user research decisions. All AI assistance is logged via opencode session hi
 |---|---|---|
 | opencode | latest stable | Primary agentic development tool |
 | Claude | <current Claude model — check anthropic.com/models> | Skill authoring, code review, content generation |
-| graphify | [CONFIRM_VARIANT] | Context corpus building — verify variant before use |
 | ponytail | latest stable | YAGNI enforcement in all agent sessions |
 | GitHub Copilot | current | IDE code completion |
 
@@ -112,7 +111,6 @@ and user research decisions. All AI assistance is logged via opencode session hi
 | AI-generated release notes | Human review before publishing |
 | AI-generated content in Dojo modules | Disclose to learners that AI assisted in authoring |
 | opencode sessions in this repo | Load AGENTS.md and relevant skills at session start |
-| graphify corpus built from this repo | Corpus must not include files containing secrets or PII |
 
 ### Allowed
 - AI-assisted code completion for any file not in the Prohibited scope
@@ -140,7 +138,6 @@ sed -i "s/NEXT_PLACEHOLDER/${NEXT_REVIEW}/g" AI_STANCE.md
 
 echo "✅ AI_STANCE.md generated for ${REPO}"
 echo "⚠  Review and update:"
-echo "   - [CONFIRM_VARIANT]: Replace with actual graphify variant"
 echo "   - [REPO_SPECIFIC_PROHIBITED]: Add repo-specific prohibitions or delete the line"
 ```
 

@@ -23,6 +23,28 @@ function isProtected(targetPath: string): boolean {
   return PROTECTED_BASENAME.some((re) => re.test(basename));
 }
 
+// Gate real commits only: not `git commit-tree`, not prose containing "git commit".
+// The scan itself lives in scripts/hooks/pre-commit-secret-scan.sh so this plugin
+// and .claude/settings.json share one implementation instead of two copies.
+const GIT_COMMIT = /(^|[;&|]\s*)git\s+(-\S+\s+)*commit(\s|$)/;
+
+function runSecretScan(): { exitCode: number; message?: string } {
+  const script = path.join(process.cwd(), "scripts/hooks/pre-commit-secret-scan.sh");
+  try {
+    execFileSync("bash", [script], { stdio: "inherit" });
+    return { exitCode: 0 };
+  } catch (error) {
+    const status = (error as { status?: number }).status ?? 1;
+    return {
+      exitCode: status === 1 || status === 2 ? status : 1,
+      message:
+        status === 2
+          ? "Secret scan could not run, so the commit was blocked rather than allowed through an unverified gate."
+          : undefined
+    };
+  }
+}
+
 export default {
   hooks: {
     PreToolUse: [
@@ -37,6 +59,13 @@ export default {
             };
           }
           return { exitCode: 0 };
+        }
+      },
+      {
+        matcher: "Bash",
+        run: ({ command }: { command?: string }) => {
+          if (!command || !GIT_COMMIT.test(command)) return { exitCode: 0 };
+          return runSecretScan();
         }
       }
     ],

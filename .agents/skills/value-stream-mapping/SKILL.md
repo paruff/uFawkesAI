@@ -36,7 +36,7 @@ handled by `fawkes/.agents/skills/value-stream-mapping/` when that skill is writ
 | DORA metrics plateau                                | Two consecutive monthly snapshots show no improvement                 |
 | AI tool adoption not improving throughput           | opencode sessions frequent but deploy frequency unchanged             |
 | Planning a major capability                         | Before investing in a new stack (uFawkesDevX, uFawkesDORA)            |
-| Measure agent files `capability-improvement` issues | >2 issues in same area in one quarter                                 |
+| `/measure` files `capability-improvement` issues     | >2 issues in same area in one quarter                                 |
 
 ## The Seven Value Stream Stages
 
@@ -45,9 +45,9 @@ data where available; direct observation otherwise.
 
 | Stage           | Definition                             | Data source                                 |
 | --------------- | -------------------------------------- | ------------------------------------------- |
-| 1. **Discover** | Idea to validated user need            | discover agent time + learn agent anomalies |
-| 2. **Define**   | Validated need to accepted spec        | spec agent sessions                         |
-| 3. **Build**    | Spec to passing tests                  | build + test agent sessions (opencode logs) |
+| 1. **Discover** | Idea to validated user need            | `discover` skill time + `learn` skill anomalies |
+| 2. **Define**   | Validated need to accepted spec        | `spec` skill sessions                         |
+| 3. **Build**    | Spec to passing tests                  | build + `test` skill sessions (opencode logs) |
 | 4. **Review**   | Tests passing to review approved       | PR open to review approved (GitHub API)     |
 | 5. **Release**  | Review approved to deployed            | deploy time (uFawkesObs deployment events)  |
 | 6. **Verify**   | Deployed to "no regressions confirmed" | change failure rate \* time to detect       |
@@ -100,11 +100,11 @@ Common bottleneck patterns in solo-entrepreneur IDP work:
 
 | Pattern                                        | Root cause                      | Intervention                                           |
 | ---------------------------------------------- | ------------------------------- | ------------------------------------------------------ |
-| Review stage is the bottleneck                 | No reviewers — solo contributor | Automate review with review agent + code-quality skill |
+| Review stage is the bottleneck                 | No reviewers — solo contributor | Automate review with `code-review` skill + code-quality skill |
 | Release stage is the bottleneck                | Manual release steps            | Automate with release skill                            |
 | Verify stage is the bottleneck                 | Thin test suite, high CFR       | j-curve-navigation + test investment                   |
 | Learn stage is the bottleneck                  | No feedback mechanism           | platform-feedback skill + quarterly cadence            |
-| Build stage is the bottleneck despite AI tools | Context re-discovery tax        | context-engineering skill + graphify                   |
+| Build stage is the bottleneck despite AI tools | Context re-discovery tax        | context-engineering skill                                |
 
 ### Step 4 — Design the future state
 
@@ -115,7 +115,7 @@ For the top bottleneck, propose one intervention:
 - Which skill or agent implements the intervention?
 - What is the estimated investment (sessions at 2hrs each)?
 
-### Step 5 — Update the plan agent
+### Step 5 — Hand findings to `@planner`
 
 File one GitHub issue per identified bottleneck intervention:
 
@@ -143,7 +143,7 @@ File one GitHub issue per identified bottleneck intervention:
   "efficiency_pct": 1.25,
   "primary_bottleneck": "learn",
   "primary_bottleneck_type": "wait",
-  "intervention": "platform-feedback quarterly cadence + learn agent monthly",
+  "intervention": "platform-feedback quarterly cadence + `learn` skill monthly",
   "dora_metric_target": "lead_time_p50_hours",
   "current_value": 759.0,
   "target_value": 36.0,

@@ -36,8 +36,10 @@ gaps systematically.
 
 ```bash
 #!/usr/bin/env bash
-# Run from a parent directory containing all uFawkes* repos as subdirectories
-# Or adjust REPOS array to absolute paths
+# Run from INSIDE one of the uFawkes* repos: the paths below are "../<repo>",
+# i.e. siblings of the current working directory. Running from the parent
+# directory itself looks for "../<repo>" one level too high and reports every
+# repo MISSING. Or replace the "../" prefix with absolute paths in REPOS.
 
 REPOS=(
   "fawkes"
@@ -62,18 +64,23 @@ done
 
 echo ""
 echo "=== Permitted tools comparison ==="
-for tool in opencode graphify ponytail "claude" "GitHub Copilot"; do
+for tool in opencode ponytail "claude" "GitHub Copilot"; do
   echo "--- ${tool} ---"
   for repo in "${REPOS[@]}"; do
     STANCE="../${repo}/AI_STANCE.md"
     [ -f "$STANCE" ] || continue
-    if grep -qi "prohibited" "$STANCE" | grep -qi "${tool}"; then
-      echo "  🔴 ${repo}: PROHIBITED"
-    elif grep -qi "${tool}" "$STANCE"; then
-      BUCKET=$(grep -B5 "${tool}" "$STANCE" | grep "###" | tail -1 | sed 's/### //')
-      echo "  ✅ ${repo}: ${BUCKET}"
-    else
+    # Resolve which '### <Bucket>' heading the tool sits under, then compare that
+    # bucket. This replaces 'grep -qi "prohibited" "$STANCE" | grep -qi "$tool"',
+    # which piped the first grep's stdout into the second: it searched the
+    # matched lines for the tool name instead of the file, so the branch could
+    # never mean what it claimed.
+    BUCKET=$(grep -B5 -i -- "${tool}" "$STANCE" | grep '^###' | tail -1 | sed 's/^### //')
+    if [ -z "$BUCKET" ]; then
       echo "  ⚠  ${repo}: NOT LISTED"
+    elif printf '%s' "$BUCKET" | grep -qi "prohibited"; then
+      echo "  🔴 ${repo}: PROHIBITED"
+    else
+      echo "  ✅ ${repo}: ${BUCKET}"
     fi
   done
 done

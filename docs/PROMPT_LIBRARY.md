@@ -79,7 +79,7 @@ The failing test:
 
 **Red flags:**
 
-- No userId scoping on Firestore operations → SECURITY issue, escalate to @security-agent
+- No userId scoping on Firestore operations → SECURITY issue: stop and escalate to a human owner
 - Raw error message returned → reject, ask for error mapping
 
 ---

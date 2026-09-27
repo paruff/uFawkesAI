@@ -34,7 +34,6 @@ Decompose intent into sequenced, bounded tasks.
 | `plan/dependency-mapping`   | Map task dependencies              |
 | `plan/effort-estimation`    | Estimate task effort               |
 | `plan/risk-identification`  | Identify risks early               |
-| `plan/skill-matching`       | Match skills to tasks              |
 | `plan/governance-alignment` | Ensure governance compliance       |
 
 ## Dependencies

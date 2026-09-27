@@ -1,6 +1,6 @@
 ---
 description: Request focused code review from a subagent with git SHA context
-agent: build
+agent: builder
 ---
 Dispatch review subagents with `BASE_SHA` and `HEAD_SHA`.
 Reviewer output must include: Strengths, Issues (Critical/Important/Minor), and Assessment.

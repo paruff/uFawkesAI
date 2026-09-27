@@ -4,10 +4,10 @@ name: Dojo Feedback → Intent
 #   * when a docs/ai-sdlc/**/dojo-feedback.md is merged to main, validate it
 #     (scripts/dojo-feedback-intent.sh) and open an issue labelled `intent`
 #     carrying the gaps and a ready-to-commit draft intent.md, so the
-#     AI-SDLC cycle restarts at @spec;
+#     AI-SDLC cycle restarts at the spec stage;
 #   * daily, label `intent-overdue` (and comment) on any `intent` issue still
 #     open after one sprint — DOJO_SPRINT_DAYS repo variable, default 7 days
-#     (the learn agent's weekly sprint cadence).
+#     (the learn skill's weekly sprint cadence).
 # One issue per feedback file: an idempotency marker in the issue body
 # prevents duplicates when the file is edited or the run is retried.
 

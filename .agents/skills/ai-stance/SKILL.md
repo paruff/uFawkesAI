@@ -51,11 +51,10 @@ Pre-populated for the fawkes suite. Override per repo as needed.
 | Use                                             | Guardrail                                                      |
 | ----------------------------------------------- | -------------------------------------------------------------- |
 | AI-generated code merged to main                | Human review required; at least one test covering the new code |
-| AI-assisted spec / design documents             | Discovery brief must exist first (discover agent ran)          |
+| AI-assisted spec / design documents             | Discovery brief must exist first (`discover` skill ran)          |
 | Agent sessions modifying infrastructure configs | j-curve-navigation pre-flight check must pass                  |
 | AI-generated release notes                      | Human review before publishing                                 |
 | opencode sessions in any uFawkes\* repo         | Session must load AGENTS.md and relevant skills first          |
-| graphify corpus built from internal docs        | Corpus must not include files containing secrets or PII        |
 
 ### Allowed
 
@@ -80,12 +79,8 @@ The generated `AI_STANCE.md` must answer all four:
 | ---------------------- | ----------------- | -------------------------------------------------- |
 | opencode               | Latest stable     | All repos — primary agentic development tool       |
 | Claude (Anthropic API) | <current model — check anthropic.com/models> | All repos — skill and agent authoring, code review |
-| graphify               | [confirm variant] | All repos — context corpus building                |
 | ponytail               | Latest stable     | All repos — YAGNI enforcement                      |
 | GitHub Copilot         | Current           | IDE completion only                                |
-
-**Note:** Confirm graphify variant (safishamsi/graphify vs rhanka/graphify) before
-publishing AI_STANCE.md. They are different tools with the same name.
 
 ## AI_STANCE.md Template
 
@@ -116,7 +111,6 @@ not to replace human judgment on architecture and security decisions."]
 | -------------- | ----------------- | ----------------------------------- |
 | opencode       | latest            | Agentic development sessions        |
 | Claude         | <current model> | Skill authoring, review, generation |
-| graphify       | [variant]         | Context corpus                      |
 | ponytail       | latest            | YAGNI enforcement                   |
 | GitHub Copilot | current           | IDE completion                      |
 

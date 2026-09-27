@@ -1,6 +1,6 @@
 ---
 name: context-engineering/startup
-description: "Run the session startup checklist before any substantive agent work. Verifies graphify corpus currency, minimum required files, and skill list consistency. Takes under 2 minutes. Load at the start of every opencode session."
+description: "Run the session startup checklist before any substantive agent work. Verifies repo identity, minimum required files, placeholder-free content, AI stance currency, and skill list consistency. Takes under 2 minutes. Load at the start of every opencode session."
 license: MIT
 compatibility: Claude Code, GitHub Copilot, OpenCode, Cursor, Codex, Gemini CLI
 metadata:
@@ -127,19 +127,6 @@ else
 fi
 ```
 
-### Check 6 — Graphify corpus (15 seconds, only if graphify installed)
-
-```bash
-# Only run if graphify is installed — don't error if not
-if command -v graphify &> /dev/null 2>&1; then
-  # [graphify-cli] status --json | jq '{last_built, files_indexed, stale}'
-  echo "INFO: graphify installed — run '[graphify-cli] status' to check corpus currency"
-  echo "      Replace [graphify-cli] with actual command for your graphify variant"
-else
-  echo "INFO: graphify not installed — context relies on file reads only"
-fi
-```
-
 ## Startup Report
 
 At the end of startup, produce a one-line session readiness summary:
@@ -166,7 +153,6 @@ All other findings are warnings — document them in the session log and proceed
   "ai_stance_current": true,
   "ai_stance_days_old": 12,
   "pending_skills": ["j-curve-navigation", "dora-measurement"],
-  "graphify_installed": false,
   "session_status": "ready | ready-with-warnings | blocked",
   "warnings": [],
   "block_reason": null
