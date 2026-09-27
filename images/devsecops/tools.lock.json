@@ -5,6 +5,9 @@
       "name": "node",
       "variant": "core",
       "version": "24.21.0",
+      "source": {
+        "node_lts_major": "24"
+      },
       "url": "https://nodejs.org/dist/v{version}/node-v{version}-linux-{arch}.tar.xz",
       "arch": {
         "amd64": "x64",
@@ -23,6 +26,10 @@
       "name": "uv",
       "variant": "core",
       "version": "0.12.19",
+      "source": {
+        "github": "astral-sh/uv",
+        "tag": "{version}"
+      },
       "url": "https://github.com/astral-sh/uv/releases/download/{version}/uv-{arch}-unknown-linux-gnu.tar.gz",
       "arch": {
         "amd64": "x86_64",
@@ -44,6 +51,10 @@
       "name": "gh",
       "variant": "core",
       "version": "2.101.0",
+      "source": {
+        "github": "cli/cli",
+        "tag": "v{version}"
+      },
       "url": "https://github.com/cli/cli/releases/download/v{version}/gh_{version}_linux_{arch}.tar.gz",
       "arch": {
         "amd64": "amd64",
@@ -64,6 +75,10 @@
       "name": "jq",
       "variant": "core",
       "version": "1.8.2",
+      "source": {
+        "github": "jqlang/jq",
+        "tag": "jq-{version}"
+      },
       "url": "https://github.com/jqlang/jq/releases/download/jq-{version}/jq-linux-{arch}",
       "arch": {
         "amd64": "amd64",
@@ -81,6 +96,10 @@
       "name": "yq",
       "variant": "core",
       "version": "4.53.6",
+      "source": {
+        "github": "mikefarah/yq",
+        "tag": "v{version}"
+      },
       "url": "https://github.com/mikefarah/yq/releases/download/v{version}/yq_linux_{arch}",
       "arch": {
         "amd64": "amd64",
@@ -98,6 +117,10 @@
       "name": "shellcheck",
       "variant": "core",
       "version": "0.11.0",
+      "source": {
+        "github": "koalaman/shellcheck",
+        "tag": "v{version}"
+      },
       "url": "https://github.com/koalaman/shellcheck/releases/download/v{version}/shellcheck-v{version}.linux.{arch}.tar.xz",
       "arch": {
         "amd64": "x86_64",
@@ -118,6 +141,10 @@
       "name": "shfmt",
       "variant": "core",
       "version": "3.14.1",
+      "source": {
+        "github": "mvdan/sh",
+        "tag": "v{version}"
+      },
       "url": "https://github.com/mvdan/sh/releases/download/v{version}/shfmt_v{version}_linux_{arch}",
       "arch": {
         "amd64": "amd64",
@@ -135,6 +162,10 @@
       "name": "hadolint",
       "variant": "core",
       "version": "2.15.1",
+      "source": {
+        "github": "hadolint/hadolint",
+        "tag": "v{version}"
+      },
       "url": "https://github.com/hadolint/hadolint/releases/download/v{version}/hadolint-linux-{arch}",
       "arch": {
         "amd64": "x86_64",
@@ -152,6 +183,10 @@
       "name": "actionlint",
       "variant": "core",
       "version": "1.7.12",
+      "source": {
+        "github": "rhysd/actionlint",
+        "tag": "v{version}"
+      },
       "url": "https://github.com/rhysd/actionlint/releases/download/v{version}/actionlint_{version}_linux_{arch}.tar.gz",
       "arch": {
         "amd64": "amd64",
@@ -172,6 +207,10 @@
       "name": "ruff",
       "variant": "core",
       "version": "0.16.9",
+      "source": {
+        "github": "astral-sh/ruff",
+        "tag": "{version}"
+      },
       "url": "https://github.com/astral-sh/ruff/releases/download/{version}/ruff-{arch}-unknown-linux-gnu.tar.gz",
       "arch": {
         "amd64": "x86_64",
@@ -192,6 +231,10 @@
       "name": "editorconfig-checker",
       "variant": "core",
       "version": "4.0.2",
+      "source": {
+        "github": "editorconfig-checker/editorconfig-checker",
+        "tag": "v{version}"
+      },
       "url": "https://github.com/editorconfig-checker/editorconfig-checker/releases/download/v{version}/editorconfig-checker-linux-{arch}.tar.gz",
       "arch": {
         "amd64": "amd64",
@@ -212,6 +255,10 @@
       "name": "gitleaks",
       "variant": "core",
       "version": "8.30.1",
+      "source": {
+        "github": "gitleaks/gitleaks",
+        "tag": "v{version}"
+      },
       "url": "https://github.com/gitleaks/gitleaks/releases/download/v{version}/gitleaks_{version}_linux_{arch}.tar.gz",
       "arch": {
         "amd64": "x64",
@@ -232,6 +279,10 @@
       "name": "trivy",
       "variant": "core",
       "version": "0.74.0",
+      "source": {
+        "github": "aquasecurity/trivy",
+        "tag": "v{version}"
+      },
       "url": "https://github.com/aquasecurity/trivy/releases/download/v{version}/trivy_{version}_Linux-{arch}.tar.gz",
       "arch": {
         "amd64": "64bit",
@@ -252,6 +303,10 @@
       "name": "grype",
       "variant": "core",
       "version": "0.119.0",
+      "source": {
+        "github": "anchore/grype",
+        "tag": "v{version}"
+      },
       "url": "https://github.com/anchore/grype/releases/download/v{version}/grype_{version}_linux_{arch}.tar.gz",
       "arch": {
         "amd64": "amd64",
@@ -272,6 +327,10 @@
       "name": "syft",
       "variant": "core",
       "version": "1.52.0",
+      "source": {
+        "github": "anchore/syft",
+        "tag": "v{version}"
+      },
       "url": "https://github.com/anchore/syft/releases/download/v{version}/syft_{version}_linux_{arch}.tar.gz",
       "arch": {
         "amd64": "amd64",
@@ -292,6 +351,10 @@
       "name": "osv-scanner",
       "variant": "core",
       "version": "2.6.0",
+      "source": {
+        "github": "google/osv-scanner",
+        "tag": "v{version}"
+      },
       "url": "https://github.com/google/osv-scanner/releases/download/v{version}/osv-scanner_linux_{arch}",
       "arch": {
         "amd64": "amd64",
@@ -309,6 +372,10 @@
       "name": "zizmor",
       "variant": "core",
       "version": "1.30.1",
+      "source": {
+        "github": "zizmorcore/zizmor",
+        "tag": "v{version}"
+      },
       "url": "https://github.com/zizmorcore/zizmor/releases/download/v{version}/zizmor-{arch}-unknown-linux-gnu.tar.gz",
       "arch": {
         "amd64": "x86_64",
@@ -329,6 +396,10 @@
       "name": "cosign",
       "variant": "core",
       "version": "3.1.3",
+      "source": {
+        "github": "sigstore/cosign",
+        "tag": "v{version}"
+      },
       "url": "https://github.com/sigstore/cosign/releases/download/v{version}/cosign-linux-{arch}",
       "arch": {
         "amd64": "amd64",
@@ -346,6 +417,10 @@
       "name": "kubectl",
       "variant": "gitops",
       "version": "1.37.1",
+      "source": {
+        "url": "https://dl.k8s.io/release/stable.txt",
+        "tag": "v{version}"
+      },
       "url": "https://dl.k8s.io/release/v{version}/bin/linux/{arch}/kubectl",
       "arch": {
         "amd64": "amd64",
@@ -363,6 +438,10 @@
       "name": "helm",
       "variant": "gitops",
       "version": "4.3.0",
+      "source": {
+        "github": "helm/helm",
+        "tag": "v{version}"
+      },
       "url": "https://get.helm.sh/helm-v{version}-linux-{arch}.tar.gz",
       "arch": {
         "amd64": "amd64",
@@ -383,6 +462,10 @@
       "name": "kustomize",
       "variant": "gitops",
       "version": "5.8.1",
+      "source": {
+        "github": "kubernetes-sigs/kustomize",
+        "tag": "kustomize/v{version}"
+      },
       "url": "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv{version}/kustomize_v{version}_linux_{arch}.tar.gz",
       "arch": {
         "amd64": "amd64",
@@ -403,6 +486,10 @@
       "name": "kubeconform",
       "variant": "gitops",
       "version": "0.8.0",
+      "source": {
+        "github": "yannh/kubeconform",
+        "tag": "v{version}"
+      },
       "url": "https://github.com/yannh/kubeconform/releases/download/v{version}/kubeconform-linux-{arch}.tar.gz",
       "arch": {
         "amd64": "amd64",
@@ -423,6 +510,10 @@
       "name": "kind",
       "variant": "gitops",
       "version": "0.33.0",
+      "source": {
+        "github": "kubernetes-sigs/kind",
+        "tag": "v{version}"
+      },
       "url": "https://github.com/kubernetes-sigs/kind/releases/download/v{version}/kind-linux-{arch}",
       "arch": {
         "amd64": "amd64",
@@ -440,6 +531,10 @@
       "name": "flux",
       "variant": "gitops",
       "version": "2.9.5",
+      "source": {
+        "github": "fluxcd/flux2",
+        "tag": "v{version}"
+      },
       "url": "https://github.com/fluxcd/flux2/releases/download/v{version}/flux_{version}_linux_{arch}.tar.gz",
       "arch": {
         "amd64": "amd64",
@@ -460,6 +555,10 @@
       "name": "argocd",
       "variant": "gitops",
       "version": "3.5.3",
+      "source": {
+        "github": "argoproj/argo-cd",
+        "tag": "v{version}"
+      },
       "url": "https://github.com/argoproj/argo-cd/releases/download/v{version}/argocd-linux-{arch}",
       "arch": {
         "amd64": "amd64",
@@ -477,6 +576,10 @@
       "name": "tofu",
       "variant": "gitops",
       "version": "1.12.6",
+      "source": {
+        "github": "opentofu/opentofu",
+        "tag": "v{version}"
+      },
       "url": "https://github.com/opentofu/opentofu/releases/download/v{version}/tofu_{version}_linux_{arch}.tar.gz",
       "arch": {
         "amd64": "amd64",
@@ -497,6 +600,10 @@
       "name": "tflint",
       "variant": "gitops",
       "version": "0.64.0",
+      "source": {
+        "github": "terraform-linters/tflint",
+        "tag": "v{version}"
+      },
       "url": "https://github.com/terraform-linters/tflint/releases/download/v{version}/tflint_linux_{arch}.zip",
       "arch": {
         "amd64": "amd64",
@@ -517,6 +624,10 @@
       "name": "conftest",
       "variant": "gitops",
       "version": "0.70.1",
+      "source": {
+        "github": "open-policy-agent/conftest",
+        "tag": "v{version}"
+      },
       "url": "https://github.com/open-policy-agent/conftest/releases/download/v{version}/conftest_{version}_Linux_{arch}.tar.gz",
       "arch": {
         "amd64": "x86_64",
@@ -537,6 +648,10 @@
       "name": "kyverno",
       "variant": "gitops",
       "version": "1.19.1",
+      "source": {
+        "github": "kyverno/kyverno",
+        "tag": "v{version}"
+      },
       "url": "https://github.com/kyverno/kyverno/releases/download/v{version}/kyverno-cli_v{version}_linux_{arch}.tar.gz",
       "arch": {
         "amd64": "x86_64",
@@ -557,6 +672,10 @@
       "name": "sops",
       "variant": "gitops",
       "version": "3.13.3",
+      "source": {
+        "github": "getsops/sops",
+        "tag": "v{version}"
+      },
       "url": "https://github.com/getsops/sops/releases/download/v{version}/sops-v{version}.linux.{arch}",
       "arch": {
         "amd64": "amd64",
@@ -574,6 +693,10 @@
       "name": "age",
       "variant": "gitops",
       "version": "1.3.2",
+      "source": {
+        "github": "FiloSottile/age",
+        "tag": "v{version}"
+      },
       "url": "https://github.com/FiloSottile/age/releases/download/v{version}/age-v{version}-linux-{arch}.tar.gz",
       "arch": {
         "amd64": "amd64",
@@ -595,6 +718,10 @@
       "name": "opencode",
       "variant": "ai",
       "version": "1.18.32",
+      "source": {
+        "github": "sst/opencode",
+        "tag": "v{version}"
+      },
       "url": "https://github.com/sst/opencode/releases/download/v{version}/opencode-linux-{arch}.tar.gz",
       "arch": {
         "amd64": "x64-baseline",

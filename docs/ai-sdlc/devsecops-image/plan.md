@@ -145,9 +145,8 @@ Deviations from the layout above, made while building PR 1:
   digests.
 - **Dependabot, not Renovate**: the repo already uses Dependabot. The base
   digest moved from an `ARG` into the Dockerfile `FROM` line so Dependabot's
-  docker updater can bump it; Node tools are covered too. A scheduled
-  lock-bump workflow for `tools.lock.json` and the Python locks is a
-  follow-up PR.
+  docker updater can bump it; Node tools are covered too. `tools.lock.json`
+  and the Python locks are bumped by `image-lock-bump.yml` (see below).
 - **Weekly scheduled run** of `image-build.yml` re-verifies the lock and fails
   on fixable CRITICAL/HIGH CVEs; on PRs the same scan is report-only.
 
@@ -158,6 +157,28 @@ Deviations from the layout above, made while building PR 1:
 3. First release only: in GitHub → Packages, set `ufawkes-devsecops-core`,
    `-gitops` and `-ai` to **public** (spec decision).
 4. Copy the index digests from the release run's summary into consumers.
+
+## Implementation notes (lock bump)
+
+- **`image-lock-bump.yml`** (Sundays + manual) runs `scripts/image-lock-bump.sh`
+  and opens or updates one PR from `chore/image-lock-bump`. It bumps:
+  - every `tools.lock.json` tool to its newest non-prerelease upstream
+    version, per the entry's explicit `source` (GitHub repo + tag pattern,
+    the Kubernetes stable URL, or the Node LTS line — Node stays on its LTS
+    major), with checksums re-pinned by `image-lock-refresh.sh`;
+  - the Python pins in `requirements*.in`, with the hash locks recompiled by
+    the lock's own checksum-verified uv;
+  - the apt snapshot to today, if snapshot.debian.org has published it.
+- The PR body lists every change, and flags TOFU tools (no upstream checksum
+  file) for the reviewer to check release pages.
+- **Bot-PR CI:** PRs opened with `GITHUB_TOKEN` don't trigger `pull_request`
+  workflows, so the job dispatches `ci-quality.yml` (which produces the
+  required "✅ CI Complete" check on the head commit) and `image-build.yml`
+  (in dispatch mode, the CVE gate is enforced) on the branch.
+- **Repo setting required:** "Allow GitHub Actions to create and approve pull
+  requests" must be on for `gh pr create`; otherwise the branch is pushed
+  and the run fails at PR creation with a clear error.
+- Merging is always human; releases are still cut by tagging.
 
 ## Lock file format
 
@@ -180,7 +201,7 @@ tools:
 verifies `sha256sum -c`, and installs to `/usr/local/bin`; any mismatch
 fails the build. A companion `scripts/image-lock-refresh.sh <tool> <version>`
 fetches the release checksum (or computes it) and rewrites the entry — this
-is what the scheduled lock-bump workflow (follow-up to PR 3) runs.
+is what `scripts/image-lock-bump.sh` runs for each bumped tool.
 
 ## PR sequence
 
@@ -220,8 +241,8 @@ is what the scheduled lock-bump workflow (follow-up to PR 3) runs.
   on that job only.
 - Weekly scheduled rebuild + scan on the current lock; a human cuts the
   patch release (see PR 3 notes — no automatic tagging).
-- Dependabot for the base digest and Node tools; the `tools.lock.json` /
-  Python-lock bump workflow is a follow-up PR (see PR 3 notes).
+- Dependabot for the base digest and Node tools; `tools.lock.json`, the
+  Python locks and the apt snapshot are bumped by `image-lock-bump.yml`.
 - **Human step:** make the three GHCR packages public after first
   publish; push tag `image-v0.1.0`.
 - **Verify:** `cosign verify` with the workflow's OIDC identity; `gh
