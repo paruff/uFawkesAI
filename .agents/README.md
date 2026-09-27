@@ -69,7 +69,7 @@ Invoke the most relevant agent directly:
 
 Each skill is a folder containing `SKILL.md` per the [Agent Skills spec](https://agentskills.io).
 Skills are loaded on demand — they do not add to always-on context.
-31 skill folders exist today (verify with `ls .agents/skills/`); the tables
+32 skill folders exist today (verify with `ls .agents/skills/`); the tables
 below are grouped by purpose.
 
 ### Core Pipeline Skills
@@ -139,6 +139,7 @@ below are grouped by purpose.
 | Folder          | Load Trigger              | Purpose                                                  |
 | ------------------ | ---------------------------- | --------------------------------------------------------------- |
 | `DOJO-content/` | platform engineering training | Create/manage DOJO content for platform engineering education |
+| `dojo-feedback/` | after a Dojo lab built from a feature completes | Turn lab results into `dojo-feedback.md` (gaps in guardrails/prompts/spec/plan) that CI converts into an `intent` issue — see `docs/ai-sdlc/dojo-handoff.md` |
 
 ### Cross-Cutting Skills
 
