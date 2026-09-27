@@ -88,7 +88,7 @@ class TestPipelineAcceptance:
     def test_logs_clean(self):
         """Logs should be clean of critical errors."""
         result = subprocess.run(
-            ["docker", "logs", "jenkins", "--tail", "200"],
+            ["docker", "logs", "pipeline", "--tail", "200"],
             capture_output=True,
             text=True,
             check=False,

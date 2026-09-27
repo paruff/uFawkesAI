@@ -1,13 +1,28 @@
 ---
 name: build
-description: "Turns design into actual code, manifests, pipelines, and GitOps overlays. Use when implementing features, generating new code, manifests, or pipeline configurations."
+description: "Turns design into actual code, manifests, pipelines, and GitOps overlays. Implements DORA AI Capabilities 3, 4."
 license: MIT
 compatibility: Claude Code, GitHub Copilot, OpenCode, Cursor, Codex, Gemini CLI
 metadata:
   author: paruff
   suite: uFawkesAI
-  migrated_from: agent/build
+  form: rule
 ---
+
+# Skill: build
+
+> **Load trigger:** "load build skill" > **DORA:** AI Capabilities 3, 4
+> **Token cost:** Low
+
+## Purpose
+
+Turns design into actual code, manifests, pipelines, and GitOps overlays. Implements DORA AI Capabilities 3, 4.
+
+## When to Use
+
+See sub-skills for specific triggers.
+
+## Sub-skills (now integrated)
 
 # Skill: Build
 
@@ -198,3 +213,12 @@ This log is required. If the file cannot be written, document why.
 - Kubernetes manifests
 - Pipeline configurations
 - GitOps overlays
+
+## Usage
+
+See sub-skills for specific triggers.
+
+## Enforcement
+
+- **DORA vocabulary** validates AI Capabilities 3, 4 references
+- **AI stance audit** validates relevant clarity dimensions

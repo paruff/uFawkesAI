@@ -1,12 +1,32 @@
 ---
 name: dora-measurement
-description: "Compute the four DORA delivery metrics from uFawkesObs (Prometheus + Loki). Use when producing monthly DORA snapshots, validating post-release metric trends, or generating ROI evidence. Requires uFawkesObs running. Implements DORA AI Capabilities 2 and 7."
+description: "Compute the four DORA delivery metrics from uFawkesObs. Implements DORA AI Capabilities 2, 7."
 license: MIT
 compatibility: Claude Code, GitHub Copilot, OpenCode, Cursor, Codex, Gemini CLI
 metadata:
   author: paruff
   suite: uFawkesAI
+  form: rule
 ---
+
+# Skill: dora-measurement
+
+> **Load trigger:** "load dora-measurement skill" > **DORA:** AI Capabilities 2, 7
+> **Token cost:** Medium
+
+## Purpose
+
+Compute the four DORA delivery metrics from uFawkesObs (Prometheus + Loki). Use when producing monthly DORA snapshots, validating post-release metric trends, or generating ROI evidence. Requires uFawkesObs running. Implements DORA AI Capabilities 2 and 7.
+
+## When to Use
+
+- Producing monthly DORA snapshots
+- Validating post-release metric trends
+- Generating ROI evidence
+
+## Sub-skills (now integrated)
+
+### 1. Core Dora Measurement
 
 # Skill: DORA Measurement
 
@@ -346,3 +366,538 @@ if __name__ == "__main__":
   "computed_at": "2026-06-16T00:00:00Z"
 }
 ```
+
+### 2. ROI Reporting
+
+# Skill: ROI Reporting
+
+> **Load trigger:** `"load roi-reporting skill"` > **DORA:** AI Capability 2: Healthy data ecosystems + AI Capability 7: Quality internal platforms
+> **Token cost:** Low–Medium
+> **Prerequisite:** `dora-measurement` snapshot for the period must exist.
+
+## Purpose
+
+Translate DORA metric numbers into business language that answers the question
+every stakeholder actually asks: "Is this platform investment worth it?"
+
+DORA ROI 2026: ROI is measured by how much latent human creativity is unlocked by
+offloading systemic toil — not by headcount reduction. This skill operationalizes
+that framing into a one-page monthly report and a quarterly content piece.
+
+## The Five ROI Dimensions (2026 DORA Report)
+
+| Dimension                | What it measures                            | Primary DORA metric driver       |
+| ------------------------ | ------------------------------------------- | -------------------------------- |
+| **Cost efficiency**      | Rework cost avoided, incident cost reduced  | Change Failure Rate ↓            |
+| **Productivity**         | Features shipped per unit time              | Lead Time ↓ + Deploy Frequency ↑ |
+| **Developer experience** | Cognitive load, on-call burden, flow state  | MTTR ↓ + Deploy Frequency ↑      |
+| **User experience**      | Platform stability visible to end users     | Change Failure Rate ↓            |
+| **Business growth**      | Platform velocity enabling product velocity | All four metrics → Elite         |
+
+## Report Types
+
+### Type 1: Monthly one-pager (for personal tracking and dev.to longitudinal story)
+
+5 numbers. 5 plain-language sentences. One trend line per metric. Fits on one screen.
+
+### Type 2: Quarterly LinkedIn post (public proof of platform improvement)
+
+Hook sentence + 3 paragraphs. One chart (DORA metric trend over 3 months). Call to action.
+
+### Type 3: Annual capability review (for Dojo "proof it works" content)
+
+Full-year metric trends mapped to the DORA tier progression (Low → Medium → High → Elite).
+Identifies which capabilities improved and which investments drove the improvement.
+
+## Monthly One-Pager Template
+
+```markdown
+---
+period: YYYY-MM
+generated: YYYY-MM-DD
+source: dora-snapshot-YYYY-MM.json
+---
+
+# uFawkes Platform ROI — [MONTH YYYY]
+
+## The numbers
+
+| Metric              | This month | Last month | Trend | DORA tier          |
+| ------------------- | ---------- | ---------- | ----- | ------------------ |
+| Deploy frequency    | X/week     | Y/week     | ↑/↓/→ | Elite/High/Med/Low |
+| Lead time           | X hrs      | Y hrs      | ↑/↓/→ | Elite/High/Med/Low |
+| Change failure rate | X%         | Y%         | ↑/↓/→ | Elite/High/Med/Low |
+| Time to restore     | X hrs      | Y hrs      | ↑/↓/→ | Elite/High/Med/Low |
+
+_[proxy_metrics: true — deployment events not yet wired from uFawkesPipe. Values approximate.]_
+
+## What the numbers mean
+
+**Cost efficiency:** [One sentence. e.g., "CFR at 8% — 2 rework incidents this month,
+down from 4 last month. ~4 hours of engineering time recovered."]
+
+**Productivity:** [One sentence. e.g., "Lead time improved 12% — from idea to deployed
+feature in 18hrs on average, vs 21hrs last month."]
+
+**Developer experience:** [One sentence. e.g., "MTTR under 2hrs all month — no
+late-night incidents. On-call burden effectively zero."]
+
+**User experience:** [One sentence. e.g., "No user-visible outages. Change failure rate
+improvements are translating to stability end users can feel."]
+
+**Business growth:** [One sentence. e.g., "3 of 4 metrics now at High or Elite tier.
+Platform is performing at the level DORA research associates with high-performing teams."]
+
+## One thing that improved this month
+
+[Named capability investment → metric improvement. e.g., "Added uFawkesObs smoke test
+to CI → CFR dropped from 15% to 8% because config errors are now caught before deploy."]
+
+## One thing to improve next month
+
+[The metric most below target → the intervention planned.
+Sourced from `/measure` command anomaly flags and `learn` skill action items.]
+```
+
+## Quarterly LinkedIn Post Template
+
+```
+[Hook sentence — a number, a question, or a counterintuitive observation]
+Example: "We shipped 47 deployments last quarter with a 6% change failure rate.
+Here's what actually moved that needle."
+
+[Paragraph 1: The problem we were solving]
+[1-2 sentences: what was broken or slow before the investment]
+
+[Paragraph 2: What we built / changed]
+[2-3 sentences: the specific platform capability added, in plain language.
+No tool names unless they're well-known. Focus on what it enables, not what it is.]
+
+[Paragraph 3: The result in DORA terms + call to action]
+[1 sentence: the metric improvement. 1 sentence: what this means for the team.
+1 sentence: link to ufawkes.dev or the specific repo.]
+
+#devops #platformengineering #dora #opensource
+```
+
+## Calculating "Hours Recovered"
+
+Use this simple model from the 2026 DORA ROI report framework to express
+cost efficiency in concrete terms (avoid inventing specific dollar figures):
+
+```python
+def hours_recovered(
+    prev_cfr: float,          # previous change failure rate (0–1)
+    curr_cfr: float,          # current change failure rate (0–1)
+    deploys_per_month: int,   # deployment count
+    rework_hours_per_incident: float = 4.0  # conservative estimate
+) -> float:
+    """
+    Hours recovered = reduction in failure incidents × avg rework hours per incident.
+    Does not convert to dollars — that requires loaded cost assumptions we don't make.
+    """
+    prev_incidents = prev_cfr * deploys_per_month
+    curr_incidents = curr_cfr * deploys_per_month
+    return (prev_incidents - curr_incidents) * rework_hours_per_incident
+```
+
+**Note:** Do not state specific dollar amounts. Express ROI as recovered engineering
+hours and what those hours were reinvested in (features, learning, rest). The 2026
+DORA report's framing is explicit: the value is unlocked human creativity, not headcount
+savings. Framing it as cost reduction leads to the wrong conversations.
+
+## Annual Capability Review Structure
+
+```markdown
+# uFawkes Platform — Annual Capability Review YYYY
+
+## DORA Tier Progression
+
+| Metric           | Jan | Apr | Jul  | Oct   | Dec   | Change   |
+| ---------------- | --- | --- | ---- | ----- | ----- | -------- |
+| Deploy frequency | Low | Low | Med  | High  | High  | +2 tiers |
+| Lead time        | Med | Med | Med  | High  | High  | +1 tier  |
+| CFR              | Low | Med | Med  | High  | High  | +2 tiers |
+| MTTR             | Med | Med | High | Elite | Elite | +2 tiers |
+
+## What drove each improvement
+
+[One paragraph per metric: the specific capability investment that moved the needle.
+Reference the skill or agent that enabled it.]
+
+## What didn't work
+
+[One paragraph: capability investments that didn't improve metrics. What did we learn?]
+
+## DORA AI Capabilities coverage (self-assessment)
+
+| Capability            | Jan status | Dec status                        | Key investment            |
+| --------------------- | ---------- | --------------------------------- | ------------------------- |
+| 1. Clear AI stance    | ❌ None    | ✅ AI_STANCE.md live              | ai-stance skill           |
+| 2. Healthy data       | ⚠ Partial  | ✅ uFawkesObs + dora-measurement  | Obs v0.1.0 + v0.2         |
+| 3. AI-accessible data | ❌ None    | ✅ context-engineering           | context-engineering skill |
+| ...                   |            |                                   |                           |
+
+## Next year focus
+
+[Top 2 capability gaps remaining. `@planner`'s input for the next annual roadmap.]
+```
+
+## Output Format
+
+```json
+{
+  "skill": "roi-reporting",
+  "report_type": "monthly | quarterly | annual",
+  "period": "YYYY-MM",
+  "source_snapshot": "metrics/dora-snapshot-YYYY-MM.json",
+  "proxy_metrics": false,
+  "five_dimensions": {
+    "cost_efficiency": "string",
+    "productivity": "string",
+    "developer_experience": "string",
+    "user_experience": "string",
+    "business_growth": "string"
+  },
+  "hours_recovered": 8.0,
+  "elite_metrics_count": 1,
+  "report_path": "reports/roi-YYYY-MM.md",
+  "linkedin_draft_path": "drafts/linkedin-roi-YYYY-QN.md"
+}
+```
+
+### 3. Platform Feedback
+
+# Skill: Platform Feedback
+
+> **Load trigger:** `"load platform-feedback skill"` > **DORA:** AI Capability 7: Quality internal platforms
+> **Token cost:** Low
+
+## Purpose
+
+Measure whether the fawkes platform actually delivers on its promise — reduced cognitive
+load, faster time-to-running-service, trustworthy golden paths — from the perspective
+of the product engineers and Dojo learners who use it.
+
+DORA AI Capabilities Model v2025.1: A quality internal platform provides automated,
+secure pathways that allow AI's benefits to scale. Without measurement, "quality" is
+self-assessed by the builders. This skill is the mechanism that makes platform quality
+externally validated.
+
+**Scope boundary:** This skill collects feedback on the _platform_ from its _users_.
+Feedback on the _product_ (what users are building on the platform) is handled by
+the `discovery` skill and the `learn` skill.
+
+## Cadence
+
+| Feedback type       | Frequency                                   | Channel                                   |
+| ------------------- | ------------------------------------------- | ----------------------------------------- |
+| Quarterly survey    | Every 3 months                              | GitHub Discussion (pinned)                |
+| Onboarding feedback | After first golden-path completion          | GitHub Discussion reply or issue          |
+| Incident-triggered  | After any platform incident affecting users | GitHub issue (label: `platform-feedback`) |
+| Dojo lab feedback   | After each belt completion                  | GitHub Discussion in Dojo repo            |
+
+## The Four Survey Questions
+
+Quarterly feedback uses exactly four questions. Not five. Not ten. Four questions that
+a busy developer will actually answer in 3 minutes.
+
+```markdown
+## fawkes Platform Feedback — Q[N] YYYY
+
+Thanks for taking 3 minutes to improve the platform.
+
+**1. Task completion**
+Did you complete your primary task (deploy a service, run the Dojo lab, set up
+observability) without needing help outside the platform documentation?
+
+- [ ] Yes, completely self-serve
+- [ ] Yes, but I needed to look something up externally
+- [ ] Partially — I got stuck at [describe briefly in comments]
+- [ ] No — I couldn't complete it
+
+**2. Hardest part**
+What was the hardest or most confusing part of using the platform this quarter?
+[Free text — 1-3 sentences]
+
+**3. What to skip**
+If you could remove one thing from the platform (docs, step, config, tool), what
+would it be and why?
+[Free text — 1-2 sentences]
+
+**4. Recommendation**
+Would you recommend the fawkes platform to a colleague building a similar system?
+
+- [ ] Yes, without hesitation
+- [ ] Yes, with caveats (describe in comments)
+- [ ] Not yet — needs improvement first
+- [ ] No
+
+**Optional: Your role**
+
+- [ ] Platform engineer
+- [ ] Product engineer using golden paths
+- [ ] Dojo learner
+- [ ] Team lead evaluating fawkes
+```
+
+## Metric Mapping (H.E.A.R.T.-inspired)
+
+Map survey responses to platform quality metrics:
+
+| Survey question     | Metric                    | Formula                                              |
+| ------------------- | ------------------------- | ---------------------------------------------------- |
+| Q1: Task completion | **Task success rate**     | (Yes completely + Yes with lookup) / total responses |
+| Q1: Got stuck       | **Task abandonment rate** | (Partially + No) / total responses                   |
+| Q4: Recommend       | **NPS proxy**             | (Yes without hesitation) - (No) / total responses    |
+| Q2: Hardest part    | **Top friction themes**   | Qualitative — categorize by component                |
+| Q3: What to skip    | **Removal candidates**    | Qualitative — prioritize by frequency                |
+
+## Baseline and Targets
+
+| Metric                | Initial baseline | Target (12 months) | Elite benchmark |
+| --------------------- | ---------------- | ------------------ | --------------- |
+| Task success rate     | Establish in Q1  | >80%               | >90%            |
+| Task abandonment rate | Establish in Q1  | <15%               | <5%             |
+| NPS proxy             | Establish in Q1  | >40                | >70             |
+
+## GitHub Discussion Template
+
+Create quarterly via:
+
+```bash
+# Requires gh CLI with Discussions permissions
+gh api graphql -f query='
+mutation {
+  createDiscussion(input: {
+    repositoryId: "REPO_ID"
+    categoryId: "CATEGORY_ID"
+    title: "fawkes Platform Feedback — Q[N] YYYY"
+    body: "[paste four-question survey above]"
+  }) {
+    discussion { url }
+  }
+}'
+# Pin the discussion after creation
+```
+
+## Analysis Protocol
+
+After the feedback window closes (2 weeks after posting):
+
+1. **Tally Q1 and Q4** — compute task success rate and NPS proxy
+2. **Categorize Q2 responses** into themes:
+   - Documentation gaps
+   - Golden path friction (missing steps, unclear config)
+   - Tool/dependency issues (installation, version conflicts)
+   - Performance issues (slow builds, slow tests)
+   - Conceptual gaps (user didn't understand what the platform does)
+3. **Count Q3 removal candidates** — anything mentioned by >1 respondent is a signal
+4. **Compare to previous quarter** — trend matters more than absolute value
+
+## Output → `@planner`
+
+Each analysis session produces at most 3 action items for `@planner`:
+
+- One for the highest-friction theme (Q2)
+- One for the most-requested removal (Q3)
+- One for any metric below target
+
+Each action item filed as a GitHub issue with:
+
+- Label: `platform-feedback`, `capability-improvement`, tier label
+- Body: links to specific Discussion responses as evidence
+- DORA capability: 7: Quality internal platforms
+
+## Output Format
+
+```json
+{
+  "skill": "platform-feedback",
+  "quarter": "YYYY-QN",
+  "responses": 12,
+  "task_success_rate": 0.75,
+  "task_abandonment_rate": 0.17,
+  "nps_proxy": 33,
+  "top_friction_themes": [
+    { "theme": "Golden path config unclear", "count": 5 },
+    { "theme": "Dojo lab prerequisites missing", "count": 3 }
+  ],
+  "removal_candidates": [
+    { "item": "Manual docker network setup step", "count": 4 }
+  ],
+  "vs_previous_quarter": {
+    "task_success_rate": "+0.08",
+    "nps_proxy": "+12"
+  },
+  "action_items_filed": [42, 43, 44],
+  "next_survey_due": "YYYY-MM-DD"
+}
+```
+
+### 4. Value Stream Mapping
+
+# Skill: Value Stream Mapping
+
+> **Load trigger:** `"load value-stream-mapping skill"` > **DORA:** AI Capability 2: Healthy data ecosystems + AI Capability 7: Quality internal platforms
+> **Token cost:** Medium
+> **Prerequisite:** At least one dora-measurement snapshot must exist.
+
+## Purpose
+
+Identify which stage of the product delivery value stream is absorbing the productivity
+gains from AI assistance — so investment goes to clearing the actual bottleneck, not
+the assumed one.
+
+DORA ROI 2026: "Individual productivity gains from AI are often absorbed by downstream
+disorder — gains in coding speed are swallowed by bottlenecks in testing, security reviews,
+and complex deployment processes." VSM makes the downstream disorder visible.
+
+**Scope boundary:** This skill maps the _product_ value stream (idea → user value).
+The platform value stream (platform change → fawkes improvement → user benefit) is
+handled by `fawkes/.agents/skills/value-stream-mapping/` when that skill is written.
+
+## When to Use
+
+| Trigger                                             | Signal                                                                |
+| --------------------------------------------------- | --------------------------------------------------------------------- |
+| Lead time high despite fast coding                  | `lead_time_p50_hours` > 24hrs but `deployment_frequency_per_week` < 1 |
+| DORA metrics plateau                                | Two consecutive monthly snapshots show no improvement                 |
+| AI tool adoption not improving throughput           | opencode sessions frequent but deploy frequency unchanged             |
+| Planning a major capability                         | Before investing in a new stack (uFawkesDevX, uFawkesDORA)            |
+| `/measure` files `capability-improvement` issues     | >2 issues in same area in one quarter                                 |
+
+## The Seven Value Stream Stages
+
+Map each stage for the product being built. Time estimates come from DORA measurement
+data where available; direct observation otherwise.
+
+| Stage           | Definition                             | Data source                                 |
+| --------------- | -------------------------------------- | ------------------------------------------- |
+| 1. **Discover** | Idea to validated user need            | `discover` skill time + `learn` skill anomalies |
+| 2. **Define**   | Validated need to accepted spec        | `spec` skill sessions                         |
+| 3. **Build**    | Spec to passing tests                  | build + `test` skill sessions (opencode logs) |
+| 4. **Review**   | Tests passing to review approved       | PR open to review approved (GitHub API)     |
+| 5. **Release**  | Review approved to deployed            | deploy time (uFawkesObs deployment events)  |
+| 6. **Verify**   | Deployed to "no regressions confirmed" | change failure rate \* time to detect       |
+| 7. **Learn**    | User feedback received to next spec    | platform-feedback cycle time                |
+
+## Mapping Protocol (one session, ~60 min)
+
+### Step 1 — Collect stage times (20 min)
+
+```bash
+# Stage 3: Build time (from opencode session logs if available)
+# Approximate: time from issue "In Progress" to "tests passing"
+gh issue list --repo paruff/REPO_NAME --state closed \
+  --json number,title,createdAt,closedAt,labels \
+  --jq '.[] | select(.labels[].name == "In Progress") | {number, days_open: ((.closedAt | fromdateiso8601) - (.createdAt | fromdateiso8601)) / 86400}'
+
+# Stage 4: Review time
+gh pr list --repo paruff/REPO_NAME --state closed \
+  --json number,createdAt,mergedAt \
+  --jq '.[] | {number, review_hours: ((.mergedAt | fromdateiso8601) - (.createdAt | fromdateiso8601)) / 3600}'
+
+# Stage 5: Deploy time (from uFawkesObs if wired, else GitHub release timestamps)
+gh release list --repo paruff/REPO_NAME --json tagName,publishedAt \
+  --jq '.[] | {tag: .tagName, published: .publishedAt}'
+```
+
+### Step 2 — Draw the current state map
+
+```
+[Discover] → [Define] → [Build] → [Review] → [Release] → [Verify] → [Learn]
+  ?hrs          ?hrs      ?hrs      ?hrs        ?hrs         ?hrs       ?days
+
+Value-add time:  [  ] hrs
+Total lead time: [  ] hrs
+Efficiency:      [  ]%  (value-add / total)
+```
+
+For each stage, note:
+
+- **Process time** (time spent actively working)
+- **Wait time** (time waiting for something external — review, CI, feedback)
+- **Rework time** (time fixing failures at this stage)
+
+### Step 3 — Identify the biggest bottleneck
+
+Apply Little's Law intuitively: the stage with the longest _wait time_ (not process time)
+is the constraint. AI assistance addresses process time; wait time is a system problem.
+
+Common bottleneck patterns in solo-entrepreneur IDP work:
+
+| Pattern                                        | Root cause                      | Intervention                                           |
+| ---------------------------------------------- | ------------------------------- | ------------------------------------------------------ |
+| Review stage is the bottleneck                 | No reviewers — solo contributor | Automate review with `code-review` skill + code-quality skill |
+| Release stage is the bottleneck                | Manual release steps            | Automate with release skill                            |
+| Verify stage is the bottleneck                 | Thin test suite, high CFR       | j-curve-navigation + test investment                   |
+| Learn stage is the bottleneck                  | No feedback mechanism           | platform-feedback skill + quarterly cadence            |
+| Build stage is the bottleneck despite AI tools | Context re-discovery tax        | context-engineering skill                                |
+
+### Step 4 — Design the future state
+
+For the top bottleneck, propose one intervention:
+
+- What is the target stage time after the intervention?
+- Which DORA metric improves and by how much?
+- Which skill or agent implements the intervention?
+- What is the estimated investment (sessions at 2hrs each)?
+
+### Step 5 — Hand findings to `@planner`
+
+File one GitHub issue per identified bottleneck intervention:
+
+- Label: `value-stream`, `capability-improvement`, tier label
+- Body: current state time, target state time, DORA metric impact, intervention
+
+## Output Format
+
+```json
+{
+  "skill": "value-stream-mapping",
+  "date": "YYYY-MM-DD",
+  "product": "REPO_NAME",
+  "stages": {
+    "discover": { "process_hours": 0.5, "wait_hours": 0, "rework_hours": 0 },
+    "define": { "process_hours": 1.0, "wait_hours": 0, "rework_hours": 0.5 },
+    "build": { "process_hours": 4.0, "wait_hours": 0, "rework_hours": 1.0 },
+    "review": { "process_hours": 0.5, "wait_hours": 24.0, "rework_hours": 0 },
+    "release": { "process_hours": 2.0, "wait_hours": 0, "rework_hours": 0 },
+    "verify": { "process_hours": 0.5, "wait_hours": 4.0, "rework_hours": 0 },
+    "learn": { "process_hours": 1.0, "wait_hours": 720.0, "rework_hours": 0 }
+  },
+  "total_lead_time_hours": 759.0,
+  "value_add_time_hours": 9.5,
+  "efficiency_pct": 1.25,
+  "primary_bottleneck": "learn",
+  "primary_bottleneck_type": "wait",
+  "intervention": "platform-feedback quarterly cadence + `learn` skill monthly",
+  "dora_metric_target": "lead_time_p50_hours",
+  "current_value": 759.0,
+  "target_value": 36.0,
+  "investment_sessions": 2,
+  "issues_filed": [55, 56]
+}
+```
+
+## Usage
+
+```bash
+# Monthly DORA snapshot
+load dora-measurement skill
+
+# ROI reporting
+load dora-measurement/ROI-reporting skill
+
+# Platform feedback
+load dora-measurement/platform-feedback skill
+
+# Value stream mapping
+load dora-measurement/value-stream-mapping skill
+```
+
+## Enforcement
+
+- **DORA vocabulary** validates AI Capabilities 2, 7 references
+- **AI stance audit** validates relevant clarity dimensions

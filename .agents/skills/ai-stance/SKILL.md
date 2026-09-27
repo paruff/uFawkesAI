@@ -1,179 +1,189 @@
 ---
 name: ai-stance
-description: "Generate and maintain AI_STANCE.md for any uFawkes* repo. Use when onboarding a repo to the uFawkesAI suite, when reviewing AI policy currency, or when a new AI tool is being adopted. Implements DORA AI Capability 1."
+description: "Generate and maintain AI_STANCE.md for any uFawkes* repo. Use when onboarding a repo to the uFawkesAI suite, when reviewing AI policy currency, or when a new AI tool is being adopted. Implements DORA AI Capability 1. Also covers policy lifecycle: quarterly review triggers, three-bucket update process, socialization checklist, cross-repo consistency."
 license: MIT
 compatibility: Claude Code, GitHub Copilot, OpenCode, Cursor, Codex, Gemini CLI
 metadata:
   author: paruff
   suite: uFawkesAI
+  form: rule
+  cadence: quarterly
 ---
 
-# Skill: AI Stance
+# Skill: ai-stance
 
-> **Load trigger:** `"load ai-stance skill"` > **DORA:** AI Capability 1: Clear and communicated AI stance
+> **Load trigger:** \`"load ai-stance skill"\` > **DORA:** AI Capability 1: Clear and communicated AI stance
 > **Token cost:** Low
 
 ## Purpose
 
-Produce and maintain `AI_STANCE.md` — the document that gives every contributor
-(human and agent) unambiguous clarity on how AI tools are used in this repo.
-Ambiguity creates risk; clarity creates psychological safety for effective experimentation.
+Maintain \`AI_STANCE.md\` as the authoritative AI policy for a repository. This skill combines:
+- Stance generation from template
+- Quarterly audit for completeness, currency, and four-dimension coverage
+- Diff detection for policy drift
+- Template for new repos
+- Policy lifecycle management (review triggers, socialization, cross-repo consistency)
 
-DORA AI Capabilities Model v2025.1 identifies four required clarity dimensions:
-expectation of use, organizational support, permitted tools, and role applicability.
-This skill ensures all four are present.
+## When to Use
 
-## Three-Bucket Framework
+- Onboarding a new repo to the uFawkesAI suite
+- Quarterly AI policy review
+- After adopting a new AI tool
+- Before any release (policy currency check)
+- When a Prohibited-item violation is reported
 
-Every AI_STANCE.md must classify all AI tool usage into exactly three buckets.
-No "it depends" without specifying what it depends on.
+## Sub-skills (now integrated)
 
-| Bucket                        | Definition                                          | Decision rule                                  |
-| ----------------------------- | --------------------------------------------------- | ---------------------------------------------- |
-| **Prohibited**                | Never permitted in this repo, regardless of context | Safety, compliance, or trust boundary violated |
-| **Permitted with guardrails** | Allowed when stated conditions are met              | Default for most AI-assisted development       |
-| **Allowed**                   | No special conditions required                      | Low-risk, fully reversible, human-verifiable   |
+### 1. Stance Generation (\`ai-stance/template.md\`)
+>
+> **Load trigger:** `"load ai-stance/template skill"` > **DORA:** AI Capability 1: Clear and communicated AI stance
+> **Token cost:** Low
+> **When to use:** Repo has no `AI_STANCE.md`. Run once per repo.
 
-## Default Stance for uFawkes\* Repos
+## Purpose
 
-Pre-populated for the fawkes suite. Override per repo as needed.
+Generate a complete, populated `AI_STANCE.md` for a new repo. Asks four questions,
+fills the three-bucket framework, and writes the file. Total time: under 15 minutes.
 
-### Prohibited
+## Inputs Required
 
-- Sending PII, secrets, or proprietary infrastructure configs to public AI models
-- Committing AI-generated code without running pre-commit hooks
-- Bypassing branch protection rules because "the AI said it was fine"
-- Using AI to generate security policy or compliance documentation without human expert review
-- AI-generated content in Dojo modules without disclosure to learners
+Before generating, confirm:
 
-### Permitted with Guardrails
+| Input                                      | Where to find it                             | Required? |
+| ------------------------------------------ | -------------------------------------------- | --------- |
+| Repo name                                  | Current working directory / git remote       | ✅        |
+| Primary persona using this repo            | Persona reference table in `discovery` skill | ✅        |
+| Any repo-specific prohibited uses          | Human judgment call                          | ✅        |
+| Any tools NOT in the suite defaults        | Human input                                  | Optional  |
+| Compliance requirements (SOC2, GDPR, etc.) | Project context                              | Optional  |
 
-| Use                                             | Guardrail                                                      |
-| ----------------------------------------------- | -------------------------------------------------------------- |
-| AI-generated code merged to main                | Human review required; at least one test covering the new code |
-| AI-assisted spec / design documents             | Discovery brief must exist first (`discover` skill ran)          |
-| Agent sessions modifying infrastructure configs | j-curve-navigation pre-flight check must pass                  |
-| AI-generated release notes                      | Human review before publishing                                 |
-| opencode sessions in any uFawkes\* repo         | Session must load AGENTS.md and relevant skills first          |
+## Generation Steps
 
-### Allowed
+### Step 1 — Confirm suite defaults apply
 
-- AI-assisted code completion (Copilot, Claude Code) for any file not in Prohibited list
-- AI-generated first drafts of blog posts, dev.to articles, LinkedIn posts
-- AI-assisted issue triage and labeling
-- AI-generated test stubs (human completes and verifies)
-- Asking AI tools to explain existing code or documentation
+Check whether the repo needs any deviation from the suite-wide defaults in the
+parent `ai-stance` skill:
 
-## Four Required Clarity Dimensions
+```
+Suite defaults cover:
+✅ opencode, ponytail, <current Claude model>
+✅ Standard prohibited list (PII, secrets, bypass pre-commit/branch protection)
+✅ Standard guardrails (human review before merge, session logging)
 
-The generated `AI_STANCE.md` must answer all four:
+Does this repo need additions? Common repo-specific additions:
+- uFawkesObs: "Prohibited: AI-generated Prometheus alerting rules without human review
+  (alerts trigger pager — false positives have real cost)"
+- uFawkesSec: "Prohibited: AI-generated OPA/Kyverno policies without security review"
+- uFawkes.dev: "Permitted-with-guardrails: AI-generated Dojo content must include
+  disclosure to learners that AI assisted in authoring"
+```
 
-1. **Expectation of use** — Is AI use expected, encouraged, optional, or discouraged here?
-2. **Organizational support** — What tooling is provided? What training/docs exist?
-3. **Permitted tools** — Exact tool names and versions (not "any LLM")
-4. **Role applicability** — Does this stance apply to agents, humans, or both?
+### Step 2 — Write the file
 
-## Permitted Tools Reference (uFawkes suite defaults)
+```bash
+# Confirm repo name
+REPO=$(basename $(git rev-parse --show-toplevel))
+TODAY=$(date +%Y-%m-%d)
+NEXT_REVIEW=$(date -d "+90 days" +%Y-%m-%d 2>/dev/null || date -v+90d +%Y-%m-%d)
 
-| Tool                   | Version / model   | Permitted scope                                    |
-| ---------------------- | ----------------- | -------------------------------------------------- |
-| opencode               | Latest stable     | All repos — primary agentic development tool       |
-| Claude (Anthropic API) | <current model — check anthropic.com/models> | All repos — skill and agent authoring, code review |
-| ponytail               | Latest stable     | All repos — YAGNI enforcement                      |
-| GitHub Copilot         | Current           | IDE completion only                                |
+cat > AI_STANCE.md << 'STANCE'
+# AI Stance — REPO_PLACEHOLDER
 
-## AI_STANCE.md Template
-
-```markdown
-# AI Stance — [REPO_NAME]
-
-> Last reviewed: YYYY-MM-DD
-> Next review due: YYYY-MM-DD (quarterly)
-> Owner: [GITHUB_USERNAME]
+> Last reviewed: TODAY_PLACEHOLDER
+> Next review due: NEXT_PLACEHOLDER (quarterly)
+> Owner: paruff
 > Suite: uFawkesAI
 
 ## Expectation of Use
 
-AI-assisted development is [expected / encouraged / optional] in this repo.
-[One sentence on why — e.g., "We use AI to clear bottlenecks in the product lifecycle,
-not to replace human judgment on architecture and security decisions."]
+AI-assisted development is expected in this repo. We use AI tools to clear bottlenecks
+in the product lifecycle — not to replace human judgment on architecture, security,
+and user research decisions. All AI assistance is logged via opencode session history.
 
 ## Organizational Support
 
-- Permitted tools: listed in the table below
+- Permitted tools: listed below
 - Skill suite: uFawkesAI `.agents/skills/` — load relevant skills before each session
+- Context corpus: maintained via context-engineering skill (load at session start)
 - Questions or policy concerns: file a GitHub issue with label `ai-policy`
-- Policy reviews: quarterly (see ai-policy-lifecycle skill)
+- Policy reviews: quarterly — see ai-policy-lifecycle skill
 
 ## Permitted Tools
 
-| Tool           | Model / version   | Scope                               |
-| -------------- | ----------------- | ----------------------------------- |
-| opencode       | latest            | Agentic development sessions        |
-| Claude         | <current model> | Skill authoring, review, generation |
-| ponytail       | latest            | YAGNI enforcement                   |
-| GitHub Copilot | current           | IDE completion                      |
+| Tool | Model / version | Scope |
+|---|---|---|
+| opencode | latest stable | Primary agentic development tool |
+| Claude | <current Claude model — check anthropic.com/models> | Skill authoring, code review, content generation |
+| ponytail | latest stable | YAGNI enforcement in all agent sessions |
+| GitHub Copilot | current | IDE code completion |
 
 ## Three-Bucket Classification
 
 ### Prohibited
-
-[Fill from default stance above, plus any repo-specific additions]
+- Sending PII, credentials, or proprietary infrastructure configs to public AI models
+- Committing AI-generated code without pre-commit hooks passing
+- Bypassing branch protection rules on AI guidance
+- AI-generated security policy or compliance docs without qualified human review
+- [REPO_SPECIFIC_PROHIBITED — add any repo-specific items here or delete this line]
 
 ### Permitted with Guardrails
 
-[Fill from default stance above, plus any repo-specific additions]
+| Use | Guardrail |
+|---|---|
+| AI-generated code merged to main | Human review required; at least one test covering the change |
+| AI-assisted spec / design documents | discovery-brief.md must exist first |
+| Agent sessions modifying infrastructure | j-curve-navigation pre-flight check must pass |
+| AI-generated release notes | Human review before publishing |
+| AI-generated content in Dojo modules | Disclose to learners that AI assisted in authoring |
+| opencode sessions in this repo | Load AGENTS.md and relevant skills at session start |
 
 ### Allowed
-
-[Fill from default stance above, plus any repo-specific additions]
+- AI-assisted code completion for any file not in the Prohibited scope
+- AI-generated first drafts of blog posts, dev.to articles, LinkedIn posts
+- AI-assisted GitHub issue triage and labeling
+- AI-generated test stubs (human completes and verifies)
+- Asking AI tools to explain existing code or documentation
 
 ## Role Applicability
 
-This stance applies to: human contributors AND AI agents (opencode sessions,
-GitHub Actions opencode workflow, any automated agent invocation).
-Agents must load `ai-stance` skill and verify this document exists before beginning
-substantive work.
+This stance applies to: **human contributors AND AI agents** (opencode sessions,
+GitHub Actions opencode workflow, any automated agent invocation in this repo).
+
+Agents must:
+1. Load `ai-stance` skill and verify this document exists before beginning work
+2. Log the session via opencode session history
+3. Flag any action that would fall into the Prohibited bucket and halt — do not
+   proceed without explicit human authorization for prohibited actions
+STANCE
+
+# Substitute placeholders
+sed -i "s/REPO_PLACEHOLDER/${REPO}/g" AI_STANCE.md
+sed -i "s/TODAY_PLACEHOLDER/${TODAY}/g" AI_STANCE.md
+sed -i "s/NEXT_PLACEHOLDER/${NEXT_REVIEW}/g" AI_STANCE.md
+
+echo "✅ AI_STANCE.md generated for ${REPO}"
+echo "⚠  Review and update:"
+echo "   - [REPO_SPECIFIC_PROHIBITED]: Add repo-specific prohibitions or delete the line"
 ```
 
-## Session Actions
+### Step 3 — Verify with audit sub-skill
 
-When this skill is loaded, the agent should:
+After generating, immediately run the audit sub-skill to confirm all four clarity
+dimensions are present:
 
-1. Check whether `AI_STANCE.md` exists at repo root
-2. If missing: generate it using the template above, prompt human for repo-specific overrides
-3. If present: check `Last reviewed` date — warn if >90 days old
-4. Verify all four clarity dimensions are present
-5. Verify all listed tools are still current (no EOL tools in Permitted list)
-6. Output stance-report.json
+```
+Load trigger: "load ai-stance/audit skill"
+```
 
 ## Output Format
 
 ```json
 {
-  "skill": "ai-stance",
-  "status": "present | missing | stale",
-  "ai_stance_path": "AI_STANCE.md",
-  "last_reviewed": "YYYY-MM-DD",
-  "days_since_review": 42,
-  "review_overdue": false,
-  "clarity_dimensions_present": {
-    "expectation_of_use": true,
-    "organizational_support": true,
-    "permitted_tools": true,
-    "role_applicability": true
-  },
-  "prohibited_count": 5,
-  "guardrail_count": 6,
-  "allowed_count": 5,
-  "warnings": []
+  "sub-skill": "ai-stance/template",
+  "repo": "paruff/REPO_NAME",
+  "file_created": "AI_STANCE.md",
+  "placeholders_remaining": ["CONFIRM_VARIANT"],
+  "repo_specific_items_needed": true,
+  "audit_recommended": true
 }
 ```
-
-## Sub-Skills
-
-| Sub-skill            | Purpose                                                                  |
-| -------------------- | ------------------------------------------------------------------------ |
-| `ai-stance/template` | Generates AI_STANCE.md from scratch for a new repo                       |
-| `ai-stance/audit`    | Reviews existing AI_STANCE.md for completeness and currency              |
-| `ai-stance/diff`     | Compares two repos' stances to identify inconsistencies across the suite |

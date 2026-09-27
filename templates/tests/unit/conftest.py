@@ -56,27 +56,37 @@ def docker_compose_config(docker_compose_file):
 
 
 @pytest.fixture
-def jenkinsfile(project_root):
-    """Return the Jenkinsfile path."""
-    return project_root / "Jenkinsfile"
+def woodpecker_file(project_root):
+    """Return the Woodpecker pipeline file path."""
+    # Woodpecker uses .woodpecker.yml at repo root
+    return project_root / ".woodpecker.yml"
 
 
 @pytest.fixture
-def jenkinsfile_content(jenkinsfile):
-    """Read and return the Jenkinsfile content."""
-    if not jenkinsfile.exists():
-        pytest.skip("Jenkinsfile not found")
-    with open(jenkinsfile) as f:
-        return f.read()
+def woodpecker_pipeline(woodpecker_file):
+    """Load and return the Woodpecker pipeline configuration."""
+    if not woodpecker_file.exists():
+        pytest.skip(".woodpecker.yml not found")
+    with open(woodpecker_file) as f:
+        return yaml.safe_load(f)
 
 
 @pytest.fixture
-def jcasc_dir(project_root):
-    """Return the JCasC configuration directory."""
-    path = project_root / "jenkins"
+def tekton_dir(project_root):
+    """Return the Tekton pipelines directory."""
+    path = project_root / "tekton"
     if not path.exists():
-        pytest.skip("jenkins/ directory not found")
+        pytest.skip("tekton/ directory not found")
     return path
+
+
+@pytest.fixture
+def tekton_files(tekton_dir):
+    """Return all Tekton pipeline files."""
+    files = list(tekton_dir.glob("*.yaml")) + list(tekton_dir.glob("*.yml"))
+    if not files:
+        pytest.skip("No Tekton pipeline files found")
+    return files
 
 
 @pytest.fixture
