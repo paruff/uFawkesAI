@@ -48,13 +48,13 @@ latest_version() {
         [[ "$t" == "$prefix"* && "$t" == *"$suffix" ]] || continue
         v="${t#"$prefix"}"
         v="${v%"$suffix"}"
-        [[ "$v" =~ ^[0-9]+(\.[0-9]+)+$ ]] && echo "$v"
+        if [[ "$v" =~ ^[0-9]+(\.[0-9]+)+$ ]]; then echo "$v"; fi
       done | sort -V | tail -1
   elif url="$(jq -er '.url // empty' <<<"$src")"; then
     tag="$(jq -r .tag <<<"$src")"
     v="$(curl -fsSL "$url")"
     v="${v#"${tag%%\{version\}*}"}"
-    [[ "$v" =~ ^[0-9]+(\.[0-9]+)+$ ]] && echo "$v"
+    if [[ "$v" =~ ^[0-9]+(\.[0-9]+)+$ ]]; then echo "$v"; fi
   elif major="$(jq -er '.node_lts_major // empty' <<<"$src")"; then
     curl -fsSL https://nodejs.org/dist/index.json |
       jq -r --arg m "v${major}." \
@@ -68,7 +68,10 @@ note ""
 note "### Binary tools (\`tools.lock.json\`)"
 bumped=()
 while IFS=$'\t' read -r name current src; do
-  latest="$(latest_version "$src")"
+  # A failed lookup (API error, moved repo) must only skip this tool: `|| true`
+  # keeps set -e/pipefail from aborting the whole bump, and the empty result
+  # takes the warning path below. gh/curl print their own error on stderr.
+  latest="$(latest_version "$src" || true)"
   if [ -z "$latest" ]; then
     note "- ⚠️ ${name}: could not determine the latest upstream version (kept ${current})"
   elif newer "$current" "$latest"; then

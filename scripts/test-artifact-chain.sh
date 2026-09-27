@@ -94,6 +94,12 @@ commit "$r" docs/ai-sdlc/plan.md $'# Plan\n\n### verification strategy\n\n- run 
 commit "$r" src/app.ts "export const x = 1"
 expect pass "top-level docs/ai-sdlc/plan.md, heading level/case-insensitive" "$r"
 
+r="$(new_repo large-plan)"
+{ printf '%s\n\n' "$PLAN_OK"; for i in $(seq 1 20000); do echo "- step $i of a long plan"; done; } >"$work/big-plan.md"
+commit "$r" docs/ai-sdlc/login/plan.md "$(cat "$work/big-plan.md")"
+commit "$r" src/app.ts "export const x = 1"
+expect pass "large plan.md (~500 KB, heading near the top) is not misread via SIGPIPE" "$r"
+
 r="$(new_repo docs-only)"
 commit "$r" docs/guide.md "hello"
 expect pass "no src/ change and no artifacts" "$r"

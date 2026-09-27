@@ -16,9 +16,15 @@ permissions:
   contents: read
   pull-requests: read
 
+# PR runs supersede each other (group per ref, cancel in progress). Every push
+# to main must finish, because each one ends in the Delivery Events job and a
+# cancelled run loses that merge's deploy-marker (uFawkesDORA would under-count
+# deployments). A shared group isn't enough even without cancelling: GitHub
+# keeps only one pending run per group, so bursts of merges would still drop
+# runs. Pushes therefore get a group per commit.
 concurrency:
-  group: ci-quality-${{ github.ref }}
-  cancel-in-progress: true
+  group: ci-quality-${{ github.event_name == 'pull_request' && github.ref || github.sha }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 # Opt into Node 24 runner now — Node 20 forced removal September 16 2026.
 env:

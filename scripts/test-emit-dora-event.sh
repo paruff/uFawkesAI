@@ -122,23 +122,29 @@ check "dora_event carries cycle-time inputs and AI flag" \
 echo "== OTLP/HTTP export to /v1/logs =="
 port=$(( (RANDOM % 20000) + 30000 ))
 "$PYTHON" - "$port" "$work/otlp.json" <<'PY' &
-import http.server, sys
+import http.server, json, sys
 port, out = int(sys.argv[1]), sys.argv[2]
 class H(http.server.BaseHTTPRequestHandler):
     def do_POST(self):
         body = self.rfile.read(int(self.headers["Content-Length"]))
         with open(out, "w") as f:
-            f.write(f'{{"path": "{self.path}", "auth": "{self.headers.get("X-Test", "")}", "payload": {body.decode()}}}')
+            f.write(json.dumps({"path": self.path, "auth": self.headers.get("X-Test", ""),
+                                "authorization": self.headers.get("Authorization", ""),
+                                "payload": json.loads(body)}))
         self.send_response(200); self.end_headers(); self.wfile.write(b"{}")
     def log_message(self, *a): pass
 http.server.HTTPServer(("127.0.0.1", port), H).handle_request()
 PY
 listener_pid=$!
 sleep 1
-OTEL_EXPORTER_OTLP_ENDPOINT="http://127.0.0.1:${port}" OTEL_EXPORTER_OTLP_HEADERS="X-Test=abc" \
+# Values are percent-encoded per the OTel spec; the collector must see them decoded.
+OTEL_EXPORTER_OTLP_ENDPOINT="http://127.0.0.1:${port}" \
+  OTEL_EXPORTER_OTLP_HEADERS="X-Test=abc, Authorization=Basic%20dXNlcjpwYXNz%3D" \
   "$EMIT" deploy-marker --step pipeline --at 2026-09-27T12:48:00Z >/dev/null
 wait "$listener_pid" || true
 check "POSTed to /v1/logs with custom header" '.path == "/v1/logs" and .auth == "abc"' "$(cat "$work/otlp.json" 2>/dev/null || echo '{}')"
+check "percent-encoded header value is decoded (Basic%20…%3D → 'Basic …=')" \
+  '.authorization == "Basic dXNlcjpwYXNz="' "$(cat "$work/otlp.json" 2>/dev/null || echo '{}')"
 check "OTLP resource service.name + body is the event line" \
   '.payload.resourceLogs[0].resource.attributes[0] == {key: "service.name", value: {stringValue: "widget"}}
    and (.payload.resourceLogs[0].scopeLogs[0].logRecords[0].body.stringValue | fromjson | .event) == "deploy-marker"

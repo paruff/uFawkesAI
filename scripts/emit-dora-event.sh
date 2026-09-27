@@ -192,8 +192,15 @@ if [ -n "${OTEL_EXPORTER_OTLP_ENDPOINT:-}" ]; then
       }]}]
     }]}' <<<"{}")"
   headers=(-H "Content-Type: application/json")
+  # OTEL_EXPORTER_OTLP_HEADERS is comma-separated key=value pairs whose keys
+  # and values are percent-encoded (OTel spec), e.g. Authorization=Basic%20xyz.
+  urldecode() { local v="${1//\\/\\\\}"; printf '%b' "${v//%/\\x}"; }
+  trim() { local v="${1#"${1%%[![:space:]]*}"}"; printf '%s' "${v%"${v##*[![:space:]]}"}"; }
   IFS=',' read -ra extra <<<"${OTEL_EXPORTER_OTLP_HEADERS:-}"
-  for h in "${extra[@]}"; do [ -n "$h" ] && headers+=(-H "${h%%=*}: ${h#*=}"); done
+  for h in "${extra[@]}"; do
+    [[ "$h" == *=* ]] || continue
+    headers+=(-H "$(urldecode "$(trim "${h%%=*}")"): $(urldecode "$(trim "${h#*=}")")")
+  done
   if ! curl -fsS --max-time 10 "${headers[@]}" -d "$otlp" "${OTEL_EXPORTER_OTLP_ENDPOINT%/}/v1/logs" >/dev/null; then
     warn "OTLP export to ${OTEL_EXPORTER_OTLP_ENDPOINT%/}/v1/logs failed; event kept on stdout${DORA_EVENTS_FILE:+ and in $DORA_EVENTS_FILE}"
   fi
