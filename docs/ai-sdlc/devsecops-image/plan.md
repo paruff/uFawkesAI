@@ -7,7 +7,7 @@ each independently reviewable and green.
 ## Resolved tool versions
 
 Resolved 2026-09-26 from each project's latest GitHub release (npm / dl.k8s.io
-where noted). These seed `tools.lock.yaml`; Renovate owns them afterwards.
+where noted). These seed `tools.lock.json`; update automation owns them afterwards (see PR 3 notes).
 All listed tools publish `linux/amd64` and `linux/arm64` builds.
 
 "Checksum source" is where the lock's SHA-256 comes from. **Computed** = the
@@ -87,9 +87,8 @@ Deviations from the layout above, made while building PR 1:
 
 - The lock is **`tools.lock.json`**, not YAML: the build stage parses it with
   Debian's `jq`, avoiding a bootstrap dependency on the pinned `yq`.
-- The **base image digest and apt snapshot** live as `ARG` defaults in the
-  Dockerfile (Renovate's docker manager bumps `FROM`/`ARG` digests natively),
-  not in the lock.
+- The **base image digest and apt snapshot** live in the Dockerfile, not in
+  the lock (PR 3 moved the digest into `FROM` for Dependabot).
 - The installer is **`images/devsecops/install-tools.sh`** (inside the Docker
   build context), not under `scripts/`. `scripts/image-lock-refresh.sh` stays
   under `scripts/`.
@@ -123,6 +122,43 @@ Deviations from the layout above, made while building PR 1:
 - kubectl, kubeconform, kind, flux and argocd get version checks only: every
   offline accept/reject test for them needs a cluster, schema downloads or Docker.
 
+## Implementation notes (PR 3)
+
+- **Publishing is its own workflow**, `image-release.yml`, triggered only by
+  `image-vX.Y.Z` tags. `packages: write`, `id-token: write` and
+  `attestations: write` exist only there, so PR builds never hold them. It
+  refuses a tag whose commit is not on `main`.
+- **Gate scope (owner decision)**: `images/devsecops/scan.sh` reports every
+  fixable CRITICAL/HIGH across the image (run summary table) but gates only
+  Debian and the locked Python/npm deps. The first scan found 0 Debian
+  findings and ≈ 200 in 13 upstream Go binaries, mostly the Go stdlib (incl.
+  CRITICAL CVE-2025-68121 in gitleaks and kustomize), with every tool already
+  at its latest release, so a full gate would block every release on fixes
+  only upstream can ship.
+- **Scan and SBOM use the image's own tools**: trivy and syft run from the
+  freshly built `core` image via the Docker socket, not third-party actions.
+  The Trivy gate scans `ai` only, because it contains every package of
+  `core` and `gitops`.
+- **Arch images** are pushed as `:X.Y.Z-amd64` / `:X.Y.Z-arm64`, each with an
+  SPDX SBOM attestation. **Indexes** `:X.Y.Z`, `:X.Y`, `:X` are cosign-signed
+  (keyless) with SLSA build provenance. No `:latest` tag: consumers pin
+  digests.
+- **Dependabot, not Renovate**: the repo already uses Dependabot. The base
+  digest moved from an `ARG` into the Dockerfile `FROM` line so Dependabot's
+  docker updater can bump it; Node tools are covered too. A scheduled
+  lock-bump workflow for `tools.lock.json` and the Python locks is a
+  follow-up PR.
+- **Weekly scheduled run** of `image-build.yml` re-verifies the lock and fails
+  on fixable CRITICAL/HIGH CVEs; on PRs the same scan is report-only.
+
+### Releasing (human steps)
+
+1. Merge to `main`; wait for `image-build.yml` to pass on `main`.
+2. `git tag image-vX.Y.Z <merged-sha> && git push origin image-vX.Y.Z`.
+3. First release only: in GitHub → Packages, set `ufawkes-devsecops-core`,
+   `-gitops` and `-ai` to **public** (spec decision).
+4. Copy the index digests from the release run's summary into consumers.
+
 ## Lock file format
 
 ```yaml
@@ -144,7 +180,7 @@ tools:
 verifies `sha256sum -c`, and installs to `/usr/local/bin`; any mismatch
 fails the build. A companion `scripts/image-lock-refresh.sh <tool> <version>`
 fetches the release checksum (or computes it) and rewrites the entry — this
-is what Renovate's post-upgrade step runs.
+is what the scheduled lock-bump workflow (follow-up to PR 3) runs.
 
 ## PR sequence
 
@@ -182,10 +218,10 @@ is what Renovate's post-upgrade step runs.
   (syft, SPDX), `actions/attest-build-provenance`, cosign keyless sign.
   Permissions: `packages: write`, `id-token: write`, `attestations: write`
   on that job only.
-- Weekly scheduled rebuild on the current lock (patch release only if
-  Trivy findings or the apt snapshot changed).
-- `renovate.json`: regex manager for `tools.lock.yaml` (post-upgrade runs
-  `image-lock-refresh.sh`), docker digest, npm, pip-compile.
+- Weekly scheduled rebuild + scan on the current lock; a human cuts the
+  patch release (see PR 3 notes — no automatic tagging).
+- Dependabot for the base digest and Node tools; the `tools.lock.json` /
+  Python-lock bump workflow is a follow-up PR (see PR 3 notes).
 - **Human step:** make the three GHCR packages public after first
   publish; push tag `image-v0.1.0`.
 - **Verify:** `cosign verify` with the workflow's OIDC identity; `gh

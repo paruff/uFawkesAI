@@ -7,11 +7,11 @@
 # downloaded tool pinned by SHA-256 in tools.lock.json, Python deps
 # hash-locked, Node deps from package-lock.json.
 
-ARG BASE_IMAGE=docker.io/library/debian:trixie-slim@sha256:a99cfc517144bc59b1978475ec53b46ecabec7e43635402ee5b77cc54cd1b20a
 ARG APT_SNAPSHOT=20260926T000000Z
 
 # ── base: Debian pinned to an apt snapshot ─────────────────────────────────
-FROM ${BASE_IMAGE} AS base
+# Digest pinned in FROM itself so Dependabot's docker updater can bump it.
+FROM docker.io/library/debian:trixie-slim@sha256:a99cfc517144bc59b1978475ec53b46ecabec7e43635402ee5b77cc54cd1b20a AS base
 ARG APT_SNAPSHOT
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # The snapshot date fixes every apt package version, so per-package pins

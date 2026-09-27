@@ -9,8 +9,8 @@
 # trust-on-first-use and reported as such.
 #
 # Idempotent: re-running with unchanged versions rewrites identical hashes.
-# The base image digest lives in images/devsecops/Dockerfile (Renovate's
-# docker manager bumps it); this script only handles tools.lock.json.
+# The base image digest lives in the Dockerfile's FROM line (Dependabot's
+# docker updater bumps it); this script only handles tools.lock.json.
 #
 # Usage:
 #   scripts/image-lock-refresh.sh              — all tools

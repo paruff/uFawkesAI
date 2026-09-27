@@ -10,3 +10,16 @@ updates:
     schedule:
       interval: "weekly"
     labels: ["dependencies", "chore"]
+  # DevSecOps image: base image digest (Dockerfile FROM) and Node tools.
+  # Binary tools and Python locks (tools.lock.json, requirements*.lock) are
+  # not supported by Dependabot — see scripts/image-lock-refresh.sh.
+  - package-ecosystem: "docker"
+    directory: "/images/devsecops"
+    schedule:
+      interval: "weekly"
+    labels: ["dependencies", "chore"]
+  - package-ecosystem: "npm"
+    directory: "/images/devsecops/node"
+    schedule:
+      interval: "weekly"
+    labels: ["dependencies", "chore"]

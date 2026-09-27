@@ -43,8 +43,14 @@ tool set at the same versions:
 **R5 — Supply-chain integrity.** Every published image is:
 
 - multi-arch (`linux/amd64`, `linux/arm64`);
-- scanned (Trivy) before push — publish fails on CRITICAL/HIGH with a fix
-  available, with a reviewed `.trivyignore` for accepted risk;
+- scanned (Trivy) before push. The **gate** fails on CRITICAL/HIGH with a fix
+  available in what this repo controls: Debian packages (apt snapshot) and
+  the locked Python/npm deps. Upstream prebuilt binaries are **reported, not
+  gated**: their findings (mostly Go stdlib compiled into the release) need an
+  upstream rebuild, which the lock-bump workflow picks up. Owner decision
+  2026-09-27, after PR 3's first scan found ≈ 200 such findings across 13
+  tools, all already at their latest releases, and 0 in Debian. Accepted
+  exceptions go in a reviewed `.trivyignore` with reason and expiry.
 - accompanied by an SPDX SBOM and SLSA build-provenance attestation;
 - keyless-signed with cosign via GitHub OIDC (no stored keys — Hard Rule 1).
 
@@ -54,10 +60,14 @@ tool set at the same versions:
   `:<major>` and `:<major>.<minor>`; **consumers pin the digest**.
 - Release trigger: git tag `image-v<semver>` in this repo (distinct from any
   template release tags).
-- Renovate (or Dependabot where supported) opens PRs for base digest, lock
-  file entries, and npm/Python locks. Each PR rebuilds and runs R7.
-- Scheduled weekly rebuild on the current lock to pick up Debian security
-  fixes → patch release only if the Trivy result or apt snapshot changed.
+- Dependabot (the repo's existing updater) opens PRs for the base image
+  digest (Dockerfile `FROM`) and the Node tools. `tools.lock.json` and the
+  Python locks are beyond Dependabot; a scheduled lock-bump workflow using
+  `scripts/image-lock-refresh.sh` covers them (follow-up PR). Each update PR
+  rebuilds and runs R7.
+- Scheduled weekly rebuild + Trivy scan of the current lock: it fails when a
+  fixable CRITICAL/HIGH CVE appears, and a human bumps the apt snapshot and
+  cuts a patch release. Releases are never tagged automatically.
 
 **R7 — Verified before publish.** A test script
 (`images/devsecops/tests/verify-tools.sh`) runs inside each built variant
@@ -204,7 +214,9 @@ package-lock.json┘                                                  │
   semgrep 266 MB, trivy/grype/syft/osv-scanner 387 MB together, cosign
   135 MB, node 121 MB. Node's C headers (67 MB) were dropped as unused;
   further cuts mean dropping or moving tools the owner chose to keep.
-  `gitops` +≈ 400 MB and `ai` +≈ 300 MB remain estimates.
+  Measured in PR 2's CI: `gitops` 2.71–2.76 GB (+≈ 1.2 GB: checkov 224 MB plus
+  13 CLIs, several of them large static binaries) and `ai` 2.92–2.97 GB
+  (+≈ 0.2 GB). Variants share layers, so pulling `ai` fetches the stack once.
 - **Licenses:** OpenTofu chosen over Terraform (BSL). semgrep OSS rules only.
   OpenCode is MIT and ships in `ai`. Claude Code's licence reserves all rights
   and grants no redistribution, so it is **not** baked into the public image; the
