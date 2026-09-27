@@ -37,7 +37,7 @@ afterward (which the skill doesn't know about).
 
 - [ ] Load `release` skill: `"load release skill"`
 - [ ] All tests passing (test agent report: `status: pass`)
-- [ ] Review approved (review agent report: `status: approved`)
+- [ ] PR approved by a human reviewer, and `✅ CI Complete` is green
 - [ ] delivery agent report: `deployment_readiness: true` (for infra changes)
 - [ ] CHANGELOG.md exists in the target repo
 - [ ] `gh` CLI authenticated: `gh auth status`

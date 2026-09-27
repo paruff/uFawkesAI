@@ -70,12 +70,12 @@ working in small batches.
 
 **Branch prefixes**, aligned to commit types:
 
-| Prefix     | Use for                            | Handled by (from `discovery-flow.md`) |
-| ---------- | ---------------------------------- | ------------------------------------- |
-| `feature/` | new functionality                  | Workflow A → B                        |
-| `fix/`     | bug fixes                          | Workflow C / D                        |
-| `chore/`   | maintenance, non-functional change | Workflow C                            |
-| `hotfix/`  | urgent production repair           | Workflow D                            |
+| Prefix     | Use for                            |
+| ---------- | ---------------------------------- |
+| `feature/` | new functionality                  |
+| `fix/`     | bug fixes                          |
+| `chore/`   | maintenance, non-functional change |
+| `hotfix/`  | urgent production repair           |
 
 **Discipline:**
 
@@ -83,7 +83,7 @@ working in small batches.
   trunk integration, not a specific hard "max age" number. Pick a threshold
   that fits your team and enforce it consistently rather than adopting a
   number without discussing it as a team first.
-- No direct commits to trunk — `feature-flow.md` Phase 0 enforces this.
+- No direct commits to trunk — the `main` branch ruleset enforces this.
 - Merge to trunk is always human-gated — never automated, per every agent
   file's "Do not merge" rule.
 

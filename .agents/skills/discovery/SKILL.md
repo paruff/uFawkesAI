@@ -82,7 +82,7 @@ Write: `Riskiest assumption: [one sentence, falsifiable]`
 
 One given/when/then statement. Must be:
 
-- Testable by the test-execution agent (not just "user feels better")
+- Testable in CI (not just "user feels better")
 - Specific enough that a binary pass/fail is possible
 - Grounded in the JTBD from Step 2
 

@@ -17,8 +17,6 @@
         "design",
         "build",
         "test",
-        "test-execution",
-        "review",
         "cross-validation"
       ],
       "description": "Origin of this task (agent name, all lowercase)"

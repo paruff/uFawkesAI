@@ -10,7 +10,7 @@
 
 ## AI-Assisted Review Block
 
-<!-- REQUIRED. Complete before requesting review. Use Copilot or @review-agent to help fill this in. -->
+<!-- REQUIRED. Complete before requesting review. Use Copilot to help fill this in. -->
 <!-- DORA 2025 (REVIEW-01): Structured review blocks reduce review time by making context explicit. -->
 
 **What does this PR do in one sentence?**

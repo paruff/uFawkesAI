@@ -15,7 +15,7 @@ the underlying survey methodology and full statistics.
 **Strong version control practices** (one of DORA's seven named AI
 capabilities): explicitly recommends trunk-based development ("minimize
 long-lived branches, promote frequent integration") and Conventional Commits
-by name. Phase 0 of `feature-flow.md` and `docs/COMMIT_CONVENTIONS.md`
+by name. `docs/COMMIT_CONVENTIONS.md` and the `main` branch ruleset
 directly implement this.
 
 **The "verification tax"**: DORA's ROI report names this as a real,
@@ -42,7 +42,7 @@ wrong.
 
 **Feature flags / decoupling deploy from release**: DORA recommends this as
 part of small-batch discipline. Not currently addressed anywhere in your
-agent files — worth considering if `feature-flow.md`'s trunk-daily discipline
+agent files — worth considering if trunk-daily discipline
 starts producing partially-complete features that need to reach trunk before
 they're user-ready.
 
@@ -54,9 +54,9 @@ and deployment rework rate — are exactly the kind of thing your
 `session_id`-linked JSONL logs (once #5 and #13 close the gaps) could
 progressively feed:
 
-- `feature-flow`'s Phase 0→5 duration → lead time for changes
+- Commit-to-merge time on each PR → lead time for changes
 - `repair-flow`'s `root_cause_category` + `originating_session_id` → change
-  failure rate, once linked back to the feature-flow session that introduced
+  failure rate, once linked back to the build session that introduced
   the failure
 - Live-system verification pass/fail at Phase 3.5, fed forward into a
   post-deploy smoke test (plan issue #12) → change failure rate at the

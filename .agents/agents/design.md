@@ -64,8 +64,8 @@ Break the system into logical components:
 - Identify boundaries and responsibilities
 - Select architecture patterns (if applicable)
 - **Note which components are actually deployed/networked at runtime** (as
-  opposed to purely in-process logic) — this is what downstream `test`/
-  `test-execution` need to know when deciding what a `live-system`-tagged AC
+  opposed to purely in-process logic) — this is what downstream `test`
+  agent and CI need to know when deciding what a `live-system`-tagged AC
   actually has to stand up and hit. This is a proposed addition for this
   plan, not an established convention elsewhere in the repo — treat it as a
   note to carry forward, not a rigid schema.
@@ -238,7 +238,7 @@ After producing your report, write a structured log entry:
 2. Follow the schema in `.agents/schema/skill-invocation-log.json`
 3. Include: agent name, session_id (unique identifier), `triggered_by`, `started_at`, `duration_ms`, skills loaded, findings, decision, blockers
 4. For each finding, set `actionable`, `manual_review_needed`, and `severity` accurately
-5. Set `triggered_by` to whichever orchestrator invoked this agent: `"discovery-flow"` (the typical case for design), or `"manual"` if invoked directly by the user
+5. Set `triggered_by` to the orchestrating agent's name if another agent invoked this one (e.g. `"repair-flow"`), or `"manual"` if invoked directly by the user
 6. Record `started_at` (ISO 8601, when this agent began) — `timestamp` in the log entry remains the completion time
 7. Compute `duration_ms` as the difference between `started_at` and completion
 

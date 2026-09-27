@@ -25,20 +25,6 @@ agents:
       - "Verification Strategy"
     findings_required_when: never
 
-  review:
-    # Two modes: PR Review and Build Validation
-    # PR Review Mode requires: Review Agent Assessment, Architecture Violations, Test Gaps
-    # Build Validation Mode requires: Build Review Report, Spec Compliance, Design Compliance, Acceptance Criteria, Code Quality, Findings
-    required_sections:
-      - "Review Agent Assessment"
-      - "Architecture Violations"
-      - "Test Gaps"
-    required_fields:
-      size_decision: true
-    findings_required_when: REQUEST_CHANGES
-    forbidden_patterns:
-      - "LGTM"
-      - "looks good"
 
   spec:
     required_sections:
@@ -59,16 +45,6 @@ agents:
       - "test:.*failing"
       - "feat:.*implement"
 
-  test-execution:
-    required_sections:
-      - "Test Report"
-      - "Test Results"
-      - "Coverage"
-    required_fields:
-      decision: true
-    findings_required_when: FAIL
-    forbidden_patterns:
-      - "no tests exist"
 
   cross-validation:
     required_sections:

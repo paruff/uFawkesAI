@@ -46,8 +46,9 @@ Decompose intent into sequenced, bounded tasks.
 
 ## Inputs
 
-- `specification.md` (from spec)
-- `design.md` (from design)
+- `docs/ai-sdlc/<feature>/spec.md` — requirements, with the design in its
+  `## Design` section (see `docs/ai-sdlc/README.md`)
+- `docs/ai-sdlc/<feature>/intent.md` it traces to
 - Existing task patterns
 
 ## Outputs

@@ -15,19 +15,15 @@ Invoke by `@name` in OpenCode or any compatible agent host.
 | `design.md`           | `@design`           | Architecture, component design                                             | Cap 3     |
 | `build.md`            | `@build`            | Code, manifests, pipelines, overlays                                       | Cap 4     |
 | `test.md`             | `@test`             | Tests (failing-first TDD), coverage                                        | Cap 5     |
-| `test-execution.md`   | `@test-execution`   | Run tests, validate coverage                                               | Cap 5     |
-| `review.md`           | `@review`           | PR review, build validation, security (PR Review + Build Validation modes) | Cap 4 + 6 |
 | `cross-validation.md` | `@cross-validation` | Validate pairwise consistency, block pipeline if inconsistencies found     | Cap 4 + 6 |
 
 ### Flow & Meta Agents
 
-Orchestrate or wrap the 7 core pipeline agents above; not part of the spec→cross-validation chain itself.
+Orchestrate or wrap the 5 core pipeline agents above; not part of the spec→cross-validation chain itself.
 
 | File                  | Trigger              | What It Produces                                                        |
 | --------------------- | --------------------- | --------------------------------------------------------------------------- |
 | `discover.md`         | `@discover`          | Pre-spec discovery brief anchoring spec/design/test to real user needs  |
-| `discovery-flow.md`   | `@discovery-flow`    | Routes work into the correct software delivery workflow                  |
-| `feature-flow.md`     | `@feature-flow`      | Builds, tests, verifies, and reviews an already-planned feature on a branch |
 | `repair-flow.md`      | `@repair-flow`       | Diagnoses and repairs CI/CD failures from logs and pipeline evidence     |
 | `measure.md`          | scheduled (monthly)  | Queries uFawkesObs for DORA metrics, computes ROI snapshot, flags anomalies |
 | `learn.md`            | post-release / sprint end | Product retrospective; maps findings to DORA AI capabilities, feeds `plan` |
@@ -36,18 +32,21 @@ Orchestrate or wrap the 7 core pipeline agents above; not part of the spec→cro
 ### Agent Pipeline
 
 ```
-spec → design → build → [test-execution || review] → cross-validation
-  │                    ↑
-  └──── test ──────────┘
+spec → design → build → cross-validation
+  │                ↑
+  └──── test ──────┘
 ```
+
+Test runs and PR review are not agent stages: CI (`✅ CI Complete`, required
+on `main`) runs every test, and a human reviews and merges every PR. The
+`test-execution`, `review`, `feature-flow`, and `discovery-flow` agents were
+retired 2026-09-27; the `test-execution` and `review` *skills* remain.
 
 - **spec**: Extract requirements and acceptance criteria
 - **design**: Architecture decomposition and component design
 - **build**: Code generation, manifests, pipelines (loads `plan` skill for task decomposition)
 - **test**: Write failing tests before implementation (TDD)
-- **test-execution**: Execute tests and validate coverage
-- **review**: PR review + build validation (consolidated, two modes)
-- **cross-validation**: Final gate — validates 4 pairwise consistency rules
+- **cross-validation**: Final gate — validates 3 pairwise consistency rules
 
 ### Routing Guide
 
@@ -59,8 +58,6 @@ Invoke the most relevant agent directly:
 | "Design architecture for..."          | `@design`           |
 | "Implement feature X"                 | `@build`            |
 | "Write tests for..."                  | `@test`             |
-| "Run tests and check coverage"        | `@test-execution`   |
-| "Review this PR"                      | `@review`           |
 | "Validate all outputs are consistent" | `@cross-validation` |
 
 ---
@@ -81,8 +78,8 @@ below are grouped by purpose.
 | `plan/`            | `@build` task planning          | Task decomposition, dependency mapping, risk ID                |
 | `build/`           | `@build` code generation        | Code, manifests, pipelines, overlays, governance                |
 | `test/`            | `@test` TDD patterns            | Failing tests, coverage priorities, language-specific examples |
-| `test-execution/`  | `@test-execution` run tests     | Unit, integration, E2E, coverage, smoke tests                  |
-| `review/`          | `@review` compliance gates      | PR review, build validation, spec/design compliance            |
+| `test-execution/`  | Running tests (by hand or CI)   | Unit, integration, E2E, coverage, smoke tests                  |
+| `review/`          | Compliance checks (by hand)     | PR review, build validation, spec/design compliance            |
 
 ### Testing Skills
 
@@ -167,12 +164,12 @@ Every skill has a lifecycle status tracked in `.agents/registry/skill-lifecycle.
 
 ### Cross-Validation
 
-The `cross-validation` skill validates 4 pairwise consistency rules between agent outputs:
+The `cross-validation` skill validates 3 pairwise consistency rules between agent outputs:
 
 1. **Spec ↔ Build Consistency** — All spec requirements are addressed in build output
 2. **Spec ↔ Test Coverage** — All spec acceptance criteria have corresponding tests
 3. **Design ↔ Build Compliance** — Build follows architecture decisions from design
-4. **Test ↔ Test-Execution Viability** — All tests are viable and passing in test-execution
+Whether tests pass is not a cross-validation rule: CI (`✅ CI Complete`) enforces it.
 
 ---
 

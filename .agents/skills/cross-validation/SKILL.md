@@ -18,9 +18,7 @@ This skill implements cross-validation of the uFawkesAI agent pipeline. It valid
 1. **Spec ↔ Build Consistency** — All spec requirements are addressed in build output
 2. **Spec ↔ Test Coverage** — All spec acceptance criteria have corresponding tests
 3. **Design ↔ Build Compliance** — Build follows architecture decisions from design
-4. **Test ↔ Test-Execution Viability** — All tests are viable and passing in test-execution
-
-Note: The review agent now consolidates review, build-review, and security capabilities. Review findings are validated as part of the build process.
+Whether tests pass is not a cross-validation rule: CI (`✅ CI Complete`) enforces it. The `test-execution` and `review` agents were retired 2026-09-27.
 
 ## How to Load
 
@@ -43,7 +41,7 @@ The skill uses `.agents/registry/cross-validation.yaml` as the rules registry. T
 The skill provides `.agents/assertions/cross-validation-runner.sh` which:
 
 1. Reads the cross-validation rules from the registry
-2. Extracts relevant sections from agent reports (spec, design, build, test, test-execution, review)
+2. Extracts relevant sections from agent reports (spec, design, build, test)
 3. Applies each validation rule
 4. Generates a unified cross-validation report
 5. Returns PASS if all rules pass, FAIL otherwise
@@ -63,9 +61,7 @@ bash .agents/assertions/cross-validation-runner.sh \
   --spec-report path/to/spec-report.md \
   --design-report path/to/design-report.md \
   --build-report path/to/build-report.md \
-  --test-report path/to/test-report.md \
-  --test-execution-report path/to/test-execution-report.md \
-  --review-report path/to/review-report.md
+  --test-report path/to/test-report.md
 ```
 
 ### Expected Output
@@ -80,7 +76,7 @@ The runner produces a unified cross-validation report with:
 
 ## Integration
 
-The cross-validation skill is loaded by the cross-validation agent, which runs after the parallel block of `test-execution` and `review` and before `delivery`.
+The cross-validation skill is loaded by the cross-validation agent, which runs after `build` and `test` and before `delivery`.
 
 ## Validation Rules Details
 
@@ -124,7 +120,7 @@ If any validation rule fails:
 
 To test the cross-validation skill:
 
-1. Create sample agent reports (spec, design, build, test, test-execution, review)
+1. Create sample agent reports (spec, design, build, test)
 2. Run the cross-validation runner with these reports
 3. Verify that the runner correctly identifies consistency issues
 4. Verify that the runner correctly identifies consistency passes

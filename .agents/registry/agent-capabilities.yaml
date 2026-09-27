@@ -71,65 +71,6 @@ agents:
     consumes_from: [spec]
     dora_caps: [5]
 
-  - name: test-execution
-    description: "Execute all relevant tests and quality gates to validate build output"
-    capabilities:
-      - unit-test-execution
-      - integration-test-execution
-      - e2e-test-execution
-      - coverage-validation
-      - smoke-testing
-      - linting
-    inputs:
-      - source-code
-      - test-suites
-    outputs:
-      - test-report
-      - coverage-report
-    consumes_from: [build]
-    dora_caps: [5]
-
-  - name: review
-    description: "Review PR and build output for quality, security, and compliance. Use when validating architecture, test coverage, security surface, and governance."
-    capabilities:
-      # PR Review Mode
-      - pr-review
-      - architecture-violation-detection
-      - test-gap-analysis
-      - security-surface-identification
-      - secrets-scanning
-      - dependency-review
-      - auth-review
-      - data-handling-review
-      # Build Validation Mode
-      - spec-compliance-verification
-      - design-compliance-verification
-      - acceptance-criteria-validation
-      - code-quality-assessment
-      - pipeline-policy-validation
-      - k8s-policy-validation
-      - gitops-overlay-validation
-      - rbac-validation
-      - secret-governance
-      - policy-validation
-    inputs:
-      - pull-request-diff
-      - build-output
-      - specification-document
-      - design-document
-      - test-report
-      - manifests
-      - pipeline-configs
-    outputs:
-      - review-report
-      - findings
-      - recommendations
-    consumes_from: [build, test-execution]
-    modes:
-      - pr-review
-      - build-validation
-    dora_caps: [1, 4, 6]
-
   - name: cross-validation
     description: "Validate pairwise consistency between agent outputs and block pipeline if any inconsistency found"
     capabilities:
@@ -143,11 +84,9 @@ agents:
       - design-report
       - build-report
       - test-report
-      - test-execution-report
-      - review-report
     outputs:
       - cross-validation-report
       - validation-results
       - pipeline-decision
-    consumes_from: [spec, design, build, test, test-execution, review]
+    consumes_from: [spec, design, build, test]
     dora_caps: [4, 6]

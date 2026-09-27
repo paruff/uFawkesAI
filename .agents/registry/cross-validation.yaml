@@ -55,18 +55,3 @@ rules:
       source_field: "decision"
       target_field: "implementation"
       similarity_threshold: 0.8
-
-  - rule_id: test-execution-viability
-    source_agent: test
-    target_agent: test-execution
-    validation_type: test_viability
-    description: "All tests must be viable and passing in test-execution"
-    required_sections:
-      - "Test Results"
-      - "Coverage"
-    comparison_logic:
-      extract_keywords: true
-      require_all_keywords: true
-      source_field: "test"
-      target_field: "result"
-      similarity_threshold: 0.7

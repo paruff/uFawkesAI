@@ -28,7 +28,6 @@ human judgment, architectural decisions, or quality accountability.
 | Code generation from PM specs | GitHub Copilot agent | Human review before merge             |
 | Test generation               | `@test-agent`        | Human confirms tests are meaningful   |
 | Documentation generation      | `@docs-agent`        | Human reviews for accuracy            |
-| Code review pre-screening     | `@review-agent`      | Human makes final review decision     |
 | Security scanning             | `@security-agent`    | Human escalates all CRITICAL findings |
 | Debugging assistance          | Copilot Chat         | Human verifies the fix                |
 

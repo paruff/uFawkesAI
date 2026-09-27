@@ -26,8 +26,7 @@ Break the specification and design into clear, actionable tasks and subtasks.
 
 ## Inputs
 
-- `specification.md`
-- `design.md`
+- `docs/ai-sdlc/<feature>/spec.md` (requirements plus its `## Design` section)
 
 ## Outputs
 

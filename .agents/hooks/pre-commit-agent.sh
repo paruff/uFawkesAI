@@ -37,8 +37,7 @@ while IFS= read -r report_path; do
   agent_name=""
   case "$(basename "${report_path}")" in
     build-report.md) agent_name="build" ;;
-    test-report.md) agent_name="test-execution" ;;
-    review-report.md) agent_name="review" ;;
+    test-report.md) agent_name="test" ;;
     design-report.md) agent_name="design" ;;
     spec-report.md) agent_name="spec" ;;
     cross-validation-report.md) agent_name="cross-validation" ;;

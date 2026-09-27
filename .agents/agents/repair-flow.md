@@ -169,7 +169,7 @@ After producing your report, write a structured log entry:
 5. Set `root_cause_category` to the same value reported in `ci-fix-report.md` — this is required even when status is BLOCKED
 6. Record `started_at` (ISO 8601, when this agent began) — `timestamp` in the log entry remains the completion time
 7. Compute `duration_ms` as the difference between `started_at` and completion
-8. **Set `originating_session_id` if known** — the `session_id` of the `feature-flow` (or other flow) invocation that produced the code now being repaired, if that information is available from context. This is now reliably available: `feature-flow.md` (revised) generates and shares a `session_id` across every subagent it invokes, so this field should be populated whenever the broken code came from a feature-flow run using the revised file. This field may still be empty if repair-flow was invoked standalone. This is what links a repair back to the build that caused it.
+8. **Set `originating_session_id` if known** — the `session_id` of the agent run that produced the code now being repaired (for example, a `build` agent log entry), if that information is available from context. It may be empty if the originating run didn't record one. This is what links a repair back to the build that caused it.
 
 ## Finding Severity
 
@@ -186,7 +186,7 @@ This log is required. If the file cannot be written, document why.
 # NOTE — Open decision (plan issue #7)
 
 This file is otherwise unchanged from the version reviewed. One open question
-was not resolved on your behalf: should a repair go through `review` and/or
+was not resolved on your behalf: should a repair go through
 `cross-validation` before being pushed, the same way a normal feature change
 does? Currently it does not — Phase 4 here goes straight from "implement fix"
 to "validate (tests/lint)" with no re-review step. Not obviously wrong either

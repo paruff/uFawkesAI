@@ -20,7 +20,7 @@
 5. VERIFY   → npm run preflight
 6. PR       → Draft PR with AI-Assisted Review Block
 7. CI GATE  → Automated gates must pass
-8. REVIEW   → @review-agent pre-screen → human review (< 24h target)
+8. REVIEW   → CI gates pass → human review (< 24h target)
 9. MERGE    → Squash merge with conventional commit
 10. DEPLOY  → Automated deploy on merge
 ```
@@ -117,11 +117,9 @@ git push -u origin feat/ISSUE-ID-description
 # Select: PULL_REQUEST_TEMPLATE.md
 ```
 
-Fill in every section of the AI-Assisted Review Block:
-
-```
-@review-agent Please pre-screen this PR against .github/copilot-instructions.md
-```
+Fill in every section of the AI-Assisted Review Block. Copilot can help
+draft it against `.github/copilot-instructions.md`; a human makes the review
+decision.
 
 ---
 

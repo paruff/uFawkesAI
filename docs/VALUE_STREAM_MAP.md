@@ -33,7 +33,7 @@ flowchart LR
 | Issue Created    | —                  | 15 min            | Vague spec                  | PM uses Copilot to draft AC  |
 | Spec Written     | [PLACEHOLDER]      | [PLACEHOLDER]     | Missing acceptance criteria | —                            |
 | Agent Implements | 0 (async)          | [PLACEHOLDER]     | Architecture violation      | Copilot implements from spec |
-| Human Review     | **[MEASURE THIS]** | [PLACEHOLDER]     | Unclear diff                | @review-agent pre-screens    |
+| Human Review     | **[MEASURE THIS]** | [PLACEHOLDER]     | Unclear diff                | CI gates + smaller PRs       |
 | CI Gates         | 0                  | [target: < 4 min] | Test failure                | Automated                    |
 | Merge            | [PLACEHOLDER]      | 5 min             | Merge conflict              | —                            |
 | Deploy           | [PLACEHOLDER]      | [PLACEHOLDER]     | Build error                 | Automated                    |

@@ -12,7 +12,7 @@ AI agents start every session blank. They do not know your conventions, architec
 - `AGENTS.md` — universal agent instruction file, auto-loaded by Copilot, Claude Code, Cursor, Codex, Gemini CLI, Windsurf, and Devin
 - `CLAUDE.md` symlink — so Claude Code gets the same instructions without a separate file
 - `.github/copilot-instructions.md` symlink — Copilot's preferred path
-- `.agents/agents/` — 14 agent profiles: 7 core pipeline agents (spec, design, build, test, test-execution, review, cross-validation) + 7 flow/meta agents
+- `.agents/agents/` — 10 agent profiles: 5 core pipeline agents (spec, design, build, test, cross-validation) + 5 flow/meta agents
 - `.github/instructions/` — scoped instruction files for feature and test work
 - `docs/PROMPT_LIBRARY.md` — tested prompts for every repeating task, versioned
 - `docs/GOLDEN_PATH.md` — 10-step idea→deploy workflow

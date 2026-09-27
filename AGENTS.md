@@ -23,7 +23,7 @@
 **Product:** uFawkesAI — an agent orchestration framework for platform engineering, packaged as a template so its patterns (agents, skills, hooks, rules, dual-harness config) are directly reusable by other projects.
 **Stack:** TypeScript · Node 20 · GitHub Actions · OpenTelemetry
 **Harnesses:** OpenCode and Claude Code are first-class, dual-verified by `scripts/dual-harness-smoke.sh` in CI (see `docs/ai-sdlc/spec.md` R1); Cursor/Copilot/Gemini compatibility files are kept in sync automatically via symlink to this file.
-**Key constraints:** 7 core pipeline agents + 7 flow/meta agents (14 total, see `.agents/README.md`), 31 skill areas, humans = routing layer
+**Key constraints:** 5 core pipeline agents + 5 flow/meta agents (10 total, see `.agents/README.md`), 31 skill areas, humans = routing layer
 
 ---
 
@@ -59,19 +59,22 @@ Invoke the most relevant agent directly:
 | "Design architecture for..."          | `@design`           | "Design architecture for payment processing"     |
 | "Implement feature X"                 | `@build`            | "Implement the login form component"             |
 | "Write tests for..."                  | `@test`             | "Write tests for the auth service"               |
-| "Run tests and check coverage"        | `@test-execution`   | "Run all tests and report coverage"              |
-| "Review this PR"                      | `@review`           | "Review PR #42 for security and quality"         |
 | "Validate all outputs are consistent" | `@cross-validation` | "Cross-validate spec, design, and build outputs" |
 
 ### Pipeline Sequence
 
 ```
-spec → design → build → [test-execution || review] → cross-validation
-  │                    ↑
-  └──── test ──────────┘
+spec → design → build → cross-validation
+  │                ↑
+  └──── test ──────┘
 ```
 
-7 more flow/meta agents (`discover`, `discovery-flow`, `feature-flow`, `learn`, `measure`, `release`, `repair-flow`) live in `.agents/agents/` — see `.agents/README.md` for the full routing table; omitted here to keep this always-loaded file lean.
+Test runs and PR review are not agent stages: CI (`✅ CI Complete`, required
+on `main`) runs every test, and a human reviews and merges every PR. The
+`test-execution`, `review`, `feature-flow`, and `discovery-flow` agents were
+retired 2026-09-27; the `test-execution` and `review` *skills* remain.
+
+5 more flow/meta agents (`discover`, `learn`, `measure`, `release`, `repair-flow`) live in `.agents/agents/` — see `.agents/README.md` for the full routing table; omitted here to keep this always-loaded file lean.
 
 ---
 
@@ -104,7 +107,7 @@ spec → design → build → [test-execution || review] → cross-validation
 
 - Runner: `.agents/assertions/cross-validation-runner.sh`
 - Output: `.agents/logs/cross-validation-report.md`
-- Validates 4 rules: spec-build, spec-test, design-build, test-test-execution
+- Validates 3 rules: spec-build, spec-test, design-build. Whether tests pass is CI's job, not a rule here.
 
 ### Assertion Runner
 

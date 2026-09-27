@@ -100,7 +100,7 @@ Common bottleneck patterns in solo-entrepreneur IDP work:
 
 | Pattern                                        | Root cause                      | Intervention                                           |
 | ---------------------------------------------- | ------------------------------- | ------------------------------------------------------ |
-| Review stage is the bottleneck                 | No reviewers — solo contributor | Automate review with review agent + code-quality skill |
+| Review stage is the bottleneck                 | No reviewers — solo contributor | Shrink review with CI gates + code-quality skill |
 | Release stage is the bottleneck                | Manual release steps            | Automate with release skill                            |
 | Verify stage is the bottleneck                 | Thin test suite, high CFR       | j-curve-navigation + test investment                   |
 | Learn stage is the bottleneck                  | No feedback mechanism           | platform-feedback skill + quarterly cadence            |

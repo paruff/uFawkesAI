@@ -27,8 +27,7 @@ Identify risks early in the planning process.
 
 ## Inputs
 
-- `specification.md`
-- `design.md`
+- `docs/ai-sdlc/<feature>/spec.md` (requirements plus its `## Design` section)
 - `tasks.json`
 
 ## Outputs

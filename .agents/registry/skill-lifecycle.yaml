@@ -5,7 +5,7 @@
 # Status values: active, stable, beta, draft, deprecated, experimental
 # Version follows semver.
 #
-# Core Pipeline: spec → design → build → test → test-execution → review → delivery
+# Core Pipeline: spec → design → build → test → cross-validation (tests run in CI; PRs are human-reviewed)
 
 skills:
   # ============================================

@@ -96,7 +96,7 @@ Load the relevant skill for stack-specific tooling:
 
 `live-system` tests should be placed in a clearly separate directory (e.g.
 `tests/live/` or `tests_live/`) so they are trivially distinguishable from
-unit/integration tests and can be run as their own suite by `test-execution`.
+unit/integration tests and can be run as their own suite in CI.
 
 Never create a new testing convention without noting it in `docs/ARCHITECTURE.md`.
 
@@ -146,7 +146,7 @@ After producing your report, write a structured log entry:
 2. Follow the schema in `.agents/schema/skill-invocation-log.json`
 3. Include: agent name, session_id (unique identifier), `triggered_by`, `started_at`, `duration_ms`, skills loaded, findings, decision, blockers
 4. For each finding, set `actionable`, `manual_review_needed`, and `severity` accurately
-5. Set `triggered_by` to whichever orchestrator invoked this agent: `"feature-flow"`, `"repair-flow"`, `"discovery-flow"`, or `"manual"` if invoked directly by the user
+5. Set `triggered_by` to the orchestrating agent's name if another agent invoked this one (e.g. `"repair-flow"`), or `"manual"` if invoked directly by the user
 6. Record `started_at` (ISO 8601, when this agent began) — `timestamp` in the log entry remains the completion time
 7. Compute `duration_ms` as the difference between `started_at` and completion
 8. Record the count of tests written by `test_type` (`unit` / `integration` / `live-system`) — this lets you later audit whether live-system tests are actually being produced, not just theoretically supported
