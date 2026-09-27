@@ -32,6 +32,10 @@ jobs:
       - name: Self-test the checker
         run: bash scripts/test-artifact-chain.sh
 
+      # The Dojo loop's feedback → intent converter (docs/ai-sdlc/dojo-handoff.md)
+      - name: Self-test the Dojo feedback converter
+        run: bash scripts/test-dojo-feedback-intent.sh
+
       - name: Check this PR's artifact chain
         if: github.event_name == 'pull_request'
         env:

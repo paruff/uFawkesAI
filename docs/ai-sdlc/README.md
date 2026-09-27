@@ -15,6 +15,12 @@ Each feature gets its own directory: `docs/ai-sdlc/<feature>/intent.md`,
 `intent.md` and writes `spec.md`; `@design` reads `spec.md` and writes
 `plan.md`; `@build` reads `plan.md` and writes the code diff.
 
+## Closing the loop — Dojo
+
+A completed chain becomes a uFawkesDojo lab, and the lab's findings become
+the next `intent.md` within one sprint: see [`dojo-handoff.md`](dojo-handoff.md)
+(`dojo-feedback` skill → `dojo-feedback.md` → `intent` issue).
+
 ## Enforced in CI
 
 `.github/workflows/artifact-chain.yml` runs `scripts/check-artifact-chain.sh`
