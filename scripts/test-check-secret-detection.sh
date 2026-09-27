@@ -19,7 +19,7 @@
 # Exit:  0 all cases behaved as specified, 1 otherwise.
 
 set -uo pipefail
-cd "$(dirname "$0")/.."
+cd "$(dirname "$0")/.." || exit 1
 
 VALIDATOR="scripts/check-secret-detection.sh"
 # Fixtures live OUTSIDE the repository. Inside it, the planted credentials were
@@ -120,6 +120,7 @@ expect "pragma allowlist suppresses an assigned finding" 0 \
 expect "changeme value is a placeholder" 0 'DB_PASSWORD=changeme'
 expect "example value is a placeholder" 0 'API_KEY=example-key-value'
 expect "redacted value is a placeholder" 0 'TOKEN=<redacted>'
+# shellcheck disable=SC2016 # single quotes are required: the literal ${...} must reach the validator unexpanded
 expect "interpolated value is a placeholder" 0 'TOKEN=${SERVICE_TOKEN}'
 expect "angle-bracket value is a placeholder" 0 'PASSWORD=<your-password-here>'
 expect "xxx-masked value is a placeholder" 0 'SECRET=xxxxxxxxxxxxxxxxxxxx'
@@ -132,6 +133,7 @@ expect "schema example password string is not a secret" 0 '"password": "string"'
 expect "prose about tokens is not a secret" 0 \
   'Use the token-budget skill to control token cost during a session.'
 
+# shellcheck disable=SC2016 # the single-quoted regex must reach the validator unexpanded
 expect "the skill pattern table itself does not self-trigger" 0 \
   '| GitHub Tokens | `ghp_[0-9a-zA-Z]{36}`       |'
 

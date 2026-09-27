@@ -202,7 +202,6 @@ done
 # case-INSENSITIVE because real assignments are conventionally uppercase env vars
 # (PASSWORD=, TOKEN=) and would otherwise never be seen by a case-sensitive
 # sweep. So they are two passes, not one.
-COMBINED_RE="${SHAPED_ONLY_RE}|${ASSIGN_RE}"
 
 # Classify one already-matched line. Echoes nothing and returns 1 to skip.
 classify() {
@@ -223,7 +222,7 @@ classify() {
     # is too weak, so the value has to earn the finding.
     if printf '%s' "$body" | LC_ALL=C grep -qiE -e "$PLACEHOLDER_SUBSTR"; then return 1; fi
     if printf '%s' "$body" | LC_ALL=C grep -qiE -e "$REFERENCE_RE"; then return 1; fi
-    hval="$(printf '%s' "$body" | tr 'A-Z' 'a-z' |
+    hval="$(printf '%s' "$body" | tr '[:upper:]' '[:lower:]' |
       grep -oE "${LC_KEYWORDS}[\"']?[[:space:]]*[:=][[:space:]]*[\"']?${ASSIGN_VALUE}" |
       head -1 |
       sed -E "s/^${LC_KEYWORDS}[\"']?[[:space:]]*[:=][[:space:]]*[\"']?//")"
