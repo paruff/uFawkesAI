@@ -64,20 +64,21 @@ jobs:
           done
 
       # Report-only on PRs/pushes (a newly published CVE must not block
-      # unrelated work); fails on the weekly run so fixable CVEs surface.
-      # The release workflow gates publishing on the same scan.
-      - name: Trivy scan — CRITICAL/HIGH with a fix available
+      # unrelated work); the gate fails on the weekly run so fixable CVEs in
+      # repo-controlled packages surface. Same policy as the release gate.
+      - name: Trivy — report whole image, gate repo-controlled packages
         env:
-          EXIT_CODE: ${{ github.event_name == 'schedule' && '1' || '0' }}
+          GATE_EXIT: ${{ github.event_name == 'schedule' && '1' || '0' }}
         run: |
+          mkdir -p scan-out
           docker run --rm --user root \
             -v /var/run/docker.sock:/var/run/docker.sock \
-            -v "$PWD/images/devsecops/.trivyignore:/trivyignore:ro" \
+            -v "$PWD/images/devsecops:/devsecops:ro" -v "$PWD/scan-out:/out" \
             ufawkes-devsecops-core:ci \
-            trivy image --no-progress --scanners vuln \
-              --severity CRITICAL,HIGH --ignore-unfixed \
-              --ignorefile /trivyignore --exit-code "$EXIT_CODE" \
-              ufawkes-devsecops-ai:ci
+            /devsecops/scan.sh ufawkes-devsecops-ai:ci "$GATE_EXIT"
+      - name: Trivy report to summary
+        if: always()
+        run: cat scan-out/trivy-report.md >>"$GITHUB_STEP_SUMMARY" 2>/dev/null || true
 
       # ai contains every lower layer, so its fingerprint covers all variants.
       - name: Determinism — rebuild without cache and compare

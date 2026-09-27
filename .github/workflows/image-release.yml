@@ -2,8 +2,10 @@ name: DevSecOps Image — Release
 
 # Publishes ghcr.io/paruff/ufawkes-devsecops-{core,gitops,ai} when a human
 # pushes a tag `image-vX.Y.Z` (docs/ai-sdlc/devsecops-image/spec.md R5/R6):
-#   1. per arch (native runners): build, verify offline, Trivy gate
-#      (CRITICAL/HIGH with a fix available → fail, except .trivyignore),
+#   1. per arch (native runners): build, verify offline, Trivy gate on
+#      what this repo controls (Debian + locked Python/npm deps: fixable
+#      CRITICAL/HIGH → fail, except .trivyignore; upstream binaries are
+#      reported, not gated — images/devsecops/scan.sh),
 #      push `:X.Y.Z-<arch>`, SPDX SBOM (syft) attested to each arch digest;
 #   2. merge arches into `:X.Y.Z`, `:X.Y`, `:X` indexes, keyless-sign each
 #      index with cosign (GitHub OIDC), attest SLSA build provenance.
@@ -85,17 +87,20 @@ jobs:
               "ufawkes-devsecops-$v:release" /tests/verify-tools.sh "$v"
           done
 
-      # ai contains every package of core and gitops, so one scan gates all.
-      - name: Trivy gate — CRITICAL/HIGH with a fix available
+      # ai contains every package of core and gitops, so one scan covers all.
+      # Gate = Debian + locked Python/npm deps; upstream binaries report-only
+      # (policy in images/devsecops/scan.sh).
+      - name: Trivy — report whole image, gate repo-controlled packages
         run: |
+          mkdir -p scan-out
           docker run --rm --user root \
             -v /var/run/docker.sock:/var/run/docker.sock \
-            -v "$PWD/images/devsecops/.trivyignore:/trivyignore:ro" \
+            -v "$PWD/images/devsecops:/devsecops:ro" -v "$PWD/scan-out:/out" \
             ufawkes-devsecops-core:release \
-            trivy image --no-progress --scanners vuln \
-              --severity CRITICAL,HIGH --ignore-unfixed \
-              --ignorefile /trivyignore --exit-code 1 \
-              ufawkes-devsecops-ai:release
+            /devsecops/scan.sh ufawkes-devsecops-ai:release 1
+      - name: Trivy report to summary
+        if: always()
+        run: cat scan-out/trivy-report.md >>"$GITHUB_STEP_SUMMARY" 2>/dev/null || true
 
       - uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
         with:

@@ -128,6 +128,13 @@ Deviations from the layout above, made while building PR 1:
   `image-vX.Y.Z` tags. `packages: write`, `id-token: write` and
   `attestations: write` exist only there, so PR builds never hold them. It
   refuses a tag whose commit is not on `main`.
+- **Gate scope (owner decision)**: `images/devsecops/scan.sh` reports every
+  fixable CRITICAL/HIGH across the image (run summary table) but gates only
+  Debian and the locked Python/npm deps. The first scan found 0 Debian
+  findings and ≈ 200 in 13 upstream Go binaries, mostly the Go stdlib (incl.
+  CRITICAL CVE-2025-68121 in gitleaks and kustomize), with every tool already
+  at its latest release, so a full gate would block every release on fixes
+  only upstream can ship.
 - **Scan and SBOM use the image's own tools**: trivy and syft run from the
   freshly built `core` image via the Docker socket, not third-party actions.
   The Trivy gate scans `ai` only, because it contains every package of

@@ -43,8 +43,14 @@ tool set at the same versions:
 **R5 — Supply-chain integrity.** Every published image is:
 
 - multi-arch (`linux/amd64`, `linux/arm64`);
-- scanned (Trivy) before push — publish fails on CRITICAL/HIGH with a fix
-  available, with a reviewed `.trivyignore` for accepted risk;
+- scanned (Trivy) before push. The **gate** fails on CRITICAL/HIGH with a fix
+  available in what this repo controls: Debian packages (apt snapshot) and
+  the locked Python/npm deps. Upstream prebuilt binaries are **reported, not
+  gated**: their findings (mostly Go stdlib compiled into the release) need an
+  upstream rebuild, which the lock-bump workflow picks up. Owner decision
+  2026-09-27, after PR 3's first scan found ≈ 200 such findings across 13
+  tools, all already at their latest releases, and 0 in Debian. Accepted
+  exceptions go in a reviewed `.trivyignore` with reason and expiry.
 - accompanied by an SPDX SBOM and SLSA build-provenance attestation;
 - keyless-signed with cosign via GitHub OIDC (no stored keys — Hard Rule 1).
 
