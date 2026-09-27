@@ -103,6 +103,26 @@ Deviations from the layout above, made while building PR 1:
 - `pre-commit-hooks` 6.0.0 was added to the Python pins, since the baseline's
   hygiene hooks call its console scripts.
 
+## Implementation notes (PR 2)
+
+- **Claude Code is not baked into `ai`.** Its package licence reads "© Anthropic
+  PBC. All rights reserved. Use is subject to the Legal Agreements…", with no
+  permission to redistribute, so the spec's licence fallback applies: the
+  devcontainer installs the pinned version from npm at create time (PR 4).
+  The image sets a user-writable `NPM_CONFIG_PREFIX` so that needs no sudo.
+  If a legal review allows redistribution, add it back as a lock or npm entry.
+- **OpenCode comes from its GitHub release, not npm.** The npm package's
+  `postinstall` chooses the AVX2 or baseline binary based on the *build host's*
+  CPU (non-deterministic), and npm also installs every musl/baseline variant
+  (≈ 727 MB). The lock pins one binary per arch. amd64 uses the baseline build,
+  which runs on any x64 CPU. No upstream checksum file exists; the pinned
+  binaries were confirmed byte-identical to the npm-published ones.
+- **checkov has its own venv** (`/opt/ufawkes/venv-gitops`) so its deps can't
+  conflict with semgrep's in the core venv.
+- **Trust-on-first-use pins** now: shellcheck, shfmt, zizmor, age, opencode.
+- kubectl, kubeconform, kind, flux and argocd get version checks only: every
+  offline accept/reject test for them needs a cluster, schema downloads or Docker.
+
 ## Lock file format
 
 ```yaml

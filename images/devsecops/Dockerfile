@@ -27,10 +27,22 @@ RUN sed -i \
 FROM base AS fetch
 # hadolint ignore=DL3008
 RUN apt-get update \
- && apt-get install -y --no-install-recommends ca-certificates curl jq xz-utils \
+ && apt-get install -y --no-install-recommends ca-certificates curl jq unzip xz-utils \
  && rm -rf /var/lib/apt/lists/*
 COPY tools.lock.json install-tools.sh /build/
-RUN /build/install-tools.sh /build/tools.lock.json core /out
+RUN /build/install-tools.sh /build/tools.lock.json core /out/core
+
+# Each later variant starts from the previous variant's manifest, so
+# /etc/ufawkes/tools.json always lists every tool the image contains.
+FROM fetch AS fetch-gitops
+RUN mkdir -p /out/gitops/etc \
+ && cp -a /out/core/etc/ufawkes /out/gitops/etc/ \
+ && /build/install-tools.sh /build/tools.lock.json gitops /out/gitops
+
+FROM fetch-gitops AS fetch-ai
+RUN mkdir -p /out/ai/etc \
+ && cp -a /out/gitops/etc/ufawkes /out/ai/etc/ \
+ && /build/install-tools.sh /build/tools.lock.json ai /out/ai
 
 # ── core: pre-commit, linters, secret/vuln/SAST scanners ───────────────────
 FROM base AS core
@@ -46,7 +58,7 @@ RUN apt-get update \
  && rm -rf /var/lib/apt/lists/* \
  && git config --system --add safe.directory '*'
 
-COPY --from=fetch /out/ /
+COPY --from=fetch /out/core/ /
 
 COPY python/requirements.lock /opt/ufawkes/python/requirements.lock
 RUN uv venv --python /usr/bin/python3 /opt/ufawkes/venv \
@@ -66,3 +78,38 @@ LABEL org.opencontainers.image.source="https://github.com/paruff/uFawkesAI" \
       org.opencontainers.image.description="uFawkes DevSecOps toolchain (core): pre-commit, linters, secret/vuln/SAST scanners" \
       org.opencontainers.image.licenses="MIT"
 CMD ["bash"]
+
+# ── gitops: + Kubernetes, GitOps, IaC, policy-as-code, secrets-in-Git ──────
+FROM core AS gitops
+COPY --from=fetch-gitops /out/gitops/ /
+# checkov gets its own venv so its deps never conflict with semgrep's.
+COPY python/requirements-gitops.lock /opt/ufawkes/python/requirements-gitops.lock
+COPY python/requirements-gitops.in /etc/ufawkes/requirements-gitops.in
+RUN uv venv --python /usr/bin/python3 /opt/ufawkes/venv-gitops \
+ && uv pip install --python /opt/ufawkes/venv-gitops --require-hashes \
+      -r /opt/ufawkes/python/requirements-gitops.lock \
+ && ln -s /opt/ufawkes/venv-gitops/bin/checkov /usr/local/bin/checkov
+LABEL org.opencontainers.image.description="uFawkes DevSecOps toolchain (gitops): core + Kubernetes, GitOps, IaC and policy-as-code tools"
+
+# ── ai: + agent harness, non-root devcontainer user ───────────────────────
+# Claude Code is not baked in: its licence reserves all rights, so the
+# devcontainer installs the pinned version from npm at create time (spec R2
+# fallback). NPM_CONFIG_PREFIX lets `dev` do that without sudo.
+FROM gitops AS ai
+ARG DEV_USER=dev
+ARG USER_UID=1000
+COPY --from=fetch-ai /out/ai/ /
+# hadolint ignore=DL3008
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends less sudo vim-tiny zsh \
+ && rm -rf /var/lib/apt/lists/* \
+ && groupadd --gid "${USER_UID}" "${DEV_USER}" \
+ && useradd --uid "${USER_UID}" --gid "${USER_UID}" --create-home --shell /usr/bin/zsh "${DEV_USER}" \
+ && echo "${DEV_USER} ALL=(ALL) NOPASSWD:ALL" >"/etc/sudoers.d/${DEV_USER}" \
+ && chmod 0440 "/etc/sudoers.d/${DEV_USER}"
+ENV NPM_CONFIG_PREFIX=/home/${DEV_USER}/.npm-global \
+    PATH=/home/${DEV_USER}/.npm-global/bin:$PATH
+LABEL org.opencontainers.image.description="uFawkes DevSecOps toolchain (ai): gitops + OpenCode, devcontainer user"
+USER ${DEV_USER}
+WORKDIR /home/${DEV_USER}
+CMD ["zsh"]
