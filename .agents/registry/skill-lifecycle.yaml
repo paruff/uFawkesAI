@@ -49,7 +49,6 @@ skills:
       - plan/dependency-mapping
       - plan/effort-estimation
       - plan/risk-identification
-      - plan/skill-matching
       - plan/governance-alignment
 
   test:
@@ -114,13 +113,17 @@ skills:
       - build-validation
 
   delivery:
-    status: stable
+    # Truth fix: this skill has no directory under .agents/skills/, so
+    # "status: stable" + "load delivery skill" pointed at nothing. It is a
+    # planned skill, not a shipped one.
+    status: planned
     version: 1.1.0
     dependencies:
       - build
       - review
     load_trigger: "load delivery skill"
     sub_skills: []
+    missing: "no .agents/skills/delivery/ — load_trigger cannot resolve"
 
   # ============================================
   # Cross-Cutting Skills
@@ -181,17 +184,6 @@ skills:
   # ============================================
   # Testing Skills
   # ============================================
-
-  unit-testing:
-    status: active
-    version: 1.0.0
-    dependencies: []
-    load_trigger: "load unit-testing skill"
-    sub_skills:
-      - unit-testing/unit-contracts
-      - unit-testing/unit-core-logic
-      - unit-testing/unit-error-handling
-      - unit-testing/unit-mocking
 
   integration-testing:
     status: active
@@ -305,7 +297,6 @@ skills:
     dependencies: []
     load_trigger: "load dev-experience skill"
     sub_skills:
-      - dev-experience/cli-scaffolding
       - dev-experience/dev-container-setup
       - dev-experience/local-environment-simulation
       - dev-experience/workspace-bootstrap

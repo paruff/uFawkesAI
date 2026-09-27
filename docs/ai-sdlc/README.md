@@ -11,9 +11,11 @@ Each artifact is versioned and should be committed in a PR (or attached to the f
 - `plan.md`: executable implementation sequence and verification strategy
 
 Each feature gets its own directory: `docs/ai-sdlc/<feature>/intent.md`,
-`spec.md`, `plan.md`. The agents hand off along the chain: `@spec` reads
-`intent.md` and writes `spec.md`; `@design` reads `spec.md` and writes
-`plan.md`; `@build` reads `plan.md` and writes the code diff.
+`spec.md`, `plan.md`. The chain is carried by two agents and their skills:
+`@planner` reads `intent.md`, loads the `discover`, `spec`, `design`, and
+`plan` skills, and writes `spec.md` and `plan.md`; `@builder` reads `plan.md`,
+loads `build` and `test`, and writes the code diff. `@verifier` then checks the
+diff against those artifacts, and `@operator` ships it.
 
 ## Closing the loop — Dojo
 

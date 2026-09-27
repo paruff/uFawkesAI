@@ -37,6 +37,10 @@ Scan JavaScript/TypeScript dependencies for vulnerabilities.
 trivy fs --scanners vuln --format json package-lock.json
 ```
 
+**Enforcement: partial.** `dependency-review.yml` gates newly introduced
+vulnerable or unlicensed dependencies only. These criteria are reported, not
+enforced.
+
 ## Validation Rules
 
 - [ ] package-lock.json exists

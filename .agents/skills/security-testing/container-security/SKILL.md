@@ -50,6 +50,10 @@ Ensure container images built by PIPE are secure, minimal, and free of vulnerabi
 | Ports       | Only required ports exposed |
 | Secrets     | No secrets in image layers  |
 
+**Enforcement: advisory.** Trivy runs in `image-build.yml` and
+`image-release.yml` but only appends to the job summary (`|| true`). These
+criteria are reported, not enforced.
+
 ## Validation Rules
 
 - [ ] No critical vulnerabilities

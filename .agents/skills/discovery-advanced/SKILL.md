@@ -107,7 +107,7 @@ Decision: [what you're building and why]
 
 ## Method 4: Assumption Autopsy (30 min)
 
-When a previous release didn't get adopted. Use the learn agent's discovery accuracy
+When a previous release didn't get adopted. Use the `learn` skill's discovery accuracy
 record as the starting point.
 
 ```markdown
@@ -115,7 +115,7 @@ record as the starting point.
 
 1. Original riskiest assumption: [from discovery-brief.md]
 2. Was it validated before building? [Yes / No / Partially]
-3. What actually happened after release: [from learn agent retrospective]
+3. What actually happened after release: [from `learn` skill retrospective]
 4. The assumption that was actually wrong: [identify the real failure]
 5. What we should have done differently: [updated assumption + validation method]
 6. Impact on next increment: [how this changes the discovery brief for the next version]
@@ -142,7 +142,7 @@ gh run list --repo paruff/REPO_NAME --status failure --limit 20
 ```
 
 Categorize findings into friction themes (same categories as `platform-feedback` skill).
-Each theme with >2 data points becomes a plan agent action item.
+Each theme with >2 data points becomes an `@planner` action item.
 
 ## Output: Updated Discovery Brief
 

@@ -1,6 +1,6 @@
 ---
 name: context-engineering
-description: "Ensure graphify corpus is current and complete before each agent session. Define minimum AI-accessible documentation per repo. Use at session startup to verify internal context is available to AI tools. Implements DORA AI Capability 3."
+description: "Ensure the internal context an agent needs is current, complete, and placeholder-free before each session. Define minimum AI-accessible documentation per repo. Use at session startup to verify internal context is available to AI tools. Implements DORA AI Capability 3."
 license: MIT
 compatibility: Claude Code, GitHub Copilot, OpenCode, Cursor, Codex, Gemini CLI
 metadata:
@@ -25,22 +25,6 @@ and codebases moves it from a generic assistant to a specialized expert."
 
 This skill eliminates the "re-discover context every session" tax — particularly
 costly at 2hrs/day across an 8-repo portfolio.
-
-## Graphify Variant Note
-
-**⚠ Confirm before use:** Two different tools share the name "graphify":
-
-- `safishamsi/graphify` — knowledge graph from code structure
-- `rhanka/graphify` — graph visualization tool
-
-These have different CLI syntax. This skill uses `[graphify-cli]` as a placeholder.
-Replace with the actual command after confirming which variant is installed:
-
-```bash
-# Check which is installed
-which graphify && graphify --version
-# Or check package.json / pyproject.toml for the dependency
-```
 
 ## Minimum Corpus per Repo
 
@@ -80,11 +64,7 @@ Run at the start of every opencode session involving more than one file change.
 Takes under 2 minutes. Prevents context-blind agent decisions.
 
 ```bash
-# 1. Check corpus last-built timestamp
-# [graphify-cli] status --repo . --json | jq '.last_built'
-# Warn if > 24 hours stale
-
-# 2. Verify minimum corpus files exist
+# 1. Verify minimum corpus files exist
 for f in README.md AGENTS.md CONTRIBUTING.md AI_STANCE.md CHANGELOG.md; do
   [ -f "$f" ] || echo "CORPUS GAP: $f missing"
 done
@@ -97,11 +77,8 @@ done
 [ -f "tests/README.md" ] || [ -f "tests/TESTING.md" ] || \
   echo "CORPUS GAP: test suite documentation missing"
 
-# 3. Check AGENTS.md references current skill list
+# 2. Check AGENTS.md references current skill list
 # (Agent should read AGENTS.md and verify all listed skills exist in .agents/skills/)
-
-# 4. Rebuild corpus if stale or gaps found
-# [graphify-cli] build --repo . --include "*.md,*.yaml,*.yml,*.json" --exclude "node_modules,vendor,.git"
 ```
 
 ## Corpus Quality Signals
@@ -149,4 +126,3 @@ Emit these telemetry spans (integrates with `agent-observability` skill):
 | ----------------------------- | ---------------------------------------------- |
 | `context-engineering/startup` | Run the session startup checklist              |
 | `context-engineering/audit`   | Full corpus audit across all 8 uFawkes\* repos |
-| `context-engineering/rebuild` | Force corpus rebuild with current file set     |

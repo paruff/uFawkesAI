@@ -1,0 +1,59 @@
+name: Agent Skill CI
+
+# Makes the agent-skill contracts executable. Previously the skills under
+# .agents/skills were documentation only: nothing in .github/workflows
+# referenced them, so a skill could claim a validation rule that nothing
+# enforced. This workflow is the first enforcement point.
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  agent-skill-ci:
+    name: "🤖 Agent Skill CI"
+    runs-on: ubuntu-latest
+    steps:
+      - name: job-start
+        run: echo "job-start $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+
+      - uses: actions/checkout@v7
+
+      - name: Prove the secret-detection validator can still go red
+        # Run the suite BEFORE the repo scan. A blocking validator that has
+        # never been shown to fail is a control that silently stops working the
+        # first time someone loosens a pattern, so the suite runs first: if the
+        # planted-secret cases stop failing, the job fails here rather than
+        # passing on a repo that happens to be clean.
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq jq
+          ./scripts/test-check-secret-detection.sh
+
+      - name: Enforce secret-detection contract
+        # Exit 1 on any credential-shaped finding, so the PR is blocked.
+        # Complements .github/workflows/secret-scan.yml (gitleaks); it does not
+        # replace it.
+        shell: bash
+        run: |
+          set -euo pipefail
+          ./scripts/check-secret-detection.sh
+
+      - name: Publish secrets.json
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: secret-detection-report
+          path: .agents/logs/secret-detection.json
+          if-no-files-found: warn
+
+      - name: job-finish
+        if: always()
+        run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ')"

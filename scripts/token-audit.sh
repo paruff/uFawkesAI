@@ -168,7 +168,6 @@ if [[ ! -f ".copilotignore" ]]; then
   echo ""
 fi
 
-echo -e "  ${BLUE}→ Read docs/COPILOT_COST_GUIDE.md for the full playbook${NC}"
 echo -e "  ${BLUE}→ Read docs/MODEL_ROUTING_GUIDE.md before your next agent task${NC}"
 echo ""
 

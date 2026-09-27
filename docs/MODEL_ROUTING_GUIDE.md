@@ -159,6 +159,6 @@ Learning the right habits before you code prevents expensive retries:
 
 ## Related Files
 
-- `docs/COPILOT_COST_GUIDE.md` — full billing explanation (GitHub Copilot users)
+- `scripts/token-audit.sh` — measure your own token footprint before committing to a mode
 - `.agents/skills/model-routing/SKILL.md` — agent-loadable version of this guide
 - `docs/PROMPT_LIBRARY.md` — every prompt has a `Recommended model:` field

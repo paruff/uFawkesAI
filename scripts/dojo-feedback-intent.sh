@@ -143,7 +143,7 @@ ${gap_titles}
 
 **Next step (due ${due}, one sprint = ${sprint_days} days):** commit the draft below as
 \`${intent_path}\` in a PR whose description says \`Closes #<this issue>\`, then
-continue with \`@spec\`. Edit the draft freely — humans decide the intent.
+continue with the \`spec\` stage. Edit the draft freely — humans decide the intent.
 
 <details><summary>Draft <code>${intent_path}</code></summary>
 

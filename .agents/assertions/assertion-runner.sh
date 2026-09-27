@@ -49,8 +49,13 @@ with open(contract_path) as f:
 
 contract = all_contracts.get("agents", {}).get(agent_name, {})
 if not contract:
-    print("No contract defined for agent '{}' — nothing to validate.".format(agent_name))
-    sys.exit(0)
+    # Was: printed "nothing to validate" and exited 0. A caller with a typo'd or
+    # retired contract name therefore got a PASS for a report nobody checked —
+    # a gate that cannot fail. Unknown keys are now a hard error.
+    print("FAIL: no contract named '{}' in the contract file.".format(agent_name))
+    print("      Known contracts: {}".format(
+        ", ".join(sorted(all_contracts.get("agents", {}).keys()))))
+    sys.exit(1)
 
 with open(report_path) as f:
     content = f.read()

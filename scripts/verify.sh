@@ -110,10 +110,8 @@ fi
 
 # Key docs exist
 section "  Key Documentation"
-for doc in docs/COPILOT_COST_GUIDE.md docs/MODEL_ROUTING_GUIDE.md \
-           docs/METRICS.md docs/GOLDEN_PATH.md \
-           docs/COPILOT_BILLING_HANDOFF_PROMPT_LOCAL.md \
-           docs/COPILOT_BILLING_HANDOFF_PROMPT_SCRIPTS.md; do
+for doc in AI_STANCE.md docs/MODEL_ROUTING_GUIDE.md \
+           docs/METRICS.md docs/GOLDEN_PATH.md; do
   if [[ -f "$doc" ]]; then
     pass "$doc"
   else

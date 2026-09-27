@@ -42,7 +42,7 @@ budget for the learning phase — and these control systems are that budget.
 | `CLAUDE.md`                                    | Claude Code — primary config file | Symlink to AGENTS.md                                                         |
 | `.cursorrules`                                 | Cursor — primary config file      | Symlink to AGENTS.md                                                         |
 | `.agents/agents/` (14 files)                   | AI Cap 2 — Prompt Engineering     | Specialist agent profiles: 7 core pipeline agents (spec, design, build, test, test-execution, review, cross-validation) + 7 flow/meta agents — see `.agents/README.md` |
-| `.agents/agents/review.md`                     | DORA 2025 — Review Speed          | PR review + build validation specialist (REVIEW-01)                          |
+| `.agents/agents/verifier.md`                   | DORA 2025 — Review Speed          | Evidence gate: runs the `review` and `cross-validation` skills (REVIEW-01)   |
 | `.github/instructions/feature.instructions.md` | AI Cap 3                          | Scoped to src/\*\*; injected for feature work                                |
 | `.github/instructions/testing.instructions.md` | AI Cap 3                          | Scoped to tests/\*\*; injected for test work                                 |
 | `.github/PULL_REQUEST_TEMPLATE.md`             | DORA 2025 — Review Speed          | Structured AI-Assisted Review Block (REVIEW-01)                              |

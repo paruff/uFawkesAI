@@ -1,7 +1,7 @@
 name: Documentation Freshness
 # DORA 2025 (DOCS-02): Reminds contributors to update living docs
 # when agent instructions, scripts, or skill files change.
-# Does not block merges — prompts @docs-agent to run.
+# Does not block merges — posts a reminder comment for a human or agent to act on.
 on:
   pull_request:
     branches: [main, develop]
@@ -65,12 +65,12 @@ jobs:
                 'This PR changes agent instructions or scripts but does not update `docs/`.',
                 '',
                 '**If agent behaviour, costs, or workflows changed:**',
-                'Run `@docs-agent` with this prompt:',
+                'Ask an agent (or do it yourself) with this prompt:',
                 '',
                 `${fence}`,
-                `@docs-agent The following files changed in this PR: ${changedInstructions}`,
-                'Please update docs/COPILOT_COST_GUIDE.md, docs/MODEL_ROUTING_GUIDE.md,',
-                'or docs/METRICS.md to reflect any changes to agent behaviour or token costs.',
+                `The following files changed in this PR: ${changedInstructions}`,
+                'Please update docs/MODEL_ROUTING_GUIDE.md, docs/METRICS.md, or README.md',
+                'to reflect any changes to agent behaviour or token costs.',
                 `${fence}`,
                 '',
                 '**If no user-facing behaviour changed** (internal refactor only):',

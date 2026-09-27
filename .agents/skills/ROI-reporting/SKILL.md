@@ -95,7 +95,7 @@ to CI → CFR dropped from 15% to 8% because config errors are now caught before
 ## One thing to improve next month
 
 [The metric most below target → the intervention planned.
-Sourced from measure agent anomaly flags and learn agent action items.]
+Sourced from `/measure` command anomaly flags and `learn` skill action items.]
 ```
 
 ## Quarterly LinkedIn Post Template
@@ -174,12 +174,12 @@ Reference the skill or agent that enabled it.]
 | --------------------- | ---------- | --------------------------------- | ------------------------- |
 | 1. Clear AI stance    | ❌ None    | ✅ AI_STANCE.md live              | ai-stance skill           |
 | 2. Healthy data       | ⚠ Partial  | ✅ uFawkesObs + dora-measurement  | Obs v0.1.0 + v0.2         |
-| 3. AI-accessible data | ❌ None    | ✅ graphify + context-engineering | context-engineering skill |
+| 3. AI-accessible data | ❌ None    | ✅ context-engineering           | context-engineering skill |
 | ...                   |            |                                   |                           |
 
 ## Next year focus
 
-[Top 2 capability gaps remaining. The plan agent's input for the next annual roadmap.]
+[Top 2 capability gaps remaining. `@planner`'s input for the next annual roadmap.]
 ```
 
 ## Output Format

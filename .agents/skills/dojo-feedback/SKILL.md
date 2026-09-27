@@ -49,7 +49,7 @@ This skill is only the lab → feedback → intent step.
 4. The source chain in uFawkesAI: `docs/ai-sdlc/<feature>/intent.md`,
    `spec.md`, `plan.md` (the lab header names the feature and commit).
 5. The guardrails and prompts the feature was built under: `AGENTS.md`,
-   `.agents/agents/{spec,design,build}.md`, hooks
+   `.agents/skills/{spec,design,build}/SKILL.md`, hooks
    (`scripts/hooks/protected-paths.json`), CI gates (`.github/workflows/`).
 
 ## Gap Types
@@ -129,7 +129,7 @@ issue.
    gaps and a ready-to-commit draft of
    `docs/ai-sdlc/<proposed_feature>/intent.md`.
 2. Someone commits that `intent.md` in a PR whose body says `Closes #<issue>`
-   — the cycle restarts at `@spec`.
+   — the cycle restarts at the `spec` stage.
 3. The issue is due **one sprint** after it opens (7 days by default; repo
    variable `DOJO_SPRINT_DAYS`). A daily check labels it `intent-overdue` and
    comments if it is still open after that.

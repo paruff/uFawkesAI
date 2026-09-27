@@ -39,12 +39,25 @@ trivy image --severity CRITICAL,HIGH --format json <image>
 
 ## CVE Severity Thresholds
 
-| Severity | Action                       |
-| -------- | ---------------------------- |
-| Critical | Block deploy, immediate fix  |
-| High     | Block deploy, fix within 24h |
-| Medium   | Warn, fix within 1 week      |
-| Low      | Log, fix in next sprint      |
+**This skill produces evidence only.** Trivy runs in
+`.github/workflows/image-build.yml` and `.github/workflows/image-release.yml`,
+but solely to append a report to the job summary (`|| true`); it never fails
+the build. A Critical CVE therefore does not stop a release — it surfaces a
+finding that the human releaser must act on.
+
+| Severity | Response                                       |
+| -------- | ---------------------------------------------- |
+| Critical | Report as blocking; do not release until reviewed |
+| High     | Report as blocking; review before release      |
+| Medium   | Warn, fix within 1 week                        |
+| Low      | Log, fix in next sprint                        |
+
+To close the gap, make the Trivy step fail on Critical (drop `|| true`, add a
+severity exit-code threshold) in both image workflows, then update this section.
+
+**Enforcement: advisory.** Trivy runs in `image-build.yml` and
+`image-release.yml` but only appends to the job summary (`|| true`). These
+criteria are reported, not enforced.
 
 ## Validation Rules
 

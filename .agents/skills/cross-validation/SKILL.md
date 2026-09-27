@@ -1,142 +1,74 @@
 ---
 name: cross-validation
+description: "cross-validation"
 license: MIT
-compatibility: "uFawkesAI"
+compatibility: Claude Code, GitHub Copilot, OpenCode, Cursor, Codex, Gemini CLI
 metadata:
   author: paruff
   suite: uFawkesAI
+  migrated_from: agent/cross-validation
 ---
 
-# Cross-Validation Skill
+# Skill: Cross-Validation
 
-The cross-validation skill enables the cross-validation agent to validate consistency between agent outputs and their sources. It provides the rules registry and validation runner that check pairwise consistency across the agent pipeline.
+> **Load trigger:** `"load cross-validation skill"`
 
-## Skill Purpose
+> Migrated from the former `cross-validation` agent. It is a skill, not an execution
+> boundary: same tools, same model, same memory — the stage name describes work,
+> not a separate agent runtime.
 
-This skill implements cross-validation of the uFawkesAI agent pipeline. It validates that:
+This skill verifies that outputs from the parallel validation block are consistent with each other and with their sources. Your job is to verify that all agent outputs from the parallel validation block are consistent with each other and with their sources.
+
+You run after `test-execution` and `code-review` have completed, and you validate pairwise consistency between their outputs and their sources (`spec`, `design`, `build`, `test`). If any validation fails, you block progression to `delivery`.
+
+## What You Do
+
+1. **Load the cross-validation skill** (`.agents/skills/cross-validation/SKILL.md`) to understand the validation rules
+2. **Load the cross-validation rules registry** (`.agents/registry/cross-validation.yaml`) to see which agent pairs need validation
+3. **Run the cross-validation runner** (`.agents/assertions/cross-validation-runner.sh`) to:
+   - Read the relevant agent reports (spec, design, build, test, test-execution, review)
+   - Apply each validation rule from the registry
+   - Generate a unified cross-validation report
+4. **Validate your report** against the cross-validation contract in `.agents/assertions/minimal-report.yaml`
+5. **Write a structured log entry** to `.agents/logs/YYYY-MM-DD.jsonl`
+
+## Validation Rules
+
+The cross-validation process validates these 4 pairwise relationships:
 
 1. **Spec ↔ Build Consistency** — All spec requirements are addressed in build output
 2. **Spec ↔ Test Coverage** — All spec acceptance criteria have corresponding tests
 3. **Design ↔ Build Compliance** — Build follows architecture decisions from design
 4. **Test ↔ Test-Execution Viability** — All tests are viable and passing in test-execution
 
-Note: The review agent now consolidates review, build-review, and security capabilities. Review findings are validated as part of the build process.
+If any rule fails, you block the pipeline and report the specific inconsistencies.
 
-## How to Load
+## Output Contract
 
-Load this skill when you need to validate cross-agent consistency:
+Your report MUST satisfy this contract. Self-validate before finishing.
 
-```
-Load `.agents/skills/cross-validation/SKILL.md`
-```
+- Must include "Cross-Validation Report" section
+- Must include "Validation Results" section with pass/fail for each rule
+- Must include "Findings" section listing all inconsistencies
+- Must include "Decision" field (PASS or FAIL)
+- Must include "Recommendations" section if FAILED
+- Schema: `.agents/assertions/agent-output-schema.json`
+- Runner: `bash .agents/assertions/cross-validation-runner.sh <report.md> cross-validation`
 
-## Validation Rules Registry
+## Post-Task Logging
 
-The skill uses `.agents/registry/cross-validation.yaml` as the rules registry. This file defines:
+After producing your report, write a structured log entry:
 
-- Which agent pairs need validation
-- What specific consistency checks to perform
-- How to extract and compare information from agent reports
+1. Append one JSON object to `.agents/logs/YYYY-MM-DD.jsonl` (one line per invocation)
+2. Follow the schema in `.agents/schema/skill-invocation-log.json`
+3. Include: agent name, session_id (unique identifier), skills loaded, findings, decision, blockers
+4. Log the validation results: which rules passed, which failed, and why
+5. Log the pipeline impact: whether the pipeline is blocked or can proceed
 
-## Validation Runner
+## Hard Rules
 
-The skill provides `.agents/assertions/cross-validation-runner.sh` which:
-
-1. Reads the cross-validation rules from the registry
-2. Extracts relevant sections from agent reports (spec, design, build, test, test-execution, review)
-3. Applies each validation rule
-4. Generates a unified cross-validation report
-5. Returns PASS if all rules pass, FAIL otherwise
-
-## Usage Examples
-
-### Loading the Skill
-
-```
-Load `.agents/skills/cross-validation/SKILL.md`
-```
-
-### Running Validation
-
-```
-bash .agents/assertions/cross-validation-runner.sh \
-  --spec-report path/to/spec-report.md \
-  --design-report path/to/design-report.md \
-  --build-report path/to/build-report.md \
-  --test-report path/to/test-report.md \
-  --test-execution-report path/to/test-execution-report.md \
-  --review-report path/to/review-report.md
-```
-
-### Expected Output
-
-The runner produces a unified cross-validation report with:
-
-- Summary of all validation rules
-- Pass/fail status for each rule
-- Detailed findings for failed rules
-- Overall decision (PASS or FAIL)
-- Recommendations for fixing failures
-
-## Integration
-
-The cross-validation skill is loaded by the cross-validation agent, which runs after the parallel block of `test-execution` and `review` and before `delivery`.
-
-## Validation Rules Details
-
-Each rule in the registry defines:
-
-- `source_agent` — The agent whose output is the source of truth
-- `target_agent` — The agent whose output needs validation against the source
-- `validation_type` — The type of consistency check to perform
-- `description` — Human-readable description of the rule
-- `required_sections` — Sections that must be present in both reports
-- `comparison_logic` — How to compare the sections (keyword matching, pattern matching, etc.)
-
-## Example Rule
-
-```yaml
-- rule_id: spec-build-consistency
-  source_agent: spec
-  target_agent: build
-  validation_type: requirement_coverage
-  description: "All spec requirements must be addressed in build output"
-  required_sections:
-    - "Functional Requirements"
-    - "Acceptance Criteria"
-  comparison_logic:
-    extract_keywords: true
-    require_all_keywords: true
-    source_field: "requirement"
-    target_field: "task"
-```
-
-## Error Handling
-
-If any validation rule fails:
-
-1. The runner reports the specific inconsistencies
-2. The cross-validation agent blocks the pipeline
-3. The cross-validation agent generates recommendations for fixing the issues
-4. The human operator reviews and decides next steps
-
-## Testing the Skill
-
-To test the cross-validation skill:
-
-1. Create sample agent reports (spec, design, build, test, test-execution, review)
-2. Run the cross-validation runner with these reports
-3. Verify that the runner correctly identifies consistency issues
-4. Verify that the runner correctly identifies consistency passes
-
-## Dependencies
-
-This skill depends on:
-
-- `.agents/registry/cross-validation.yaml` — Rules registry
-- `.agents/assertions/cross-validation-runner.sh` — Validation runner
-- `.agents/assertions/minimal-report.yaml` — Output contract
-
-## Skill Lifecycle
-
-This skill is in the `active` status and is part of Phase 5 (Cross-Validation) of the uFawkesAI agent pipeline. It is a platform-engineering skill that supports the entire agent ecosystem.
+- Never skip cross-validation — it is the final gate before delivery
+- Never accept a partial validation — all 4 rules must pass
+- Never bypass the cross-validation runner — use it for all validation logic
+- Always log the validation outcome for telemetry
+- Always block the pipeline if any validation fails

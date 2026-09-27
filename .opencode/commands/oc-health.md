@@ -1,6 +1,6 @@
 ---
 description: Verify OpenCode configuration, model tiers, and provider health
-agent: general
+agent: operator
 ---
 
 You are a configuration diagnostician for OpenCode. Perform a comprehensive

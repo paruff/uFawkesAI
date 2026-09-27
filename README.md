@@ -33,25 +33,9 @@ gets its cost/mode guidance from `docs/MODEL_ROUTING_GUIDE.md` instead.
 | `.agents/skills/`              | On-demand only — zero cost until referenced          |
 | `.copilotignore`              | Excludes lock files, build artifacts, generated code |
 | `scripts/token-audit.sh`      | Shows your token footprint before the bill arrives   |
-| `docs/COPILOT_COST_GUIDE.md`  | Billing model explained for developers               |
 | `docs/MODEL_ROUTING_GUIDE.md` | Which mode and model saves the most                  |
 
 Run `npm run token-audit` after setup to see your baseline.
-
-## GitHub Copilot users: billing retrofit prompts
-
-Two ready-to-use prompts let you apply uFawkesAI's token optimization
-to **any existing repo** — not just new projects.
-
-| Prompt                                           | Tool                  | What it produces                                         | Cost   |
-| ------------------------------------------------ | --------------------- | -------------------------------------------------------- | ------ |
-| `docs/COPILOT_BILLING_HANDOFF_PROMPT_LOCAL.md`   | Ollama + a local model | AGENTS.md, 4 skill files, .copilotignore, 2 cost guides  | Free   |
-| `docs/COPILOT_BILLING_HANDOFF_PROMPT_SCRIPTS.md` | Copilot / Claude Code | token-audit.sh, setup.sh hardening, CI placeholder check | ~$0.50 |
-
-Run the local prompt first (zero cost), then the scripts prompt for the bash work.
-Together they take about 90 minutes and reduce always-on context by 40–60%.
-
-See `docs/COPILOT_BILLING_HANDOFF_PROMPT_LOCAL.md` to get started.
 
 ## 5-minute quick start
 
@@ -124,7 +108,7 @@ Use the **Feature — Assign to Agent** issue template (`.github/ISSUE_TEMPLATE/
 
 | DORA AI Capability               | File(s) in this template                              |
 | -------------------------------- | ----------------------------------------------------- |
-| Clear and communicated AI stance | `AGENTS.md` §1, `docs/AI_POLICY.md`                   |
+| Clear and communicated AI stance | [`AI_STANCE.md`](AI_STANCE.md), `AGENTS.md` §1          |
 | Healthy data ecosystems          | `docs/CHANGE_IMPACT_MAP.md`, `docs/API_SURFACE.md`    |
 | AI-accessible internal data      | `AGENTS.md` §3 context index, `.vscode/settings.json` |
 | Strong version control practices | CI PR size block, conventional commits standard       |

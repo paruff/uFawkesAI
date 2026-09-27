@@ -29,9 +29,9 @@ Set up local development environment for fast feedback loops.
 
 | Skill                         | Purpose                 |
 | ----------------------------- | ----------------------- |
-| `dev-experience/devcontainer` | Configure devcontainers |
-| `dev-experience/workspace`    | Bootstrap workspace     |
-| `dev-experience/local-sim`    | Set up local simulation |
+| `dev-experience/dev-container-setup`      | Configure devcontainers |
+| `dev-experience/workspace-bootstrap`       | Bootstrap workspace     |
+| `dev-experience/local-environment-simulation` | Set up local simulation |
 
 ## Dependencies
 

@@ -1,46 +1,240 @@
 ---
 name: spec
-description: "Extract structured specification from human intent. Use when converting requirements into acceptance criteria, constraints, and governance alignment."
+description: "Convert a human request into a clear, structured specification with requirements, acceptance criteria, and policy alignment. Use when starting a new feature or initiative that needs formal requirements."
 license: MIT
 compatibility: Claude Code, GitHub Copilot, OpenCode, Cursor, Codex, Gemini CLI
 metadata:
   author: paruff
   suite: uFawkesAI
+  migrated_from: agent/spec
 ---
 
 # Skill: Spec
 
-> **Load trigger:** `"load spec skill"` > **DORA:** Cap 3 (AI-Accessible Internal Data)
-> **Token cost:** Low
+> **Load trigger:** `"load spec skill"`
 
-## Purpose
+> Migrated from the former `spec` agent. It is a skill, not an execution
+> boundary: same tools, same model, same memory — the stage name describes work,
+> not a separate agent runtime.
 
-Extract structured specification from human intent.
+Converts a human's stated intent into a structured specification that the `design` skill can consume: requirements, acceptance criteria, constraints, and policy alignment — not code.
 
-## Responsibilities
+## Artifact Chain — Your Link
 
-- Convert human intent into requirements
-- Define acceptance criteria
-- Document constraints
-- Align with governance policies
-- Validate completeness
+Every feature lives in `docs/ai-sdlc/<feature>/` and moves through committed
+artifacts: `intent.md` → **`spec.md`** → `plan.md` → code diff
+(`docs/ai-sdlc/README.md`). You **read `intent.md`** and **write `spec.md`**
+next to it.
 
-## Sub-Skills
+CI enforces the chain (`.github/workflows/artifact-chain.yml`): a `spec.md`
+with no sibling `intent.md` in the branch history fails the PR and blocks the
+merge. So:
 
-| Skill                           | Purpose                                  |
-| ------------------------------- | ---------------------------------------- |
-| `spec/requirements-extraction`  | Extract requirements from human intent   |
-| `spec/spec-acceptance-criteria` | Define testable acceptance criteria      |
-| `spec/policy-validation`        | Validate against organizational policies |
-| `spec/pipeline-policy`          | Ensure pipeline compliance               |
-| `spec/k8s-policy`               | Kubernetes policy alignment              |
-| `spec/template-governance`      | Template compliance validation           |
+- If `docs/ai-sdlc/<feature>/intent.md` does not exist, **stop** — ask the
+  human for the intent (or load the `discover` skill) and commit `intent.md`
+  first. Never write a spec without one.
+- Commit `spec.md` on the same feature branch as `intent.md`, so both are
+  visible in the PR diff.
+
+## Inputs Required Before Specifying
+
+Read these files first:
+
+1. `docs/ai-sdlc/<feature>/intent.md` — **required.** The problem, desired
+   outcome, decisions already made, and out-of-scope list. Every requirement
+   you write must trace back to it; anything beyond it is scope expansion and
+   must be flagged as such.
+2. `AGENTS.md` — project identity, governance rules, what agents may/must not do
+3. `docs/GOLDEN_PATH.md` — canonical idea→deploy workflow (if exists)
+4. Existing `docs/ai-sdlc/*/spec.md` files (avoid duplicating work)
+5. `discovery-brief.md` — carries the persona, JTBD, riskiest assumption, and a
+   draft acceptance criterion with a `test_type` tag from the `discover` agent.
+   Do not discard the `test_type` tag without reason — carry it forward onto
+   the corresponding AC below, and assign a `test_type` to any further ACs you
+   derive that the discovery brief didn't already cover.
+
+`intent.md` is mandatory; for the others, if a file is missing, note it and
+proceed with what is available.
+
+## Spec Protocol
+
+### Step 1 — Clarify Intent
+
+Restate the human's intent as a user story:
+
+> "As a [role], I want [capability], so that [outcome]."
+
+Ask clarifying questions if the intent is ambiguous. Wait for confirmation before proceeding.
+
+### Step 2 — Extract Requirements
+
+Decompose the intent into structured requirements:
+
+- **Functional requirements** — what the system must do
+- **Non-functional requirements** — performance, scalability, security, availability
+- **Constraints** — technical, business, regulatory limitations
+- **Assumptions** — what we're taking as true without verification
+- **Dependencies** — external systems, services, or teams
+- **Out of scope** — what this spec explicitly does not cover
+
+### Step 3 — Generate Acceptance Criteria
+
+Convert each requirement into binary pass/fail criteria:
+
+- [ ] AC-01: Specific, testable assertion — `test_type: unit | integration | live-system`
+- [ ] AC-02: Specific, testable assertion — `test_type: unit | integration | live-system`
+
+Rules:
+
+- Each AC must be independently verifiable
+- No ambiguous language ("should", "might", "good enough")
+- Include measurable outcomes where possible
+- Each AC must carry a `test_type` tag. Default to whatever `discover.md`
+  already assigned for the AC it corresponds to; for any new AC you introduce
+  here, assign the tag yourself using the same judgment call `discover.md`
+  applies — a one-sentence reasoning is not required here (it was already
+  captured upstream), but do not tag an AC touching a deployed/runtime
+  component as `unit` just because that's the default — check first.
+
+### Step 4 — Validate Against Governance
+
+Check the spec against platform rules:
+
+- Security requirements addressed
+- Pipeline requirements noted (SBOM, signing, test stages)
+- Kubernetes requirements noted (if applicable)
+- Naming and structure conventions noted
+
+### Step 5 — Produce Specification
+
+Write the specification to `docs/ai-sdlc/<feature>/spec.md` (the Output
+Format below) and commit it on the feature branch. Hand off to the `design`
+skill,
+which reads this file to write `plan.md`.
+
+## Required Skills
+
+Load these skills as needed:
+
+| Skill                           | When to Load                               |
+| ------------------------------- | ------------------------------------------ |
+| `spec/requirements-extraction`  | Extracting structured requirements         |
+| `spec/spec-acceptance-criteria` | Generating testable ACs                    |
+| `spec/policy-validation`        | Validating against organizational policies |
+| `spec/pipeline-policy`          | Aligning with pipeline governance          |
+| `spec/template-governance`      | Aligning with platform templates           |
+| `spec/k8s-policy`               | Kubernetes-specific requirements           |
+
+## Output Format
+
+```markdown
+# Specification: [Feature Name]
+
+## User Story
+
+As a [role], I want [capability], so that [outcome].
+
+## Functional Requirements
+
+### REQ-001: [Requirement Title]
+
+[Description of what the system must do]
+
+### REQ-002: [Requirement Title]
+
+[Description]
+
+## Non-Functional Requirements
+
+### NFR-001: Performance
+
+[Response time, throughput requirements]
+
+### NFR-002: Security
+
+[Authentication, authorization, data protection]
+
+## Constraints
+
+- [Technical constraint]
+- [Business constraint]
+
+## Assumptions
+
+- [Assumption 1]
+- [Assumption 2]
 
 ## Dependencies
 
-| Skill  | Relationship                               |
-| ------ | ------------------------------------------ |
-| (none) | Foundation skill, no upstream dependencies |
+- [External system or service]
+- [Team or approval required]
+
+## Out of Scope
+
+- [Explicitly excluded feature]
+- [Explicitly excluded feature]
+
+## Acceptance Criteria
+
+- [ ] AC-01: [Specific, testable assertion] — `test_type: unit | integration | live-system`
+- [ ] AC-02: [Specific, testable assertion] — `test_type: unit | integration | live-system`
+- [ ] AC-03: [Specific, testable assertion] — `test_type: unit | integration | live-system`
+
+## Governance Alignment
+
+| Requirement | Status  | Notes          |
+| ----------- | ------- | -------------- |
+| Security    | COVERED | [Details]      |
+| Pipeline    | COVERED | [Details]      |
+| K8s         | N/A     | Not applicable |
+
+## Open Questions
+
+- [Question requiring human decision]
+```
+
+## Output Contract
+
+Your report MUST satisfy this contract. Self-validate before finishing.
+
+- Required sections: Specification:, Functional Requirements, Acceptance Criteria, Governance Alignment
+- Every Acceptance Criteria line item must carry a `test_type` tag
+- Schema: `.agents/assertions/agent-output-schema.json`
+- Runner: `bash .agents/assertions/assertion-runner.sh <report.md> spec`
+
+## Post-Task Logging
+
+After producing your report, write a structured log entry:
+
+1. Append one JSON object to `.agents/logs/YYYY-MM-DD.jsonl` (one line per invocation)
+2. Follow the schema in `.agents/schema/skill-invocation-log.json`
+3. Include: agent name, session_id (unique identifier), `triggered_by`, `started_at`, `duration_ms`, skills loaded, findings, decision, blockers
+4. For each finding, set `actionable`, `manual_review_needed`, and `severity` accurately
+5. Set `triggered_by` to whichever orchestrator invoked this agent: `"discovery"` (the typical case for spec), or `"manual"` if invoked directly by the user
+6. Record `started_at` (ISO 8601, when this agent began) — `timestamp` in the log entry remains the completion time
+7. Compute `duration_ms` as the difference between `started_at` and completion
+
+### Finding Severity
+
+Every finding must carry a `severity` field, one of:
+
+- `blocker` — prevented the task from completing as planned; required a fix before proceeding
+- `defect` — a real problem that was found and fixed within this invocation, but did not block completion
+- `note` — informational; no fix required
+
+Do not default to `defect` when uncertain — if a finding did not require any change to resolve, it is a `note`, not a `defect`.
+
+This log is required. If the file cannot be written, document why.
+
+## Hard Rules
+
+- Never write `spec.md` without a committed `intent.md` in the same `docs/ai-sdlc/<feature>/` directory.
+- Never produce a specification without acceptance criteria.
+- Never produce an acceptance criterion without a `test_type` tag.
+- Never leave ambiguous requirements — flag for clarification.
+- Never assume governance compliance — validate it.
+- Never add features not requested without noting it as scope expansion.
+- If the request is too vague, ask questions before specifying.
 
 ## Inputs
 
@@ -53,61 +247,3 @@ Extract structured specification from human intent.
 - `specification.md`
 - `acceptance-criteria.md`
 - `constraints.md`
-
-## Extraction Rules
-
-### Requirements
-
-- [ ] Requirements are clear and unambiguous
-- [ ] Requirements are testable
-- [ ] Requirements are prioritized
-- [ ] Dependencies documented
-
-### Acceptance Criteria
-
-- [ ] Each requirement has acceptance criteria
-- [ ] Acceptance criteria are specific and measurable
-- [ ] Edge cases documented
-- [ ] Error scenarios defined
-
-### Governance
-
-- [ ] Aligns with organizational policies
-- [ ] Complies with security requirements
-- [ ] Follows naming conventions
-- [ ] Meets documentation standards
-
-## Output Format
-
-```json
-{
-  "skill": "spec",
-  "status": "pass | fail",
-  "requirements": [
-    {
-      "id": "REQ-1",
-      "description": "User can login with email",
-      "priority": "high",
-      "acceptance_criteria": [
-        "AC-1.1: User receives confirmation email",
-        "AC-1.2: Account is activated within 24 hours"
-      ]
-    }
-  ],
-  "constraints": [
-    "Must support iOS 15+ and Android 12+",
-    "Must use existing authentication service"
-  ],
-  "governance_alignment": {
-    "security": "pass",
-    "compliance": "pass"
-  }
-}
-```
-
-## Success Criteria
-
-- All requirements documented
-- Acceptance criteria are testable
-- Governance alignment confirmed
-- No ambiguities identified

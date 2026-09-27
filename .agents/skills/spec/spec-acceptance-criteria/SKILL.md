@@ -22,7 +22,7 @@ Generate clear, testable acceptance criteria for the specification.
 - Convert requirements into binary pass/fail criteria
 - Ensure criteria are measurable
 - Ensure criteria align with governance rules
-- Ensure criteria can be validated by the Review agent
+- Ensure criteria can be validated by `@verifier`
 
 ## Inputs
 

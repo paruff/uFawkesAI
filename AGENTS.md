@@ -12,7 +12,7 @@
 - No AI-generated code merges without human review and approval.
 - Use your agent's read-only/question mode for questions; reserve multi-file/agentic mode for multi-file tasks.
 - Read `docs/MODEL_ROUTING_GUIDE.md` before choosing a model or mode.
-- GitHub Copilot users: read `docs/COPILOT_COST_GUIDE.md` to understand token cost before starting.
+- GitHub Copilot users: run `npm run token-audit` to see your token footprint before starting.
 
 **Data policy:** No customer PII in AI prompts.
 
@@ -23,7 +23,7 @@
 **Product:** uFawkesAI — an agent orchestration framework for platform engineering, packaged as a template so its patterns (agents, skills, hooks, rules, dual-harness config) are directly reusable by other projects.
 **Stack:** TypeScript · Node 20 · GitHub Actions · OpenTelemetry
 **Harnesses:** OpenCode and Claude Code are first-class, dual-verified by `scripts/dual-harness-smoke.sh` in CI (see `docs/ai-sdlc/spec.md` R1); Cursor/Copilot/Gemini compatibility files are kept in sync automatically via symlink to this file.
-**Key constraints:** 7 core pipeline agents + 7 flow/meta agents (14 total, see `.agents/README.md`), 31 skill areas, humans = routing layer
+**Key constraints:** 4 execution-boundary agents + 9 stage skills + 3 workflows + 9 commands (see `.agents/README.md`), 33 skill areas, humans = routing layer
 
 ---
 
@@ -51,27 +51,40 @@ For questions → use your agent's read-only/question mode (60–90% cheaper tha
 
 ## 5. Agent Routing
 
-Invoke the most relevant agent directly:
+There are only **4 agents**, because an agent is a boundary that can block, write,
+or change repo state. Everything else is a skill (loaded by relevance), a
+command (run on a cadence), or a workflow (a fixed sequence).
 
-| Task                                  | Agent               | Example                                          |
-| ------------------------------------- | ------------------- | ------------------------------------------------ |
-| "Write requirements for..."           | `@spec`             | "Write requirements for user authentication"     |
-| "Design architecture for..."          | `@design`           | "Design architecture for payment processing"     |
-| "Implement feature X"                 | `@build`            | "Implement the login form component"             |
-| "Write tests for..."                  | `@test`             | "Write tests for the auth service"               |
-| "Run tests and check coverage"        | `@test-execution`   | "Run all tests and report coverage"              |
-| "Review this PR"                      | `@review`           | "Review PR #42 for security and quality"         |
-| "Validate all outputs are consistent" | `@cross-validation` | "Cross-validate spec, design, and build outputs" |
+| Task                          | Agent       | Owns                                        |
+| ----------------------------- | ----------- | ------------------------------------------- |
+| "Plan how to build X"         | `@planner`  | scope, tasks, dependency order              |
+| "Implement feature X"         | `@builder`  | code, tests, manifests — the working tree   |
+| "Prove it works" / "Review"   | `@verifier` | the verdict; the only agent that can block  |
+| "Ship / release / tag"        | `@operator` | commit, PR, tag, publish — never merges     |
+
+Within an agent, load the skill for the stage: `discover`, `spec`, `design`,
+`plan`, `build`, `test`, `test-execution`, `code-review`, `cross-validation`,
+`learn`.
 
 ### Pipeline Sequence
 
 ```
-spec → design → build → [test-execution || review] → cross-validation
-  │                    ↑
-  └──── test ──────────┘
+@planner → @builder → @verifier → @operator → human merges
 ```
 
-7 more flow/meta agents (`discover`, `discovery-flow`, `feature-flow`, `learn`, `measure`, `release`, `repair-flow`) live in `.agents/agents/` — see `.agents/README.md` for the full routing table; omitted here to keep this always-loaded file lean.
+`@verifier` returning REQUEST CHANGES is the gate. `@operator` never merges —
+rule 2.
+
+### Workflows and Commands
+
+- Workflows (fixed order, not model-selected): `.agents/workflows/discovery.md`,
+  `feature.md`, `bugfix.md`.
+- Commands (cadence): `/release` weekly, `/measure` monthly, plus
+  `/plan`, `/implement`, `/tdd`, `/verify`, `/review-agents`, `/ship`,
+  `/oc-health`.
+
+See `.agents/README.md` for the full routing table; omitted here to keep this
+always-loaded file lean.
 
 ---
 
@@ -109,9 +122,10 @@ spec → design → build → [test-execution || review] → cross-validation
 ### Assertion Runner
 
 - Validates agent reports against contracts in `minimal-report.yaml`
-- Command: `.agents/assertions/assertion-runner.sh <report.md> <agent-name>`
-- Pre-commit hook auto-validates any staged `*-report.md` files
-- Never swallow an exception inside the runner (or any validator template it scaffolds) without logging what broke — a silently-caught exception makes "validation never ran" indistinguishable from "validation ran clean."
+- Command: `.agents/assertions/assertion-runner.sh <report.md> <contract-key>`
+- Contract keys are report *kinds* (`build`, `design`, `review`, `spec`, `test`, `test-execution`, `cross-validation`), not agent names
+- **Enforced** — the `agent-report-contracts` pre-commit hook validates staged `*-report.md` files; it is a `repo: local` hook, not a symlink in `.git/hooks/`
+- An unknown contract key is a hard failure. A runner that reports "nothing to validate" and exits 0 is not a gate — never swallow an exception without logging what broke, or "validation never ran" becomes indistinguishable from "validation ran clean"
 
 ### Deployment Lifecycle Gates
 
@@ -133,5 +147,5 @@ spec → design → build → [test-execution || review] → cross-validation
 - `.agents/README.md` — Full agent and skill documentation
 - `.agents/registry/` — Agent capabilities, cross-validation rules, skill lifecycle
 - `.agents/assertions/` — Report contracts, assertion runner, pre-commit hooks
-- `docs/COPILOT_COST_GUIDE.md` — Token billing, model costs
+- `scripts/token-audit.sh` — Token footprint audit (run it before the bill arrives)
 - `docs/MODEL_ROUTING_GUIDE.md` — Which model/mode for which task

@@ -9,6 +9,15 @@
             "command": "node -e \"const input=JSON.parse(require('fs').readFileSync(0,'utf-8')||'{}'); const p=(input.tool_input&&input.tool_input.file_path)||''; const path=require('path'); const cfg=require(path.join(process.env.CLAUDE_PROJECT_DIR||process.cwd(),'scripts/hooks/protected-paths.json')); const n=path.normalize(p).split(String.fromCharCode(92)).join('/'); const parts=n.split('/').filter(Boolean); const b=parts[parts.length-1]||''; const r=cfg.protectedBasenamePatterns.map(s=>new RegExp(s)); const segs=cfg.protectedPathSegments||[]; if(segs.some(s=>parts.includes(s))||r.some(x=>x.test(b))){ console.error('Blocked edit to protected path: '+p); process.exit(2);} process.exit(0);\""
           }
         ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/scripts/hooks/claude-pretooluse-secret-scan.js\""
+          }
+        ]
       }
     ],
     "PostToolUse": [

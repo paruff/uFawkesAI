@@ -111,9 +111,9 @@ Update `docs/METRICS.md` monthly log.
 ```
 For each changed service or utility file:
 □ Does docs/API_SURFACE.md reflect all current public functions?
-  → Run: @docs-agent [files changed] — update API_SURFACE.md
+  → Ask an agent to update API_SURFACE.md for the files changed, then read the diff
 □ Does docs/CHANGE_IMPACT_MAP.md reflect new cross-file dependencies?
-  → Update the map manually or with @docs-agent
+  → Update the map manually, or with an agent session and a human-checked diff
 □ Does docs/KNOWN_LIMITATIONS.md have any limitations that are now fixed?
   → Remove them and note in PR
 □ Does docs/ARCHITECTURE.md still accurately describe the layer structure?

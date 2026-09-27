@@ -52,6 +52,9 @@ Run Semgrep rulesets against Fawkes codebases.
 | `fawkes-secure-env`         | Env vars with secrets      | Medium   |
 | `fawkes-no-exec`            | `exec()` with user input   | High     |
 
+**Enforcement: advisory.** No workflow in this repository runs Semgrep.
+These criteria are reported, not enforced.
+
 ## Validation Rules
 
 - [ ] All rulesets executed
