@@ -43,6 +43,9 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Self-test the bump script (per-tool failures must not abort)
+        run: bash scripts/test-image-lock-bump.sh
+
       - name: Bump locks
         env:
           GH_TOKEN: ${{ github.token }}

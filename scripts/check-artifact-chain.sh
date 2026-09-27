@@ -47,7 +47,9 @@ else
   mapfile -t plans < <(git diff --name-only --diff-filter=ACMR "$merge_base" "$HEAD_REF" -- "$PLAN_GLOB")
   valid=0
   for plan in "${plans[@]}"; do
-    if git show "${HEAD_REF}:${plan}" | grep -qiE "$VERIFICATION_HEADING"; then
+    # No grep -q: exiting at the first match would SIGPIPE `git show` on a
+    # large plan, and pipefail would turn that into a false "missing section".
+    if git show "${HEAD_REF}:${plan}" | grep -iE "$VERIFICATION_HEADING" >/dev/null; then
       echo "  ✅ ${plan} includes a Verification Strategy section"
       valid=$((valid + 1))
     else

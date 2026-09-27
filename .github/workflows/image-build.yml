@@ -13,12 +13,16 @@ on:
     paths:
       - "images/devsecops/**"
       - "scripts/image-lock-refresh.sh"
+      - "scripts/image-lock-bump.sh"
+      - "scripts/test-image-lock-bump.sh"
       - ".github/workflows/image-build.yml"
   push:
     branches: [main]
     paths:
       - "images/devsecops/**"
       - "scripts/image-lock-refresh.sh"
+      - "scripts/image-lock-bump.sh"
+      - "scripts/test-image-lock-bump.sh"
       - ".github/workflows/image-build.yml"
   schedule:
     - cron: "17 6 * * 1" # Mondays: re-verify the locked toolchain, rescan for new CVEs
@@ -50,6 +54,9 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           persist-credentials: false
+
+      - name: Self-test the lock bump script
+        run: bash scripts/test-image-lock-bump.sh
 
       - name: Build all variants
         working-directory: images/devsecops
