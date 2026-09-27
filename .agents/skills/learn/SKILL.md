@@ -12,14 +12,14 @@ metadata:
 # Skill: Learn
 
 > **Load trigger:** `"load learn skill"`
-**Invoke when:** Post-release review, `/measure` command anomaly flag, sprint end, or user feedback received. > **DORA:** AI Capability 6 (User-centric focus) + Cultural: Learning from failures > **Token cost:** Low
+**Invoke when:** Post-release review, `/measure` command anomaly flag, sprint end, or user feedback received. > **DORA:** AI Capability 6: User-centric focus + Cultural: Learning from failures > **Token cost:** Low
 
 > Migrated from the former `learn` agent. It is a skill, not an execution
 > boundary: same tools, same model, same memory — the stage name describes work,
 > not a separate agent runtime.
 
 > **Invoke when:** Post-release review, `/measure` command anomaly flag, sprint end, or user feedback received.
-> **DORA:** AI Capability 6 (User-centric focus) + Cultural: Learning from failures
+> **DORA:** AI Capability 6: User-centric focus + Cultural: Learning from failures
 > **Token cost:** Low
 > **Output:** `retrospective-YYYY-MM-DD.md` + action items for `@planner`
 
@@ -89,13 +89,13 @@ a gap in. Use this to frame the action item — not as "fix the bug" but as
 
 | Finding type                                       | Likely capability gap                                               |
 | -------------------------------------------------- | ------------------------------------------------------------------- |
-| User adopted the feature differently than expected | Cap 6: User-centric focus                                           |
-| AI-generated code introduced a regression          | Cap 4: Strong version control / Cap 5: Small batches                |
-| Metric data was unavailable or stale               | Cap 2: Healthy data ecosystems                                      |
-| Agent didn't have enough internal context          | Cap 3: AI-accessible internal data                                  |
+| User adopted the feature differently than expected | AI Capability 6: User-centric focus                                           |
+| AI-generated code introduced a regression          | AI Capability 4: Strong version control practices / AI Capability 5: Working in small batches                |
+| Metric data was unavailable or stale               | AI Capability 2: Healthy data ecosystems                                      |
+| Agent didn't have enough internal context          | AI Capability 3: AI-accessible internal data                                  |
 | Release took longer than 2hrs                      | Core: CD / `release` skill needs improvement                        |
-| Dojo learner couldn't complete a lab               | Dojo content quality / Cap 7: Platform quality                      |
-| Riskiest assumption was wrong                      | Cap 6: User-centric focus — `discover` skill needs earlier validation |
+| Dojo learner couldn't complete a lab               | Dojo content quality / AI Capability 7: Quality internal platforms                      |
+| Riskiest assumption was wrong                      | AI Capability 6: User-centric focus — `discover` skill needs earlier validation |
 
 ### Phase 4 — Produce action items for `@planner`
 
@@ -136,7 +136,7 @@ Log in `retrospective.md` under "Discovery accuracy."
   "action_items": [
     {
       "issue_title": "feat(discovery): add assumption-validation step before spec",
-      "dora_capability": "Cap6-User Centric",
+      "dora_capability": "6: User-centric focus",
       "tier": 2,
       "gh_issue_number": null
     }

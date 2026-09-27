@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Context Engineering
 
-> **Load trigger:** `"load context-engineering skill"` > **DORA:** AI Capability 3 (AI-accessible internal data)
+> **Load trigger:** `"load context-engineering skill"` > **DORA:** AI Capability 3: AI-accessible internal data
 > **Token cost:** Low
 
 ## Purpose

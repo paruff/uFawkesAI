@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Secret Governance Validation
 
-> **Load trigger:** `"load secret-governance skill"` > **DORA:** Cap 1 (AI Policy)
+> **Load trigger:** `"load secret-governance skill"` > **DORA:** AI Capability 1: Clear and communicated AI stance
 > **Token cost:** Low
 
 ## Purpose

@@ -1,7 +1,7 @@
 ---
 name: verifier
 description: "Proves the work is correct rather than merely reported. Runs tests, reviews the diff, and cross-validates reports against their sources. Blocks progression on any unproven claim."
-mode: primary
+mode: all
 ---
 
 # Agent: Verifier

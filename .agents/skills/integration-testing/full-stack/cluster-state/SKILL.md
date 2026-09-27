@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Cluster State Validation
 
-> **Load trigger:** `"load cluster-state-validation skill"` > **DORA:** Cap 4 (CI/CD Automation)
+> **Load trigger:** `"load cluster-state-validation skill"` > **DORA:** Core: CI/CD automation
 > **Token cost:** Low
 
 ## Purpose

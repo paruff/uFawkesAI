@@ -11,7 +11,7 @@ metadata:
 
 # Sub-Skill: Documentation — Suite Audit
 
-> **Load trigger:** `"load documentation/suite-audit skill"` > **DORA:** AI Capability 3 (AI-accessible internal data)
+> **Load trigger:** `"load documentation/suite-audit skill"` > **DORA:** AI Capability 3: AI-accessible internal data
 > **Token cost:** Low
 > **When to use:** Quarterly, or before adding a new repo to the portfolio.
 

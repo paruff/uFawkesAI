@@ -6,7 +6,7 @@ agent: operator
 
 > **Invoke when:** Tests passing + review approved on a releasable increment.
 > **Cadence:** weekly (Thursday) or on a completed increment — not chosen by relevance.
-> **DORA:** AI Capability 4 (Strong version control) + Core: Continuous Delivery
+> **DORA:** AI Capability 4: Strong version control practices + Core: Continuous Delivery
 > **Token cost:** Low–Medium
 
 This is a **command**, not a skill: it runs on a calendar, so it is invoked
@@ -34,7 +34,7 @@ deliberately (`/release`) rather than selected by skill relevance.
 
 ---
 
-> **Load trigger:** `"load release skill"` > **DORA:** AI Capability 4 (Strong version control) + Core: Continuous Delivery
+> **Load trigger:** `"load release skill"` > **DORA:** AI Capability 4: Strong version control practices + Core: Continuous Delivery
 > **Token cost:** Low
 
 ## Purpose

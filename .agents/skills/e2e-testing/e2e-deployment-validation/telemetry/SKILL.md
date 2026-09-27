@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Telemetry Validation
 
-> **Load trigger:** `"load telemetry-validation skill"` > **DORA:** Cap 6 (Operational Visibility)
+> **Load trigger:** `"load telemetry-validation skill"` > **DORA:** Core: Operational visibility
 > **Token cost:** Low
 
 ## Purpose

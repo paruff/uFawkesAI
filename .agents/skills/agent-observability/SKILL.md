@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Agent Observability
 
-> **Load trigger:** `"load agent-observability skill"` > **DORA:** Cap 2 (Observability) + Cap 6 (Reliability)
+> **Load trigger:** `"load agent-observability skill"` > **DORA:** Core: Observability + Core: Reliability
 > **Token cost:** Low
 
 ## Purpose

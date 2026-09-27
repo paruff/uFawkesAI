@@ -11,7 +11,7 @@ metadata:
 
 # Sub-Skill: Context Engineering — Audit
 
-> **Load trigger:** `"load context-engineering/audit skill"` > **DORA:** AI Capability 3 (AI-accessible internal data)
+> **Load trigger:** `"load context-engineering/audit skill"` > **DORA:** AI Capability 3: AI-accessible internal data
 > **Token cost:** Low–Medium
 > **When to use:** Quarterly, or before rolling out a new agent to all repos.
 
@@ -161,7 +161,7 @@ This reduces agent session quality in this repo.
 
 ## Reference
 Skill: context-engineering/audit
-DORA capability: AI Capability 3 (AI-accessible internal data)" \
+DORA capability: AI Capability 3: AI-accessible internal data" \
   --label "documentation,tier-1"
 ```
 

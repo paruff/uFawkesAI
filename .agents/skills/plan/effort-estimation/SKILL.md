@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Effort Estimation
 
-> **Load trigger:** `"load effort-estimation skill"` > **DORA:** Cap 3 (AI-Accessible Internal Data)
+> **Load trigger:** `"load effort-estimation skill"` > **DORA:** AI Capability 3: AI-accessible internal data
 > **Token cost:** Low
 
 ## Purpose

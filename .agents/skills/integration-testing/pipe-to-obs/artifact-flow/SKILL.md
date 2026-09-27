@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Artifact Flow Validation
 
-> **Load trigger:** `"load artifact-flow-validation skill"` > **DORA:** Cap 4 (CI/CD Automation)
+> **Load trigger:** `"load artifact-flow-validation skill"` > **DORA:** Core: CI/CD automation
 > **Token cost:** Low
 
 ## Purpose

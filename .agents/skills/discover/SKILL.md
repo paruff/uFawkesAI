@@ -12,14 +12,14 @@ metadata:
 # Skill: Discover
 
 > **Load trigger:** `"load discover skill"`
-**Invoke when:** A new feature, capability, or change is proposed — before `spec.md` begins. > **DORA:** AI Capability 6 (User-centric focus) > **Token cost:** Low
+**Invoke when:** A new feature, capability, or change is proposed — before `spec.md` begins. > **DORA:** AI Capability 6: User-centric focus > **Token cost:** Low
 
 > Migrated from the former `discover` agent. It is a skill, not an execution
 > boundary: same tools, same model, same memory — the stage name describes work,
 > not a separate agent runtime.
 
 > **Invoke when:** A new feature, capability, or change is proposed — before `spec.md` begins.
-> **DORA:** AI Capability 6 (User-centric focus)
+> **DORA:** AI Capability 6: User-centric focus
 > **Token cost:** Low
 > **Output:** `discovery-brief.md` → consumed by `spec` skill
 

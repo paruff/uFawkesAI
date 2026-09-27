@@ -10,7 +10,7 @@ metadata:
 
 # Skill: E2E Rollback Testing
 
-> **Load trigger:** `"load e2e-rollback skill"` > **DORA:** Cap 5 (Operational Resilience)
+> **Load trigger:** `"load e2e-rollback skill"` > **DORA:** Core: Operational resilience
 > **Token cost:** Low
 
 ## Purpose

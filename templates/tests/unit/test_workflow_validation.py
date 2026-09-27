@@ -122,12 +122,14 @@ class TestWorkflowValidation:
                 config = yaml.safe_load(fh)
                 jobs = config.get("jobs", {})
                 for job_name, job_config in jobs.items():
-                    if isinstance(job_config, dict) and "uses" not in job_config:
-                        # Only check direct jobs, not reusable workflow calls
-                        if "timeout-minutes" not in job_config:
-                            import warnings
+                    if (
+                        isinstance(job_config, dict)
+                        and "uses" not in job_config
+                        and "timeout-minutes" not in job_config
+                    ):
+                        import warnings
 
-                            warnings.warn(
-                                f"{f.name} job '{job_name}' has no timeout-minutes",
-                                UserWarning,
-                            )
+                        warnings.warn(
+                            f"{f.name} job '{job_name}' has no timeout-minutes",
+                            UserWarning,
+                        )

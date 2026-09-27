@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Kubernetes Design Validation
 
-> **Load trigger:** `"load k8s-design-validation skill"` > **DORA:** Cap 1 (AI Policy)
+> **Load trigger:** `"load k8s-design-validation skill"` > **DORA:** AI Capability 1: Clear and communicated AI stance
 > **Token cost:** Low
 
 ## Purpose

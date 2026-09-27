@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Agent Decision Logging
 
-> **Load trigger:** `"load agent-decision-logging skill"` > **DORA:** Cap 6 (Reliability)
+> **Load trigger:** `"load agent-decision-logging skill"` > **DORA:** Core: Reliability
 > **Token cost:** Low
 
 ## Purpose

@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Rollout Validation
 
-> **Load trigger:** `"load rollout-validation skill"` > **DORA:** Cap 4 (CI/CD Automation)
+> **Load trigger:** `"load rollout-validation skill"` > **DORA:** Core: CI/CD automation
 > **Token cost:** Low
 
 ## Purpose

@@ -1,0 +1,137 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+
+  // SINGLE SOURCE OF TRUTH — the canonical copy lives in <repo>/opencode/ and is
+  // installed to this location by opencode/sync.sh. Edit there, not here.
+  // Do not recreate opencode.json or a project-level .opencode/opencode.json(c) —
+  // opencode merges config.json -> opencode.json -> opencode.jsonc ->
+  // <project>/.opencode/opencode.json(c), later files WIN and arrays REPLACE
+  // (they do not concatenate). A second file silently clobbers the plugin list.
+  // Verify with: opencode debug info
+  "provider": {
+    // Google models via opencode-antigravity-auth's dual-quota OAuth (Antigravity
+    // AND Gemini CLI quotas from one plugin — do not remove, the Gemini CLI
+    // free models below depend on it). Tiers moved OFF the antigravity-* channel
+    // to the free Gemini CLI models on 2026-09-25; those definitions were
+    // deleted. Model definitions must live in this file — the plugin has NO
+    // runtime config hook (README step 3).
+    "google": {
+      "models": {
+        "gemini-2.5-flash": {
+          "name": "Gemini 2.5 Flash (Gemini CLI)",
+          "limit": { "context": 1048576, "output": 65536 },
+          "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] }
+        },
+        // gemini-2.5-pro and gemini-3-pro-preview removed 2026-09-25: API 404
+        // "no longer available to new users" (non-retryable) on live test.
+        "gemini-3-flash-preview": {
+          "name": "Gemini 3 Flash Preview (Gemini CLI)",
+          "limit": { "context": 1048576, "output": 65536 },
+          "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] }
+        },
+        // gemini-3.1-pro-preview: quota-limited (429 on live test 2026-09-25);
+        // kept so it stays selectable — promote back to @heavy primary when
+        // quota allows.
+        "gemini-3.1-pro-preview": {
+          "name": "Gemini 3.1 Pro Preview (Gemini CLI)",
+          "limit": { "context": 1048576, "output": 65535 },
+          "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] }
+        },
+        "gemini-3.1-pro-preview-customtools": {
+          "name": "Gemini 3.1 Pro Preview Custom Tools (Gemini CLI)",
+          "limit": { "context": 1048576, "output": 65535 },
+          "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] }
+        }
+      }
+    },
+    // ollama removed 2026-09-25: 192.168.1.194 unreachable (connection refused).
+    // Re-add when the LAN box is back.
+    // nvidia-proxy removed 2026-09-25: local launchd SPOF whose upstream NIM
+    // timed out on ~58% of requests; see opencode/README.md.
+    "opencode": {
+      "name": "OpenCode (free models)",
+      "models": {
+        "big-pickle": { "name": "Big Pickle (free)" },
+        "ling-3.0-flash-fin-free": { "name": "Ling 3.0 Flash Fin (free)" },
+        "mimo-v2.6-flash-free": { "name": "Mimo v2.6 Flash (free)" },
+        "muse-spark-1.3-contributor-free": { "name": "Muse Spark 1.3 (free)" },
+        "nemotron-3-ultra-free": { "name": "Nemotron 3 Ultra (free)" },
+        "nemotron-3.5-lightning-free": { "name": "Nemotron 3.5 Lightning (free)" },
+        "space-bunny-free": { "name": "Space Bunny (free)" }
+      }
+    }
+  },
+
+  // Zero-auth free model: no local proxy, no API key, no quota surprises.
+  "model": "opencode/mimo-v2.6-flash-free",
+
+  // Per-agent fallback chains live in fallback.json (opencode-auto-fallback),
+  // NOT here — "fallback" is not a valid AgentConfig key and is ignored.
+  "agent": {
+    "build": {
+      "model": "opencode/mimo-v2.6-flash-free"
+    },
+    "general": {
+      "model": "opencode/mimo-v2.6-flash-free"
+    },
+    "explore": {
+      "model": "opencode/mimo-v2.6-flash-free"
+    }
+  },
+
+  "disabled_providers": ["opencode-go"],
+
+  "mcp": {
+    "serena": {
+      "type": "local",
+      "command": [
+        "uvx",
+        "--from",
+        "serena-agent",
+        "serena",
+        "start-mcp-server",
+        "--project-from-cwd",
+        "--context",
+        "agent",
+        "--open-web-dashboard",
+        "False"
+      ],
+      "enabled": true
+    }
+  },
+
+  // headroom fully removed 2026-09-25: zero measurable token savings (no stats
+  // ever persisted, 6 lifetime tool calls), plugin incompatible with opencode
+  // 1.18.30 ("Plugin export is not a function"), broken python@3.11 shebang on
+  // its MCP command, and a disabled_providers/mcp.enabled contradiction.
+  // Re-add only against a fixed upstream build.
+  //
+  // Plugin list is npm-managed: exact-pinned in opencode/package.json +
+  // package-lock.json, installed by opencode/sync.sh (npm ci). Bare names
+  // resolve from ~/.config/opencode/node_modules.
+  //
+  // superpowers loads via a SHA-pinned git-spec entry (obra/superpowers, the
+  // same commit package.json pins), NOT the bare package name: the npm name
+  // "superpowers" is an abandoned 0.0.2 stub that resolves to a silent no-op,
+  // so bare "superpowers" must never appear in this list. The `superpowers`
+  // npm dependency in package.json remains solely to supply `skills.paths`
+  // (below) — the authoritative, file-side registration of the skill files.
+  "plugin": [
+    "opencode-tui-model-router",
+    "opencode-auto-fallback",
+    "opencode-antigravity-auth",
+    "superpowers@git+https://github.com/obra/superpowers.git#8ca22dba9a94f28898bbce59f2537ff4d87c747d"
+  ],
+
+  // Skills are registered FILE-SIDE as the source of truth. Since the
+  // git-spec entry (2026-09-26) the plugin's config-hook injection of this
+  // same path IS also picked up at boot, but the file-side entry stays: it
+  // works even with a cold plugin cache, and the loader dedupes the two
+  // registrations (no duplicate-name warnings). Single registration path ONLY
+  // — a companion skills/superpowers symlink caused "duplicate skill name"
+  // warnings and is removed by sync.sh. __HOME__ is substituted by
+  // opencode/sync.sh so the same file works on host and in the devcontainer.
+  "skills": {
+    "paths": ["__HOME__/.config/opencode/node_modules/superpowers/skills"]
+  }
+}

@@ -10,7 +10,7 @@ metadata:
 
 # Skill: E2E Deployment Validation
 
-> **Load trigger:** `"load e2e-deployment-validation skill"` > **DORA:** Cap 4 (CI/CD Automation) + Cap 6 (Operational Visibility)
+> **Load trigger:** `"load e2e-deployment-validation skill"` > **DORA:** Core: CI/CD automation + Core: Operational visibility
 > **Token cost:** Low
 
 ## Purpose

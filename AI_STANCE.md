@@ -42,6 +42,12 @@ AI use here is backed by repository infrastructure, not convention:
   commands are defined under `.agents/`.
 - The `ai-stance` and `ai-policy-lifecycle` skills own this document and its
   quarterly review.
+- **Feedback and escalation:** raise a stance question or a suspected
+  Prohibited-item violation as a GitHub issue on this repo, tagged
+  `ai-stance`. The stance is only as good as its ability to be corrected, so
+  a disagreement with it is a valid reason to open an issue rather than work
+  around it silently. A Prohibited-item violation is also a CI concern: report
+  it on the PR.
 - A pre-commit hook suite runs on every commit, including gitleaks and
   detect-secrets.
 - Contract assertions in `.agents/assertions/` validate agent reports.

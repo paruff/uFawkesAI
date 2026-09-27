@@ -10,7 +10,7 @@ metadata:
 
 # Skill: GitOps Overlay Generation
 
-> **Load trigger:** `"load gitops-overlay-generation skill"` > **DORA:** Cap 3 (AI-Accessible Internal Data)
+> **Load trigger:** `"load gitops-overlay-generation skill"` > **DORA:** AI Capability 3: AI-accessible internal data
 > **Token cost:** Low
 
 ## Purpose

@@ -5,7 +5,7 @@ This repository includes AI SDLC scaffolding for planning, implementation, verif
 ## Structure
 
 - `docs/ai-sdlc/`: artifact chain templates (`intent.md` → `spec.md` → `plan.md`)
-- `.opencode/commands/`: reusable slash commands — also visible at `.claude/commands/` (symlink, so there is exactly one copy of each)
+- `.agents/commands/`: reusable slash commands — also visible at `.agents/commands/` (symlink, so there is exactly one copy of each)
 - `.opencode/skills/`: on-demand skills, including the migrated testing/security/api-design/gitops rules (see below) — also visible at `.claude/skills/` (symlink)
 - `.opencode/agents/`: focused review subagents
 - `.opencode/plugins/ai-sdlc-hooks.ts`: OpenCode's edit protection, formatting, and compact-session reinjection hooks

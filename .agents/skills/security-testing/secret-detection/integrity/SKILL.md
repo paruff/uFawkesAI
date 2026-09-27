@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Artifact Integrity Validation
 
-> **Load trigger:** `"load artifact-integrity-validation skill"` > **DORA:** Cap 1 (AI Policy)
+> **Load trigger:** `"load artifact-integrity-validation skill"` > **DORA:** AI Capability 1: Clear and communicated AI stance
 > **Token cost:** Low
 
 ## Purpose

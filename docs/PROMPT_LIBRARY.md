@@ -1,6 +1,6 @@
 # Prompt Library — [PROJECT NAME]
 
-> DORA 2025 (AI Cap 2): "Prompt engineering is rising as a core developer skill.
+> DORA 2025: "Prompt engineering is rising as a core developer skill.
 > The modern engineer's value is in prompt engineering, solution architecture,
 > and validating AI outputs — not just writing code."
 >

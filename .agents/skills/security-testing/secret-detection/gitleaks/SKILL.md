@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Gitleaks Secret Scanning
 
-> **Load trigger:** `"load gitleaks-secret-scanning skill"` > **DORA:** Cap 1 (AI Policy)
+> **Load trigger:** `"load gitleaks-secret-scanning skill"` > **DORA:** AI Capability 1: Clear and communicated AI stance
 > **Token cost:** Low
 
 ## Purpose

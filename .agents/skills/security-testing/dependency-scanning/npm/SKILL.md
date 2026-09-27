@@ -10,7 +10,7 @@ metadata:
 
 # Skill: NPM Dependency Scanning
 
-> **Load trigger:** `"load npm-dependency-scanning skill"` > **DORA:** Cap 1 (AI Policy)
+> **Load trigger:** `"load npm-dependency-scanning skill"` > **DORA:** AI Capability 1: Clear and communicated AI stance
 > **Token cost:** Low
 
 ## Purpose

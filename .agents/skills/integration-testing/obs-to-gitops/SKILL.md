@@ -10,7 +10,7 @@ metadata:
 
 # Skill: OBS → GitOps Integration Testing
 
-> **Load trigger:** `"load obs-to-gitops-integration skill"` > **DORA:** Cap 4 (CI/CD Automation)
+> **Load trigger:** `"load obs-to-gitops-integration skill"` > **DORA:** Core: CI/CD automation
 > **Token cost:** Low
 
 ## Purpose

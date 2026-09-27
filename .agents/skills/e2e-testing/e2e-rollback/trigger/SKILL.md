@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Rollback Triggering
 
-> **Load trigger:** `"load rollback-triggering skill"` > **DORA:** Cap 5 (Operational Resilience)
+> **Load trigger:** `"load rollback-triggering skill"` > **DORA:** Core: Operational resilience
 > **Token cost:** Low
 
 ## Purpose

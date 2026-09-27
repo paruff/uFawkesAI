@@ -69,7 +69,7 @@ commit "$r" src/app.ts "export const x = 1"
 expect block "plan.md lacks a Verification Strategy section" "$r"
 
 r="$(new_repo plan-elsewhere)"
-commit "$r" .opencode/commands/plan.md "$PLAN_OK"
+commit "$r" .agents/commands/plan.md "$PLAN_OK"
 commit "$r" src/app.ts "export const x = 1"
 expect block "plan.md outside docs/ai-sdlc/ does not count" "$r"
 

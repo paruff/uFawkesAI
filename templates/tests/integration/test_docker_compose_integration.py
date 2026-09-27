@@ -3,10 +3,11 @@
 Customize this file for your project's specific integration test requirements.
 """
 
-import pytest
 import subprocess
 import time
 from pathlib import Path
+
+import pytest
 
 
 class TestDockerComposeIntegration:
@@ -21,6 +22,7 @@ class TestDockerComposeIntegration:
             capture_output=True,
             text=True,
             cwd=str(Path(__file__).parent.parent.parent),
+            check=False,
         )
         # Wait for services to be ready
         time.sleep(30)
@@ -31,6 +33,7 @@ class TestDockerComposeIntegration:
             capture_output=True,
             text=True,
             cwd=str(Path(__file__).parent.parent.parent),
+            check=False,
         )
 
     def test_services_are_running(self):
@@ -40,6 +43,7 @@ class TestDockerComposeIntegration:
             capture_output=True,
             text=True,
             cwd=str(Path(__file__).parent.parent.parent),
+            check=False,
         )
         assert result.returncode == 0
         # Parse the output to check for running services
@@ -53,6 +57,7 @@ class TestDockerComposeIntegration:
             capture_output=True,
             text=True,
             cwd=str(Path(__file__).parent.parent.parent),
+            check=False,
         )
         if result.returncode == 0:
             # Check that no service is in unhealthy state
@@ -65,6 +70,7 @@ class TestDockerComposeIntegration:
             capture_output=True,
             text=True,
             cwd=str(Path(__file__).parent.parent.parent),
+            check=False,
         )
         if result.returncode == 0:
             # Parse JSON output to check for port conflicts
@@ -96,6 +102,7 @@ class TestDockerComposeIntegration:
             ["docker", "volume", "ls", "--format", "{{.Name}}"],
             capture_output=True,
             text=True,
+            check=False,
         )
         assert result.returncode == 0
         # At least one volume should exist

@@ -60,7 +60,7 @@ runtime, never committed or baked into the image.
 
 **R5 — Anti-shadowing check.**
 A CI step (or a `postCreateCommand` smoke check) detects the class of bug
-this session found and fixed by hand (a stale `.opencode/commands/doctor.md`
+this session found and fixed by hand (a stale `.agents/commands/doctor.md`
 stub shadowing the real global command and colliding with Claude Code's
 built-in `/doctor`): any command/skill name that exists in more than one
 discovery path for a given harness, or that collides with a harness's own
@@ -95,7 +95,7 @@ documentation, not assumed):**
 |---|---|---|---|---|
 | Rules/instructions | `CLAUDE.md`, + nested `<dir>/CLAUDE.md` | `AGENTS.md` ("Rules" feature), + nested `<dir>/AGENTS.md`, identical scoping behavior | `AGENTS.md` at every level | None — extend the existing root symlink pattern (`CLAUDE.md → AGENTS.md`) into every nested directory that gets one |
 | Skills | `.claude/skills/<name>/SKILL.md` | Reads `.claude/skills/<name>/SKILL.md` natively (documented cross-compatibility) | `.claude/skills/` | None |
-| Commands | `.claude/commands/<name>.md` (frontmatter: `description`, `allowed-tools`, `argument-hint`, `model`; body uses `$ARGUMENTS`) | `.opencode/commands/<name>.md` (frontmatter: `description`, `agent`) | One paired command per name, one file per harness | Small — mostly frontmatter field mapping; enforce with a CI check that every command name exists under both paths with matching `description` |
+| Commands | `.agents/commands/<name>.md` (frontmatter: `description`, `allowed-tools`, `argument-hint`, `model`; body uses `$ARGUMENTS`) | `.agents/commands/<name>.md` (frontmatter: `description`, `agent`) | One paired command per name, one file per harness | Small — mostly frontmatter field mapping; enforce with a CI check that every command name exists under both paths with matching `description` |
 | MCP servers | `.mcp.json` → `mcpServers: {name: {command, args, env}}` (stdio) or `{type:"http", url, headers}` | `opencode.json`/`.jsonc` → `mcp: {name: {type:"local", command:[...], env}}` or `{type:"remote", url, headers}` | Hand-maintained pair | Small — mechanical (`command`+`args` split/join, add/drop `type`); enforce with the same CI drift check as commands |
 | Hooks | `.claude/settings.json` `hooks{}` — declarative: event → matcher → shell command | `.opencode/plugins/*.ts` — imperative TypeScript via the `@opencode-ai/plugin` SDK | Shared logic in one script/module | Real — the two APIs are structurally different (declarative vs. imperative); each harness gets a thin wrapper that calls the same underlying logic, not a generated file |
 

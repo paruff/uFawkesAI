@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Code Generation
 
-> **Load trigger:** `"load code-generation skill"` > **DORA:** Cap 3 (AI-Accessible Internal Data)
+> **Load trigger:** `"load code-generation skill"` > **DORA:** AI Capability 3: AI-accessible internal data
 > **Token cost:** Low
 
 ## Purpose

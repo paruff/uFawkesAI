@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Component Identification
 
-> **Load trigger:** `"load component-identification skill"` > **DORA:** Cap 3 (AI-Accessible Internal Data)
+> **Load trigger:** `"load component-identification skill"` > **DORA:** AI Capability 3: AI-accessible internal data
 > **Token cost:** Low
 
 ## Purpose

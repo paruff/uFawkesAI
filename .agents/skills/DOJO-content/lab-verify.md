@@ -11,7 +11,7 @@ metadata:
 
 # Sub-Skill: Dojo Content — Lab Verify
 
-> **Load trigger:** `"load dojo-content/lab-verify skill"` > **DORA:** AI Capability 7 (Quality internal platforms) + Core: Test automation
+> **Load trigger:** `"load dojo-content/lab-verify skill"` > **DORA:** AI Capability 7: Quality internal platforms + Core: Test automation
 > **Token cost:** Low
 > **When to use:** Before publishing any new or updated module. Required — not optional.
 

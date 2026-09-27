@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Coder Workspace Validation
 
-> **Load trigger:** `"load coder-workspace-validation skill"` > **DORA:** Cap 3 (AI-Accessible Internal Data)
+> **Load trigger:** `"load coder-workspace-validation skill"` > **DORA:** AI Capability 3: AI-accessible internal data
 > **Token cost:** Low
 
 ## Purpose

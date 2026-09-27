@@ -36,32 +36,32 @@ budget for the learning phase — and these control systems are that budget.
 
 | File                                           | Capability / Standard Link        | What It Does                                                                 |
 | ---------------------------------------------- | --------------------------------- | ---------------------------------------------------------------------------- |
-| `AGENTS.md`                                    | AI Cap 3 — Context Engineering    | Universal agent instruction file; loaded by all agents                       |
-| `.github/copilot-instructions.md`              | AI Cap 3                          | Copilot path-compatibility symlink to `AGENTS.md`                            |
+| `AGENTS.md`                                    | AI Capability 3                  | Universal agent instruction file; loaded by all agents                       |
+| `.github/copilot-instructions.md`              | AI Capability 3                  | Copilot path-compatibility symlink to `AGENTS.md`                            |
 | `.github/skills/`                              | Agent Skills standard             | On-demand modular capabilities                                               |
 | `CLAUDE.md`                                    | Claude Code — primary config file | Symlink to AGENTS.md                                                         |
 | `.cursorrules`                                 | Cursor — primary config file      | Symlink to AGENTS.md                                                         |
-| `.agents/agents/` (14 files)                   | AI Cap 2 — Prompt Engineering     | Specialist agent profiles: 7 core pipeline agents (spec, design, build, test, test-execution, review, cross-validation) + 7 flow/meta agents — see `.agents/README.md` |
-| `.agents/agents/verifier.md`                   | DORA 2025 — Review Speed          | Evidence gate: runs the `review` and `cross-validation` skills (REVIEW-01)   |
-| `.github/instructions/feature.instructions.md` | AI Cap 3                          | Scoped to src/\*\*; injected for feature work                                |
-| `.github/instructions/testing.instructions.md` | AI Cap 3                          | Scoped to tests/\*\*; injected for test work                                 |
+| `.agents/agents/` (4 files)                    | Core: Prompt engineering         | The 4 execution-boundary agents: `planner`, `builder`, `verifier`, `operator` — see `.agents/README.md` |
+| `.agents/agents/verifier.md`                   | AI Capabilities 4 + 5 + 6        | The verdict: evidence vs. claims. The only agent that can block (REVIEW-01)   |
+| `.github/instructions/feature.instructions.md` | AI Capability 3                  | Scoped to src/\*\*; injected for feature work                                |
+| `.github/instructions/testing.instructions.md` | AI Capability 3                  | Scoped to tests/\*\*; injected for test work                                 |
 | `.github/PULL_REQUEST_TEMPLATE.md`             | DORA 2025 — Review Speed          | Structured AI-Assisted Review Block (REVIEW-01)                              |
 | `.github/workflows/ci-quality.yml`             | DORA 2025 — Control Systems       | CI gate with PR size blocking (INSTAB-01)                                    |
 | `.github/workflows/doc-freshness.yml`          | DORA 2025 — Living Docs           | Posts reminder when services change without doc update                       |
 | `docs/ARCHITECTURE.md`                         | DORA 2025 — Loosely Coupled       | Layer boundaries as convention today; wire a linter's import rules to them if you add application source (ARCH-01) |
 | `docs/GOLDEN_PATH.md`                          | DORA 2025 — Platform Eng          | 10-step idea→deploy workflow (PLAT-02)                                       |
-| `docs/PROMPT_LIBRARY.md`                       | AI Cap 2 — Prompt Engineering     | Versioned task-specific prompt templates (AIOPS-04)                          |
+| `docs/PROMPT_LIBRARY.md`                       | Core: Prompt engineering         | Versioned task-specific prompt templates (AIOPS-04)                          |
 | `docs/METRICS.md`                              | DORA 2025 — Rework Rate           | Rework rate, change failure rate, PR revision rate (METRICS-02)              |
 | `docs/DEVEX_LOG.md`                            | DORA 2025 — DevEx                 | Monthly 5-dimension self-assessment (DEVEX-01)                               |
 | `docs/TEAM_ARCHETYPE.md`                       | DORA 2025 — Archetypes            | Seven archetype self-assessment; tailors issue priority (AIOPS-05)           |
 | `docs/VALUE_STREAM_MAP.md`                     | DORA 2025 — VSM                   | Issue→deploy flow with wait times; identifies bottleneck (VSM-01)            |
-| `docs/KNOWN_LIMITATIONS.md`                    | AI Cap 3 — Context                | What agents must not make worse (DOCS-02)                                    |
-| `docs/API_SURFACE.md`                          | AI Cap 3 — Context                | All public service/util functions; Copilot reads before generating (DOCS-02) |
-| `docs/CHANGE_IMPACT_MAP.md`                    | AI Cap 3 — Context                | Cross-file impact map; prevents Copilot omissions (DOCS-02)                  |
+| `docs/KNOWN_LIMITATIONS.md`                    | AI Capability 3                  | What agents must not make worse (DOCS-02)                                    |
+| `docs/API_SURFACE.md`                          | AI Capability 3                  | All public service/util functions; Copilot reads before generating (DOCS-02) |
+| `docs/CHANGE_IMPACT_MAP.md`                    | AI Capability 3                  | Cross-file impact map; prevents Copilot omissions (DOCS-02)                  |
 | `docs/RUNBOOKS.md`                             | DORA 2025 — Instability           | Emergency rollback, feature disable, weekly review (INSTAB-01)               |
-| `docs/AI_POLICY.md`                            | AI Cap 1 — AI Policy              | Clear AI stance; psychological safety (PSYCH-01)                             |
+| `docs/AI_POLICY.md`                            | AI Capability 1                  | Clear AI stance; psychological safety (PSYCH-01)                             |
 | `scripts/weekly-metrics.sh`                    | DORA 2025 — Rework Rate           | Single-screen metrics summary (METRICS-02)                                   |
-| `.vscode/settings.json`                        | AI Cap 3 — Context Eng.           | Auto-loads copilot-instructions.md in every session                          |
+| `.vscode/settings.json`                        | AI Capability 3                  | Auto-loads copilot-instructions.md in every session                          |
 | `.mcp.json`                                     | Dual-Harness — MCP Config         | Claude Code's MCP server registrations, mirroring `opencode.json`'s server set |
 | `.opencode/skills/*-rules/SKILL.md`             | Agent Skills standard             | Testing/security/api-design/gitops rules, migrated from `rules/*.md` to on-demand skills; visible at `.claude/skills/` via symlink |
 | `scripts/hooks/protected-paths.json`            | Dual-Harness — Shared Hook Data   | Protected-path list read by both `.claude/settings.json` and `.opencode/plugins/ai-sdlc-hooks.ts` |
@@ -73,53 +73,92 @@ budget for the learning phase — and these control systems are that budget.
 
 ---
 
-## The Capability Model in This Template (Seven DORA + Agent Skills)
+## The Capability Model in This Template
 
-### Capability 1 — Clarify AI Policies
+The canonical vocabulary is the **DORA AI Capabilities Model (2025)** — seven
+capabilities, source of truth in `.agents/registry/dora-capabilities.yaml`.
+Every capability label in this repo reads `AI Capability N: <Name>`, and
+`scripts/check-dora-vocabulary.sh` fails the build if a file uses a different
+name for a given number.
+
+### AI Capability 1 — Clear and communicated AI stance
 
 **Finding:** Ambiguity around AI use harms both adoption and psychological safety.
-**Template response:** `docs/AI_POLICY.md` — explicit stance on what AI does/doesn't do, who reviews, data handling.
+A clear stance amplifies AI's impact _regardless of what the stance says_.
+**Template response:** `AI_STANCE.md` (authoritative) and `docs/AI_POLICY.md`
+(downstream-repo template) — explicit stance on permitted tools, expectations
+for AI use, and data handling.
 
-### Capability 2 — Prompt Engineering as Core Skill
+### AI Capability 2 — Healthy data ecosystems
 
-**Finding:** "The modern engineer's value is in prompt engineering, solution architecture, and validating AI outputs — not just writing code."
-**Template response:** `docs/PROMPT_LIBRARY.md` — versioned, categorised templates for every repeating task type. `TEMPLATE_DESIGN.md` explains the why.
+**Finding:** The quality of internal data is critical to AI success. High-quality,
+easily accessible, unified internal data substantially amplifies AI's influence
+on organizational performance.
+**Template response:** `docs/DORA_alignment.md` maps the five core delivery
+metrics to the session-linked JSONL logs that this template emits.
 
-### Capability 3 — AI-Accessible Internal Data (Context Engineering)
+### AI Capability 3 — AI-accessible internal data
 
-**Finding:** "Moving beyond simple prompts to securely connecting AI tools to your internal documentation and codebases" — Google's #2 "where to start" recommendation.
-**Template response:** `AGENTS.md` context index, `.vscode/settings.json` auto-load, `docs/API_SURFACE.md`, `docs/KNOWN_LIMITATIONS.md`, `docs/CHANGE_IMPACT_MAP.md`.
+**Finding:** "Moving beyond simple prompts to securely connecting AI tools to
+your internal documentation and codebases." This is the capability commonly
+called _context engineering_ — the name is common, but it is not the DORA name.
+**Template response:** `AGENTS.md` context index, `.vscode/settings.json`
+auto-load, `docs/API_SURFACE.md`, `docs/KNOWN_LIMITATIONS.md`,
+`docs/CHANGE_IMPACT_MAP.md`, and the `context-engineering` skill.
 
-### Capability 4 — Mature Version Control
+### AI Capability 4 — Strong version control practices
 
-**Finding:** Strong version control practices are prerequisites for safe AI adoption; without them AI increases instability.
-**Template response:** Branch protection in CI, conventional commits standard, PR size blocking at 400 lines (INSTAB-01), large-pr-approved label gate.
+**Finding:** With AI increasing the volume and velocity of code generation,
+strong version control habits are a safety net. Frequent commits amplify
+individual effectiveness; frequent use of rollback boosts team performance.
+**Template response:** Branch protection in CI, conventional commits standard,
+PR size blocking at 400 lines (INSTAB-01), large-pr-approved label gate, and the
+`main-ci-guard` workflow.
 
-### Capability 5 — Small Batches / Shift Left on Quality
+### AI Capability 5 — Working in small batches
 
-**Finding:** Small batches are the most effective structural countermeasure to AI-induced instability.
-**Template response:** PR size block in CI, TDD requirement in golden path, failing test commit before implementation commit.
+**Finding:** Small batches are the most effective structural countermeasure to
+AI-induced instability — AI can generate large blocks that are hard to review
+and test.
+**Template response:** PR size block in CI, TDD requirement in the golden path,
+failing test committed before the implementation commit.
 
-### Capability 6 — Fast Feedback Loops
+### AI Capability 6 — User-centric focus
 
-**Finding:** Fast feedback is the #1 platform capability correlated with positive DevEx.
-**Template response:** CI < 4 min target, human-readable CI output, `npm run preflight` (lint+typecheck+test in one command), `docs/DEVEX_LOG.md` Feedback Speed dimension.
+**Finding:** Without a user-centric focus, AI adoption can have a _negative_
+impact on team performance — teams move quickly in the wrong direction. Speed is
+irrelevant if the direction is wrong.
+**Template response:** the `discover` skill (JTBD + acceptance criteria before
+any `spec` stage), the `discovery` workflow, and `platform-feedback` for the
+measurement half.
 
-### Capability 7 — Internal Developer Platform
+### AI Capability 7 — Quality internal platforms
 
-**Finding:** "Developer independence resulted in 5% productivity improvement."
-**Template response:** `docs/GOLDEN_PATH.md` (one route from idea to deploy), `npm run pr-ready`, `npm run metrics`, agent specialists that reduce interruption.
+**Finding:** Quality internal platforms provide the shared capabilities needed to
+scale AI's benefits. They prevent individual productivity gains from being
+absorbed by downstream bottlenecks.
+**Template response:** `docs/GOLDEN_PATH.md` (one route from idea to deploy),
+`npm run preflight`, `npm run pr-ready`, `docs/DEVCONTAINER.md`.
 
-### Capability 8 — Agent Skills (On-Demand Context)
+### Template extensions — not DORA capabilities
 
-**Finding:** This extends DORA's seven-capability model with an implementation pattern.
-As AGENTS.md becomes the universal standard (60,000+ open-source projects,
-Linux Foundation), a second layer of modular, on-demand capabilities has emerged —
-Agent Skills (SKILL.md files). Unlike AGENTS.md which is always loaded, Skills load
-only when explicitly referenced, preserving the agent's limited instruction budget.
-**Template response:** `.agents/skills/` directory, 31 skill areas (124 `SKILL.md`
-files total) spanning spec, design, build, test, test-execution, review,
-security-testing, dora-measurement, and more — see `.agents/README.md`.
+These three are real practices this template implements, but they are **not**
+among DORA's seven. They are labelled `Core:` in capability lines and are
+deliberately kept out of the numbered sequence, because giving them numbers is
+what previously caused `Cap 6` to mean three different things across this repo.
+
+- **Prompt engineering as a core skill.** The DORA ROI report does observe that
+  "the modern engineer's value is in prompt engineering, solution architecture,
+  and validating AI outputs — not just writing code." That is a finding about
+  developer craft, not one of the seven AI capabilities. Response:
+  `docs/PROMPT_LIBRARY.md`.
+- **Agent Skills (on-demand context).** An implementation pattern layered on top
+  of the model, not a capability: `AGENTS.md` is always loaded, whereas a
+  `SKILL.md` loads only when referenced, preserving the instruction budget.
+  Response: `.agents/skills/` — see `.agents/README.md`.
+- **Fast feedback loops.** A platform quality attribute (CI under 4 min,
+  human-readable output, one-command preflight), reported under
+  `docs/DEVEX_LOG.md` rather than as a capability.
 
 ---
 

@@ -29,9 +29,9 @@ done
 
 echo "== 4. Claude Code commands: /plan /verify /ship discoverable, doctor NOT shadowed =="
 for cmd in plan verify ship; do
-  test -f ".claude/commands/$cmd.md" || fail "Claude Code command '$cmd' not found at .claude/commands/$cmd.md"
+  test -f ".agents/commands/$cmd.md" || fail "Claude Code command '$cmd' not found at .agents/commands/$cmd.md"
 done
-if [ -e ".claude/commands/doctor.md" ] || [ -d ".claude/skills/doctor" ]; then
+if [ -e ".agents/commands/doctor.md" ] || [ -d ".claude/skills/doctor" ]; then
   fail "a project-level 'doctor' command/skill exists — this would shadow Claude Code's built-in /doctor"
 fi
 
@@ -60,8 +60,8 @@ test "$template" -eq 0 || fail "protected-path hook blocked the secret-free .env
 echo "  protected-path hook correctly blocked .env.local and allowed README.md and .env.example"
 
 echo "== 7. One command's definition is present for both harnesses: /verify =="
-test -f ".opencode/commands/verify.md" || fail "verify command definition missing"
-test -f ".claude/commands/verify.md" || fail "verify command not visible via .claude/commands"
+test -f ".agents/commands/verify.md" || fail "verify command definition missing"
+test -f ".agents/commands/verify.md" || fail "verify command not visible via .agents/commands"
 
 echo "== 8. One rule: nested scripts/AGENTS.md exists, scoped to scripts/ =="
 test -f "scripts/AGENTS.md" || fail "scripts/AGENTS.md missing"

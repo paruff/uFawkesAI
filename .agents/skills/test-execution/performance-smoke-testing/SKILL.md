@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Performance Smoke Testing
 
-> **Load trigger:** `"load performance-smoke-testing skill"` > **DORA:** Cap 5 (Small Batches / Shift Left on Quality)
+> **Load trigger:** `"load performance-smoke-testing skill"` > **DORA:** AI Capability 5: Working in small batches
 > **Token cost:** Low
 
 ## Purpose

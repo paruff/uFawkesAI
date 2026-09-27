@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Container Vulnerability Scanning
 
-> **Load trigger:** `"load container-vulnerability-scanning skill"` > **DORA:** Cap 1 (AI Policy)
+> **Load trigger:** `"load container-vulnerability-scanning skill"` > **DORA:** AI Capability 1: Clear and communicated AI stance
 > **Token cost:** Low
 
 ## Purpose

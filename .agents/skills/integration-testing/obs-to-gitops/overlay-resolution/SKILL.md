@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Overlay Resolution Testing
 
-> **Load trigger:** `"load overlay-resolution-testing skill"` > **DORA:** Cap 4 (CI/CD Automation)
+> **Load trigger:** `"load overlay-resolution-testing skill"` > **DORA:** Core: CI/CD automation
 > **Token cost:** Low
 
 ## Purpose

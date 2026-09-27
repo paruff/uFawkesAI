@@ -1,7 +1,7 @@
 ---
 name: builder
 description: "Implements a planned feature: writes code, manifests, and tests against a committed plan.md. Use when plan.md exists and the work is scoped. Loads the build, test, and refactoring skills."
-mode: primary
+mode: all
 ---
 
 # Agent: Builder

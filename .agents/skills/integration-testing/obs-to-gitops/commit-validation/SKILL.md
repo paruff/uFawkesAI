@@ -10,7 +10,7 @@ metadata:
 
 # Skill: GitOps Commit Validation
 
-> **Load trigger:** `"load gitops-commit-validation skill"` > **DORA:** Cap 4 (CI/CD Automation)
+> **Load trigger:** `"load gitops-commit-validation skill"` > **DORA:** Core: CI/CD automation
 > **Token cost:** Low
 
 ## Purpose

@@ -15,7 +15,7 @@ metadata:
 
 # Skill: Toolchain Validation
 
-> **Load trigger:** `"load toolchain-validation skill"` > **DORA:** Cap 3 (AI-Accessible Internal Data)
+> **Load trigger:** `"load toolchain-validation skill"` > **DORA:** AI Capability 3: AI-accessible internal data
 > **Token cost:** Low
 
 ## Purpose

@@ -5,7 +5,7 @@ agent: operator
 # Measure
 
 > **Invoke:** Monthly schedule OR after a significant release OR when measure issue filed by release agent.
-> **DORA:** AI Capability 2 (Healthy data ecosystems) + Capability 7 (Quality internal platforms)
+> **DORA:** AI Capability 2: Healthy data ecosystems + AI Capability 7: Quality internal platforms
 > **Token cost:** Medium (queries external Prometheus/Loki endpoints)
 > **Output:** `dora-snapshot-YYYY-MM.json` + `dora-snapshot-YYYY-MM.md`
 

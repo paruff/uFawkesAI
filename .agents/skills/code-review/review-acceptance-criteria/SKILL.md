@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Acceptance Criteria Validation
 
-> **Load trigger:** `"load review-acceptance-criteria skill"` > **DORA:** Cap 5 (Small Batches / Shift Left on Quality)
+> **Load trigger:** `"load review-acceptance-criteria skill"` > **DORA:** AI Capability 5: Working in small batches
 > **Token cost:** Low
 
 ## Purpose

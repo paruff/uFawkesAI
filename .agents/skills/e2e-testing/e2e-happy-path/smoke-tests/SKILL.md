@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Deployment Smoke Tests
 
-> **Load trigger:** `"load deployment-smoke-tests skill"` > **DORA:** Cap 4 (CI/CD Automation)
+> **Load trigger:** `"load deployment-smoke-tests skill"` > **DORA:** Core: CI/CD automation
 > **Token cost:** Low
 
 ## Purpose

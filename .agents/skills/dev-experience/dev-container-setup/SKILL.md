@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Dev Container Setup
 
-> **Load trigger:** `"load dev-container-setup skill"` > **DORA:** Cap 3 (AI-Accessible Internal Data)
+> **Load trigger:** `"load dev-container-setup skill"` > **DORA:** AI Capability 3: AI-accessible internal data
 > **Token cost:** Low
 
 ## Purpose

@@ -1,7 +1,7 @@
 ---
 name: operator
 description: "Runs the repository and its delivery surfaces: commits, branches, PRs, releases, and the scheduled DORA snapshot. Use for anything that changes repo or release state."
-mode: primary
+mode: all
 ---
 
 # Agent: Operator

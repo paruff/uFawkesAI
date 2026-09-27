@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Plan
 
-> **Load trigger:** `"load plan skill"` > **DORA:** Cap 3 + 5 (AI-Accessible Internal Data + Small Batches)
+> **Load trigger:** `"load plan skill"` > **DORA:** AI Capability 3: AI-accessible internal data + AI Capability 5: Working in small batches
 > **Token cost:** Low
 
 ## Purpose

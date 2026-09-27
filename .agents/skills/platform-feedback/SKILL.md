@@ -1,6 +1,6 @@
 ---
 name: platform-feedback
-description: "Quarterly developer feedback collection and analysis for the fawkes platform. Use to measure whether the IDP actually reduces cognitive load for the product teams using it. Implements DORA AI Capability 7 (Quality internal platforms) — the measurement half."
+description: "Quarterly developer feedback collection and analysis for the fawkes platform. Use to measure whether the IDP actually reduces cognitive load for the product teams using it. Implements DORA AI Capability 7: Quality internal platforms — the measurement half."
 license: MIT
 compatibility: Claude Code, GitHub Copilot, OpenCode, Cursor, Codex, Gemini CLI
 metadata:
@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Platform Feedback
 
-> **Load trigger:** `"load platform-feedback skill"` > **DORA:** AI Capability 7 (Quality internal platforms)
+> **Load trigger:** `"load platform-feedback skill"` > **DORA:** AI Capability 7: Quality internal platforms
 > **Token cost:** Low
 
 ## Purpose
@@ -147,7 +147,7 @@ Each action item filed as a GitHub issue with:
 
 - Label: `platform-feedback`, `capability-improvement`, tier label
 - Body: links to specific Discussion responses as evidence
-- DORA capability: Cap7 (Quality internal platforms)
+- DORA capability: 7: Quality internal platforms
 
 ## Output Format
 

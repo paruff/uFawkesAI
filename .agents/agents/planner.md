@@ -1,7 +1,7 @@
 ---
 name: planner
 description: "Turns an intent into committed intent.md, spec.md, and plan.md. Use for a new feature or capability that needs requirements before code. Loads the discover, spec, and design skills. Writes no implementation code."
-mode: primary
+mode: all
 ---
 
 # Agent: Planner
