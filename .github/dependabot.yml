@@ -12,7 +12,7 @@ updates:
     labels: ["dependencies", "chore"]
   # DevSecOps image: base image digest (Dockerfile FROM) and Node tools.
   # Binary tools and Python locks (tools.lock.json, requirements*.lock) are
-  # not supported by Dependabot — see scripts/image-lock-refresh.sh.
+  # not supported by Dependabot — .github/workflows/image-lock-bump.yml bumps them.
   - package-ecosystem: "docker"
     directory: "/images/devsecops"
     schedule:

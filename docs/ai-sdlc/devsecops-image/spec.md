@@ -62,9 +62,9 @@ tool set at the same versions:
   template release tags).
 - Dependabot (the repo's existing updater) opens PRs for the base image
   digest (Dockerfile `FROM`) and the Node tools. `tools.lock.json` and the
-  Python locks are beyond Dependabot; a scheduled lock-bump workflow using
-  `scripts/image-lock-refresh.sh` covers them (follow-up PR). Each update PR
-  rebuilds and runs R7.
+  Python locks are beyond Dependabot; `image-lock-bump.yml` (weekly,
+  `scripts/image-lock-bump.sh`) bumps them, plus the apt snapshot, in one bot
+  PR. Each update PR rebuilds and runs R7.
 - Scheduled weekly rebuild + Trivy scan of the current lock: it fails when a
   fixable CRITICAL/HIGH CVE appears, and a human bumps the apt snapshot and
   cuts a patch release. Releases are never tagged automatically.
