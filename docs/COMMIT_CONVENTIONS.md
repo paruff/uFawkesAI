@@ -37,6 +37,19 @@ ones that are useful to you.
 **Breaking changes:** either `!` before the colon (`feat(api)!: ...`) or a
 `BREAKING CHANGE:` footer — or both, per spec.
 
+**AI agent usage footer:** commits written with an AI agent should carry
+the agent's recorded token usage, so CI can report agent cost per PR to
+uFawkesObs (`scripts/emit-dora-event.sh` sums these across a PR's commits):
+
+```
+Agent-Tokens: input=516 output=261598 cache_read=58045669 cache_write=659547 model=claude-opus-5-5 source=claude-code
+```
+
+Generate it from the real session transcript rather than estimating:
+`scripts/agent-usage.sh --since <branch-start-UTC>` (Claude Code). Keep the
+`Co-Authored-By:` footer as well; AI co-authorship alone also marks the
+delivery `ai_assisted`.
+
 ## TDD commit order (per `test.md`)
 
 ```

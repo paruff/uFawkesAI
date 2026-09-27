@@ -52,10 +52,12 @@ run_hook() { printf '{"tool_name":"Write","tool_input":{"file_path":"%s"}}' "$1"
 set +e
 run_hook "$PWD/.env.local"; blocked=$?
 run_hook "$PWD/README.md"; allowed=$?
+run_hook "$PWD/.env.example"; template=$?
 set -e
 test "$blocked" -eq 2 || fail "protected-path hook did not block .env.local (exit $blocked)"
 test "$allowed" -eq 0 || fail "protected-path hook blocked README.md (exit $allowed)"
-echo "  protected-path hook correctly blocked .env.local and allowed README.md"
+test "$template" -eq 0 || fail "protected-path hook blocked the secret-free .env.example template (exit $template)"
+echo "  protected-path hook correctly blocked .env.local and allowed README.md and .env.example"
 
 echo "== 7. One command's definition is present for both harnesses: /verify =="
 test -f ".opencode/commands/verify.md" || fail "verify command definition missing"

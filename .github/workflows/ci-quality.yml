@@ -261,3 +261,61 @@ jobs:
            echo "- **Estimated time**: ~5 min" >> $GITHUB_STEP_SUMMARY
       - name: job-finish
         run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+
+  # ════════════════════════════════════════════════════════════════════════════
+  # DELIVERY EVENTS: uFawkesObs / uFawkesDORA (uFawkesPipe contract path)
+  # Runs only when "✅ CI Complete" succeeded. Emits job-start/job-finish for
+  # this run — and a deploy-marker on pushes to main — as JSON lines with
+  # agent token usage and PR cycle-time metadata (scripts/emit-dora-event.sh).
+  # Always uploaded as the `dora-events` artifact; also sent to uFawkesObs
+  # over OTLP when the OTEL_EXPORTER_OTLP_ENDPOINT repo variable is set.
+  # ════════════════════════════════════════════════════════════════════════════
+  dora-events:
+    name: "📡 Delivery Events"
+    needs: ci-summary
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      GH_TOKEN: ${{ github.token }}
+      OTEL_EXPORTER_OTLP_ENDPOINT: ${{ vars.OTEL_EXPORTER_OTLP_ENDPOINT }}
+      OTEL_SERVICE_NAME: ${{ vars.OTEL_SERVICE_NAME || 'ufawkesai' }}
+      OTEL_EXPORTER_OTLP_HEADERS: ${{ secrets.OTEL_EXPORTER_OTLP_HEADERS }}
+      DORA_EVENTS_FILE: ${{ github.workspace }}/dora-events.jsonl
+    steps:
+      - name: job-start
+        run: echo "job-start $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+
+      - name: Self-test the emitter
+        run: |
+          pip install --quiet 'jsonschema==4.25.1'
+          bash scripts/test-emit-dora-event.sh
+
+      - name: Emit delivery events
+        env:
+          DEPLOY_ENVIRONMENT: ${{ vars.DORA_ENVIRONMENT || 'main' }}
+          IS_DELIVERY: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+        run: |
+          started_at="$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" --jq .run_started_at)"
+          bash scripts/emit-dora-event.sh job-start --step ci-quality --at "$started_at"
+          bash scripts/emit-dora-event.sh job-finish --step ci-quality --started-at "$started_at"
+          if [ "$IS_DELIVERY" = true ]; then
+            bash scripts/emit-dora-event.sh deploy-marker --step ci-quality --environment "$DEPLOY_ENVIRONMENT"
+          fi
+          {
+            echo "### 📡 Delivery events"
+            echo '```json'
+            jq . "$DORA_EVENTS_FILE"
+            echo '```'
+          } >>"$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: dora-events
+          path: dora-events.jsonl
+          if-no-files-found: error
+      - name: job-finish
+        if: always()
+        run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ')"

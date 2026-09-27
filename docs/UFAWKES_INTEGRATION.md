@@ -16,14 +16,16 @@ uFawkes is a stack family. This guide focuses on five integration touchpoints ar
 
 ## Connecting to uFawkesObs
 
-Set OTEL exporter variables in the instrumented runtime/service that uses this template:
+Set OTEL exporter variables (template: `.env.example`) in the instrumented runtime/service that uses this template:
 
 ```bash
 OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
 OTEL_SERVICE_NAME=my-project
 ```
 
-This repository is documentation-first and does not emit OTEL spans by itself. With OTEL export enabled in your runtime, uFawkesObs/Grafana can correlate:
+This repository does not emit OTEL spans itself, but it does emit **delivery
+events** from CI (see [Delivery events](#delivery-events) below). With OTEL
+export enabled in your runtime, uFawkesObs/Grafana can correlate:
 
 - Agent/request latency and failure patterns
 - Token usage over time
@@ -40,9 +42,55 @@ uFawkesAI and this template's workflow produce the events uFawkesDORA uses:
 
 In this template, `npm run metrics` executes `scripts/weekly-metrics.sh`, which currently summarizes local git history and optional coverage data. `GITHUB_TOKEN`, `GITHUB_OWNER`, and `GITHUB_REPO` are optional integration variables for external/future GitHub API-backed DORA collection.
 
+## Delivery events
+
+`scripts/emit-dora-event.sh` emits structured JSON delivery events in the
+same line format as uFawkesPipe's `scripts/dora-log.sh` (`@timestamp`,
+`level`, `logger`, `message`, `pipeline`, `repo`, `step`), so uFawkesObs
+ingests them into Loki alongside uFawkesPipe's own pipeline logs:
+
+| Event           | When                                   | Adds                                                                  |
+| --------------- | -------------------------------------- | --------------------------------------------------------------------- |
+| `job-start`     | a pipeline/job began                   | —                                                                     |
+| `job-finish`    | it ended                               | `status`, `duration_ms`, `agent_tokens`, `pr`                         |
+| `deploy-marker` | a change was delivered (push to main)  | `environment`, `agent_tokens`, `pr`, `dora_event`                     |
+
+- **`agent_tokens`**: input/output/cache tokens summed from the PR's
+  `Agent-Tokens:` commit footers (`scripts/agent-usage.sh` generates them
+  from real Claude Code transcripts; see `docs/COMMIT_CONVENTIONS.md`),
+  plus the models used and how many commits reported or were AI co-authored.
+- **`pr`**: number, `first_commit_at`, `opened_at`, `merged_at`,
+  `cycle_time_seconds` (first commit → merge), lines added/deleted.
+- **`dora_event`**: a uFawkesDORA deployment event valid against
+  uFawkesObs `dora/events/deployment-event.schema.json` (1.0), ready to
+  forward to the ingestion API.
+
+Where the events go:
+
+1. **stdout** — every event is one JSON line in the job log.
+2. **`dora-events` artifact** — the CI Quality Gate's `📡 Delivery Events`
+   job runs on every successful pipeline run (after `✅ CI Complete`) and
+   uploads the run's events as `dora-events.jsonl`.
+3. **uFawkesObs over OTLP** — set the repo variable
+   `OTEL_EXPORTER_OTLP_ENDPOINT` (the collector's OTLP/HTTP port, 4318) and
+   optionally `OTEL_SERVICE_NAME`, `DORA_ENVIRONMENT`, and the secret
+   `OTEL_EXPORTER_OTLP_HEADERS`. Each event is POSTed to `/v1/logs`, which
+   the uFawkesObs collector routes to Loki. A failed export warns and never
+   fails the pipeline.
+
+In Grafana/Loki, select the stream for service `ufawkesai` (label mapping
+depends on your collector's Loki exporter settings), then filter with
+`| json | event="deploy-marker"`.
+`scripts/test-emit-dora-event.sh` proves the format, the schema-valid
+`dora_event`, and the OTLP payload offline.
+
 ## Connecting to uFawkesPipe
 
-Use uFawkesPipe's `deliveryd` contract (the CI pipeline contract in uFawkesPipe: <https://github.com/paruff/uFawkesPipe>) alongside this template's Golden Path:
+uFawkesPipe's pipeline contract was called `deliveryd` (file `.deliveryd.yml`);
+it is now `.fawkespipe.yml`, and `.deliveryd.yml` support ended 2026-06-14.
+This repo runs the contract's gates as the CI Quality Gate (reusable workflows
+vendored from uFawkesPipe), and the delivery events above are emitted on that
+path. Use the contract (<https://github.com/paruff/uFawkesPipe>) alongside this template's Golden Path:
 
 1. Produce a reviewable PR using `docs/GOLDEN_PATH.md`
 2. Let CI gates validate small-batch quality constraints
@@ -61,7 +109,7 @@ This keeps AI-authored changes and delivery automation aligned under one contrac
                                │ PR + metadata
                                ▼
 ┌──────────────────────────────────────────────────────────────────┐
-│ CI layer: uFawkesPipe (deliveryd contract)                       │
+│ CI layer: uFawkesPipe (.fawkespipe.yml contract, ex-deliveryd)   │
 │ - PR gates, validation, artifact promotion, deployment workflow  │
 └──────────────────────────────────────────────────────────────────┘
                │ telemetry/events                  │ delivery events
