@@ -81,10 +81,32 @@ Version notes:
   timestamp are captured in PR 1 (Docker is not available in the current
   devcontainer, so they couldn't be resolved while writing this plan).
 
+## Implementation notes (PR 1)
+
+Deviations from the layout above, made while building PR 1:
+
+- The lock is **`tools.lock.json`**, not YAML: the build stage parses it with
+  Debian's `jq`, avoiding a bootstrap dependency on the pinned `yq`.
+- The **base image digest and apt snapshot** live as `ARG` defaults in the
+  Dockerfile (Renovate's docker manager bumps `FROM`/`ARG` digests natively),
+  not in the lock.
+- The installer is **`images/devsecops/install-tools.sh`** (inside the Docker
+  build context), not under `scripts/`. `scripts/image-lock-refresh.sh` stays
+  under `scripts/`.
+- **`pre-commit/baseline.yaml` ships in PR 1**, because the image is verified
+  against it. Switching this repo's `.pre-commit-config.yaml` to it stays in PR 4.
+- The **offline pre-commit check runs on a generated clean repo**, not on this
+  repo. Adopting this repo's own files is PR 4's check.
+- **Planted-bad fixtures are generated inside `verify-tools.sh`** at run time,
+  not committed. A committed fake secret or broken script would trip this
+  repo's own gitleaks, shellcheck and actionlint gates.
+- `pre-commit-hooks` 6.0.0 was added to the Python pins, since the baseline's
+  hygiene hooks call its console scripts.
+
 ## Lock file format
 
 ```yaml
-# images/devsecops/tools.lock.yaml
+# images/devsecops/tools.lock.json (shown as YAML for readability)
 tools:
   - name: gitleaks
     variant: core

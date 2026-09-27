@@ -51,6 +51,9 @@ repos:
     hooks:
       - id: detect-secrets
         args: ["--baseline", ".secrets.baseline"]
+        # Public release SHA-256 pins only (entropy false positives that
+        # change on every tool bump); gitleaks still scans this file.
+        exclude: ^images/devsecops/tools\.lock\.json$
 
   - repo: local
     hooks:
