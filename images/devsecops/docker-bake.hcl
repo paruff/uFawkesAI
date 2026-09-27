@@ -6,6 +6,15 @@ variable "TAG" {
   default = "local"
 }
 
+# Release metadata, set by image-release.yml (image-vX.Y.Z tags).
+variable "VERSION" {
+  default = "dev"
+}
+
+variable "REVISION" {
+  default = ""
+}
+
 group "default" {
   targets = ["core", "gitops", "ai"]
 }
@@ -13,6 +22,10 @@ group "default" {
 target "_common" {
   context    = "."
   dockerfile = "Dockerfile"
+  labels = {
+    "org.opencontainers.image.version"  = VERSION
+    "org.opencontainers.image.revision" = REVISION
+  }
 }
 
 target "core" {
