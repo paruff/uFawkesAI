@@ -64,11 +64,12 @@ jobs:
           done
 
       # Report-only on PRs/pushes (a newly published CVE must not block
-      # unrelated work); the gate fails on the weekly run so fixable CVEs in
-      # repo-controlled packages surface. Same policy as the release gate.
+      # unrelated work); the gate fails on weekly and manual runs so fixable
+      # CVEs in repo-controlled packages surface. Same policy as the release gate.
       - name: Trivy — report whole image, gate repo-controlled packages
         env:
-          GATE_EXIT: ${{ github.event_name == 'schedule' && '1' || '0' }}
+          # Enforced on the weekly run and on manual runs (release-readiness dry run).
+          GATE_EXIT: ${{ contains(fromJSON('["schedule", "workflow_dispatch"]'), github.event_name) && '1' || '0' }}
         run: |
           mkdir -p scan-out
           docker run --rm --user root \
