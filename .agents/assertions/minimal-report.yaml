@@ -21,6 +21,8 @@ agents:
       - "Components"
       - "Tradeoffs"
       - "Governance Alignment"
+      - "Implementation Sequence"
+      - "Verification Strategy"
     findings_required_when: never
 
   review:
