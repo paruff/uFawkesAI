@@ -47,8 +47,11 @@ while IFS= read -r entry; do
   echo "${sha}  ${file}" | sha256sum -c --quiet - || fail "${name}: checksum mismatch for ${url}"
 
   if [ "$(jq -r '.install // "bin"' <<<"$entry")" = "prefix" ]; then
+    # */include: C headers only matter for compiling native add-ons, and
+    # every npm install in the image runs with --ignore-scripts (-67 MB).
     tar -xf "$file" --strip-components=1 -C "${DEST}/usr/local" \
-      --exclude='*/CHANGELOG.md' --exclude='*/README.md' --exclude='*/LICENSE'
+      --exclude='*/CHANGELOG.md' --exclude='*/README.md' --exclude='*/LICENSE' \
+      --exclude='*/include'
   elif [ "$format" = "binary" ]; then
     install -m 0755 "$file" "${DEST}/usr/local/bin/${name}"
   else

@@ -199,8 +199,12 @@ package-lock.json┘                                                  │
 - **arm64 coverage:** every tool in the lock must publish arm64 builds; any
   that don't are built from source or dropped (to be checked per tool in
   `plan.md`).
-- **Image size:** estimated `core` ≈ 600–900 MB, `gitops` +≈ 400 MB,
-  `ai` +≈ 300 MB. semgrep and checkov (Python, large deps) dominate.
+- **Image size:** estimated `core` ≈ 600–900 MB; **measured 1.61 GB**
+  uncompressed (≈ 500 MB compressed pull) in PR 1's CI. Largest parts:
+  semgrep 266 MB, trivy/grype/syft/osv-scanner 387 MB together, cosign
+  135 MB, node 121 MB. Node's C headers (67 MB) were dropped as unused;
+  further cuts mean dropping or moving tools the owner chose to keep.
+  `gitops` +≈ 400 MB and `ai` +≈ 300 MB remain estimates.
 - **Licenses:** OpenTofu chosen over Terraform (BSL). semgrep OSS rules only.
   Claude Code / OpenCode licensing must permit redistribution in a public
   image — **to verify** before the first publish. If it doesn't, the `ai`
