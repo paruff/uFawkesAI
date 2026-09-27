@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Secret Detection & Artifact Integrity
 
-> **Load trigger:** `"load secret-detection skill"` > **DORA:** Cap 1 (AI Policy)
+> **Load trigger:** `"load secret-detection skill"` > **DORA:** AI Capability 1: Clear and communicated AI stance
 > **Token cost:** Low
 
 ## Purpose

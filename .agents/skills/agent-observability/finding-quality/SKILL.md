@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Agent Finding Quality
 
-> **Load trigger:** `"load agent-finding-quality skill"` > **DORA:** Cap 6 (Reliability)
+> **Load trigger:** `"load agent-finding-quality skill"` > **DORA:** Core: Reliability
 > **Token cost:** Low
 
 ## Purpose

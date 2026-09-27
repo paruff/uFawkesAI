@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Interface Definition
 
-> **Load trigger:** `"load interface-definition skill"` > **DORA:** Cap 3 (AI-Accessible Internal Data)
+> **Load trigger:** `"load interface-definition skill"` > **DORA:** AI Capability 3: AI-accessible internal data
 > **Token cost:** Low
 
 ## Purpose

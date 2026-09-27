@@ -10,7 +10,7 @@ metadata:
 
 # Skill: ROI Reporting
 
-> **Load trigger:** `"load roi-reporting skill"` > **DORA:** AI Capability 2 (Healthy data ecosystems) + AI Capability 7 (Quality internal platforms)
+> **Load trigger:** `"load roi-reporting skill"` > **DORA:** AI Capability 2: Healthy data ecosystems + AI Capability 7: Quality internal platforms
 > **Token cost:** Low–Medium
 > **Prerequisite:** `dora-measurement` snapshot for the period must exist.
 

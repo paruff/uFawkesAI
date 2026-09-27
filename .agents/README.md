@@ -16,12 +16,12 @@
 
 The four execution boundaries. Invoke by `@name` in OpenCode or any compatible agent host.
 
-| File          | Trigger           | Owns                                              | May Block | DORA Cap      |
+| File          | Trigger           | Owns                                              | May Block | DORA AI Caps  |
 | ------------- | ----------------- | ------------------------------------------------- | --------- | ------------- |
-| `planner.md`  | `@planner`        | `plan.md` — scope, tasks, dependency order        | no        | Cap 3         |
-| `builder.md`  | `@builder`        | The working tree — code, tests, manifests         | no        | Cap 4         |
-| `verifier.md` | `@verifier`       | The verdict — evidence vs. claims                 | **yes**   | Cap 4 + 5 + 6 |
-| `operator.md` | `@operator`       | Repo and release state — commit, PR, tag, publish | **yes**   | Cap 2 + 7     |
+| `planner.md`  | `@planner`        | `plan.md` — scope, tasks, dependency order        | no        | 5             |
+| `builder.md`  | `@builder`        | The working tree — code, tests, manifests         | no        | 4             |
+| `verifier.md` | `@verifier`       | The verdict — evidence vs. claims                 | **yes**   | 4 + 5 + 6     |
+| `operator.md` | `@operator`       | Repo and release state — commit, PR, tag, publish | **yes**   | 2 + 7         |
 
 - **planner** — plans; hands off to builder.
 - **builder** — implements against a committed `plan.md`; hands off to verifier.
@@ -101,7 +101,7 @@ boundary.
 
 | Folder              | Loaded by        | Purpose                                                        |
 | ------------------- | ---------------- | ---------------------------------------------------------------- |
-| `discover/`         | `@planner`, workflows | JTBD + acceptance-criteria discovery brief (DORA AI Cap 6) |
+| `discover/`         | `@planner`, workflows | JTBD + acceptance-criteria discovery brief (AI Capability 6) |
 | `spec/`             | `@planner`       | Requirements, acceptance criteria, policy gates                |
 | `design/`           | `@planner`       | Architecture decomposition, K8s design validation              |
 | `plan/`             | `@planner`       | Task decomposition, dependency mapping, risk ID                |
@@ -129,31 +129,31 @@ boundary.
 
 | Folder                 | Load Trigger                    | Purpose                                                          |
 | ------------------------ | ---------------------------------- | ------------------------------------------------------------------- |
-| `discovery/`           | before any `spec` stage          | 15-min JTBD + acceptance-criterion exercise (DORA AI Cap 6)       |
+| `discovery/`           | before any `spec` stage          | 15-min JTBD + acceptance-criterion exercise (AI Capability 6)       |
 | `discovery-advanced/`  | 15-min discovery is insufficient  | Full user research methods for major/ambiguous capabilities      |
 
 ### AI Policy & Governance Skills
 
 | Folder                  | Load Trigger                        | Purpose                                                         |
 | -------------------------- | -------------------------------------- | -------------------------------------------------------------------- |
-| `ai-stance/`            | onboarding a repo, AI policy review | Generate/maintain `AI_STANCE.md` (DORA AI Cap 1)                |
+| `ai-stance/`            | onboarding a repo, AI policy review | Generate/maintain `AI_STANCE.md` (AI Capability 1)                |
 | `ai-policy-lifecycle/`  | always-on, re-reviewed quarterly | **Rule:** `AI_STANCE.md` must carry all three buckets and a `Last reviewed:` date; enforce with `ai-stance/audit.md` |
 
 ### Documentation & Context Skills
 
 | Folder                  | Load Trigger                          | Purpose                                                          |
 | -------------------------- | ---------------------------------------- | --------------------------------------------------------------------- |
-| `documentation/`        | pre-release audit, repo onboarding    | Enforce minimum documentation standard across uFawkes* repos (DORA AI Cap 3) |
-| `context-engineering/`  | session startup                       | Verify internal context is complete and placeholder-free before each agent session (DORA AI Cap 3) |
+| `documentation/`        | pre-release audit, repo onboarding    | Enforce minimum documentation standard across uFawkes* repos (AI Capability 3) |
+| `context-engineering/`  | session startup                       | Verify internal context is complete and placeholder-free before each agent session (AI Capability 3) |
 
 ### DORA Measurement & Reporting Skills
 
 | Folder                    | Load Trigger                            | Purpose                                                              |
 | ---------------------------- | ------------------------------------------ | --------------------------------------------------------------------------- |
-| `dora-measurement/`       | monthly DORA snapshot                   | Compute the four DORA delivery metrics from uFawkesObs (DORA AI Cap 2 + 7) |
+| `dora-measurement/`       | monthly DORA snapshot                   | Compute the four DORA delivery metrics from uFawkesObs (AI Capability 2 + 7) |
 | `ROI-reporting/`          | board/quarterly ROI evidence            | Monthly DORA ROI snapshot using the 2026 DORA ROI five-dimension framework |
 | `value-stream-mapping/`   | metrics plateau, high lead time         | Map the value stream to find bottlenecks consuming AI productivity gains |
-| `platform-feedback/`      | quarterly                                | Developer feedback collection — measures IDP cognitive-load reduction (DORA AI Cap 7) |
+| `platform-feedback/`      | quarterly                                | Developer feedback collection — measures IDP cognitive-load reduction (AI Capability 7) |
 
 ### Education Skills
 

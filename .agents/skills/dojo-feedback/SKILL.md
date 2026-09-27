@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Dojo Feedback
 
-> **Load trigger:** `"load dojo-feedback skill"` > **DORA:** AI Capability 7 (Quality internal platforms) + Core: Learning culture
+> **Load trigger:** `"load dojo-feedback skill"` > **DORA:** AI Capability 7: Quality internal platforms + Core: Learning culture
 > **Token cost:** Low
 
 ## Purpose

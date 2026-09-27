@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Policy-as-Code Validation (Spec)
 
-> **Load trigger:** `"load spec-policy-validation skill"` > **DORA:** Cap 1 (AI Policy)
+> **Load trigger:** `"load spec-policy-validation skill"` > **DORA:** AI Capability 1: Clear and communicated AI stance
 > **Token cost:** Low
 
 ## Purpose

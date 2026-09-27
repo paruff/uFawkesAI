@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Agent Invocation Tracking
 
-> **Load trigger:** `"load agent-invocation-tracking skill"` > **DORA:** Cap 2 (Observability)
+> **Load trigger:** `"load agent-invocation-tracking skill"` > **DORA:** Core: Observability
 > **Token cost:** Low
 
 ## Purpose

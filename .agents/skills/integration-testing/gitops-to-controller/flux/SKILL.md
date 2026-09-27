@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Flux Integration Testing
 
-> **Load trigger:** `"load flux-integration-testing skill"` > **DORA:** Cap 4 (CI/CD Automation)
+> **Load trigger:** `"load flux-integration-testing skill"` > **DORA:** Core: CI/CD automation
 > **Token cost:** Low
 
 ## Purpose

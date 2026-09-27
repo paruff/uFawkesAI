@@ -10,7 +10,7 @@ metadata:
 
 # Skill: GitOps → Controller Integration Testing
 
-> **Load trigger:** `"load gitops-to-controller-integration skill"` > **DORA:** Cap 4 (CI/CD Automation)
+> **Load trigger:** `"load gitops-to-controller-integration skill"` > **DORA:** Core: CI/CD automation
 > **Token cost:** Low
 
 ## Purpose

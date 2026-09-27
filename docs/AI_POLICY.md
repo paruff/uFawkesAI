@@ -13,7 +13,7 @@
 > as the policy format directly — it carries the same content in the
 > three-bucket structure that the `ai-stance` audit checks.
 
-> DORA AI Cap 1 finding: "A clear AI stance provides psychological safety for
+> DORA AI Capability 1 finding: "A clear AI stance provides psychological safety for
 > experimentation. Ambiguity around AI use creates friction, reduces adoption,
 > and harms team morale."
 >

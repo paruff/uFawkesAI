@@ -10,7 +10,7 @@ metadata:
 
 # Skill: DOJO Content
 
-> **Load trigger:** `"load dojo-content skill"` > **DORA:** AI Capability 3 (AI-assisted development)
+> **Load trigger:** `"load dojo-content skill"` > **DORA:** AI Capability 3: AI-accessible internal data
 > **Token cost:** Low
 
 ## Purpose

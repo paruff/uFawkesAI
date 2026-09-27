@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Unit Test Execution
 
-> **Load trigger:** `"load unit-test-execution skill"` > **DORA:** Cap 5 (Small Batches / Shift Left on Quality)
+> **Load trigger:** `"load unit-test-execution skill"` > **DORA:** AI Capability 5: Working in small batches
 > **Token cost:** Low
 
 ## Purpose

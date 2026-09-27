@@ -10,7 +10,7 @@ metadata:
 
 # Skill: E2E Failure Path Testing
 
-> **Load trigger:** `"load e2e-failure-paths skill"` > **DORA:** Cap 5 (Operational Resilience)
+> **Load trigger:** `"load e2e-failure-paths skill"` > **DORA:** Core: Operational resilience
 > **Token cost:** Low
 
 ## Purpose

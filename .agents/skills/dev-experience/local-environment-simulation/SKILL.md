@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Local Environment Simulation
 
-> **Load trigger:** `"load local-environment-simulation skill"` > **DORA:** Cap 3 (AI-Accessible Internal Data)
+> **Load trigger:** `"load local-environment-simulation skill"` > **DORA:** AI Capability 3: AI-accessible internal data
 > **Token cost:** Low
 
 ## Purpose

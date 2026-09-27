@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Design Compliance Validation
 
-> **Load trigger:** `"load design-compliance skill"` > **DORA:** Cap 1 (AI Policy)
+> **Load trigger:** `"load design-compliance skill"` > **DORA:** AI Capability 1: Clear and communicated AI stance
 > **Token cost:** Low
 
 ## Purpose

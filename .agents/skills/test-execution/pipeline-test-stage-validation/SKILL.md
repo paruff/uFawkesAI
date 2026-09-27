@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Pipeline Test Stage Validation
 
-> **Load trigger:** `"load pipeline-test-stage-validation skill"` > **DORA:** Cap 1 (AI Policy)
+> **Load trigger:** `"load pipeline-test-stage-validation skill"` > **DORA:** AI Capability 1: Clear and communicated AI stance
 > **Token cost:** Low
 
 ## Purpose

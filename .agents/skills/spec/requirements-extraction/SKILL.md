@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Requirements Extraction
 
-> **Load trigger:** `"load requirements-extraction skill"` > **DORA:** Cap 3 (AI-Accessible Internal Data)
+> **Load trigger:** `"load requirements-extraction skill"` > **DORA:** AI Capability 3: AI-accessible internal data
 > **Token cost:** Low
 
 ## Purpose

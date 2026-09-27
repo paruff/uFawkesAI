@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Discovery
 
-> **Load trigger:** `"load discovery skill"` > **DORA:** AI Capability 6 (User-centric focus)
+> **Load trigger:** `"load discovery skill"` > **DORA:** AI Capability 6: User-centric focus
 > **Token cost:** Low
 
 ## Purpose
@@ -126,8 +126,8 @@ persona: platform-engineer
 jtbd: "When I ..., I want to ..., so I can ..."
 riskiest_assumption: "We assume ..."
 acceptance_criterion: "Given ..., when ..., then ..."
-dora_ai_capability: "Cap6: User-centric focus"
-dora_core_capability: "Continuous Delivery"
+dora_ai_capability: "6: User-centric focus"
+dora_core_capability: "Core: Continuous delivery"
 metric: "lead_time_hours"
 measurement_source: "uFawkesObs"
 baseline: "18.4 hours (2026-06-01)"

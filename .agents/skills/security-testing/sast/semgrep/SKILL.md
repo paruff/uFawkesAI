@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Semgrep Ruleset Execution
 
-> **Load trigger:** `"load semgrep-ruleset-execution skill"` > **DORA:** Cap 1 (AI Policy)
+> **Load trigger:** `"load semgrep-ruleset-execution skill"` > **DORA:** AI Capability 1: Clear and communicated AI stance
 > **Token cost:** Low
 
 ## Purpose

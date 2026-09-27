@@ -13,7 +13,10 @@
 #     unreachable endpoint warns without failing.
 # GitHub API calls are served by a stub `gh` with fixture data.
 #
-# Needs python3 with `jsonschema` (set PYTHON to override the interpreter).
+# Needs python3 and jq only (set PYTHON to override the interpreter). No
+# third-party modules: the schema is a flat draft-07 object, so it is
+# validated with the stdlib. That keeps this test runnable on any machine
+# with a stock python3 instead of only where `pip install jsonschema` ran.
 # Report-only. Exit 0 = every check passed.
 
 set -euo pipefail
@@ -22,10 +25,12 @@ cd "$(dirname "$0")/.."
 PYTHON="${PYTHON:-python3}"
 EMIT="$PWD/scripts/emit-dora-event.sh"
 SCHEMA="$PWD/scripts/testdata/ufawkesobs-deployment-event.schema.json"
-"$PYTHON" -c 'import jsonschema' 2>/dev/null || {
-  echo "FAIL: ${PYTHON} has no jsonschema module (pip install jsonschema) — cannot validate against the uFawkesObs schema" >&2
-  exit 1
-}
+for tool in "$PYTHON" jq; do
+  command -v "$tool" >/dev/null 2>&1 || {
+    echo "FAIL: required tool not found: $tool" >&2
+    exit 1
+  }
+done
 
 work="$(mktemp -d)"
 trap 'kill "${listener_pid:-}" 2>/dev/null || true; rm -rf "$work"' EXIT
@@ -102,12 +107,75 @@ check "PR size" '.pr.lines_added == 120 and .pr.lines_deleted == 8 and .pr.commi
 echo "== deploy-marker dora_event vs uFawkesObs deployment-event.schema.json =="
 jq '.dora_event' <<<"$deploy" >"$work/dora_event.json"
 if out="$("$PYTHON" - "$SCHEMA" "$work/dora_event.json" 2>&1 <<'PY'
-import json, sys
-from jsonschema import Draft7Validator, FormatChecker
+# Stdlib draft-07 subset validator. The vendored schema is a flat object using
+# type, required[], properties{}, additionalProperties:false, enum, pattern and
+# "format": date-time / uri. Anything outside that subset raises rather than
+# silently passing, so this cannot drift into a laxer check than jsonschema
+# gave us.
+import datetime, json, re, sys, urllib.parse
+
 schema, event = (json.load(open(p)) for p in sys.argv[1:3])
-errors = sorted(Draft7Validator(schema, format_checker=FormatChecker()).iter_errors(event), key=str)
+errors = []
+# additionalProperties:false IS supported (see below); the schema-valued form
+# is not, so only the object form is allowed through.
+UNSUPPORTED = ("$ref", "anyOf", "oneOf", "allOf", "not", "patternProperties",
+               "dependencies", "if", "then", "else")
+
+def walk(node, sch, path):
+    if isinstance(sch, dict):
+        for key in UNSUPPORTED:
+            if key in sch:
+                errors.append(f"{path or '<root>'}: unsupported schema keyword {key!r} "
+                              f"— extend this validator before trusting the result")
+        ap = sch.get("additionalProperties")
+        if ap is not None and ap is not False:
+            errors.append(f"{path or '<root>'}: schema-valued additionalProperties "
+                          f"is not supported by this validator")
+    if not isinstance(sch, dict) or not isinstance(node, dict):
+        return
+    for key in sch.get("required", []):
+        if key not in node:
+            errors.append(f"{path}.{key}: required property is missing")
+    props = sch.get("properties", {})
+    if sch.get("additionalProperties") is False:
+        for key in node:
+            if key not in props:
+                errors.append(f"{path}.{key}: additional property is not allowed")
+    for key, sub in props.items():
+        if key not in node:
+            continue
+        val = node[key]
+        want = sub.get("type")
+        types = {"string": str, "boolean": bool, "object": dict,
+                 "array": list, "number": (int, float), "integer": int}
+        if want in types and not isinstance(val, types[want]):
+            errors.append(f"{path}.{key}: expected {want}, got {type(val).__name__}")
+        fmt = sub.get("format")
+        if fmt == "date-time" and isinstance(val, str):
+            try:
+                datetime.datetime.fromisoformat(val.replace("Z", "+00:00"))
+            except ValueError:
+                errors.append(f"{path}.{key}: {val!r} is not a valid date-time")
+        elif fmt == "uri" and isinstance(val, str):
+            parsed = urllib.parse.urlparse(val)
+            if not parsed.scheme or not parsed.netloc:
+                errors.append(f"{path}.{key}: {val!r} is not a valid absolute URI")
+        elif fmt is not None and fmt not in ("date-time", "uri"):
+            errors.append(f"{path}.{key}: unhandled format {fmt!r} "
+                          f"— extend this validator before trusting the result")
+        if "enum" in sub and val not in sub["enum"]:
+            errors.append(f"{path}.{key}: {val!r} is not one of {sub['enum']!r}")
+        if "pattern" in sub and isinstance(val, str):
+            if not re.search(sub["pattern"], val):
+                errors.append(f"{path}.{key}: {val!r} does not match {sub['pattern']!r}")
+        walk(val, sub, f"{path}.{key}")
+
+if schema.get("type") != "object":
+    errors.append("<root>: expected an object schema")
+walk(event, schema, "")
+
 for e in errors:
-    print(f"{list(e.path)}: {e.message}")
+    print(e)
 sys.exit(1 if errors else 0)
 PY
 )"; then

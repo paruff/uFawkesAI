@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Documentation
 
-> **Load trigger:** `"load documentation skill"` > **DORA:** AI Capability 3 (AI-accessible internal data) + 2023 DORA finding: documentation quality
+> **Load trigger:** `"load documentation skill"` > **DORA:** AI Capability 3: AI-accessible internal data + 2023 DORA finding: documentation quality
 > **Token cost:** Low
 
 ## Purpose

@@ -5,13 +5,15 @@
   "description": "Starter template for AI-assisted workflows and docs",
   "license": "MIT",
   "scripts": {
-    "lint": "echo \"No lint configuration yet; passing placeholder lint step.\"",
-    "typecheck": "echo \"No TypeScript configuration yet; passing placeholder typecheck step.\"",
-    "test:coverage": "echo \"No tests configured yet; passing placeholder test step.\"",
-    "lint:architecture": "echo \"No architecture lint rules configured yet; passing placeholder boundary step.\"",
+    "lint": "bash scripts/run-lint.sh",
+    "typecheck": "bash scripts/run-typecheck.sh",
+    "test:coverage": "echo \"No coverage tooling configured; see scripts/run-unit-tests.sh for the suites that do run.\"",
+    "lint:architecture": "bash scripts/check-harness-parity.sh && bash scripts/check-dora-vocabulary.sh",
     "metrics": "bash scripts/weekly-metrics.sh",
     "token-audit": "bash scripts/token-audit.sh",
     "token-audit:save": "bash scripts/token-audit.sh --save",
-    "preflight": "bash scripts/preflight.sh"
+    "preflight": "bash scripts/preflight.sh",
+    "test": "bash scripts/run-unit-tests.sh",
+    "verify": "bash scripts/check-agents.sh && bash scripts/check-ai-stance.sh && bash scripts/check-dora-vocabulary.sh && bash scripts/check-harness-parity.sh && bash scripts/run-unit-tests.sh"
   }
 }

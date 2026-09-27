@@ -53,6 +53,6 @@ Keep changes minimal and reproducible so every contributor gets the same behavio
 
 ## DORA capability mapping
 
-This implements **DORA AI Capability 7: Quality Internal Platform** by providing a
+This implements **AI Capability 7: Quality internal platforms** by providing a
 consistent, low-friction development environment. It directly supports "developer
 independence" by reducing setup variation and onboarding time.

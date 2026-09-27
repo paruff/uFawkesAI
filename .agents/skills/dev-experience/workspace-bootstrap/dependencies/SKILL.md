@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Dependency Installation
 
-> **Load trigger:** `"load dependency-installation skill"` > **DORA:** Cap 3 (AI-Accessible Internal Data)
+> **Load trigger:** `"load dependency-installation skill"` > **DORA:** AI Capability 3: AI-accessible internal data
 > **Token cost:** Low
 
 ## Purpose

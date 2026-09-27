@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Model Routing
 
-> **Load trigger:** `"load model-routing skill"` > **DORA:** Cap 3 (AI-Accessible Internal Data)
+> **Load trigger:** `"load model-routing skill"` > **DORA:** AI Capability 3: AI-accessible internal data
 > **Token cost:** Low
 
 ## Purpose

@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Pipeline Execution Validation
 
-> **Load trigger:** `"load pipeline-execution-validation skill"` > **DORA:** Cap 4 (CI/CD Automation)
+> **Load trigger:** `"load pipeline-execution-validation skill"` > **DORA:** Core: CI/CD automation
 > **Token cost:** Low
 
 ## Purpose

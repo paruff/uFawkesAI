@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Local GitOps Simulation
 
-> **Load trigger:** `"load gitops-sim skill"` > **DORA:** Cap 3 (AI-Accessible Internal Data)
+> **Load trigger:** `"load gitops-sim skill"` > **DORA:** AI Capability 3: AI-accessible internal data
 > **Token cost:** Low
 
 ## Purpose

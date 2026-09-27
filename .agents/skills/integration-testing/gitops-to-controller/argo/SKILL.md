@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Argo Integration Testing
 
-> **Load trigger:** `"load argo-integration-testing skill"` > **DORA:** Cap 4 (CI/CD Automation)
+> **Load trigger:** `"load argo-integration-testing skill"` > **DORA:** Core: CI/CD automation
 > **Token cost:** Low
 
 ## Purpose

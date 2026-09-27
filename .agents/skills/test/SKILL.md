@@ -23,7 +23,7 @@ Your standard: tests you write today must survive the next AI-generated refactor
 
 ## TDD Protocol — Required Commit Order
 
-Per AGENTS.md §6, DORA Cap 5, and `docs/COMMIT_CONVENTIONS.md`:
+Per AGENTS.md §6, AI Capability 5 (Working in small batches), and `docs/COMMIT_CONVENTIONS.md`:
 
 ```
 1. test: add failing tests for [feature]   ← CI fails here intentionally

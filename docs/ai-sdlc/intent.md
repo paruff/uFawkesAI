@@ -15,7 +15,7 @@ the dual-harness wiring has real gaps:
   Code's GitHub Copilot extensions — neither the `opencode` CLI nor Claude
   Code is installed or configured inside it at all.
 - Harness config can silently shadow itself. This session found and fixed
-  one instance: a stale project-level `.opencode/commands/doctor.md` stub
+  one instance: a stale project-level `.agents/commands/doctor.md` stub
   was shadowing the real, detailed global command, and its name collided
   with Claude Code's own built-in `/doctor` — renamed to `oc-health` to
   resolve both problems. Nothing currently catches this class of bug

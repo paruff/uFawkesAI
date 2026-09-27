@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Static Application Security Testing (SAST)
 
-> **Load trigger:** `"load sast skill"` > **DORA:** Cap 1 (AI Policy) + Cap 6 (Operational Visibility)
+> **Load trigger:** `"load sast skill"` > **DORA:** AI Capability 1: Clear and communicated AI stance + Core: Operational visibility
 > **Token cost:** Low
 
 ## Purpose

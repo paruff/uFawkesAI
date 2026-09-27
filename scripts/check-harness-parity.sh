@@ -1,11 +1,22 @@
 #!/usr/bin/env bash
 #
-# scripts/check-harness-parity.sh — verify OpenCode and Claude Code stay in
-# sync: no shadowing, no drifted MCP server sets, no reserved-name
-# collisions. This is the automated version of the `doctor`/`oc-health`
-# collision this repo found and fixed by hand — see docs/ai-sdlc/spec.md R5.
+# scripts/check-harness-parity.sh — verify every harness is wired to the one
+# canonical .agents/ tree and stays in sync: no shadowing, no broken symlinks,
+# no drifted MCP server sets, no reserved-name collisions. This is the
+# automated version of the `doctor`/`oc-health` collision this repo found and
+# fixed by hand — see docs/ai-sdlc/spec.md R5.
 #
-# Exit 0 = clean. Exit 1 = drift found (fails CI).
+# Wiring contract: .agents/ is canonical. Everything a harness dispatches to
+# is a symlink into it:
+#   .opencode/{skills,commands}  -> ../.agents/{skills,commands}
+#   .claude/{skills,commands}    -> ../.agents/{skills,commands}
+#   .cursor/rules/AGENTS.md      -> ../../AGENTS.md
+#   .github/copilot-instructions.md, CLAUDE.md, GEMINI.md, .cursorrules
+#                                 -> AGENTS.md
+# .opencode/agents is deliberately NOT a symlink: those three reviewer agents
+# are OpenCode-specific and have no canonical counterpart.
+#
+# Exit 0 = clean. Exit 1 = drift found (fails CI and pre-commit).
 
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -16,17 +27,60 @@ say_fail() { printf '  FAIL %s\n' "$1"; FAIL=1; }
 
 echo "== Harness parity check =="
 
-# 1. .claude/commands and .claude/skills must be symlinks to the
-#    .opencode/ equivalents, not real directories. A real directory here
-#    would silently shadow the canonical source instead of sharing it —
-#    exactly the class of bug this check exists to catch automatically.
-for pair in commands skills; do
-  link=".claude/$pair"
-  target=".opencode/$pair"
-  if [ -L "$link" ] && [ "$(realpath "$link" 2>/dev/null)" = "$(realpath "$target" 2>/dev/null)" ]; then
-    say_ok "$link -> $target (symlink intact)"
+# 0. Every symlink in the repo must resolve. A dangling harness symlink is
+#    silent: the harness loads nothing, no error surfaces, and the agent
+#    simply appears to have no skills or commands. `find -xtype l` reports
+#    broken links specifically, which `test -e` alone does not.
+echo "-- symlink resolution --"
+broken_count=0
+link_count=0
+while IFS= read -r link; do
+  link_count=$((link_count + 1))
+  if [ -e "$link" ]; then
+    say_ok "$(printf '%-40s -> %s' "$link" "$(readlink "$link")")"
   else
-    say_fail "$link is not a symlink to $target — it may be shadowing instead of sharing"
+    say_fail "$(printf '%-40s -> %s  (DANGLING)' "$link" "$(readlink "$link")")"
+    broken_count=$((broken_count + 1))
+  fi
+done < <(find . -maxdepth 3 -type l \
+           -not -path './.git/*' \
+           -not -path './opencode/*' \
+           -not -path '*/node_modules/*' \
+           | sed 's|^\./||' | sort)
+if [ "$broken_count" -eq 0 ]; then
+  say_ok "all $link_count symlink(s) resolve"
+else
+  say_fail "$broken_count of $link_count symlink(s) are dangling"
+fi
+
+# 1. .claude/{skills,commands} and .opencode/{skills,commands} must be
+#    symlinks into the canonical .agents/ tree, not real directories. A real
+#    directory here would silently shadow the canonical source instead of
+#    sharing it — exactly the class of bug this check exists to catch
+#    automatically. They must point at .agents/ DIRECTLY, not at each other:
+#    .claude -> .opencode -> .agents is a chain that can break in the middle.
+echo "-- canonical fan-out --"
+for harness in .claude .opencode; do
+  for pair in commands skills; do
+    link="$harness/$pair"
+    target=".agents/$pair"
+    if [ -L "$link" ] && [ "$(realpath "$link" 2>/dev/null)" = "$(realpath "$target" 2>/dev/null)" ]; then
+      say_ok "$link -> $target (symlink intact)"
+    else
+      say_fail "$link is not a symlink to $target (shadowing or indirection risk)"
+    fi
+  done
+done
+
+# 1b. The AGENTS.md aliases must be symlinks to the one source. A harness that
+#     loads a stale copy of the policy is worse than one that loads none.
+for alias in CLAUDE.md GEMINI.md .cursorrules .cursor/rules/AGENTS.md .github/copilot-instructions.md; do
+  if [ ! -e "$alias" ]; then
+    say_fail "$alias is missing (harness loads no policy)"
+  elif [ -L "$alias" ] && [ "$(realpath "$alias" 2>/dev/null)" = "$(realpath AGENTS.md 2>/dev/null)" ]; then
+    say_ok "$alias -> AGENTS.md"
+  else
+    say_fail "$alias is not a symlink to AGENTS.md"
   fi
 done
 
@@ -51,7 +105,7 @@ fi
 #    session.
 RESERVED_NAMES="doctor review help clear compact init model mcp plugin context hooks permissions config cost export login logout memory pr-comments resume status agents bug vim terminal-setup"
 collision_found=0
-for f in .opencode/commands/*.md; do
+for f in .agents/commands/*.md; do
   [ -e "$f" ] || continue
   name=$(basename "$f" .md)
   for reserved in $RESERVED_NAMES; do

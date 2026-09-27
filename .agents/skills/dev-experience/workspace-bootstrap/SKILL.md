@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Workspace Bootstrap
 
-> **Load trigger:** `"load workspace-bootstrap skill"` > **DORA:** Cap 3 (AI-Accessible Internal Data)
+> **Load trigger:** `"load workspace-bootstrap skill"` > **DORA:** AI Capability 3: AI-accessible internal data
 > **Token cost:** Low
 
 ## Purpose

@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Dependency & Supply Chain Scanning
 
-> **Load trigger:** `"load dependency-scanning skill"` > **DORA:** Cap 1 (AI Policy)
+> **Load trigger:** `"load dependency-scanning skill"` > **DORA:** AI Capability 1: Clear and communicated AI stance
 > **Token cost:** Low
 
 ## Purpose

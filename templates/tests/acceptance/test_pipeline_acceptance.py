@@ -3,11 +3,12 @@
 Customize this file for your project's specific acceptance test requirements.
 """
 
-import pytest
 import subprocess
 import time
-import requests
 from pathlib import Path
+
+import pytest
+import requests
 
 
 class TestPipelineAcceptance:
@@ -21,6 +22,7 @@ class TestPipelineAcceptance:
             capture_output=True,
             text=True,
             cwd=str(Path(__file__).parent.parent.parent),
+            check=False,
         )
         # Wait for services to be healthy
         time.sleep(60)
@@ -31,6 +33,7 @@ class TestPipelineAcceptance:
             capture_output=True,
             text=True,
             cwd=str(Path(__file__).parent.parent.parent),
+            check=False,
         )
 
     def test_pipeline_can_start(self, service_base_url):
@@ -88,6 +91,7 @@ class TestPipelineAcceptance:
             ["docker", "logs", "jenkins", "--tail", "200"],
             capture_output=True,
             text=True,
+            check=False,
         )
         # Check for critical errors
         critical_errors = [

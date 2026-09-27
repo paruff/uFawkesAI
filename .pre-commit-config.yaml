@@ -18,11 +18,13 @@ repos:
   # YAML Linting
   # ============================================================================
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.15.22
+    rev: v0.16.9
     hooks:
       - id: ruff
         args: ["--fix"]
+        files: ^templates/.*\.py$
       - id: ruff-format
+        files: ^templates/.*\.py$
 
   - repo: https://github.com/adrienverge/yamllint
     rev: v1.38.0
@@ -49,12 +51,21 @@ repos:
     hooks:
       - id: detect-secrets
         args: ["--baseline", ".secrets.baseline"]
-        # Public release SHA-256 pins only (entropy false positives that
-        # change on every tool bump); gitleaks still scans this file.
         exclude: ^images/devsecops/tools\.lock\.json$
 
+  # ============================================================================
+  # ShellCheck (local hook - no docker required)
+  # ============================================================================
   - repo: local
     hooks:
+      - id: shellcheck
+        name: ShellCheck
+        entry: shellcheck
+        language: system
+        types: [shell]
+        args: ["-x"]
+        files: (^scripts/.*\.sh$|^\.github/workflows/.*\.ya?ml$)
+
       - id: commit-msg
         name: Conventional Commit
         entry: scripts/commit-msg.sh
@@ -62,7 +73,6 @@ repos:
         stages: [commit-msg]
 
       # Validate staged *-report.md files against their output contracts.
-      # Reads the staged file list itself, so it does not take filenames.
       - id: agent-report-contracts
         name: Agent report contracts
         entry: .agents/hooks/pre-commit-agent.sh
@@ -70,3 +80,48 @@ repos:
         stages: [pre-commit]
         pass_filenames: false
         always_run: true
+
+      # DORA capability labels must match the canonical registry.
+      - id: dora-vocabulary
+        name: DORA vocabulary
+        entry: scripts/check-dora-vocabulary.sh
+        language: script
+        stages: [pre-commit]
+        files: \.(md|yaml|yml)$
+        pass_filenames: false
+
+      # AI_STANCE.md completeness + currency.
+      - id: ai-stance
+        name: AI stance audit
+        entry: scripts/check-ai-stance.sh
+        language: script
+        stages: [pre-commit]
+        files: (^|/)AI_STANCE\.md$|^\.agents/skills/ai-stance/
+        pass_filenames: false
+
+      # Unit tests. All four suites are dependency-free and offline.
+      - id: unit-tests
+        name: Unit tests (offline suites)
+        entry: scripts/run-unit-tests.sh
+        language: script
+        stages: [pre-commit]
+        files: ^(scripts/(test-.*|emit-dora-event|check-secret-detection|check-ai-stance|check-dora-vocabulary|run-unit-tests).*|templates/.*\.py)$
+        pass_filenames: false
+
+      # The 4 execution-boundary agents must be valid AND dispatchable.
+      - id: agent-dispatch
+        name: Agent dispatch
+        entry: scripts/check-agents.sh
+        language: script
+        stages: [pre-commit]
+        files: ^(\.agents/agents/|\.opencode/agents/)
+        pass_filenames: false
+
+      # Every harness symlink must resolve, or agents load nothing.
+      - id: harness-parity
+        name: Harness parity
+        entry: scripts/check-harness-parity.sh
+        language: script
+        stages: [pre-commit]
+        files: ^(\.agents/|\.claude/|\.opencode/|\.cursor/|\.github/copilot-instructions\.md|GEMINI\.md|CLAUDE\.md|\.cursorrules)
+        pass_filenames: false

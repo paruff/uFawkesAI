@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Agent Skill Load Events
 
-> **Load trigger:** `"load agent-skill-load-events skill"` > **DORA:** Cap 3 (Context Engineering)
+> **Load trigger:** `"load agent-skill-load-events skill"` > **DORA:** AI Capability 3: AI-accessible internal data
 > **Token cost:** Low
 
 ## Purpose

@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Local Cluster Simulation
 
-> **Load trigger:** `"load cluster-sim skill"` > **DORA:** Cap 3 (AI-Accessible Internal Data)
+> **Load trigger:** `"load cluster-sim skill"` > **DORA:** AI Capability 3: AI-accessible internal data
 > **Token cost:** Low
 
 ## Purpose

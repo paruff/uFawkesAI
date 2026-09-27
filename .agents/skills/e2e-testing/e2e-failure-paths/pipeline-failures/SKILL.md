@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Negative Pipeline Scenarios
 
-> **Load trigger:** `"load negative-pipeline-scenarios skill"` > **DORA:** Cap 5 (Operational Resilience)
+> **Load trigger:** `"load negative-pipeline-scenarios skill"` > **DORA:** Core: Operational resilience
 > **Token cost:** Low
 
 ## Purpose

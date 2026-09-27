@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Manifest Update Validation
 
-> **Load trigger:** `"load manifest-update-validation skill"` > **DORA:** Cap 4 (CI/CD Automation)
+> **Load trigger:** `"load manifest-update-validation skill"` > **DORA:** Core: CI/CD automation
 > **Token cost:** Low
 
 ## Purpose

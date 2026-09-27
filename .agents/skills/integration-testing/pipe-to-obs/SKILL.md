@@ -10,7 +10,7 @@ metadata:
 
 # Skill: PIPE → OBS Integration Testing
 
-> **Load trigger:** `"load pipe-to-obs-integration skill"` > **DORA:** Cap 4 (CI/CD Automation)
+> **Load trigger:** `"load pipe-to-obs-integration skill"` > **DORA:** Core: CI/CD automation
 > **Token cost:** Low
 
 ## Purpose

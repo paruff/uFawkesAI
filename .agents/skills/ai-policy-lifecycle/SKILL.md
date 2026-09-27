@@ -14,7 +14,7 @@ metadata:
 
 > **Form:** rule, not procedure. These constraints apply at all times; the
 > quarterly review below is how they get re-checked, not when they take effect.
-> **DORA:** AI Capability 1 (Clear and communicated AI stance)
+> **DORA:** AI Capability 1: Clear and communicated AI stance
 
 - Every `uFawkes*` repo maintains an `AI_STANCE.md` stating its AI stance.
 - `AI_STANCE.md` must carry all three buckets: Allowed, Permitted with

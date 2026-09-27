@@ -10,7 +10,7 @@ metadata:
 
 # Skill: SBOM Generation & Validation
 
-> **Load trigger:** `"load sbom-generation-validation skill"` > **DORA:** Cap 1 (AI Policy)
+> **Load trigger:** `"load sbom-generation-validation skill"` > **DORA:** AI Capability 1: Clear and communicated AI stance
 > **Token cost:** Low
 
 ## Purpose

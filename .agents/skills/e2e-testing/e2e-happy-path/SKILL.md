@@ -10,7 +10,7 @@ metadata:
 
 # Skill: E2E Happy Path Testing
 
-> **Load trigger:** `"load e2e-happy-path skill"` > **DORA:** Cap 4 (CI/CD Automation) + Cap 5 (Operational Resilience)
+> **Load trigger:** `"load e2e-happy-path skill"` > **DORA:** Core: CI/CD automation + Core: Operational resilience
 > **Token cost:** Low
 
 ## Purpose

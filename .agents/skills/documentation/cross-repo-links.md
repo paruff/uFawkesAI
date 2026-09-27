@@ -11,7 +11,7 @@ metadata:
 
 # Sub-Skill: Documentation — Cross-Repo Links
 
-> **Load trigger:** `"load documentation/cross-repo-links skill"` > **DORA:** AI Capability 3 (AI-accessible internal data)
+> **Load trigger:** `"load documentation/cross-repo-links skill"` > **DORA:** AI Capability 3: AI-accessible internal data
 > **Token cost:** Low
 > **When to use:** Implementing roadmap item 0.6, or when suite-audit shows missing suite links.
 
@@ -143,7 +143,7 @@ for repo in fawkes uFawkesObs uFawkesPipe uFawkesDevX uFawkesDORA uFawkesSec uFa
 
 Adds the standard Suite Context section linking all 8 uFawkes* repos.
 
-DORA capability: AI Capability 3 (AI-accessible internal data)" \
+DORA capability: AI Capability 3: AI-accessible internal data" \
     --label "documentation,tier-1"
   cd - > /dev/null
 done

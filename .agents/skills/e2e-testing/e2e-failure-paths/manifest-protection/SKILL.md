@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Invalid Manifest Protection
 
-> **Load trigger:** `"load invalid-manifest-protection skill"` > **DORA:** Cap 5 (Operational Resilience)
+> **Load trigger:** `"load invalid-manifest-protection skill"` > **DORA:** Core: Operational resilience
 > **Token cost:** Low
 
 ## Purpose

@@ -10,7 +10,7 @@ metadata:
 
 # Skill: End-to-End Test Execution
 
-> **Load trigger:** `"load e2e-test-execution skill"` > **DORA:** Cap 5 (Small Batches / Shift Left on Quality)
+> **Load trigger:** `"load e2e-test-execution skill"` > **DORA:** AI Capability 5: Working in small batches
 > **Token cost:** Low
 
 ## Purpose

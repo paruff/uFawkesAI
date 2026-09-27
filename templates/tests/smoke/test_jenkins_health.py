@@ -3,11 +3,12 @@
 Customize this file for your project's specific smoke test requirements.
 """
 
-import pytest
 import subprocess
 import time
-import requests
 from pathlib import Path
+
+import pytest
+import requests
 
 
 class TestJenkinsSmoke:
@@ -21,6 +22,7 @@ class TestJenkinsSmoke:
             capture_output=True,
             text=True,
             cwd=str(Path(__file__).parent.parent.parent),
+            check=False,
         )
         # Wait for Jenkins to start (it takes longer than most services)
         time.sleep(60)
@@ -59,6 +61,7 @@ class TestJenkinsSmoke:
             ["docker", "logs", "jenkins", "--tail", "100"],
             capture_output=True,
             text=True,
+            check=False,
         )
         # Check for critical errors (exclude warnings)
         critical_errors = [

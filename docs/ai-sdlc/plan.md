@@ -40,7 +40,7 @@ All 11 items are implemented (2026-09-26).
       this plan's original path**: written under `.opencode/skills/`, not
       `.claude/skills/` — discovered mid-implementation that
       `.claude/skills` is already a pre-existing symlink to
-      `.opencode/skills` (and `.claude/commands` to `.opencode/commands`),
+      `.opencode/skills` (and `.agents/commands` to `.agents/commands`),
       so writing to the real target is required and the file is
       automatically visible at both paths with zero duplication.
 - [x] `rules/*.md` (4 files) — removed, superseded by the skills above;
@@ -49,16 +49,16 @@ All 11 items are implemented (2026-09-26).
 - [x] `scripts/AGENTS.md` + `scripts/CLAUDE.md` (symlink, matching the
       root's existing symlink pattern) — new. The "rule" example: loads
       only when working under `scripts/`, under both harnesses.
-- [x] `.claude/commands/plan.md`, `verify.md`, `ship.md`, `review.md`,
+- [x] `.agents/commands/plan.md`, `verify.md`, `ship.md`, `review.md`,
       `tdd.md`, `implement.md` — **not needed**: same symlink discovery
-      as above — `.claude/commands` already aliases `.opencode/commands`,
+      as above — `.agents/commands` already aliases `.agents/commands`,
       so these 6 commands were already dual-harness before this session
       touched anything. No new files created.
-- [x] `.opencode/commands/oc-health.md` — new project-level copy of the
+- [x] `.agents/commands/oc-health.md` — new project-level copy of the
       command this session renamed and left only at the user's personal
       `~/.config/opencode/commands/` scope. Without this, a fresh clone
       would not have had it. Automatically visible at
-      `.claude/commands/oc-health.md` via the same symlink. Verified via
+      `.agents/commands/oc-health.md` via the same symlink. Verified via
       `opencode debug config`'s discovered `command` keys.
 - [x] `.mcp.json` — new. Claude Code's native MCP config, translating
       `opencode.json`'s `context7`/`github`/`playwright`/`sentry` entries
@@ -79,8 +79,8 @@ All 11 items are implemented (2026-09-26).
       toggle for Claude Code, so the opt-in servers there rely on the
       existing missing-env-var behavior rather than an explicit disable.
 - [x] `scripts/check-harness-parity.sh` — new. The R5 anti-shadowing
-      check: `.claude/commands`/`.claude/skills` are verified as intact
-      symlinks to `.opencode/commands`/`.opencode/skills` (not shadowing
+      check: `.agents/commands`/`.claude/skills` are verified as intact
+      symlinks to `.agents/commands`/`.opencode/skills` (not shadowing
       real directories); `.mcp.json` and `opencode.json` server name sets
       match; no command/skill name collides with a small (documented
       non-exhaustive) reserved-name list including `doctor`. Verified
@@ -122,8 +122,8 @@ All 11 items are implemented (2026-09-26).
 3. Skills migration: create the 4 skills, verify content parity with the
    originals, then remove `rules/*.md` and add `rules/README.md`.
 4. `scripts/AGENTS.md` + symlink (the rule example).
-5. Commands: create the 6 `.claude/commands/*.md` pairs, then
-   `.opencode/commands/oc-health.md`.
+5. Commands: create the 6 `.agents/commands/*.md` pairs, then
+   `.agents/commands/oc-health.md`.
 6. MCP: `.mcp.json`, then reconcile `opencode.json`'s annotations against
    it.
 7. `scripts/check-harness-parity.sh` — written after 3/5/6 exist, since
@@ -198,9 +198,9 @@ The two checkbox groups below reflect this distinction.
 - [x] **OpenCode**: `/plan`, `/verify`, `/ship`, `/oc-health` all appear
       in `opencode debug config`'s discovered `command` keys. Verified.
 - [x] **Claude Code**: `/plan`, `/verify`, `/ship` are discoverable as
-      project commands (`.claude/commands/*.md` present via symlink).
+      project commands (`.agents/commands/*.md` present via symlink).
       `/doctor` resolves to Claude Code's own built-in — verified no
-      `.claude/commands/doctor.md` and no `.claude/skills/doctor/` exist
+      `.agents/commands/doctor.md` and no `.claude/skills/doctor/` exist
       anywhere in the repo (the regression test for the exact bug this
       session found by hand).
 - [x] One MCP server (`playwright`, no secret required) responds — verified
@@ -211,7 +211,7 @@ The two checkbox groups below reflect this distinction.
 - [x] One hook (the protected-path blocker) actually blocks an edit to a
       `.env` file — verified via direct simulation of the hook logic.
 - [x] One command (`/verify`) has its definition present at both
-      `.opencode/commands/verify.md` and (via symlink) `.claude/commands/verify.md`.
+      `.agents/commands/verify.md` and (via symlink) `.agents/commands/verify.md`.
 - [x] One rule (`scripts/AGENTS.md`) exists with `scripts/CLAUDE.md`
       correctly symlinked to it — the directory-scoping behavior itself
       (loads under `scripts/`, absent elsewhere) is a harness runtime

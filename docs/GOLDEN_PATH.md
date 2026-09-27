@@ -54,7 +54,7 @@ Naming: `feat/`, `fix/`, `docs/`, `chore/` + issue number + description.
 
 ---
 
-### Step 3 — Failing Test First (DORA Cap 5 — Shift Left)
+### Step 3 — Failing Test First (AI Capability 5 — Working in small batches)
 
 Write the test that describes the desired behaviour. Commit while it's failing.
 
@@ -97,7 +97,7 @@ git commit -m "feat(scope): implement [ISSUE-ID] — [what was built]"
 
 ---
 
-### Step 5 — Preflight Check (DORA Cap 6 — Fast Feedback)
+### Step 5 — Preflight Check (Core — Fast feedback)
 
 ```bash
 npm run preflight  # lint + typecheck + tests — must all pass

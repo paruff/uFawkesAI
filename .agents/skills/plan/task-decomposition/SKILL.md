@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Task Decomposition
 
-> **Load trigger:** `"load task-decomposition skill"` > **DORA:** Cap 3 (AI-Accessible Internal Data)
+> **Load trigger:** `"load task-decomposition skill"` > **DORA:** AI Capability 3: AI-accessible internal data
 > **Token cost:** Low
 
 ## Purpose

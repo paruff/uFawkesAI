@@ -10,7 +10,7 @@ metadata:
 
 # Skill: Rollback State Validation
 
-> **Load trigger:** `"load rollback-state-validation skill"` > **DORA:** Cap 5 (Operational Resilience)
+> **Load trigger:** `"load rollback-state-validation skill"` > **DORA:** Core: Operational resilience
 > **Token cost:** Low
 
 ## Purpose
