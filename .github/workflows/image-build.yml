@@ -1,9 +1,10 @@
 name: DevSecOps Image — Build & Verify
 
-# Builds the uFawkes DevSecOps toolchain image (docs/ai-sdlc/devsecops-image/)
-# natively on amd64 and arm64, then proves it inside the image with no
-# network: locked versions, gate accept/reject fixtures, offline pre-commit.
-# A second no-cache build must report an identical toolchain (determinism).
+# Builds the uFawkes DevSecOps toolchain images — core, gitops, ai
+# (docs/ai-sdlc/devsecops-image/) — natively on amd64 and arm64, then proves
+# each inside itself with no network: locked versions, gate accept/reject
+# fixtures, offline pre-commit. A second no-cache build must report an
+# identical toolchain (determinism).
 # No push here — publishing, signing and attestation come in a later PR.
 
 on:
@@ -28,8 +29,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  core:
-    name: "🐳 core (${{ matrix.arch }})"
+  images:
+    name: "🐳 core + gitops + ai (${{ matrix.arch }})"
     strategy:
       fail-fast: false
       matrix:
@@ -39,7 +40,7 @@ jobs:
           - arch: arm64
             runner: ubuntu-24.04-arm
     runs-on: ${{ matrix.runner }}
-    timeout-minutes: 45
+    timeout-minutes: 60
     steps:
       - name: job-start
         run: echo "job-start $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
@@ -47,32 +48,39 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Build core
-        run: docker buildx build --load --target core -t devsecops-core:ci images/devsecops
+      - name: Build all variants
+        working-directory: images/devsecops
+        run: TAG=ci docker buildx bake --load
 
-      - name: Verify toolchain (network disabled)
+      - name: Verify each variant (network disabled)
         run: |
-          docker run --rm --network none \
-            -v "$PWD/images/devsecops/tests:/tests:ro" \
-            devsecops-core:ci /tests/verify-tools.sh core
+          for v in core gitops ai; do
+            docker run --rm --network none \
+              -v "$PWD/images/devsecops/tests:/tests:ro" \
+              "ufawkes-devsecops-$v:ci" /tests/verify-tools.sh "$v"
+          done
 
+      # ai contains every lower layer, so its fingerprint covers all variants.
       - name: Determinism — rebuild without cache and compare
         run: |
           fingerprint() {
             docker run --rm --network none "$1" bash -c '
               cat /etc/ufawkes/tools.json
               uv pip freeze --python /opt/ufawkes/venv
+              uv pip freeze --python /opt/ufawkes/venv-gitops
               npm ls --prefix /opt/ufawkes/node --all --json'
           }
-          fingerprint devsecops-core:ci >first.txt
-          docker buildx build --load --no-cache --target core -t devsecops-core:rebuild images/devsecops
-          fingerprint devsecops-core:rebuild >second.txt
+          fingerprint ufawkes-devsecops-ai:ci >first.txt
+          (cd images/devsecops && TAG=rebuild docker buildx bake --load --no-cache ai)
+          fingerprint ufawkes-devsecops-ai:rebuild >second.txt
           diff -u first.txt second.txt
           echo "✅ Identical toolchain across two clean builds"
 
-      - name: Image size
+      - name: Image sizes
         if: always()
-        run: docker image ls devsecops-core --format '{{.Tag}} {{.Size}}' | tee -a "$GITHUB_STEP_SUMMARY"
+        run: |
+          docker image ls --filter 'reference=ufawkes-devsecops-*' \
+            --format '{{.Repository}}:{{.Tag}} {{.Size}}' | tee -a "$GITHUB_STEP_SUMMARY"
       - name: job-finish
         if: always()
         run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ')"

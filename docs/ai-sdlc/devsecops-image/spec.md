@@ -206,9 +206,9 @@ package-lock.json┘                                                  │
   further cuts mean dropping or moving tools the owner chose to keep.
   `gitops` +≈ 400 MB and `ai` +≈ 300 MB remain estimates.
 - **Licenses:** OpenTofu chosen over Terraform (BSL). semgrep OSS rules only.
-  Claude Code / OpenCode licensing must permit redistribution in a public
-  image — **to verify** before the first publish. If it doesn't, the `ai`
-  image leaves them out and the devcontainer installs just those two in
-  `postCreateCommand`, at pinned versions.
+  OpenCode is MIT and ships in `ai`. Claude Code's licence reserves all rights
+  and grants no redistribution, so it is **not** baked into the public image; the
+  devcontainer installs the pinned version at create time (see plan.md, PR 2
+  notes). Revisit only after a legal review.
 - **Baseline vs. per-repo pre-commit config:** adopters with custom hooks
   lose R4's offline guarantee for those hooks. Accepted trade-off.

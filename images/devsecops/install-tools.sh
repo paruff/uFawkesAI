@@ -56,7 +56,11 @@ while IFS= read -r entry; do
     install -m 0755 "$file" "${DEST}/usr/local/bin/${name}"
   else
     mkdir -p "${work}/${name}"
-    tar -xf "$file" -C "${work}/${name}"
+    if [ "$format" = "zip" ]; then
+      unzip -q "$file" -d "${work}/${name}"
+    else
+      tar -xf "$file" -C "${work}/${name}"
+    fi
     while IFS= read -r bin; do
       bin="$(render "$bin" "$version" "$token")"
       install -m 0755 "${work}/${name}/${bin}" "${DEST}/usr/local/bin/$(basename "$bin")"

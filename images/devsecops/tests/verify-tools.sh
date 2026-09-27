@@ -61,10 +61,18 @@ while IFS=$'\t' read -r name version cmd; do
 done < <(jq -r --argjson v "$VARIANTS" \
   '.tools[] | select(.variant as $x | $v | index($x)) | [.name, .version, .version_cmd] | @tsv' "$LOCK")
 
-freeze="$(uv pip freeze --python "${OPT}/venv" 2>&1)"
-while IFS= read -r pin; do
-  if grep -qixF "$pin" <<<"$freeze"; then ok "python $pin"; else bad "python $pin not installed"; fi
-done < <(grep -E '^[A-Za-z0-9_.-]+==' "${ETC}/requirements.in")
+# check_pins <venv> <requirements.in>: every top-level pin is installed.
+check_pins() {
+  local freeze pin
+  freeze="$(uv pip freeze --python "$1" 2>&1)"
+  while IFS= read -r pin; do
+    if grep -qixF "$pin" <<<"$freeze"; then ok "python $pin"; else bad "python $pin not installed in $1"; fi
+  done < <(grep -E '^[A-Za-z0-9_.-]+==' "$2")
+}
+check_pins "${OPT}/venv" "${ETC}/requirements.in"
+if [ "$VARIANT" != core ]; then
+  check_pins "${OPT}/venv-gitops" "${ETC}/requirements-gitops.in"
+fi
 
 while IFS=$'\t' read -r pkg version; do
   installed="$(jq -r .version "${OPT}/node/node_modules/${pkg}/package.json" 2>/dev/null)"
@@ -158,6 +166,111 @@ cp "$t/secret/config.py" "$repo/"
 git -C "$repo" add -A
 expect_reject "pre-commit baseline: planted token" \
   env PRE_COMMIT_HOME="$t/pc-home" bash -c "cd '$repo' && pre-commit run --all-files"
+
+if [ "$VARIANT" != core ]; then
+  echo "== 4. GitOps / IaC / policy gates (offline) =="
+  # kubectl, kubeconform, kind, flux and argocd need a cluster, schema
+  # downloads or Docker for anything beyond the version check above.
+  g="$t/gitops"
+  mkdir -p "$g/policy" "$g/tf-good" "$g/tf-bad" "$g/tf-lint"
+  cat >"$g/pod.yaml" <<'YAML'
+apiVersion: v1
+kind: Pod
+metadata:
+  name: web
+spec:
+  containers:
+    - name: web
+      image: nginx:1.27.0
+YAML
+  sed 's/nginx:1.27.0/nginx:latest/' "$g/pod.yaml" >"$g/pod-latest.yaml"
+
+  cat >"$g/policy/latest.rego" <<'REGO'
+package main
+import rego.v1
+deny contains msg if {
+  some c in input.spec.containers
+  endswith(c.image, ":latest")
+  msg := sprintf("container %s uses :latest", [c.name])
+}
+REGO
+  expect_pass "conftest: pinned image" conftest test --policy "$g/policy" "$g/pod.yaml"
+  expect_reject "conftest: :latest image" conftest test --policy "$g/policy" "$g/pod-latest.yaml"
+
+  cat >"$g/kyverno.yaml" <<'YAML'
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: disallow-latest
+spec:
+  validationFailureAction: Enforce
+  rules:
+    - name: no-latest
+      match:
+        any:
+          - resources:
+              kinds: [Pod]
+      validate:
+        message: ":latest is not allowed"
+        pattern:
+          spec:
+            containers:
+              - image: "!*:latest"
+YAML
+  expect_pass "kyverno: pinned image" kyverno apply "$g/kyverno.yaml" --resource "$g/pod.yaml"
+  expect_reject "kyverno: :latest image" kyverno apply "$g/kyverno.yaml" --resource "$g/pod-latest.yaml"
+
+  printf 'resources:\n  - pod.yaml\n' >"$g/kustomization.yaml"
+  expect_pass "kustomize: build" kustomize build "$g"
+
+  expect_pass "helm: create + lint" bash -c "cd '$g' && helm create chart >/dev/null && helm lint chart"
+  printf 'apiVersion: v2\n' >"$g/chart/Chart.yaml"
+  expect_reject "helm: Chart.yaml missing name/version" helm lint "$g/chart"
+
+  cat >"$g/tf-good/main.tf" <<'HCL'
+terraform {
+  required_version = ">= 1.6"
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+  }
+}
+
+resource "aws_s3_bucket" "b" {
+  bucket = "x"
+}
+HCL
+  printf 'resource "aws_s3_bucket" "b" {\nbucket="x"\n}\n' >"$g/tf-bad/main.tf"
+  printf 'variable "unused" {}\n' >"$g/tf-lint/main.tf"
+  expect_pass "tofu fmt: formatted" tofu fmt -check "$g/tf-good"
+  expect_reject "tofu fmt: unformatted" tofu fmt -check "$g/tf-bad"
+  expect_pass "tflint: clean module" tflint --chdir "$g/tf-good"
+  expect_reject "tflint: unused variable" tflint --chdir "$g/tf-lint"
+  expect_reject "checkov: unencrypted S3 bucket" \
+    checkov -d "$g/tf-good" --framework terraform --quiet --compact --skip-download
+
+  age-keygen -o "$g/age.key" 2>/dev/null
+  recipient="$(grep -o 'age1[0-9a-z]*' "$g/age.key")"
+  printf 'password: planted-plaintext\n' >"$g/secret.yaml"
+  if sops --disable-version-check encrypt --age "$recipient" "$g/secret.yaml" >"$g/secret.enc.yaml" &&
+    ! grep -q planted-plaintext "$g/secret.enc.yaml" &&
+    SOPS_AGE_KEY_FILE="$g/age.key" sops --disable-version-check decrypt "$g/secret.enc.yaml" | grep -q planted-plaintext; then
+    ok "sops + age: encrypt hides plaintext, decrypt restores it"
+  else bad "sops + age: round trip failed"; fi
+fi
+
+if [ "$VARIANT" = ai ]; then
+  echo "== 5. Devcontainer user =="
+  if [ "$(id -un)" = dev ] && [ "$(id -u)" = 1000 ]; then ok "runs as dev (1000)"; else bad "expected user dev/1000, got $(id -un)/$(id -u)"; fi
+  expect_pass "passwordless sudo" sudo -n true
+  expect_pass "zsh present" zsh -c 'exit 0'
+  expect_pass "uvx present (MCP servers)" uvx --version
+  if [ -n "${NPM_CONFIG_PREFIX:-}" ] && mkdir -p "$NPM_CONFIG_PREFIX" && [ -w "$NPM_CONFIG_PREFIX" ]; then
+    ok "user-writable npm prefix for pinned Claude Code install"
+  else bad "NPM_CONFIG_PREFIX missing or not writable"; fi
+fi
 
 echo
 if [ "${#failures[@]}" -gt 0 ]; then

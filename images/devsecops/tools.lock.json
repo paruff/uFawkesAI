@@ -341,6 +341,276 @@
         "amd64": "4629c757b7618056f8ddd7e2625ae9fdd94c0372a65049520bc7d9df9efc7f71",
         "arm64": "c5d324e091826b0d7a78eb16fef316450b4eb9aaec045611c08ba06f5e73220a"
       }
+    },
+    {
+      "name": "kubectl",
+      "variant": "gitops",
+      "version": "1.37.1",
+      "url": "https://dl.k8s.io/release/v{version}/bin/linux/{arch}/kubectl",
+      "arch": {
+        "amd64": "amd64",
+        "arm64": "arm64"
+      },
+      "checksum_url": "{url}.sha256",
+      "format": "binary",
+      "version_cmd": "kubectl version --client",
+      "sha256": {
+        "amd64": "65691ff77eb6fa44c908b77a1082c9f092c3b9733b5cefabec0d1104890e21a8",
+        "arm64": "ff749f4b78d9c4f1ec87307df9b50119ed819e2094aa9810cb9acffc3286c8c7"
+      }
+    },
+    {
+      "name": "helm",
+      "variant": "gitops",
+      "version": "4.3.0",
+      "url": "https://get.helm.sh/helm-v{version}-linux-{arch}.tar.gz",
+      "arch": {
+        "amd64": "amd64",
+        "arm64": "arm64"
+      },
+      "checksum_url": "{url}.sha256sum",
+      "format": "tar.gz",
+      "bins": [
+        "linux-{arch}/helm"
+      ],
+      "version_cmd": "helm version",
+      "sha256": {
+        "amd64": "86584a54def73570558f66f5111cc53dfed56689637ae32c1201205d494f54fb",
+        "arm64": "31c5794dd55c66a51e6b7d2e2ac7a114ae8b1de41ff1d9ba51748ac973b06a08"
+      }
+    },
+    {
+      "name": "kustomize",
+      "variant": "gitops",
+      "version": "5.8.1",
+      "url": "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv{version}/kustomize_v{version}_linux_{arch}.tar.gz",
+      "arch": {
+        "amd64": "amd64",
+        "arm64": "arm64"
+      },
+      "checksum_url": "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv{version}/checksums.txt",
+      "format": "tar.gz",
+      "bins": [
+        "kustomize"
+      ],
+      "version_cmd": "kustomize version",
+      "sha256": {
+        "amd64": "029a7f0f4e1932c52a0476cf02a0fd855c0bb85694b82c338fc648dcb53a819d",
+        "arm64": "0953ea3e476f66d6ddfcd911d750f5167b9365aa9491b2326398e289fef2c142"
+      }
+    },
+    {
+      "name": "kubeconform",
+      "variant": "gitops",
+      "version": "0.8.0",
+      "url": "https://github.com/yannh/kubeconform/releases/download/v{version}/kubeconform-linux-{arch}.tar.gz",
+      "arch": {
+        "amd64": "amd64",
+        "arm64": "arm64"
+      },
+      "checksum_url": "https://github.com/yannh/kubeconform/releases/download/v{version}/CHECKSUMS",
+      "format": "tar.gz",
+      "bins": [
+        "kubeconform"
+      ],
+      "version_cmd": "kubeconform -v",
+      "sha256": {
+        "amd64": "9bc2bffbf71f261128533edaf912153948b7ff238f9a531ae6d34466ec287883",
+        "arm64": "1f53fc8e81258197a35e8603054162a5af1de8c5af13746c71ab680d9534ed87"
+      }
+    },
+    {
+      "name": "kind",
+      "variant": "gitops",
+      "version": "0.33.0",
+      "url": "https://github.com/kubernetes-sigs/kind/releases/download/v{version}/kind-linux-{arch}",
+      "arch": {
+        "amd64": "amd64",
+        "arm64": "arm64"
+      },
+      "checksum_url": "{url}.sha256sum",
+      "format": "binary",
+      "version_cmd": "kind version",
+      "sha256": {
+        "amd64": "aee6151561422756b764a4ae28e7f44cda5af5a9eead3cc9985112b1de8d8e0d",
+        "arm64": "20022bee6cfcd5086cb7234d218e3454e6090022f2a8f55d1fa7fcf42c3867a2"
+      }
+    },
+    {
+      "name": "flux",
+      "variant": "gitops",
+      "version": "2.9.5",
+      "url": "https://github.com/fluxcd/flux2/releases/download/v{version}/flux_{version}_linux_{arch}.tar.gz",
+      "arch": {
+        "amd64": "amd64",
+        "arm64": "arm64"
+      },
+      "checksum_url": "https://github.com/fluxcd/flux2/releases/download/v{version}/flux_{version}_checksums.txt",
+      "format": "tar.gz",
+      "bins": [
+        "flux"
+      ],
+      "version_cmd": "flux version --client",
+      "sha256": {
+        "amd64": "b853df82adfd7736f580692f9f734473d571606307139f8fd20c2a80dd1ff473",
+        "arm64": "f3e159af616ec0b9bd0a405c2185cf09d06b74652c1de3c7f377e8166826651a"
+      }
+    },
+    {
+      "name": "argocd",
+      "variant": "gitops",
+      "version": "3.5.3",
+      "url": "https://github.com/argoproj/argo-cd/releases/download/v{version}/argocd-linux-{arch}",
+      "arch": {
+        "amd64": "amd64",
+        "arm64": "arm64"
+      },
+      "checksum_url": "https://github.com/argoproj/argo-cd/releases/download/v{version}/cli_checksums.txt",
+      "format": "binary",
+      "version_cmd": "argocd version --client",
+      "sha256": {
+        "amd64": "b860f73f57cbddd993cd446f5236d797c1b1ac8554857b2683d2669f17e765b4",
+        "arm64": "bb37e5d62df897ea1610f7c647fdc78657a0e3a928dc21893faf7bf66a4646cb"
+      }
+    },
+    {
+      "name": "tofu",
+      "variant": "gitops",
+      "version": "1.12.6",
+      "url": "https://github.com/opentofu/opentofu/releases/download/v{version}/tofu_{version}_linux_{arch}.tar.gz",
+      "arch": {
+        "amd64": "amd64",
+        "arm64": "arm64"
+      },
+      "checksum_url": "https://github.com/opentofu/opentofu/releases/download/v{version}/tofu_{version}_SHA256SUMS",
+      "format": "tar.gz",
+      "bins": [
+        "tofu"
+      ],
+      "version_cmd": "tofu version",
+      "sha256": {
+        "amd64": "50a6106fa4de523d09c87af85f3db1dd47535fc005727fdca6852146476b88ec",
+        "arm64": "9bd0228a81bcd0c88f7045c74378f45a815779f19897191dff7d9efba9976b9e"
+      }
+    },
+    {
+      "name": "tflint",
+      "variant": "gitops",
+      "version": "0.64.0",
+      "url": "https://github.com/terraform-linters/tflint/releases/download/v{version}/tflint_linux_{arch}.zip",
+      "arch": {
+        "amd64": "amd64",
+        "arm64": "arm64"
+      },
+      "checksum_url": "https://github.com/terraform-linters/tflint/releases/download/v{version}/checksums.txt",
+      "format": "zip",
+      "bins": [
+        "tflint"
+      ],
+      "version_cmd": "tflint --version",
+      "sha256": {
+        "amd64": "cca9d13e2e1d7a2c627af60ff899a3c9b74212899416aeb96ec764d2ef954537",
+        "arm64": "560da89aacf59389d4eb029730dd5b109b7288096c32f2726a0d9e783a5ea8eb"
+      }
+    },
+    {
+      "name": "conftest",
+      "variant": "gitops",
+      "version": "0.70.1",
+      "url": "https://github.com/open-policy-agent/conftest/releases/download/v{version}/conftest_{version}_Linux_{arch}.tar.gz",
+      "arch": {
+        "amd64": "x86_64",
+        "arm64": "arm64"
+      },
+      "checksum_url": "https://github.com/open-policy-agent/conftest/releases/download/v{version}/checksums.txt",
+      "format": "tar.gz",
+      "bins": [
+        "conftest"
+      ],
+      "version_cmd": "conftest --version",
+      "sha256": {
+        "amd64": "613d124b8f6c1f3cee890491f7ab19114cca5a2102ca47cb2e6c35b4c23f9c8a",
+        "arm64": "8eb914755cb1b3c610d557019d5f373d5528b366ba706961d1a23f2ec55eab57"
+      }
+    },
+    {
+      "name": "kyverno",
+      "variant": "gitops",
+      "version": "1.19.1",
+      "url": "https://github.com/kyverno/kyverno/releases/download/v{version}/kyverno-cli_v{version}_linux_{arch}.tar.gz",
+      "arch": {
+        "amd64": "x86_64",
+        "arm64": "arm64"
+      },
+      "checksum_url": "https://github.com/kyverno/kyverno/releases/download/v{version}/checksums.txt",
+      "format": "tar.gz",
+      "bins": [
+        "kyverno"
+      ],
+      "version_cmd": "kyverno version",
+      "sha256": {
+        "amd64": "b38228f367fc0fdc2b08f4c83ea50ac5f16c60ff8d62d76a66157c33c47b70ae",
+        "arm64": "d78fecd183e1e6749c653fdb744c88d065e6737ec6856c97c4efac84bec54554"
+      }
+    },
+    {
+      "name": "sops",
+      "variant": "gitops",
+      "version": "3.13.3",
+      "url": "https://github.com/getsops/sops/releases/download/v{version}/sops-v{version}.linux.{arch}",
+      "arch": {
+        "amd64": "amd64",
+        "arm64": "arm64"
+      },
+      "checksum_url": "https://github.com/getsops/sops/releases/download/v{version}/sops-v{version}.checksums.txt",
+      "format": "binary",
+      "version_cmd": "sops --version --disable-version-check",
+      "sha256": {
+        "amd64": "e5bec3346a873ae91d871550f3e698c1aad962aff462a080e40f25fde17fef6b",
+        "arm64": "53b0abacd38ef1b12a66d6c100956691b9cefce018d91f81e73ddf7438b94d77"
+      }
+    },
+    {
+      "name": "age",
+      "variant": "gitops",
+      "version": "1.3.2",
+      "url": "https://github.com/FiloSottile/age/releases/download/v{version}/age-v{version}-linux-{arch}.tar.gz",
+      "arch": {
+        "amd64": "amd64",
+        "arm64": "arm64"
+      },
+      "checksum_url": "",
+      "format": "tar.gz",
+      "bins": [
+        "age/age",
+        "age/age-keygen"
+      ],
+      "version_cmd": "age --version",
+      "sha256": {
+        "amd64": "cbe24006683f8eb669266162894b9a522a1af52f2665fbc63a4bb032ed26ac10",
+        "arm64": "6b8dc4333c53a5a57c9e5834e3a48f92605d7154014cd07269ff3327db5d37f4"
+      }
+    },
+    {
+      "name": "opencode",
+      "variant": "ai",
+      "version": "1.18.32",
+      "url": "https://github.com/sst/opencode/releases/download/v{version}/opencode-linux-{arch}.tar.gz",
+      "arch": {
+        "amd64": "x64-baseline",
+        "arm64": "arm64"
+      },
+      "checksum_url": "",
+      "note": "No upstream checksum file. amd64 uses the baseline (non-AVX2) build so the binary does not depend on the build host CPU. Pinned 2026-09-27 after confirming the binary is byte-identical to the one in npm opencode-linux-{x64-baseline,arm64}@1.18.32.",
+      "format": "tar.gz",
+      "bins": [
+        "opencode"
+      ],
+      "version_cmd": "opencode --version",
+      "sha256": {
+        "amd64": "763af386ef88a8cab18df00fcf055690e5a55e31a7088beabe02307142a6adce",
+        "arm64": "568461b7d4d8c19865c97e9a1102e613049c6039d01fe772154de873c1865840"
+      }
     }
   ]
 }
