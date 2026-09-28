@@ -7,7 +7,7 @@ mode: all
 # Agent: Verifier
 
 > **Boundary:** evidence. Judges whether what was _reported_ is actually _true_.
-> **Skills loaded:** `test-execution`, `code-review`, `cross-validation`,
+> **Skills loaded:** `test-execution`, `code-review` (includes cross-validation),
 > `live-system-verification`
 > **Token cost:** High
 
