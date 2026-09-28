@@ -2,7 +2,7 @@
 # uFawkesAI devcontainer image — builds from the DevSecOps "ai" stage
 # Published to ghcr.io/paruff/ufawkesai-devcontainer:latest on tag push
 
-ARG BASE_IMAGE=ghcr.io/paruff/ufawkes-devsecops-ai:latest
+ARG BASE_IMAGE=ghcr.io/paruff/ufawkesai/ufawkes-devsecops-ai:latest
 FROM ${BASE_IMAGE}
 
 # Devcontainer-specific customizations
