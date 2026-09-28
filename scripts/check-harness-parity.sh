@@ -13,8 +13,9 @@
 #   .cursor/rules/AGENTS.md      -> ../../AGENTS.md
 #   .github/copilot-instructions.md, CLAUDE.md, GEMINI.md, .cursorrules
 #                                 -> AGENTS.md
-# .opencode/agents is deliberately NOT a symlink: those three reviewer agents
-# are OpenCode-specific and have no canonical counterpart.
+# .opencode/agents/{planner,builder,verifier,operator}.md are symlinks into
+# .agents/agents/. The OpenCode-only reviewer agents were dropped — the roster
+# is the canonical 4 (AGENTS.md §5), so there is one source for every agent.
 #
 # Exit 0 = clean. Exit 1 = drift found (fails CI and pre-commit).
 
