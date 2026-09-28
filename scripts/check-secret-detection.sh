@@ -94,7 +94,7 @@ LC_KEYWORDS='(api[_-]?key|apikey|secret[_-]?key|client[_-]?secret|access[_-]?key
 
 # A value matching any of these is a placeholder or a reference, not a secret.
 PLACEHOLDER_RE='^(invalid|none|null|nil|true|false|undefined|empty|default|omit|unused|n/a)$'
-PLACEHOLDER_SUBSTR='(changeme|change_me|change-me|example|placeholder|dummy|sample|fake|redacted|redact|\*\*\*+|x{4,}|\.\.\.|replace_me|replace-me|insert[_-]?here|unused|environ\.get|your[_-]?|not[_-]?a[_-]?secret|no[_-]?secret|secretkeyref|secretnameref|secretgenerator|ext(ernal)?[-_ ]?secrets?|<[^>]*>|\$\{[A-Za-z_][A-Za-z0-9_]*\}|\$[A-Z_][A-Z0-9_]*|\{\{[^}]*\}\})'
+PLACEHOLDER_SUBSTR='(changeme|change_me|change-me|example|placeholder|dummy|sample|fake|redacted|redact|\*\*\*+|x{4,}|\.\.\.|replace_me|replace-me|insert[_-]?here|unused|\.get\(|test[_-]|your[_-]?|not[_-]?a[_-]?secret|no[_-]?secret|secretkeyref|secretnameref|secretgenerator|ext(ernal)?[-_ ]?secrets?|<[^>]*>|\$\{[A-Za-z_][A-Za-z0-9_]*\}|\$[A-Z_][A-Z0-9_]*|\{\{[^}]*\}\})'
 
 # K8s/GitOps keys that REFERENCE a Secret rather than hold one.
 REFERENCE_RE='(secretKeyRef|secretName|secretGenerator|secretRef|secrets:|existingSecret|envFrom)'
