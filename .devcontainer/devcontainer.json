@@ -1,6 +1,6 @@
 {
   "name": "uFawkesAI Development",
-  "image": "mcr.microsoft.com/devcontainers/javascript-node:22",
+  "image": "ghcr.io/paruff/ufawkesai/ufawkesai-devcontainer:latest",
   "features": {
     "ghcr.io/devcontainers/features/git:1": {},
     "ghcr.io/devcontainers/features/github-cli:1": {},
