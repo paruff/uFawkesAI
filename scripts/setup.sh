@@ -26,26 +26,35 @@ DRY_RUN=false
 for arg in "$@"; do
   case "$arg" in
     --dry-run) DRY_RUN=true ;;
-    *) echo "Unknown argument: $arg"; exit 1 ;;
+    *)
+      echo "Unknown argument: $arg"
+      exit 1
+      ;;
   esac
 done
 
 # ── Helpers ───────────────────────────────────────────────────────────────
-info()   { echo -e "${BLUE}  →${NC} $*"; }
-ok()     { echo -e "${GREEN}  ✅${NC} $*"; }
-warn()   { echo -e "${YELLOW}  ⚠️ ${NC} $*"; }
-dry()    { echo -e "${YELLOW}  [dry-run]${NC} would: $*"; }
+info() { echo -e "${BLUE}  →${NC} $*"; }
+ok() { echo -e "${GREEN}  ✅${NC} $*"; }
+warn() { echo -e "${YELLOW}  ⚠️ ${NC} $*"; }
+dry() { echo -e "${YELLOW}  [dry-run]${NC} would: $*"; }
 
 make_dir() {
   local dir="$1"
-  if $DRY_RUN; then dry "mkdir -p ${dir}"; return; fi
+  if $DRY_RUN; then
+    dry "mkdir -p ${dir}"
+    return
+  fi
   mkdir -p "${dir}"
 }
 
 make_symlink() {
   local target="$1"
   local link="$2"
-  if $DRY_RUN; then dry "ln -sf ${target} ${link}"; return; fi
+  if $DRY_RUN; then
+    dry "ln -sf ${target} ${link}"
+    return
+  fi
   ln -sf "${target}" "${link}"
   ok "Symlink: ${link} → ${target}"
 }
@@ -55,7 +64,10 @@ install_hook() {
   local hook_name
   hook_name="$(basename "${src}")"
   local dest=".git/hooks/${hook_name}"
-  if $DRY_RUN; then dry "install hook ${hook_name}"; return; fi
+  if $DRY_RUN; then
+    dry "install hook ${hook_name}"
+    return
+  fi
   cp "${src}" "${dest}"
   chmod +x "${dest}"
   ok "Hook installed: ${hook_name}"

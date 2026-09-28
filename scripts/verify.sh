@@ -26,10 +26,19 @@ PASSES=0
 WARNINGS=0
 FAILURES=0
 
-pass()  { echo -e "  ${PASS} $1"; PASSES=$((PASSES + 1));   }
-warn()  { echo -e "  ${WARN} $1"; WARNINGS=$((WARNINGS + 1)); }
-fail()  { echo -e "  ${FAIL} $1"; FAILURES=$((FAILURES + 1)); }
-info()  { echo -e "  ${INFO} $1"; }
+pass() {
+  echo -e "  ${PASS} $1"
+  PASSES=$((PASSES + 1))
+}
+warn() {
+  echo -e "  ${WARN} $1"
+  WARNINGS=$((WARNINGS + 1))
+}
+fail() {
+  echo -e "  ${FAIL} $1"
+  FAILURES=$((FAILURES + 1))
+}
+info() { echo -e "  ${INFO} $1"; }
 section() { echo -e "\n${BOLD}${CYAN}── $1 ${RESET}$(printf '─%.0s' $(seq 1 $((54 - ${#1}))))${RESET}"; }
 
 # ── Header ───────────────────────────────────────────────────────────────────
@@ -45,7 +54,7 @@ section "Layer 1: Repo Health"
 
 # Required root files
 for f in AGENTS.md README.md CONTRIBUTING.md CHANGELOG.md LICENSE SECURITY.md \
-          CLAUDE.md .copilotignore package.json; do
+  CLAUDE.md .copilotignore package.json; do
   if [[ -f "$f" ]]; then
     pass "$f exists"
   else
@@ -87,13 +96,13 @@ fi
 # Placeholder audit
 section "  Placeholder Audit"
 placeholder_count=$(grep -rn "\[PLACEHOLDER" --include="*.md" . \
-  2>/dev/null | grep -cv "node_modules\|\.git" || true)
+  2> /dev/null | grep -cv "node_modules\|\.git" || true)
 if [[ "$placeholder_count" -eq 0 ]]; then
   pass "No unfilled [PLACEHOLDER] strings found"
 else
   fail "$placeholder_count unfilled [PLACEHOLDER] strings remain:"
   grep -rn "\[PLACEHOLDER" --include="*.md" . \
-    2>/dev/null | grep -v node_modules | grep -v ".git" \
+    2> /dev/null | grep -v node_modules | grep -v ".git" \
     | sed -n "1,10p" | while read -r line; do info "  $line"; done
 fi
 
@@ -111,7 +120,7 @@ fi
 # Key docs exist
 section "  Key Documentation"
 for doc in AI_STANCE.md docs/MODEL_ROUTING_GUIDE.md \
-           docs/METRICS.md docs/GOLDEN_PATH.md; do
+  docs/METRICS.md docs/GOLDEN_PATH.md; do
   if [[ -f "$doc" ]]; then
     pass "$doc"
   else
@@ -138,7 +147,7 @@ for f in "${TOKEN_FILES[@]}"; do
   fi
 
   # Get inode to detect symlinks pointing to same file
-  inode=$(stat -f "%i" "$f" 2>/dev/null || stat -c "%i" "$f" 2>/dev/null)
+  inode=$(stat -f "%i" "$f" 2> /dev/null || stat -c "%i" "$f" 2> /dev/null)
 
   if [[ -n "${seen_inodes[$inode]:-}" ]]; then
     info "$f → symlink to ${seen_inodes[$inode]} (not double-counted)"
@@ -149,9 +158,9 @@ for f in "${TOKEN_FILES[@]}"; do
   lines=$(wc -l < "$f" | tr -d ' ')
   # Approximate: 1 token ≈ 4 chars (conservative for markdown)
   chars=$(wc -c < "$f" | tr -d ' ')
-  tokens=$(( chars / 4 ))
-  always_on_tokens=$(( always_on_tokens + tokens ))
-  always_on_lines=$(( always_on_lines + lines ))
+  tokens=$((chars / 4))
+  always_on_tokens=$((always_on_tokens + tokens))
+  always_on_lines=$((always_on_lines + lines))
   pass "$f — ~${tokens} tokens, ${lines} lines (unique)"
 done
 
@@ -160,10 +169,10 @@ echo -e "  ${BOLD}Total always-on (deduplicated): ~${always_on_tokens} tokens${R
 
 # Monthly cost estimates (1 token = $0.000001, 1 credit = $0.01)
 # Copilot uses input + output tokens; estimate ~2x for round-trip
-round_trip=$(( always_on_tokens * 2 ))
-light=$(( round_trip * 10 * 22 / 10000 ))
-moderate=$(( round_trip * 20 * 22 / 10000 ))
-heavy=$(( round_trip * 50 * 22 / 10000 ))
+round_trip=$((always_on_tokens * 2))
+light=$((round_trip * 10 * 22 / 10000))
+moderate=$((round_trip * 20 * 22 / 10000))
+heavy=$((round_trip * 50 * 22 / 10000))
 
 echo ""
 echo -e "  Monthly always-on cost estimate:"
@@ -180,18 +189,18 @@ fi
 # Top 10 largest files Copilot might pull in
 section "  Top 10 Largest Context Candidates"
 echo -e "  ${YELLOW}(Files not in .copilotignore that Copilot may load)${RESET}"
-if command -v wc &>/dev/null; then
+if command -v wc &> /dev/null; then
   find . -name "*.md" -o -name "*.sh" -o -name "*.yml" -o -name "*.json" \
-    2>/dev/null \
+    2> /dev/null \
     | grep -v node_modules | grep -v ".git" | grep -v package-lock \
-    | xargs wc -c 2>/dev/null \
+    | xargs wc -c 2> /dev/null \
     | sort -rn \
     | grep -v " total$" \
     | sed -n "1,10p" \
     | while read -r size filepath; do
-        tokens=$(( size / 4 ))
-        printf "  %6d tokens  %s\n" "$tokens" "$filepath"
-      done
+      tokens=$((size / 4))
+      printf "  %6d tokens  %s\n" "$tokens" "$filepath"
+    done
 fi
 
 # =============================================================================
@@ -209,7 +218,7 @@ for script in scripts/setup.sh scripts/token-audit.sh scripts/weekly-metrics.sh;
     continue
   fi
   # Syntax check without executing
-  if bash -n "$script" 2>/dev/null; then
+  if bash -n "$script" 2> /dev/null; then
     pass "$script — executable, syntax OK"
   else
     fail "$script — syntax error detected"
@@ -218,7 +227,7 @@ for script in scripts/setup.sh scripts/token-audit.sh scripts/weekly-metrics.sh;
 done
 
 # Run static analysis if the tool is available
-if command -v shellcheck &>/dev/null; then
+if command -v shellcheck &> /dev/null; then
   section "  Shell Static Analysis"
   sc_issues=0
   # Exclude verify.sh itself — it is a meta-script and intentionally
@@ -226,7 +235,7 @@ if command -v shellcheck &>/dev/null; then
   for script in scripts/*.sh; do
     # Exclude verify.sh itself — meta-script; shellcheck on it causes circular failures
     [[ "$script" == "scripts/verify.sh" || "$script" == "./scripts/verify.sh" ]] && continue
-    if shellcheck -S warning "$script" 2>/dev/null; then
+    if shellcheck -S warning "$script" 2> /dev/null; then
       pass "shellcheck $script — clean"
     else
       warn "shellcheck $script — warnings found (run shellcheck manually)"
@@ -240,7 +249,7 @@ fi
 # npm scripts defined
 section "  npm Scripts"
 for cmd in token-audit preflight metrics verify; do
-  if node -e "const p=require('./package.json'); process.exit(p.scripts['$cmd']?0:1)" 2>/dev/null; then
+  if node -e "const p=require('./package.json'); process.exit(p.scripts['$cmd']?0:1)" 2> /dev/null; then
     pass "npm run $cmd — defined"
   else
     warn "npm run $cmd — NOT defined in package.json"
@@ -260,8 +269,8 @@ if [[ -d ".github/workflows" ]]; then
     [[ -f "$wf" ]] || continue
     workflow_count=$((workflow_count + 1))
     # Basic YAML validity via python if available
-    if command -v python3 &>/dev/null; then
-      if python3 -c "import yaml; yaml.safe_load(open('$wf'))" 2>/dev/null; then
+    if command -v python3 &> /dev/null; then
+      if python3 -c "import yaml; yaml.safe_load(open('$wf'))" 2> /dev/null; then
         pass "$wf — valid YAML"
       else
         fail "$wf — YAML parse error"
@@ -290,8 +299,8 @@ section "Layer 5: Visitor Journey"
 # README has critical sections
 section "  README Sections"
 for section_text in "Use this template" "token-audit" "Quick start" \
-                    "June 2026" "DORA" "Works with"; do
-  if grep -q "$section_text" README.md 2>/dev/null; then
+  "June 2026" "DORA" "Works with"; do
+  if grep -q "$section_text" README.md 2> /dev/null; then
     pass "README contains: \"$section_text\""
   else
     warn "README missing: \"$section_text\""
@@ -301,13 +310,13 @@ done
 # Issue templates exist
 section "  Issue Templates"
 template_count=$(find .github/ISSUE_TEMPLATE -name "*.yml" -o -name "*.md" \
-  2>/dev/null | grep -cv "config.yml" || true)
+  2> /dev/null | grep -cv "config.yml" || true)
 if [[ "$template_count" -ge 3 ]]; then
   pass "$template_count issue template(s) found"
   find .github/ISSUE_TEMPLATE -name "*.yml" -o -name "*.md" \
-    2>/dev/null | grep -v config.yml | while read -r t; do
-      info "  $t"
-    done
+    2> /dev/null | grep -v config.yml | while read -r t; do
+    info "  $t"
+  done
 elif [[ "$template_count" -ge 1 ]]; then
   warn "Only $template_count issue template(s) — recommend at least 3"
 else
@@ -316,14 +325,14 @@ fi
 
 # CHANGELOG has v1.0.0
 section "  Release Readiness"
-if grep -q "1\.0\.0" CHANGELOG.md 2>/dev/null; then
+if grep -q "1\.0\.0" CHANGELOG.md 2> /dev/null; then
   pass "CHANGELOG.md contains v1.0.0 entry"
 else
   warn "CHANGELOG.md missing v1.0.0 entry"
 fi
 
 # Git tag exists
-if git tag | grep -q "v1\.0\.0" 2>/dev/null; then
+if git tag | grep -q "v1\.0\.0" 2> /dev/null; then
   pass "git tag v1.0.0 exists"
 else
   warn "git tag v1.0.0 not found locally (may still exist on remote)"
@@ -331,7 +340,7 @@ fi
 
 # No uncommitted changes to key files
 section "  Git Status"
-if git diff --quiet HEAD -- AGENTS.md README.md 2>/dev/null; then
+if git diff --quiet HEAD -- AGENTS.md README.md 2> /dev/null; then
   pass "AGENTS.md and README.md are clean (no uncommitted changes)"
 else
   warn "Uncommitted changes in AGENTS.md or README.md — push before sharing"

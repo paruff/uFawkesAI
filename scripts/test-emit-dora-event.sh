@@ -26,7 +26,7 @@ PYTHON="${PYTHON:-python3}"
 EMIT="$PWD/scripts/emit-dora-event.sh"
 SCHEMA="$PWD/scripts/testdata/ufawkesobs-deployment-event.schema.json"
 for tool in "$PYTHON" jq; do
-  command -v "$tool" >/dev/null 2>&1 || {
+  command -v "$tool" > /dev/null 2>&1 || {
     echo "FAIL: required tool not found: $tool" >&2
     exit 1
   }
@@ -37,20 +37,24 @@ trap 'kill "${listener_pid:-}" 2>/dev/null || true; rm -rf "$work"' EXIT
 pass=0
 failures=()
 check() { # check <label> <jq-filter-that-must-be-true> <json>
-  if jq -e "$2" >/dev/null 2>&1 <<<"$3"; then
-    pass=$((pass + 1)); echo "  ✅ $1"
+  if jq -e "$2" > /dev/null 2>&1 <<< "$3"; then
+    pass=$((pass + 1))
+    echo "  ✅ $1"
   else
-    failures+=("$1"); echo "  ❌ $1"; echo "$3" | head -c 600; echo
+    failures+=("$1")
+    echo "  ❌ $1"
+    echo "$3" | head -c 600
+    echo
   fi
 }
 
 # ── Fixtures: a PR with two AI-assisted commits reporting token usage ─────
 mkdir -p "$work/bin"
-cat >"$work/pr.json" <<'EOF'
+cat > "$work/pr.json" << 'EOF'
 {"number": 42, "created_at": "2026-09-27T09:00:00Z", "merged_at": "2026-09-27T12:30:00Z",
  "additions": 120, "deletions": 8, "commits": 2}
 EOF
-cat >"$work/commits.json" <<'EOF'
+cat > "$work/commits.json" << 'EOF'
 [
   {"commit": {"author": {"date": "2026-09-27T08:15:00Z"},
    "message": "feat: a\n\nAgent-Tokens: input=100 output=2000 cache_read=50000 cache_write=3000 model=claude-opus-5-5 source=claude-code\nCo-Authored-By: Claude <noreply@anthropic.com>"}},
@@ -59,7 +63,7 @@ cat >"$work/commits.json" <<'EOF'
   {"commit": {"author": {"date": "2026-09-27T11:30:00Z"}, "message": "docs: human-only change"}}
 ]
 EOF
-cat >"$work/bin/gh" <<EOF
+cat > "$work/bin/gh" << EOF
 #!/usr/bin/env bash
 # stub: serve fixture JSON for the two endpoints emit-dora-event.sh calls
 case "\$*" in
@@ -69,7 +73,7 @@ case "\$*" in
 esac
 EOF
 chmod +x "$work/bin/gh"
-echo '{"pull_request": {"number": 42}}' >"$work/event.json"
+echo '{"pull_request": {"number": 42}}' > "$work/event.json"
 
 export PATH="$work/bin:$PATH"
 export GITHUB_REPOSITORY=acme/widget GITHUB_RUN_NUMBER=17 GITHUB_RUN_ID=9001 GITHUB_JOB=ci
@@ -92,7 +96,7 @@ for pair in "job-start:$start" "job-finish:$finish" "deploy-marker:$deploy"; do
     ".event == \"${name}\" and .service == \"widget\" and .repo == \"acme/widget\" and .pipeline == \"17\" and (.pipeline_url | endswith(\"/runs/9001\"))" "$json"
 done
 check "job-finish: status + duration_ms from job-start" '.status == "success" and .duration_ms == 450000' "$finish"
-check "events file has all three lines" '. == 3' "$(wc -l <"$work/events.jsonl")"
+check "events file has all three lines" '. == 3' "$(wc -l < "$work/events.jsonl")"
 
 echo "== Agent token usage and PR cycle time =="
 check "tokens summed across trailers" \
@@ -105,8 +109,9 @@ check "PR cycle time = first commit → merge (4h15m)" \
 check "PR size" '.pr.lines_added == 120 and .pr.lines_deleted == 8 and .pr.commits == 2' "$deploy"
 
 echo "== deploy-marker dora_event vs uFawkesObs deployment-event.schema.json =="
-jq '.dora_event' <<<"$deploy" >"$work/dora_event.json"
-if out="$("$PYTHON" - "$SCHEMA" "$work/dora_event.json" 2>&1 <<'PY'
+jq '.dora_event' <<< "$deploy" > "$work/dora_event.json"
+if out="$(
+  "$PYTHON" - "$SCHEMA" "$work/dora_event.json" 2>&1 << 'PY'
 # Stdlib draft-07 subset validator. The vendored schema is a flat object using
 # type, required[], properties{}, additionalProperties:false, enum, pattern and
 # "format": date-time / uri. Anything outside that subset raises rather than
@@ -179,17 +184,20 @@ for e in errors:
 sys.exit(1 if errors else 0)
 PY
 )"; then
-  pass=$((pass + 1)); echo "  ✅ dora_event is a valid uFawkesDORA deployment event"
+  pass=$((pass + 1))
+  echo "  ✅ dora_event is a valid uFawkesDORA deployment event"
 else
-  failures+=("dora_event schema validation"); echo "  ❌ dora_event invalid:"; echo "$out"
+  failures+=("dora_event schema validation")
+  echo "  ❌ dora_event invalid:"
+  echo "$out"
 fi
 check "dora_event carries cycle-time inputs and AI flag" \
   '.first_commit_at == "2026-09-27T08:15:00Z" and .pr_merged_at == "2026-09-27T12:30:00Z" and .ai_assisted == true' \
   "$(cat "$work/dora_event.json")"
 
 echo "== OTLP/HTTP export to /v1/logs =="
-port=$(( (RANDOM % 20000) + 30000 ))
-"$PYTHON" - "$port" "$work/otlp.json" <<'PY' &
+port=$(((RANDOM % 20000) + 30000))
+"$PYTHON" - "$port" "$work/otlp.json" << 'PY' &
 import http.server, json, sys
 port, out = int(sys.argv[1]), sys.argv[2]
 class H(http.server.BaseHTTPRequestHandler):
@@ -208,27 +216,30 @@ sleep 1
 # Values are percent-encoded per the OTel spec; the collector must see them decoded.
 OTEL_EXPORTER_OTLP_ENDPOINT="http://127.0.0.1:${port}" \
   OTEL_EXPORTER_OTLP_HEADERS="X-Test=abc, Authorization=Basic%20dXNlcjpwYXNz%3D" \
-  "$EMIT" deploy-marker --step pipeline --at 2026-09-27T12:48:00Z >/dev/null
+  "$EMIT" deploy-marker --step pipeline --at 2026-09-27T12:48:00Z > /dev/null
 wait "$listener_pid" || true
-check "POSTed to /v1/logs with custom header" '.path == "/v1/logs" and .auth == "abc"' "$(cat "$work/otlp.json" 2>/dev/null || echo '{}')"
+check "POSTed to /v1/logs with custom header" '.path == "/v1/logs" and .auth == "abc"' "$(cat "$work/otlp.json" 2> /dev/null || echo '{}')"
 check "percent-encoded header value is decoded (Basic%20…%3D → 'Basic …=')" \
-  '.authorization == "Basic dXNlcjpwYXNz="' "$(cat "$work/otlp.json" 2>/dev/null || echo '{}')"
+  '.authorization == "Basic dXNlcjpwYXNz="' "$(cat "$work/otlp.json" 2> /dev/null || echo '{}')"
 check "OTLP resource service.name + body is the event line" \
   '.payload.resourceLogs[0].resource.attributes[0] == {key: "service.name", value: {stringValue: "widget"}}
    and (.payload.resourceLogs[0].scopeLogs[0].logRecords[0].body.stringValue | fromjson | .event) == "deploy-marker"
    and .payload.resourceLogs[0].scopeLogs[0].logRecords[0].timeUnixNano == "1790513280000000000"' \
-  "$(cat "$work/otlp.json" 2>/dev/null || echo '{}')"
+  "$(cat "$work/otlp.json" 2> /dev/null || echo '{}')"
 
-if err="$(OTEL_EXPORTER_OTLP_ENDPOINT="http://127.0.0.1:9" "$EMIT" job-start --step x 2>&1 >/dev/null)" &&
-  grep -q "OTLP export .* failed" <<<"$err"; then
-  pass=$((pass + 1)); echo "  ✅ unreachable endpoint: warns on stderr, exits 0"
+if err="$(OTEL_EXPORTER_OTLP_ENDPOINT="http://127.0.0.1:9" "$EMIT" job-start --step x 2>&1 > /dev/null)" \
+  && grep -q "OTLP export .* failed" <<< "$err"; then
+  pass=$((pass + 1))
+  echo "  ✅ unreachable endpoint: warns on stderr, exits 0"
 else
-  failures+=("unreachable endpoint handling"); echo "  ❌ unreachable endpoint: ${err}"
+  failures+=("unreachable endpoint handling")
+  echo "  ❌ unreachable endpoint: ${err}"
 fi
 
 echo
 if [ "${#failures[@]}" -gt 0 ]; then
-  echo "FAILED ${#failures[@]} check(s), passed ${pass}:"; printf '  - %s\n' "${failures[@]}"
+  echo "FAILED ${#failures[@]} check(s), passed ${pass}:"
+  printf '  - %s\n' "${failures[@]}"
   exit 1
 fi
 echo "ALL ${pass} CHECKS PASSED"

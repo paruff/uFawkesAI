@@ -24,7 +24,7 @@ echo "== Type check =="
 
 # 1. TypeScript
 if [[ -x node_modules/.bin/tsc ]]; then
-  if node_modules/.bin/tsc --noEmit -p tsconfig.json >/tmp/tc.$$.out 2>&1; then
+  if node_modules/.bin/tsc --noEmit -p tsconfig.json > /tmp/tc.$$.out 2>&1; then
     echo "  PASS  tsc --noEmit"
     CHECKED=$((CHECKED + 1))
   else
@@ -44,14 +44,14 @@ js_count=0
 while IFS= read -r f; do
   [[ -z "$f" ]] && continue
   js_count=$((js_count + 1))
-  if node --check "$f" 2>/tmp/js.$$.out; then
+  if node --check "$f" 2> /tmp/js.$$.out; then
     :
   else
     echo "  FAIL  node --check $f"
     sed 's/^/        /' /tmp/js.$$.out | head -10
     FAILED=$((FAILED + 1))
   fi
-done < <(find scripts .opencode -name '*.js' -not -path '*/node_modules/*' 2>/dev/null | sort)
+done < <(find scripts .opencode -name '*.js' -not -path '*/node_modules/*' 2> /dev/null | sort)
 if [[ "$js_count" -gt 0 ]]; then
   echo "  PASS  node --check (${js_count} file(s))"
   CHECKED=$((CHECKED + 1))
@@ -66,7 +66,7 @@ py_count=0
 while IFS= read -r f; do
   [[ -z "$f" ]] && continue
   py_count=$((py_count + 1))
-  if python3 -m py_compile "$f" 2>/tmp/py.$$.out; then
+  if python3 -m py_compile "$f" 2> /tmp/py.$$.out; then
     :
   else
     echo "  FAIL  py_compile $f"
@@ -74,7 +74,7 @@ while IFS= read -r f; do
     FAILED=$((FAILED + 1))
   fi
 done < <(find . -name '*.py' -not -path './.git/*' -not -path './opencode/*' \
-         -not -path '*/node_modules/*' 2>/dev/null | sort)
+  -not -path '*/node_modules/*' 2> /dev/null | sort)
 if [[ "$py_count" -gt 0 ]]; then
   echo "  PASS  py_compile (${py_count} file(s))"
   CHECKED=$((CHECKED + 1))
@@ -83,7 +83,7 @@ else
   SKIPPED=$((SKIPPED + 1))
 fi
 rm -f /tmp/py.$$.out
-find . -name '__pycache__' -type d -not -path './.git/*' -exec rm -rf {} + 2>/dev/null || true
+find . -name '__pycache__' -type d -not -path './.git/*' -exec rm -rf {} + 2> /dev/null || true
 
 echo
 echo "typecheck: ${CHECKED} ran, ${SKIPPED} skipped, ${FAILED} failed"

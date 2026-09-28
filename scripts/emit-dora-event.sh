@@ -36,7 +36,10 @@ cd "$(dirname "$0")/.."
 EVENT="${1:-}"
 case "$EVENT" in
   job-start | job-finish | deploy-marker) shift ;;
-  *) echo "usage: $0 <job-start|job-finish|deploy-marker> [options]" >&2; exit 2 ;;
+  *)
+    echo "usage: $0 <job-start|job-finish|deploy-marker> [options]" >&2
+    exit 2
+    ;;
 esac
 
 step="${CI_STEP_NAME:-${GITHUB_JOB:-unknown}}"
@@ -47,25 +50,46 @@ environment="${DORA_ENVIRONMENT:-production}"
 pr_number=""
 while [ $# -gt 0 ]; do
   case "$1" in
-    --step) step="$2"; shift 2 ;;
-    --status) status="$2"; shift 2 ;;
-    --at) at="$2"; shift 2 ;;
-    --started-at) started_at="$2"; shift 2 ;;
-    --environment) environment="$2"; shift 2 ;;
-    --pr) pr_number="$2"; shift 2 ;;
-    *) echo "unknown argument: $1" >&2; exit 2 ;;
+    --step)
+      step="$2"
+      shift 2
+      ;;
+    --status)
+      status="$2"
+      shift 2
+      ;;
+    --at)
+      at="$2"
+      shift 2
+      ;;
+    --started-at)
+      started_at="$2"
+      shift 2
+      ;;
+    --environment)
+      environment="$2"
+      shift 2
+      ;;
+    --pr)
+      pr_number="$2"
+      shift 2
+      ;;
+    *)
+      echo "unknown argument: $1" >&2
+      exit 2
+      ;;
   esac
 done
 
 warn() { echo "emit-dora-event: $*" >&2; }
 now_iso() { date -u +%Y-%m-%dT%H:%M:%SZ; }
-to_epoch() { date -u -d "$1" +%s 2>/dev/null || date -u -j -f '%Y-%m-%dT%H:%M:%SZ' "$1" +%s; }
+to_epoch() { date -u -d "$1" +%s 2> /dev/null || date -u -j -f '%Y-%m-%dT%H:%M:%SZ' "$1" +%s; }
 
 at="${at:-$(now_iso)}"
 repo="${GITHUB_REPOSITORY:-${CI_REPO:-unknown}}"
 pipeline="${GITHUB_RUN_NUMBER:-${CI_PIPELINE_NUMBER:-unknown}}"
 service="${OTEL_SERVICE_NAME:-${repo##*/}}"
-commit_sha="${GITHUB_SHA:-${CI_COMMIT_SHA:-$(git rev-parse HEAD 2>/dev/null || echo "")}}"
+commit_sha="${GITHUB_SHA:-${CI_COMMIT_SHA:-$(git rev-parse HEAD 2> /dev/null || echo "")}}"
 if [ -n "${GITHUB_RUN_ID:-}" ]; then
   pipeline_url="${GITHUB_SERVER_URL:-https://github.com}/${repo}/actions/runs/${GITHUB_RUN_ID}"
 else
@@ -79,18 +103,18 @@ delivery_json() {
   if [ -z "$number" ] && [ -n "${GITHUB_EVENT_PATH:-}" ] && [ -f "$GITHUB_EVENT_PATH" ]; then
     number="$(jq -r '.pull_request.number // empty' "$GITHUB_EVENT_PATH")"
   fi
-  if [ -z "$number" ] && command -v gh >/dev/null && [ -n "$commit_sha" ] && [ "$repo" != unknown ]; then
+  if [ -z "$number" ] && command -v gh > /dev/null && [ -n "$commit_sha" ] && [ "$repo" != unknown ]; then
     # push to main: the PR this commit came from
-    number="$(gh api "repos/${repo}/commits/${commit_sha}/pulls" --jq '[.[] | select(.merged_at != null)][0].number // empty' 2>/dev/null)" ||
-      warn "could not look up the PR for ${commit_sha}"
+    number="$(gh api "repos/${repo}/commits/${commit_sha}/pulls" --jq '[.[] | select(.merged_at != null)][0].number // empty' 2> /dev/null)" \
+      || warn "could not look up the PR for ${commit_sha}"
   fi
-  if [ -z "$number" ] || ! command -v gh >/dev/null; then
+  if [ -z "$number" ] || ! command -v gh > /dev/null; then
     [ -z "$number" ] || warn "gh not available; PR metadata omitted"
     jq -n '{agent_tokens: null, pr: null}'
     return
   fi
-  if ! pr="$(gh api "repos/${repo}/pulls/${number}" 2>/dev/null)" ||
-    ! commits="$(gh api --paginate "repos/${repo}/pulls/${number}/commits" 2>/dev/null | jq -s 'add')"; then
+  if ! pr="$(gh api "repos/${repo}/pulls/${number}" 2> /dev/null)" \
+    || ! commits="$(gh api --paginate "repos/${repo}/pulls/${number}/commits" 2> /dev/null | jq -s 'add')"; then
     warn "GitHub API lookup for PR #${number} failed; PR metadata omitted"
     jq -n '{agent_tokens: null, pr: null}'
     return
@@ -111,10 +135,10 @@ delivery_json() {
         commits_reporting: ($t | length),
         commits_total: length,
         ai_coauthored_commits: ($ai | map(select(.)) | length)
-      }' <<<"$commits")"
+      }' <<< "$commits")"
 
-  first_commit="$(jq -r '[.[].commit.author.date] | sort | first // empty' <<<"$commits")"
-  merged="$(jq -r '.merged_at // empty' <<<"$pr")"
+  first_commit="$(jq -r '[.[].commit.author.date] | sort | first // empty' <<< "$commits")"
+  merged="$(jq -r '.merged_at // empty' <<< "$pr")"
   end="${merged:-$at}"
   cycle=null
   [ -n "$first_commit" ] && cycle=$(($(to_epoch "$end") - $(to_epoch "$first_commit")))
@@ -147,18 +171,18 @@ base="$(jq -n --arg ts "$at" --arg event "$EVENT" --arg step "$step" --arg pipel
 
 case "$EVENT" in
   job-start)
-    echo "$at" >"$state_file"
-    line="$(jq -c --arg m "Starting ${step}" '. + {message: $m}' <<<"$base")"
+    echo "$at" > "$state_file"
+    line="$(jq -c --arg m "Starting ${step}" '. + {message: $m}' <<< "$base")"
     ;;
   job-finish)
-    started_at="${started_at:-$(cat "$state_file" 2>/dev/null || true)}"
+    started_at="${started_at:-$(cat "$state_file" 2> /dev/null || true)}"
     duration=null
     [ -n "$started_at" ] && duration=$((($(to_epoch "$at") - $(to_epoch "$started_at")) * 1000))
     level=info
     [ "$status" = success ] || level=error
     line="$(jq -c --arg m "Completed ${step}" --arg status "$status" --arg level "$level" \
       --argjson duration "$duration" --argjson delivery "$(delivery_json)" \
-      '. + {message: $m, level: $level, status: $status, duration_ms: $duration} + $delivery' <<<"$base")"
+      '. + {message: $m, level: $level, status: $status, duration_ms: $duration} + $delivery' <<< "$base")"
     ;;
   deploy-marker)
     delivery="$(delivery_json)"
@@ -173,13 +197,13 @@ case "$EVENT" in
           status: $status, pipeline_url: .pipeline_url,
           ai_assisted: (((.agent_tokens.output // 0) > 0) or ((.agent_tokens.ai_coauthored_commits // 0) > 0)),
           first_commit_at: .pr.first_commit_at, pr_merged_at: .pr.merged_at
-        } | with_entries(select(.value != null)))' <<<"$base")"
+        } | with_entries(select(.value != null)))' <<< "$base")"
     ;;
 esac
 
 # ── Emit ──────────────────────────────────────────────────────────────────
 echo "$line"
-[ -n "${DORA_EVENTS_FILE:-}" ] && echo "$line" >>"$DORA_EVENTS_FILE"
+[ -n "${DORA_EVENTS_FILE:-}" ] && echo "$line" >> "$DORA_EVENTS_FILE"
 
 if [ -n "${OTEL_EXPORTER_OTLP_ENDPOINT:-}" ]; then
   otlp="$(jq -c --arg svc "$service" --arg event "$EVENT" --arg ns "$(($(to_epoch "$at") * 1000000000))" \
@@ -190,18 +214,24 @@ if [ -n "${OTEL_EXPORTER_OTLP_ENDPOINT:-}" ]; then
         body: {stringValue: $body},
         attributes: [{key: "event", value: {stringValue: $event}}]
       }]}]
-    }]}' <<<"{}")"
+    }]}' <<< "{}")"
   headers=(-H "Content-Type: application/json")
   # OTEL_EXPORTER_OTLP_HEADERS is comma-separated key=value pairs whose keys
   # and values are percent-encoded (OTel spec), e.g. Authorization=Basic%20xyz.
-  urldecode() { local v="${1//\\/\\\\}"; printf '%b' "${v//%/\\x}"; }
-  trim() { local v="${1#"${1%%[![:space:]]*}"}"; printf '%s' "${v%"${v##*[![:space:]]}"}"; }
-  IFS=',' read -ra extra <<<"${OTEL_EXPORTER_OTLP_HEADERS:-}"
+  urldecode() {
+    local v="${1//\\/\\\\}"
+    printf '%b' "${v//%/\\x}"
+  }
+  trim() {
+    local v="${1#"${1%%[![:space:]]*}"}"
+    printf '%s' "${v%"${v##*[![:space:]]}"}"
+  }
+  IFS=',' read -ra extra <<< "${OTEL_EXPORTER_OTLP_HEADERS:-}"
   for h in "${extra[@]}"; do
     [[ "$h" == *=* ]] || continue
     headers+=(-H "$(urldecode "$(trim "${h%%=*}")"): $(urldecode "$(trim "${h#*=}")")")
   done
-  if ! curl -fsS --max-time 10 "${headers[@]}" -d "$otlp" "${OTEL_EXPORTER_OTLP_ENDPOINT%/}/v1/logs" >/dev/null; then
+  if ! curl -fsS --max-time 10 "${headers[@]}" -d "$otlp" "${OTEL_EXPORTER_OTLP_ENDPOINT%/}/v1/logs" > /dev/null; then
     warn "OTLP export to ${OTEL_EXPORTER_OTLP_ENDPOINT%/}/v1/logs failed; event kept on stdout${DORA_EVENTS_FILE:+ and in $DORA_EVENTS_FILE}"
   fi
 fi

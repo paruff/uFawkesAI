@@ -21,13 +21,28 @@ sprint_days="${DOJO_SPRINT_DAYS:-7}"
 opened_at="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 while [ $# -gt 0 ]; do
   case "$1" in
-    --out-dir) out="$2"; shift 2 ;;
-    --sprint-days) sprint_days="$2"; shift 2 ;;
-    --opened-at) opened_at="$2"; shift 2 ;;
-    *) echo "unknown argument: $1" >&2; exit 2 ;;
+    --out-dir)
+      out="$2"
+      shift 2
+      ;;
+    --sprint-days)
+      sprint_days="$2"
+      shift 2
+      ;;
+    --opened-at)
+      opened_at="$2"
+      shift 2
+      ;;
+    *)
+      echo "unknown argument: $1" >&2
+      exit 2
+      ;;
   esac
 done
-[ -f "$FILE" ] || { echo "no such file: $FILE" >&2; exit 1; }
+[ -f "$FILE" ] || {
+  echo "no such file: $FILE" >&2
+  exit 1
+}
 out="${out:-$(mktemp -d)}"
 mkdir -p "$out"
 
@@ -37,7 +52,7 @@ err() { errors+=("$1"); }
 # ── Front matter ─────────────────────────────────────────────────────────
 [ "$(head -1 "$FILE")" = "---" ] || err "missing YAML front matter (first line must be ---)"
 front="$(awk 'NR==1 && $0=="---"{f=1; next} f && $0=="---"{exit} f' "$FILE")"
-field() { sed -n "s/^$1:[[:space:]]*//p" <<<"$front" | sed 's/[[:space:]]*#.*$//; s/^"//; s/"$//' | head -1; }
+field() { sed -n "s/^$1:[[:space:]]*//p" <<< "$front" | sed 's/[[:space:]]*#.*$//; s/^"//; s/"$//' | head -1; }
 for key in lab lab_ref source_feature source_commit completed_at learners proposed_feature; do
   [ -n "$(field "$key")" ] || err "front matter: '${key}' is missing or empty"
 done
@@ -57,26 +72,26 @@ section() { # section <heading-regex>: text under a heading, up to the next head
       if (on && level <= lvl) exit
       if ($0 ~ h) { on = 1; lvl = level; next }
     }
-    on' <<<"$body"
+    on' <<< "$body"
 }
 for h in '^# Dojo Feedback:' '^## Lab Results$' '^## Gaps$' '^## Proposed Intent$' '^### Problem$' '^### Desired outcome$' '^### Out of scope$'; do
-  grep -qE "$h" <<<"$body" || err "missing heading matching: ${h}"
+  grep -qE "$h" <<< "$body" || err "missing heading matching: ${h}"
 done
 
 gaps="$(section '^## Gaps$')"
 no_gaps=false
-if grep -qE '^None\.?[[:space:]]*$' <<<"$gaps" && ! grep -qE '^### GAP-' <<<"$gaps"; then
+if grep -qE '^None\.?[[:space:]]*$' <<< "$gaps" && ! grep -qE '^### GAP-' <<< "$gaps"; then
   no_gaps=true
 else
-  gap_count="$(grep -cE '^### GAP-[0-9]+: .+' <<<"$gaps" || true)"
+  gap_count="$(grep -cE '^### GAP-[0-9]+: .+' <<< "$gaps" || true)"
   [ "$gap_count" -gt 0 ] || err "## Gaps must list '### GAP-NN: title' entries (or the single line 'None.')"
   # every gap needs a known type and non-empty evidence
   while IFS= read -r gap; do
-    block="$(awk -v g="$gap" '$0 == g {on=1; next} on && /^### /{exit} on' <<<"$gaps")"
-    type="$(sed -n 's/^- \*\*Type:\*\*[[:space:]]*//p' <<<"$block" | head -1)"
+    block="$(awk -v g="$gap" '$0 == g {on=1; next} on && /^### /{exit} on' <<< "$gaps")"
+    type="$(sed -n 's/^- \*\*Type:\*\*[[:space:]]*//p' <<< "$block" | head -1)"
     [[ "$type" =~ ^(guardrail|prompt|spec|plan|lab)$ ]] || err "${gap#\#\#\# }: Type must be one of guardrail|prompt|spec|plan|lab (got '${type}')"
-    [ -n "$(sed -n 's/^- \*\*Evidence:\*\*[[:space:]]*//p' <<<"$block")" ] || err "${gap#\#\#\# }: Evidence is required"
-  done < <(grep -E '^### GAP-[0-9]+: ' <<<"$gaps")
+    [ -n "$(sed -n 's/^- \*\*Evidence:\*\*[[:space:]]*//p' <<< "$block")" ] || err "${gap#\#\#\# }: Evidence is required"
+  done < <(grep -E '^### GAP-[0-9]+: ' <<< "$gaps")
 fi
 
 problem="$(section '^### Problem$' | sed '/./,$!d')"
@@ -98,13 +113,13 @@ if $no_gaps; then
 fi
 
 # ── Render issue + draft intent ──────────────────────────────────────────
-due="$(date -u -d "${opened_at} + ${sprint_days} days" +%Y-%m-%d 2>/dev/null ||
-  date -u -j -v+"${sprint_days}"d -f '%Y-%m-%dT%H:%M:%SZ' "$opened_at" +%Y-%m-%d)"
+due="$(date -u -d "${opened_at} + ${sprint_days} days" +%Y-%m-%d 2> /dev/null \
+  || date -u -j -v+"${sprint_days}"d -f '%Y-%m-%dT%H:%M:%SZ' "$opened_at" +%Y-%m-%d)"
 intent_path="docs/ai-sdlc/${proposed}/intent.md"
-gap_titles="$(grep -E '^### GAP-[0-9]+: ' <<<"$gaps" | sed 's/^### /- /')"
+gap_titles="$(grep -E '^### GAP-[0-9]+: ' <<< "$gaps" | sed 's/^### /- /')"
 marker="<!-- dojo-feedback: ${FILE} -->"
 
-cat >"$out/intent.md" <<EOF
+cat > "$out/intent.md" << EOF
 # Intent — ${proposed}
 
 Status: DRAFT — from Dojo feedback on \`${lab}\` (\`${FILE}\`); built from
@@ -129,10 +144,10 @@ ${outcome}
 ${out_of_scope:-- (none stated)}
 EOF
 
-echo "intent: ${proposed} (from Dojo lab ${lab})" >"$out/issue-title.txt"
-echo "$intent_path" >"$out/intent-path.txt"
-echo "$marker" >"$out/marker.txt"
-cat >"$out/issue.md" <<EOF
+echo "intent: ${proposed} (from Dojo lab ${lab})" > "$out/issue-title.txt"
+echo "$intent_path" > "$out/intent-path.txt"
+echo "$marker" > "$out/marker.txt"
+cat > "$out/issue.md" << EOF
 ${marker}
 The Dojo lab \`${lab}\` (built from \`${source_feature}\` @ \`${source_commit:0:12}\`)
 surfaced gaps that restart the AI-SDLC cycle — see \`${FILE}\`.

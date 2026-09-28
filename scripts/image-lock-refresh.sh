@@ -25,8 +25,11 @@ cd "$(dirname "$0")/.."
 LOCK="images/devsecops/tools.lock.json"
 ARCHES="amd64 arm64"
 
-fail() { echo "FAIL: $*" >&2; exit 1; }
-command -v jq >/dev/null || fail "jq is required"
+fail() {
+  echo "FAIL: $*" >&2
+  exit 1
+}
+command -v jq > /dev/null || fail "jq is required"
 
 # render <template> <version> <arch-token> [asset-url]
 render() {
@@ -40,7 +43,7 @@ render() {
 write_lock() {
   local tmp
   tmp="$(mktemp)"
-  jq "$@" "$LOCK" >"$tmp"
+  jq "$@" "$LOCK" > "$tmp"
   mv "$tmp" "$LOCK"
 }
 
@@ -48,16 +51,16 @@ refresh_tool() {
   local name="$1" entry version url_t cs_t arch token url hash cs
   entry="$(jq -c --arg n "$name" '.tools[] | select(.name == $n)' "$LOCK")"
   [ -n "$entry" ] || fail "no tool named '${name}' in ${LOCK}"
-  version="$(jq -r .version <<<"$entry")"
-  url_t="$(jq -r .url <<<"$entry")"
-  cs_t="$(jq -r '.checksum_url // ""' <<<"$entry")"
+  version="$(jq -r .version <<< "$entry")"
+  url_t="$(jq -r .url <<< "$entry")"
+  cs_t="$(jq -r '.checksum_url // ""' <<< "$entry")"
   for arch in $ARCHES; do
-    token="$(jq -r --arg a "$arch" '.arch[$a]' <<<"$entry")"
+    token="$(jq -r --arg a "$arch" '.arch[$a]' <<< "$entry")"
     url="$(render "$url_t" "$version" "$token")"
     hash="$(curl -fsSL "$url" | sha256sum | cut -d' ' -f1)"
     if [ -n "$cs_t" ]; then
       cs="$(curl -fsSL "$(render "$cs_t" "$version" "$token" "$url")")"
-      grep -qi "$hash" <<<"$cs" || fail "${name} ${arch}: ${hash} not in upstream checksums"
+      grep -qi "$hash" <<< "$cs" || fail "${name} ${arch}: ${hash} not in upstream checksums"
       echo "  ${name} ${version} ${arch} verified against upstream checksums"
     else
       echo "  ${name} ${version} ${arch} TOFU (no upstream checksum file) — review release page"

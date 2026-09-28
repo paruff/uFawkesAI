@@ -16,8 +16,9 @@ SKIPPED=0
 FAILED=0
 
 run() { # run <label> <command...>
-  local label="$1"; shift
-  if "$@" >/tmp/lint.$$.out 2>&1; then
+  local label="$1"
+  shift
+  if "$@" > /tmp/lint.$$.out 2>&1; then
     printf '  PASS  %-22s\n' "$label"
     PASSED=$((PASSED + 1))
   else
@@ -28,36 +29,39 @@ run() { # run <label> <command...>
   rm -f /tmp/lint.$$.out
 }
 
-skip() { printf '  SKIP  %-22s %s\n' "$1" "$2"; SKIPPED=$((SKIPPED + 1)); }
+skip() {
+  printf '  SKIP  %-22s %s\n' "$1" "$2"
+  SKIPPED=$((SKIPPED + 1))
+}
 
 echo "== Lint =="
 
 # Shell: the one linter that needs no install and covers real code.
 mapfile -t shell_files < <(find . -name '*.sh' -not -path './.git/*' \
   -not -path './opencode/*' -not -path '*/node_modules/*' | sort)
-if command -v shellcheck >/dev/null 2>&1; then
+if command -v shellcheck > /dev/null 2>&1; then
   run "shellcheck (${#shell_files[@]} files)" shellcheck "${shell_files[@]}"
 else
   skip "shellcheck" "not installed (brew install shellcheck) — pre-commit still gates it"
 fi
 
 # YAML
-if command -v yamllint >/dev/null 2>&1; then
+if command -v yamllint > /dev/null 2>&1; then
   run "yamllint" yamllint -c .yamllint .
 else
   skip "yamllint" "not installed locally — pre-commit gates it"
 fi
 
 # Markdown
-if command -v markdownlint >/dev/null 2>&1; then
+if command -v markdownlint > /dev/null 2>&1; then
   run "markdownlint" markdownlint --config .markdownlint.json "**/*.md"
 else
   skip "markdownlint" "not installed locally — pre-commit gates it"
 fi
 
 # Python (the repo's Python lives under templates/)
-mapfile -t py_files < <(find templates -name '*.py' 2>/dev/null | sort)
-if command -v ruff >/dev/null 2>&1 && [[ "${#py_files[@]}" -gt 0 ]]; then
+mapfile -t py_files < <(find templates -name '*.py' 2> /dev/null | sort)
+if command -v ruff > /dev/null 2>&1 && [[ "${#py_files[@]}" -gt 0 ]]; then
   run "ruff (${#py_files[@]} files)" ruff check "${py_files[@]}"
 else
   skip "ruff" "not installed (or no Python found) — pre-commit gates it"

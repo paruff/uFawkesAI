@@ -23,7 +23,7 @@
 
 set -euo pipefail
 
-REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+REPO_ROOT="$(git rev-parse --show-toplevel 2> /dev/null || pwd)"
 VALIDATOR="${REPO_ROOT}/scripts/check-secret-detection.sh"
 
 if [ ! -x "$VALIDATOR" ]; then
@@ -36,7 +36,7 @@ cd "$REPO_ROOT"
 
 # Staged, added/copied/modified/renamed files only. Deletions cannot leak a
 # secret and would make the validator error on a missing path.
-staged="$(git diff --cached --name-only --diff-filter=ACM 2>/dev/null || true)"
+staged="$(git diff --cached --name-only --diff-filter=ACM 2> /dev/null || true)"
 
 if [ -z "$staged" ]; then
   # Nothing staged (e.g. `git commit -a` with no changes, or a hook probe).

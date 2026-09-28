@@ -23,8 +23,11 @@ if [[ ! -f "$STANCE" ]]; then
 fi
 
 gaps=0
-gap() { echo "  GAP  $1" >&2; gaps=$((gaps + 1)); }
-ok()  { echo "  ok   $1"; }
+gap() {
+  echo "  GAP  $1" >&2
+  gaps=$((gaps + 1))
+}
+ok() { echo "  ok   $1"; }
 
 # ── Currency ────────────────────────────────────────────────────────────────
 if grep -qE '^\**Last reviewed:\** *[0-9]{4}-[0-9]{2}-[0-9]{2}' "$STANCE"; then
@@ -63,7 +66,7 @@ for bucket in "Prohibited" "Permitted with guardrails" "Allowed"; do
   fi
 done
 
-prohibited_count="$(sed -n '/^#\+ .*Prohibited/,/^#\+ [^P]/p' "$STANCE" \
+prohibited_count="$(sed -n '/^### Prohibited/,/^### Allowed/p' "$STANCE" \
   | grep -cE '^[[:space:]]*[-*] ' || true)"
 if [[ "${prohibited_count:-0}" -ge 3 ]]; then
   ok "Prohibited has ${prohibited_count} concrete items"
@@ -102,7 +105,7 @@ if [[ -n "$sast_claim" ]]; then
   sast_workflow=0
   for wf in .github/workflows/*; do
     [[ -e "$wf" ]] || continue
-    case "$(basename "$wf")" in *sast*|*semgrep*|*codeql*) sast_workflow=1 ;; esac
+    case "$(basename "$wf")" in *sast* | *semgrep* | *codeql*) sast_workflow=1 ;; esac
   done
   if [[ "$sast_workflow" -eq 0 ]]; then
     gap "mentions Semgrep/CodeQL but no workflow runs them — either add the workflow or drop the claim"

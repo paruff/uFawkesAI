@@ -65,14 +65,14 @@ while IFS= read -r hit; do
   rest="${hit#*:}"
   lineno="${rest%%:*}"
   text="${rest#*:}"
-  num="$(sed -nE 's/.*AI Capabilit(y|ies) ([0-9]+).*/\2/p' <<<"$text" | head -1)"
+  num="$(sed -nE 's/.*AI Capabilit(y|ies) ([0-9]+).*/\2/p' <<< "$text" | head -1)"
   [[ -n "$num" ]] || continue
   # extract the name that follows the number
-  name="$(sed -nE 's/.*AI Capabilit(y|ies) [0-9]+ *[:—-] *//p' <<<"$text" | head -1)"
+  name="$(sed -nE 's/.*AI Capabilit(y|ies) [0-9]+ *[:—-] *//p' <<< "$text" | head -1)"
   [[ -n "$name" ]] || continue
   name="${name%%$'\r'}"
   # Trim trailing punctuation/quotes that belong to the sentence, not the name.
-  name="$(sed -E 's/[[:space:]]*[.,;)`"]*$//' <<<"$name")"
+  name="$(sed -E 's/[[:space:]]*[.,;)`"]*$//' <<< "$name")"
   want="${CANON[$num]}"
   # Prefix match: the label may legitimately continue with more text
   # ("+ Core: Test automation", a table pipe, a sentence). We only require
@@ -88,16 +88,17 @@ done < <(git grep -nIE 'AI Capabilit(y|ies) [0-9]+ *[:—-]' -- '*.md' || true)
 # Each pattern is a string that was previously used as a capability name.
 while IFS= read -r hit; do
   file="${hit%%:*}"
-  lineno="${hit#*:}"; lineno="${lineno%%:*}"
+  lineno="${hit#*:}"
+  lineno="${lineno%%:*}"
   printf '  FAIL %s:%s retired DORA vocabulary: %s\n' \
-    "$file" "$lineno" "$(sed -E 's/^.{0,140}$/&/' <<<"$hit" | cut -c1-120)" >&2
+    "$file" "$lineno" "$(sed -E 's/^.{0,140}$/&/' <<< "$hit" | cut -c1-120)" >&2
   fail=1
 done < <(git grep -nIE 'Capability 6 — Fast Feedback|Capability 8|AI Cap [0-9]|Prompt Engineering as Core Skill|Clarify AI Policies|Shift Left on Quality|AI Cap 2 — Prompt' -- '*.md' || true)
 
 # ── 3. Non-DORA practices must not be numbered as capabilities ───────────────
 while IFS= read -r hit; do
   printf '  FAIL %s non-DORA practice numbered as an AI capability: %s\n' \
-    "$(cut -d: -f1 <<<"$hit")" "$(cut -c1-110 <<<"$hit")" >&2
+    "$(cut -d: -f1 <<< "$hit")" "$(cut -c1-110 <<< "$hit")" >&2
   fail=1
 done < <(git grep -nIE 'Cap(ability)? ?[0-9]+ *[(—-] *(Observability|Reliability|Operational Resilience|Operational Visibility|CI/CD Automation|AI Policy|Context Engineering|AI-assisted development)' -- '*.md' || true)
 

@@ -34,7 +34,7 @@ echo "  Report: ${REPORT_FILE}"
 echo "═══════════════════════════════════════════"
 
 # Delegate to Python for all validation (handles whitespace in strings correctly)
-python3 - "${REPORT_FILE}" "${AGENT_NAME}" "${CONTRACT_FILE}" <<'PYTHON_SCRIPT'
+python3 - "${REPORT_FILE}" "${AGENT_NAME}" "${CONTRACT_FILE}" << 'PYTHON_SCRIPT'
 import json
 import re
 import sys
