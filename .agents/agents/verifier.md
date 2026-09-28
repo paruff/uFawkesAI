@@ -35,7 +35,7 @@ verifier stops the pipeline.
 
 Return exactly one of:
 
-- **APPROVED** — every acceptance criterion has evidence attached to it.
+- **APPROVED** — every acceptance criterion has evidence attached to it, **the PR is merged, the change is present on `main` (content check), and CI on `main` is green**.
 - **REQUEST CHANGES** — name the specific unproven or contradicted claim.
 - **ESCALATE** — the artifact chain is broken upstream; route to `@planner`.
 
