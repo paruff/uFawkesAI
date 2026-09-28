@@ -67,12 +67,15 @@ jobs:
         id: bypass
         if: inputs.emergency-bypass && github.event_name == 'pull_request'
         run: |
-          if [[ "${{ contains(github.event.pull_request.labels.*.name, 'emergency-bypass') }}" == "true" ]]; then
+          # Use GitHub CLI to check for emergency-bypass label (more reliable than contains())
+          if gh pr view ${{ github.event.pull_request.number }} --json labels -q '.labels[].name' | grep -q '^emergency-bypass$'; then
             echo "⚠️ Emergency bypass label detected — skipping preflight checks"
             echo "skipped=true" >> $GITHUB_OUTPUT
           else
             echo "skipped=false" >> $GITHUB_OUTPUT
           fi
+        env:
+          GH_TOKEN: ${{ github.token }}
 
       # ── Pre-commit Validation ───────────────────────────────────────────────
       - name: Set up Python

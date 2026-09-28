@@ -35,9 +35,9 @@ if [ -e ".agents/commands/doctor.md" ] || [ -d ".claude/skills/doctor" ]; then
   fail "a project-level 'doctor' command/skill exists — this would shadow Claude Code's built-in /doctor"
 fi
 
-echo "== 5. One skill loadable under both harnesses: testing-rules =="
-test -f ".claude/skills/testing-rules/SKILL.md" || fail "testing-rules skill missing at Claude Code path"
-test -f ".opencode/skills/testing-rules/SKILL.md" || fail "testing-rules skill missing at OpenCode path"
+echo "== 5. One skill loadable under both harnesses: test-execution =="
+test -f ".claude/skills/test-execution/SKILL.md" || fail "test-execution skill missing at Claude Code path"
+test -f ".opencode/skills/test-execution/SKILL.md" || fail "test-execution skill missing at OpenCode path"
 
 echo "== 6. One hook: the protected-path blocker actually blocks =="
 # Run the real PreToolUse command from .claude/settings.json, fed the same
