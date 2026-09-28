@@ -140,7 +140,10 @@ expect "the skill pattern table itself does not self-trigger" 0 \
 # --- the real repository must be clean ------------------------------------
 echo
 echo "  -- real repository --"
-repo_out="$("$VALIDATOR" --no-json . 2>&1)"
+# No path argument: scan tracked files (git ls-files), matching what CI runs.
+# Passing "." would also scan gitignored local trees (vendored assets, caches)
+# that CI never sees and that make this suite time out.
+repo_out="$("$VALIDATOR" --no-json 2>&1)"
 repo_rc=$?
 if [ "$repo_rc" -eq 0 ]; then
   ok "repository scans clean (exit 0)"
@@ -152,7 +155,7 @@ fi
 echo
 echo "  -- emitted secrets.json --"
 tmp_json="$(mktemp)"
-if "$VALIDATOR" --quiet --json "$tmp_json" . > /dev/null 2>&1; then
+if "$VALIDATOR" --quiet --json "$tmp_json" > /dev/null 2>&1; then
   if command -v jq > /dev/null 2>&1; then
     if jq -e . "$tmp_json" > /dev/null 2>&1; then
       ok "secrets.json is valid JSON"
