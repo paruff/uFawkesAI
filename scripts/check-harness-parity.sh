@@ -13,8 +13,9 @@
 #   .cursor/rules/AGENTS.md      -> ../../AGENTS.md
 #   .github/copilot-instructions.md, CLAUDE.md, GEMINI.md, .cursorrules
 #                                 -> AGENTS.md
-# .opencode/agents is deliberately NOT a symlink: those three reviewer agents
-# are OpenCode-specific and have no canonical counterpart.
+# .opencode/agents/{planner,builder,verifier,operator}.md are symlinks into
+# .agents/agents/. The OpenCode-only reviewer agents were dropped — the roster
+# is the canonical 4 (AGENTS.md §5), so there is one source for every agent.
 #
 # Exit 0 = clean. Exit 1 = drift found (fails CI and pre-commit).
 
@@ -22,8 +23,11 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 FAIL=0
-say_ok()   { printf '  OK   %s\n' "$1"; }
-say_fail() { printf '  FAIL %s\n' "$1"; FAIL=1; }
+say_ok() { printf '  OK   %s\n' "$1"; }
+say_fail() {
+  printf '  FAIL %s\n' "$1"
+  FAIL=1
+}
 
 echo "== Harness parity check =="
 
@@ -43,10 +47,10 @@ while IFS= read -r link; do
     broken_count=$((broken_count + 1))
   fi
 done < <(find . -maxdepth 3 -type l \
-           -not -path './.git/*' \
-           -not -path './opencode/*' \
-           -not -path '*/node_modules/*' \
-           | sed 's|^\./||' | sort)
+  -not -path './.git/*' \
+  -not -path './opencode/*' \
+  -not -path '*/node_modules/*' \
+  | sed 's|^\./||' | sort)
 if [ "$broken_count" -eq 0 ]; then
   say_ok "all $link_count symlink(s) resolve"
 else
@@ -64,7 +68,7 @@ for harness in .claude .opencode; do
   for pair in commands skills; do
     link="$harness/$pair"
     target=".agents/$pair"
-    if [ -L "$link" ] && [ "$(realpath "$link" 2>/dev/null)" = "$(realpath "$target" 2>/dev/null)" ]; then
+    if [ -L "$link" ] && [ "$(realpath "$link" 2> /dev/null)" = "$(realpath "$target" 2> /dev/null)" ]; then
       say_ok "$link -> $target (symlink intact)"
     else
       say_fail "$link is not a symlink to $target (shadowing or indirection risk)"
@@ -77,7 +81,7 @@ done
 for alias in CLAUDE.md GEMINI.md .cursorrules .cursor/rules/AGENTS.md .github/copilot-instructions.md; do
   if [ ! -e "$alias" ]; then
     say_fail "$alias is missing (harness loads no policy)"
-  elif [ -L "$alias" ] && [ "$(realpath "$alias" 2>/dev/null)" = "$(realpath AGENTS.md 2>/dev/null)" ]; then
+  elif [ -L "$alias" ] && [ "$(realpath "$alias" 2> /dev/null)" = "$(realpath AGENTS.md 2> /dev/null)" ]; then
     say_ok "$alias -> AGENTS.md"
   else
     say_fail "$alias is not a symlink to AGENTS.md"
@@ -87,6 +91,10 @@ done
 # 2. MCP server sets must match between opencode.json and .mcp.json —
 #    the two harnesses should offer the same servers, even though each
 #    keeps its own file (the two schemas aren't identical, see spec.md).
+#    opencode.json is the MCP home per README-mcp.md. Do NOT add a
+#    project-level .opencode/opencode.json: opencode merges it LAST (later
+#    files win) and opencode/opencode.jsonc forbids the duplicate — see that
+#    file's header comment.
 if [ -f opencode.json ] && [ -f .mcp.json ]; then
   oc_servers=$(jq -r '.mcp // {} | keys | sort | join(",")' opencode.json)
   cc_servers=$(jq -r '.mcpServers // {} | keys | sort | join(",")' .mcp.json)
@@ -115,9 +123,10 @@ for f in .agents/commands/*.md; do
     fi
   done
 done
-for d in .opencode/skills/*/; do
-  [ -e "$d" ] || continue
-  name=$(basename "$d")
+for f in .agents/skills/*/SKILL.md; do
+  [ -e "$f" ] || continue
+  skill_dir=$(dirname "$f")
+  name=$(basename "$skill_dir")
   for reserved in $RESERVED_NAMES; do
     if [ "$name" = "$reserved" ]; then
       say_fail "skill '$name' collides with a reserved/built-in name ($reserved)"
@@ -125,13 +134,14 @@ for d in .opencode/skills/*/; do
     fi
   done
 done
-[ "$collision_found" -eq 0 ] && say_ok "no command/skill names collide with the known reserved-name list"
+if [ "$collision_found" -eq 0 ]; then
+  say_ok "no command/skill names collide with the known reserved-name list"
+fi
 
 echo "=========================="
 if [ "$FAIL" -eq 0 ]; then
   echo "PASS: no drift detected"
-  exit 0
 else
   echo "FAIL: drift detected — see above"
-  exit 1
 fi
+exit $FAIL

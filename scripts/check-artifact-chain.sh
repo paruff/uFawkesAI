@@ -49,7 +49,7 @@ else
   for plan in "${plans[@]}"; do
     # No grep -q: exiting at the first match would SIGPIPE `git show` on a
     # large plan, and pipefail would turn that into a false "missing section".
-    if git show "${HEAD_REF}:${plan}" | grep -iE "$VERIFICATION_HEADING" >/dev/null; then
+    if git show "${HEAD_REF}:${plan}" | grep -iE "$VERIFICATION_HEADING" > /dev/null; then
       echo "  ✅ ${plan} includes a Verification Strategy section"
       valid=$((valid + 1))
     else

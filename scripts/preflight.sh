@@ -18,7 +18,10 @@ failures=0
 # BUG FIX 1: pass/warn used bare `$` instead of `$*` — messages were never printed
 pass() { printf "%b\n" "${GREEN}✅ ${NC} $*"; }
 warn() { printf "%b\n" "${YELLOW}⚠️  ${NC} $*"; }
-fail() { printf "%b\n" "${RED}❌ ${NC} $*"; failures=$((failures + 1)); }
+fail() {
+  printf "%b\n" "${RED}❌ ${NC} $*"
+  failures=$((failures + 1))
+}
 
 echo ""
 echo "Running preflight checks..."
@@ -26,14 +29,14 @@ echo ""
 
 # ── 1) Shellcheck all shell scripts ─────────────────────────────────────────
 
-if ! command -v shellcheck >/dev/null 2>&1; then
+if ! command -v shellcheck > /dev/null 2>&1; then
   fail "shellcheck is required but not installed. Run: brew install shellcheck"
 else
   shell_files=()
   while IFS= read -r -d '' f; do
     shell_files+=("$f")
-  # BUG FIX 2: `-not` is GNU find only — macOS requires `!`
-  # BUG FIX 3: glob was '.sh' not '*.sh' — matched nothing
+    # BUG FIX 2: `-not` is GNU find only — macOS requires `!`
+    # BUG FIX 3: glob was '.sh' not '*.sh' — matched nothing
   done < <(find . -type f -name '*.sh' \
     ! -path './.git/*' \
     ! -path './node_modules/*' \

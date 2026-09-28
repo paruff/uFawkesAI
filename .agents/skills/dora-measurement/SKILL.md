@@ -203,20 +203,16 @@ for each — no metric jargon in the output summary.
 def translate_roi(metrics: dict, previous: dict) -> dict:
     return {
         "cost_efficiency": f"CFR at {metrics['cfr']:.0%} — "
-            f"~{estimate_rework_incidents(metrics['cfr'], metrics['deploy_freq'])} "
-            f"rework incidents avoided vs last period",
-
+        f"~{estimate_rework_incidents(metrics['cfr'], metrics['deploy_freq'])} "
+        f"rework incidents avoided vs last period",
         "productivity": f"Lead time {direction(metrics['lead_time'], previous['lead_time'])} "
-            f"{abs_change(metrics['lead_time'], previous['lead_time']):.0%} — "
-            f"delivering {'faster' if improved else 'slower'} than last period",
-
+        f"{abs_change(metrics['lead_time'], previous['lead_time']):.0%} — "
+        f"delivering {'faster' if improved else 'slower'} than last period",
         "developer_experience": f"MTTR {metrics['mttr']:.1f}hrs — "
-            f"{'low' if metrics['mttr'] < 4 else 'moderate' if metrics['mttr'] < 24 else 'high'} "
-            f"on-call burden",
-
+        f"{'low' if metrics['mttr'] < 4 else 'moderate' if metrics['mttr'] < 24 else 'high'} "
+        f"on-call burden",
         "user_experience": f"{'No user-visible outages' if metrics['cfr'] < 0.05 else str(incidents) + ' user-visible incidents'} this period",
-
-        "business_growth": f"{sum(1 for m in metrics.values() if is_elite(m))}/4 metrics at Elite tier"
+        "business_growth": f"{sum(1 for m in metrics.values() if is_elite(m))}/4 metrics at Elite tier",
     }
 ```
 
@@ -230,6 +226,7 @@ Save as `scripts/compute_dora_metrics.py` in any uFawkes\* repo that produces DO
 Compute DORA delivery metrics from uFawkesObs.
 Usage: python scripts/compute_dora_metrics.py --window 30 --output metrics/
 """
+
 import argparse
 import json
 import os
@@ -238,6 +235,7 @@ from datetime import datetime, timedelta
 from pathlib import Path
 
 import requests
+
 
 def query_prometheus(url: str, query: str) -> float | None:
     """Execute a Prometheus instant query, return scalar value or None."""
@@ -250,40 +248,54 @@ def query_prometheus(url: str, query: str) -> float | None:
         print(f"WARNING: Prometheus query failed: {e}", file=sys.stderr)
         return None
 
+
 def compute_metrics(prometheus_url: str, window_days: int, repo: str) -> dict:
     w = f"{window_days}d"
     metrics = {"proxy_metrics": False, "window_days": window_days, "repo": repo}
 
     # Deployment Frequency
-    df = query_prometheus(prometheus_url,
-        f'rate(deployment_events_total{{repo=~"{repo}",status="success"}}[{w}]) * 604800')
+    df = query_prometheus(
+        prometheus_url,
+        f'rate(deployment_events_total{{repo=~"{repo}",status="success"}}[{w}]) * 604800',
+    )
     if df is None:
-        df = query_prometheus(prometheus_url,
-            f'rate(github_pr_merged_total{{repo=~"{repo}"}}[{w}]) * 604800')
+        df = query_prometheus(
+            prometheus_url,
+            f'rate(github_pr_merged_total{{repo=~"{repo}"}}[{w}]) * 604800',
+        )
         metrics["proxy_metrics"] = True
     metrics["deployment_frequency_per_week"] = df
 
     # Lead Time (simplified — hours)
-    lt = query_prometheus(prometheus_url,
-        f'histogram_quantile(0.50, rate(deployment_lead_time_seconds_bucket[{w}])) / 3600')
+    lt = query_prometheus(
+        prometheus_url,
+        f"histogram_quantile(0.50, rate(deployment_lead_time_seconds_bucket[{w}])) / 3600",
+    )
     if lt is None:
-        lt = query_prometheus(prometheus_url,
-            f'histogram_quantile(0.50, rate(github_pr_time_to_merge_seconds_bucket[{w}])) / 3600')
+        lt = query_prometheus(
+            prometheus_url,
+            f"histogram_quantile(0.50, rate(github_pr_time_to_merge_seconds_bucket[{w}])) / 3600",
+        )
         metrics["proxy_metrics"] = True
     metrics["lead_time_p50_hours"] = lt
 
     # Change Failure Rate
-    cfr = query_prometheus(prometheus_url,
+    cfr = query_prometheus(
+        prometheus_url,
         f'(increase(deployment_events_total{{repo=~"{repo}",status="failed"}}[{w}]) / '
-        f'increase(deployment_events_total{{repo=~"{repo}"}}[{w}])) * 100')
+        f'increase(deployment_events_total{{repo=~"{repo}"}}[{w}])) * 100',
+    )
     metrics["change_failure_rate_pct"] = cfr
 
     # MTTR (hours)
-    mttr = query_prometheus(prometheus_url,
-        f'histogram_quantile(0.50, rate(incident_resolution_time_seconds_bucket[{w}])) / 3600')
+    mttr = query_prometheus(
+        prometheus_url,
+        f"histogram_quantile(0.50, rate(incident_resolution_time_seconds_bucket[{w}])) / 3600",
+    )
     metrics["mttr_p50_hours"] = mttr
 
     return metrics
+
 
 def tier(metric_name: str, value: float | None) -> str:
     if value is None:
@@ -305,6 +317,7 @@ def tier(metric_name: str, value: float | None) -> str:
             return label
     return "Low"
 
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--window", type=int, default=30)
@@ -316,12 +329,18 @@ def main():
     metrics = compute_metrics(prometheus_url, args.window, args.repo)
 
     # Add DORA tiers
-    for m in ["deployment_frequency_per_week", "lead_time_p50_hours",
-              "change_failure_rate_pct", "mttr_p50_hours"]:
+    for m in [
+        "deployment_frequency_per_week",
+        "lead_time_p50_hours",
+        "change_failure_rate_pct",
+        "mttr_p50_hours",
+    ]:
         metrics[f"{m}_tier"] = tier(m, metrics.get(m))
 
     metrics["computed_at"] = datetime.utcnow().isoformat() + "Z"
-    metrics["period"] = (datetime.utcnow() - timedelta(days=args.window)).strftime("%Y-%m")
+    metrics["period"] = (datetime.utcnow() - timedelta(days=args.window)).strftime(
+        "%Y-%m"
+    )
 
     output_path = Path(args.output)
     output_path.mkdir(parents=True, exist_ok=True)
@@ -332,8 +351,11 @@ def main():
 
     print(f"DORA snapshot written to {output_file}")
     if metrics["proxy_metrics"]:
-        print("WARNING: proxy_metrics=true — deployment event sources not yet wired. "
-              "Results approximate.")
+        print(
+            "WARNING: proxy_metrics=true — deployment event sources not yet wired. "
+            "Results approximate."
+        )
+
 
 if __name__ == "__main__":
     main()
@@ -487,10 +509,10 @@ cost efficiency in concrete terms (avoid inventing specific dollar figures):
 
 ```python
 def hours_recovered(
-    prev_cfr: float,          # previous change failure rate (0–1)
-    curr_cfr: float,          # current change failure rate (0–1)
-    deploys_per_month: int,   # deployment count
-    rework_hours_per_incident: float = 4.0  # conservative estimate
+    prev_cfr: float,  # previous change failure rate (0–1)
+    curr_cfr: float,  # current change failure rate (0–1)
+    deploys_per_month: int,  # deployment count
+    rework_hours_per_incident: float = 4.0,  # conservative estimate
 ) -> float:
     """
     Hours recovered = reduction in failure incidents × avg rework hours per incident.

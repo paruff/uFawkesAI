@@ -28,7 +28,8 @@ echo "Running cross-validation against agent reports..."
 echo ""
 
 # Run Python script and capture the final result
-FINAL_RESULT=$(python3 - "${RULES_REGISTRY}" "${OUT_DIR}" <<'PYTHON_SCRIPT'
+FINAL_RESULT=$(
+  python3 - "${RULES_REGISTRY}" "${OUT_DIR}" << 'PYTHON_SCRIPT'
 import json, os, sys, yaml, re, datetime
 
 rules_registry_path = sys.argv[1]

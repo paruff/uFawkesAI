@@ -98,7 +98,7 @@ expect "gitlab pat is caught" 1 \
   'GL_TOKEN=glpat-''abcdefghij''0123456789''ABCD' 'gitlab_token'
 
 expect "jwt is caught" 1 \
-  'AUTH=eyJhbGciOiJIUzI1NiJ9''.''eyJzdWIiOiIxMjM0NTY3ODkw''In0''.''dBjftJeZ4CVPmB92K27uhbUJU1p1r''X' 'json_web_token'  # pragma: allowlist secret
+  'AUTH=eyJhbGciOiJIUzI1NiJ9''.''eyJzdWIiOiIxMjM0NTY3ODkw''In0''.''dBjftJeZ4CVPmB92K27uhbUJU1p1r''X' 'json_web_token' # pragma: allowlist secret
 
 # --- must FAIL: keyword bound to a real literal ---------------------------
 expect "password assigned a real literal is caught" 1 \
@@ -108,7 +108,7 @@ expect "token assigned a real literal is caught" 1 \
   'export SERVICE_TOKEN=a7f3b9c1''d2e4f6a8''b0c2d4e6''ff' 'assigned_credential'
 
 expect "api key assigned in json is caught" 1 \
-  '{"api_key": "b7c9d1e3''f5a7c9d1e3''f5a7c9d1e3''f5a7"}' 'assigned_credential'  # pragma: allowlist secret
+  '{"api_key": "b7c9d1e3''f5a7c9d1e3''f5a7c9d1e3''f5a7"}' 'assigned_credential' # pragma: allowlist secret
 
 # --- must PASS: allowlist pragma, placeholders, references ----------------
 expect "pragma allowlist suppresses a shaped finding" 0 \
@@ -128,7 +128,7 @@ expect "xxx-masked value is a placeholder" 0 'SECRET=xxxxxxxxxxxxxxxxxxxx'
 expect "k8s secretKeyRef is a reference not a secret" 0 \
   '  secretKeyRef: { name: my-app-secret, key: password }'
 
-expect "schema example password string is not a secret" 0 '"password": "string"'  # pragma: allowlist secret
+expect "schema example password string is not a secret" 0 '"password": "string"' # pragma: allowlist secret
 
 expect "prose about tokens is not a secret" 0 \
   'Use the token-budget skill to control token cost during a session.'
@@ -140,7 +140,10 @@ expect "the skill pattern table itself does not self-trigger" 0 \
 # --- the real repository must be clean ------------------------------------
 echo
 echo "  -- real repository --"
-repo_out="$("$VALIDATOR" --no-json . 2>&1)"
+# No path argument: scan tracked files (git ls-files), matching what CI runs.
+# Passing "." would also scan gitignored local trees (vendored assets, caches)
+# that CI never sees and that make this suite time out.
+repo_out="$("$VALIDATOR" --no-json 2>&1)"
 repo_rc=$?
 if [ "$repo_rc" -eq 0 ]; then
   ok "repository scans clean (exit 0)"
@@ -152,7 +155,7 @@ fi
 echo
 echo "  -- emitted secrets.json --"
 tmp_json="$(mktemp)"
-if "$VALIDATOR" --quiet --json "$tmp_json" . > /dev/null 2>&1; then
+if "$VALIDATOR" --quiet --json "$tmp_json" > /dev/null 2>&1; then
   if command -v jq > /dev/null 2>&1; then
     if jq -e . "$tmp_json" > /dev/null 2>&1; then
       ok "secrets.json is valid JSON"

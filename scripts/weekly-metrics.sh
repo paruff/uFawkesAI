@@ -40,7 +40,7 @@ REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 METRICS_DOC="${REPO_ROOT}/docs/METRICS.md"
 SNAPSHOT_UTC="$(date -u +"%Y-%m-%d %H:%M:%SZ")"
 
-if ! git -C "${REPO_ROOT}" rev-parse --git-dir >/dev/null 2>&1; then
+if ! git -C "${REPO_ROOT}" rev-parse --git-dir > /dev/null 2>&1; then
   echo "This script must run inside a git repository. Checked path: ${REPO_ROOT}"
   exit 1
 fi
@@ -71,7 +71,7 @@ calc_result="$(
     END {
       printf "%d %d\n", total, rework
     }
-  ' <<<"${git_numstat}"
+  ' <<< "${git_numstat}"
 )"
 
 TOTAL_LINES="${calc_result%% *}"
@@ -101,7 +101,7 @@ if [ -n "${MERGE_COMMITS}" ]; then
   while IFS= read -r merge_sha; do
     [ -z "${merge_sha}" ] && continue
     PRS_MERGED=$((PRS_MERGED + 1))
-    branch_commit_count="$(git -C "${REPO_ROOT}" rev-list --count "${merge_sha}^1..${merge_sha}^2" 2>/dev/null || echo "0")"
+    branch_commit_count="$(git -C "${REPO_ROOT}" rev-list --count "${merge_sha}^1..${merge_sha}^2" 2> /dev/null || echo "0")"
     if [ "${branch_commit_count}" -gt 1 ]; then
       PRS_WITH_REVISION=$((PRS_WITH_REVISION + 1))
     fi
@@ -124,7 +124,7 @@ else
   PR_NOTE="✅ Healthy review flow."
 fi
 
-read -r -d '' AUTO_BLOCK <<EOF || true
+read -r -d '' AUTO_BLOCK << EOF || true
 <!-- METRICS_AUTO:START -->
 ## Latest Automated Snapshot
 
@@ -169,13 +169,13 @@ if [ ! -f "${METRICS_DOC}" ]; then
 fi
 
 tmp_file="$(mktemp)"
-if ! command -v python3 >/dev/null 2>&1; then
+if ! command -v python3 > /dev/null 2>&1; then
   echo "python3 is required to update ${METRICS_DOC}. Please install python3 and re-run npm run metrics."
   exit 1
 fi
 
 # AUTO_BLOCK is composed in this script from trusted local values.
-AUTO_BLOCK="${AUTO_BLOCK}" python3 - "${METRICS_DOC}" <<'PY' >"${tmp_file}"
+AUTO_BLOCK="${AUTO_BLOCK}" python3 - "${METRICS_DOC}" << 'PY' > "${tmp_file}"
 import os
 import pathlib
 import re

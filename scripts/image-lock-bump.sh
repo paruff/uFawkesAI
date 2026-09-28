@@ -38,28 +38,28 @@ newer() { # newer <current> <candidate>: candidate sorts strictly after current
 # latest_version <source-json>: newest stable upstream version, or empty.
 latest_version() {
   local src="$1" repo tag prefix suffix t v url major
-  if repo="$(jq -er '.github // empty' <<<"$src")"; then
-    tag="$(jq -r .tag <<<"$src")"
+  if repo="$(jq -er '.github // empty' <<< "$src")"; then
+    tag="$(jq -r .tag <<< "$src")"
     prefix="${tag%%\{version\}*}"
     suffix="${tag#*\{version\}}"
     gh api "repos/${repo}/releases?per_page=50" \
-      --jq '.[] | select((.draft or .prerelease) | not) | .tag_name' |
-      while IFS= read -r t; do
+      --jq '.[] | select((.draft or .prerelease) | not) | .tag_name' \
+      | while IFS= read -r t; do
         [[ "$t" == "$prefix"* && "$t" == *"$suffix" ]] || continue
         v="${t#"$prefix"}"
         v="${v%"$suffix"}"
         if [[ "$v" =~ ^[0-9]+(\.[0-9]+)+$ ]]; then echo "$v"; fi
       done | sort -V | tail -1
-  elif url="$(jq -er '.url // empty' <<<"$src")"; then
-    tag="$(jq -r .tag <<<"$src")"
+  elif url="$(jq -er '.url // empty' <<< "$src")"; then
+    tag="$(jq -r .tag <<< "$src")"
     v="$(curl -fsSL "$url")"
     v="${v#"${tag%%\{version\}*}"}"
     if [[ "$v" =~ ^[0-9]+(\.[0-9]+)+$ ]]; then echo "$v"; fi
-  elif major="$(jq -er '.node_lts_major // empty' <<<"$src")"; then
-    curl -fsSL https://nodejs.org/dist/index.json |
-      jq -r --arg m "v${major}." \
-        '[.[] | select(.lts != false and (.version | startswith($m)))][0].version // empty' |
-      sed 's/^v//'
+  elif major="$(jq -er '.node_lts_major // empty' <<< "$src")"; then
+    curl -fsSL https://nodejs.org/dist/index.json \
+      | jq -r --arg m "v${major}." \
+        '[.[] | select(.lts != false and (.version | startswith($m)))][0].version // empty' \
+      | sed 's/^v//'
   fi
 }
 
@@ -81,7 +81,7 @@ while IFS=$'\t' read -r name current src; do
       tmp="$(mktemp)"
       jq --arg n "$name" --arg v "$latest" \
         '(.tools[] | select(.name == $n)) |= (.version = $v | .sha256 = {amd64: "", arm64: ""})' \
-        "$LOCK" >"$tmp"
+        "$LOCK" > "$tmp"
       mv "$tmp" "$LOCK"
     fi
   fi
@@ -123,13 +123,17 @@ if $py_changed && ! $DRY_RUN; then
   uv_bin="$(command -v uv || true)"
   if [ -z "$uv_bin" ]; then # bootstrap the lock's own pinned, checksum-verified uv
     arch="$(uname -m)"
-    case "$arch" in x86_64) a=amd64 t=x86_64 ;; aarch64 | arm64) a=arm64 t=aarch64 ;; *) echo "unsupported arch $arch" >&2; exit 1 ;; esac
+    case "$arch" in x86_64) a=amd64 t=x86_64 ;; aarch64 | arm64) a=arm64 t=aarch64 ;; *)
+      echo "unsupported arch $arch" >&2
+      exit 1
+      ;;
+    esac
     entry="$(jq -c '.tools[] | select(.name == "uv")' "$LOCK")"
-    url="$(jq -r .url <<<"$entry")"
-    url="${url//\{version\}/$(jq -r .version <<<"$entry")}"
+    url="$(jq -r .url <<< "$entry")"
+    url="${url//\{version\}/$(jq -r .version <<< "$entry")}"
     url="${url//\{arch\}/$t}"
     curl -fsSL -o "$work/uv.tgz" "$url"
-    echo "$(jq -r --arg a "$a" '.sha256[$a]' <<<"$entry")  $work/uv.tgz" | sha256sum -c --quiet -
+    echo "$(jq -r --arg a "$a" '.sha256[$a]' <<< "$entry")  $work/uv.tgz" | sha256sum -c --quiet -
     tar -xzf "$work/uv.tgz" -C "$work" --strip-components=1
     uv_bin="$work/uv"
   fi
@@ -146,8 +150,8 @@ current_snap="$(sed -n 's/^ARG APT_SNAPSHOT=//p' "$DOCKERFILE")"
 today="$(date -u +%Y%m%d)T000000Z"
 if [ "$current_snap" = "$today" ]; then
   note "- already ${today}"
-elif curl -fsSIL -o /dev/null "https://snapshot.debian.org/archive/debian/${today}/dists/trixie/InRelease" &&
-  curl -fsSIL -o /dev/null "https://snapshot.debian.org/archive/debian-security/${today}/dists/trixie-security/InRelease"; then
+elif curl -fsSIL -o /dev/null "https://snapshot.debian.org/archive/debian/${today}/dists/trixie/InRelease" \
+  && curl -fsSIL -o /dev/null "https://snapshot.debian.org/archive/debian-security/${today}/dists/trixie-security/InRelease"; then
   note "- ${current_snap} → **${today}**"
   $DRY_RUN || sed -i "s/^ARG APT_SNAPSHOT=.*/ARG APT_SNAPSHOT=${today}/" "$DOCKERFILE"
 else

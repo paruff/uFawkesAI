@@ -18,9 +18,9 @@ failures=()
 repo="$work/repo"
 mkdir -p "$repo/scripts" "$repo/images/devsecops/python" "$work/bin"
 cp scripts/image-lock-bump.sh "$repo/scripts/"
-printf '# no pins\n' >"$repo/images/devsecops/python/requirements.in"
-printf 'ARG APT_SNAPSHOT=20200101T000000Z\n' >"$repo/images/devsecops/Dockerfile"
-cat >"$repo/images/devsecops/tools.lock.json" <<'EOF'
+printf '# no pins\n' > "$repo/images/devsecops/python/requirements.in"
+printf 'ARG APT_SNAPSHOT=20200101T000000Z\n' > "$repo/images/devsecops/Dockerfile"
+cat > "$repo/images/devsecops/tools.lock.json" << 'EOF'
 {"schema": 1, "tools": [
   {"name": "good", "version": "1.0.0", "source": {"github": "acme/good", "tag": "v{version}"}},
   {"name": "gone", "version": "1.0.0", "source": {"github": "acme/gone", "tag": "v{version}"}},
@@ -28,7 +28,7 @@ cat >"$repo/images/devsecops/tools.lock.json" <<'EOF'
   {"name": "last", "version": "3.0.0", "source": {"github": "acme/last", "tag": "v{version}"}}
 ]}
 EOF
-cat >"$work/bin/gh" <<'EOF'
+cat > "$work/bin/gh" << 'EOF'
 #!/usr/bin/env bash
 # stub: newest-first tag lists, like the releases API
 case "$*" in
@@ -38,7 +38,7 @@ case "$*" in
   *) echo "unexpected gh call: $*" >&2; exit 1 ;;
 esac
 EOF
-cat >"$work/bin/curl" <<'EOF'
+cat > "$work/bin/curl" << 'EOF'
 #!/usr/bin/env bash
 case "$*" in
   *stable.txt*) echo "vnot-a-version" ;;
@@ -50,16 +50,21 @@ chmod +x "$work/bin/gh" "$work/bin/curl"
 
 if out="$(cd "$repo" && PATH="$work/bin:$PATH" BUMP_SUMMARY="$work/summary.md" \
   bash scripts/image-lock-bump.sh --dry-run 2>&1)"; then
-  pass=$((pass + 1)); echo "  ✅ completes (exit 0) despite per-tool lookup failures"
+  pass=$((pass + 1))
+  echo "  ✅ completes (exit 0) despite per-tool lookup failures"
 else
-  failures+=("aborted"); echo "  ❌ aborted (exit $?):"; echo "${out//$'\n'/$'\n'       }"
+  failures+=("aborted")
+  echo "  ❌ aborted (exit $?):"
+  echo "${out//$'\n'/$'\n'       }"
 fi
 
 expect_line() { # expect_line <label> <fixed string in summary>
-  if grep -qF -- "$2" "$work/summary.md" 2>/dev/null; then
-    pass=$((pass + 1)); echo "  ✅ $1"
+  if grep -qF -- "$2" "$work/summary.md" 2> /dev/null; then
+    pass=$((pass + 1))
+    echo "  ✅ $1"
   else
-    failures+=("$1"); echo "  ❌ $1 — missing: $2"
+    failures+=("$1")
+    echo "  ❌ $1 — missing: $2"
   fi
 }
 expect_line "bumps a tool whose oldest tag is non-numeric" "- good: 1.0.0 → **2.0.0**"
@@ -70,7 +75,8 @@ expect_line "reaches the apt snapshot section" "not reachable; kept 20200101T000
 
 echo
 if [ "${#failures[@]}" -gt 0 ]; then
-  echo "FAILED ${#failures[@]} check(s), passed ${pass}:"; printf '  - %s\n' "${failures[@]}"
+  echo "FAILED ${#failures[@]} check(s), passed ${pass}:"
+  printf '  - %s\n' "${failures[@]}"
   exit 1
 fi
 echo "ALL ${pass} CHECKS PASSED"

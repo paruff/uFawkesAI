@@ -23,9 +23,18 @@ session=""
 since="1970-01-01T00:00:00Z"
 while [ $# -gt 0 ]; do
   case "$1" in
-    --session) session="$2"; shift 2 ;;
-    --since) since="$2"; shift 2 ;;
-    *) echo "unknown argument: $1" >&2; exit 2 ;;
+    --session)
+      session="$2"
+      shift 2
+      ;;
+    --since)
+      since="$2"
+      shift 2
+      ;;
+    *)
+      echo "unknown argument: $1" >&2
+      exit 2
+      ;;
   esac
 done
 
@@ -33,8 +42,11 @@ if [ -z "$session" ]; then
   project_dir="${HOME}/.claude/projects/$(pwd | sed 's|[/.]|-|g')"
   # Transcript names are UUIDs; ls -t is the portable newest-first (no GNU find -printf).
   # shellcheck disable=SC2012
-  session="$(ls -t "$project_dir"/*.jsonl 2>/dev/null | head -1 || true)"
-  [ -n "$session" ] || { echo "no Claude Code transcript found in ${project_dir}" >&2; exit 1; }
+  session="$(ls -t "$project_dir"/*.jsonl 2> /dev/null | head -1 || true)"
+  [ -n "$session" ] || {
+    echo "no Claude Code transcript found in ${project_dir}" >&2
+    exit 1
+  }
 fi
 
 jq -rs --arg since "$since" '

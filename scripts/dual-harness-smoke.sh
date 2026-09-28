@@ -9,7 +9,10 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-fail() { echo "FAIL: $1" >&2; exit 1; }
+fail() {
+  echo "FAIL: $1" >&2
+  exit 1
+}
 
 echo "== 1. Both CLIs present =="
 opencode --version || fail "opencode CLI not found"
@@ -48,11 +51,14 @@ hook_cmd="$(node -e "
   process.stdout.write(((e&&e.hooks)||[])[0]?.command||'');
 ")"
 test -n "$hook_cmd" || fail "PreToolUse Edit|Write hook missing or malformed in .claude/settings.json"
-run_hook() { printf '{"tool_name":"Write","tool_input":{"file_path":"%s"}}' "$1" | bash -c "$hook_cmd" 2>/dev/null; }
+run_hook() { printf '{"tool_name":"Write","tool_input":{"file_path":"%s"}}' "$1" | bash -c "$hook_cmd" 2> /dev/null; }
 set +e
-run_hook "$PWD/.env.local"; blocked=$?
-run_hook "$PWD/README.md"; allowed=$?
-run_hook "$PWD/.env.example"; template=$?
+run_hook "$PWD/.env.local"
+blocked=$?
+run_hook "$PWD/README.md"
+allowed=$?
+run_hook "$PWD/.env.example"
+template=$?
 set -e
 test "$blocked" -eq 2 || fail "protected-path hook did not block .env.local (exit $blocked)"
 test "$allowed" -eq 0 || fail "protected-path hook blocked README.md (exit $allowed)"
@@ -69,6 +75,6 @@ test -f "scripts/CLAUDE.md" || fail "scripts/CLAUDE.md missing"
 test "$(readlink scripts/CLAUDE.md)" = "AGENTS.md" || fail "scripts/CLAUDE.md is not a symlink to AGENTS.md"
 
 echo "== 9. One MCP server (playwright, no secret required) is invocable =="
-npx -y @playwright/mcp --help >/dev/null 2>&1 || fail "playwright MCP server failed to start"
+npx -y @playwright/mcp --help > /dev/null 2>&1 || fail "playwright MCP server failed to start"
 
 echo "ALL CHECKS PASSED"

@@ -26,7 +26,7 @@ export SNAPSHOT_UTC
 echo "Building skill dependency graph from lifecycle registry..."
 echo ""
 
-python3 - "${REGISTRY}" "${OUT_DIR}" <<'PYTHON_SCRIPT'
+python3 - "${REGISTRY}" "${OUT_DIR}" << 'PYTHON_SCRIPT'
 import json, os, sys
 import yaml
 

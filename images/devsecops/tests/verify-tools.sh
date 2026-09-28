@@ -25,12 +25,18 @@ case "$VARIANT" in
   core) VARIANTS='["core"]' ;;
   gitops) VARIANTS='["core","gitops"]' ;;
   ai) VARIANTS='["core","gitops","ai"]' ;;
-  *) echo "unknown variant: $VARIANT" >&2; exit 2 ;;
+  *)
+    echo "unknown variant: $VARIANT" >&2
+    exit 2
+    ;;
 esac
 
 pass=0
 failures=()
-ok() { pass=$((pass + 1)); echo "  ✅ $1"; }
+ok() {
+  pass=$((pass + 1))
+  echo "  ✅ $1"
+}
 bad() {
   failures+=("$1")
   echo "  ❌ $1"
@@ -41,23 +47,31 @@ bad() {
 # A rejection only counts if the tool ran: exit 126/127 (not executable /
 # not found) is a failure of the image, not a successful gate.
 expect_pass() {
-  local label="$1" out; shift
+  local label="$1" out
+  shift
   if out="$("$@" 2>&1)"; then ok "$label"; else bad "$label (exit $?)" "$out"; fi
 }
 expect_reject() {
-  local label="$1" out rc; shift
-  out="$("$@" 2>&1)"; rc=$?
-  if [ "$rc" -eq 0 ]; then bad "$label: accepted a planted-bad input" "$out"
-  elif [ "$rc" -ge 126 ]; then bad "$label: tool did not run (exit $rc)" "$out"
+  local label="$1" out rc
+  shift
+  out="$("$@" 2>&1)"
+  rc=$?
+  if [ "$rc" -eq 0 ]; then
+    bad "$label: accepted a planted-bad input" "$out"
+  elif [ "$rc" -ge 126 ]; then
+    bad "$label: tool did not run (exit $rc)" "$out"
   else ok "$label"; fi
 }
 
 echo "== 1. Locked versions (${VARIANT}) =="
-[ -f "$LOCK" ] || { echo "missing $LOCK" >&2; exit 1; }
+[ -f "$LOCK" ] || {
+  echo "missing $LOCK" >&2
+  exit 1
+}
 while IFS=$'\t' read -r name version cmd; do
   # shellcheck disable=SC2086  # version_cmd is a trusted word list from the lock
   out="$($cmd 2>&1)"
-  if grep -qF "$version" <<<"$out"; then ok "$name $version"; else bad "$name: expected $version" "$out"; fi
+  if grep -qF "$version" <<< "$out"; then ok "$name $version"; else bad "$name: expected $version" "$out"; fi
 done < <(jq -r --argjson v "$VARIANTS" \
   '.tools[] | select(.variant as $x | $v | index($x)) | [.name, .version, .version_cmd] | @tsv' "$LOCK")
 
@@ -66,7 +80,7 @@ check_pins() {
   local freeze pin
   freeze="$(uv pip freeze --python "$1" 2>&1)"
   while IFS= read -r pin; do
-    if grep -qixF "$pin" <<<"$freeze"; then ok "python $pin"; else bad "python $pin not installed in $1"; fi
+    if grep -qixF "$pin" <<< "$freeze"; then ok "python $pin"; else bad "python $pin not installed in $1"; fi
   done < <(grep -E '^[A-Za-z0-9_.-]+==' "$2")
 }
 check_pins "${OPT}/venv" "${ETC}/requirements.in"
@@ -75,7 +89,7 @@ if [ "$VARIANT" != core ]; then
 fi
 
 while IFS=$'\t' read -r pkg version; do
-  installed="$(jq -r .version "${OPT}/node/node_modules/${pkg}/package.json" 2>/dev/null)"
+  installed="$(jq -r .version "${OPT}/node/node_modules/${pkg}/package.json" 2> /dev/null)"
   if [ "$installed" = "$version" ]; then ok "npm $pkg $version"; else bad "npm $pkg: expected $version, got ${installed:-none}"; fi
 done < <(jq -r '.dependencies | to_entries[] | [.key, .value] | @tsv' "${OPT}/node/package.json")
 
@@ -84,24 +98,24 @@ t="$(mktemp -d)"
 trap 'rm -rf "$t"' EXIT
 mkdir -p "$t/clean" "$t/secret" "$t/wf/.github/workflows"
 token="ghp_$(head -c 4096 /dev/urandom | LC_ALL=C tr -dc 'A-Za-z0-9' | head -c 36)"
-printf 'github_token = "%s"\n' "$token" >"$t/secret/config.py"
-printf 'print("hello")\n' >"$t/clean/app.py"
+printf 'github_token = "%s"\n' "$token" > "$t/secret/config.py"
+printf 'print("hello")\n' > "$t/clean/app.py"
 
 expect_pass "gitleaks: clean dir" gitleaks dir --no-banner "$t/clean"
 expect_reject "gitleaks: planted token" gitleaks dir --no-banner "$t/secret"
 # detect-secrets only scans paths under the current directory.
-if (cd "$t/secret" && detect-secrets scan config.py) | jq -e '.results | length > 0' >/dev/null; then
+if (cd "$t/secret" && detect-secrets scan config.py) | jq -e '.results | length > 0' > /dev/null; then
   ok "detect-secrets: planted token"
 else bad "detect-secrets: missed planted token"; fi
 
 # shellcheck disable=SC2016  # the unexpanded $1 is the planted bug
-printf '#!/usr/bin/env bash\nrm -rf $1/*\n' >"$t/bad.sh"
+printf '#!/usr/bin/env bash\nrm -rf $1/*\n' > "$t/bad.sh"
 expect_reject "shellcheck: unquoted rm -rf" shellcheck "$t/bad.sh"
 
-printf 'FROM debian:latest\nRUN apt-get install curl\n' >"$t/Dockerfile"
+printf 'FROM debian:latest\nRUN apt-get install curl\n' > "$t/Dockerfile"
 expect_reject "hadolint: unpinned FROM + apt" hadolint "$t/Dockerfile"
 
-cat >"$t/wf/.github/workflows/bad.yml" <<'EOF'
+cat > "$t/wf/.github/workflows/bad.yml" << 'EOF'
 on: issues
 jobs:
   echo:
@@ -112,16 +126,16 @@ EOF
 expect_reject "actionlint: script injection" actionlint "$t/wf/.github/workflows/bad.yml"
 expect_reject "zizmor: template injection" zizmor --offline "$t/wf/.github/workflows/bad.yml"
 
-printf 'a: 1\na: 2\n' >"$t/dup.yaml"
+printf 'a: 1\na: 2\n' > "$t/dup.yaml"
 expect_reject "yamllint: duplicate key" yamllint "$t/dup.yaml"
 
-printf '#Heading\ntext\n' >"$t/bad.md"
+printf '#Heading\ntext\n' > "$t/bad.md"
 expect_reject "markdownlint-cli2: bad heading" markdownlint-cli2 "$t/bad.md"
 
-printf 'import os\n' >"$t/unused.py"
+printf 'import os\n' > "$t/unused.py"
 expect_reject "ruff: unused import" ruff check --no-cache "$t/unused.py"
 
-cat >"$t/rule.yaml" <<'EOF'
+cat > "$t/rule.yaml" << 'EOF'
 rules:
   - id: no-eval
     pattern: eval(...)
@@ -129,11 +143,11 @@ rules:
     languages: [python]
     severity: ERROR
 EOF
-printf 'eval(input())\n' >"$t/evil.py"
+printf 'eval(input())\n' > "$t/evil.py"
 expect_reject "semgrep: local rule" env SEMGREP_ENABLE_VERSION_CHECK=0 \
   semgrep scan --metrics=off --disable-version-check --error --quiet --config "$t/rule.yaml" "$t/evil.py"
 
-if syft scan "dir:$t/clean" -o spdx-json 2>/dev/null | jq -e '.spdxVersion' >/dev/null; then
+if syft scan "dir:$t/clean" -o spdx-json 2> /dev/null | jq -e '.spdxVersion' > /dev/null; then
   ok "syft: SPDX SBOM from a directory"
 else bad "syft: no SPDX output"; fi
 
@@ -141,12 +155,12 @@ echo "== 3. Offline pre-commit baseline =="
 repo="$t/repo"
 mkdir -p "$repo/.github/workflows"
 cp "$t/clean/app.py" "$repo/"
-printf '#!/usr/bin/env bash\nset -euo pipefail\necho "ok"\n' >"$repo/run.sh"
+printf '#!/usr/bin/env bash\nset -euo pipefail\necho "ok"\n' > "$repo/run.sh"
 chmod +x "$repo/run.sh"
-printf -- '---\nkey: value\n' >"$repo/config.yaml"
-printf '{"key": "value"}\n' >"$repo/data.json"
-printf '# Title\n\nSome text.\n' >"$repo/README.md"
-cat >"$repo/.github/workflows/ci.yml" <<'EOF'
+printf -- '---\nkey: value\n' > "$repo/config.yaml"
+printf '{"key": "value"}\n' > "$repo/data.json"
+printf '# Title\n\nSome text.\n' > "$repo/README.md"
+cat > "$repo/.github/workflows/ci.yml" << 'EOF'
 ---
 name: ci
 on: push
@@ -173,7 +187,7 @@ if [ "$VARIANT" != core ]; then
   # downloads or Docker for anything beyond the version check above.
   g="$t/gitops"
   mkdir -p "$g/policy" "$g/tf-good" "$g/tf-bad" "$g/tf-lint"
-  cat >"$g/pod.yaml" <<'YAML'
+  cat > "$g/pod.yaml" << 'YAML'
 apiVersion: v1
 kind: Pod
 metadata:
@@ -183,9 +197,9 @@ spec:
     - name: web
       image: nginx:1.27.0
 YAML
-  sed 's/nginx:1.27.0/nginx:latest/' "$g/pod.yaml" >"$g/pod-latest.yaml"
+  sed 's/nginx:1.27.0/nginx:latest/' "$g/pod.yaml" > "$g/pod-latest.yaml"
 
-  cat >"$g/policy/latest.rego" <<'REGO'
+  cat > "$g/policy/latest.rego" << 'REGO'
 package main
 import rego.v1
 deny contains msg if {
@@ -197,7 +211,7 @@ REGO
   expect_pass "conftest: pinned image" conftest test --policy "$g/policy" "$g/pod.yaml"
   expect_reject "conftest: :latest image" conftest test --policy "$g/policy" "$g/pod-latest.yaml"
 
-  cat >"$g/kyverno.yaml" <<'YAML'
+  cat > "$g/kyverno.yaml" << 'YAML'
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
@@ -220,14 +234,14 @@ YAML
   expect_pass "kyverno: pinned image" kyverno apply "$g/kyverno.yaml" --resource "$g/pod.yaml"
   expect_reject "kyverno: :latest image" kyverno apply "$g/kyverno.yaml" --resource "$g/pod-latest.yaml"
 
-  printf 'resources:\n  - pod.yaml\n' >"$g/kustomization.yaml"
+  printf 'resources:\n  - pod.yaml\n' > "$g/kustomization.yaml"
   expect_pass "kustomize: build" kustomize build "$g"
 
   expect_pass "helm: create + lint" bash -c "cd '$g' && helm create chart >/dev/null && helm lint chart"
-  printf 'apiVersion: v2\n' >"$g/chart/Chart.yaml"
+  printf 'apiVersion: v2\n' > "$g/chart/Chart.yaml"
   expect_reject "helm: Chart.yaml missing name/version" helm lint "$g/chart"
 
-  cat >"$g/tf-good/main.tf" <<'HCL'
+  cat > "$g/tf-good/main.tf" << 'HCL'
 terraform {
   required_version = ">= 1.6"
   required_providers {
@@ -242,8 +256,8 @@ resource "aws_s3_bucket" "b" {
   bucket = "x"
 }
 HCL
-  printf 'resource "aws_s3_bucket" "b" {\nbucket="x"\n}\n' >"$g/tf-bad/main.tf"
-  printf 'variable "unused" {}\n' >"$g/tf-lint/main.tf"
+  printf 'resource "aws_s3_bucket" "b" {\nbucket="x"\n}\n' > "$g/tf-bad/main.tf"
+  printf 'variable "unused" {}\n' > "$g/tf-lint/main.tf"
   expect_pass "tofu fmt: formatted" tofu fmt -check "$g/tf-good"
   expect_reject "tofu fmt: unformatted" tofu fmt -check "$g/tf-bad"
   expect_pass "tflint: clean module" tflint --chdir "$g/tf-good"
@@ -251,12 +265,12 @@ HCL
   expect_reject "checkov: unencrypted S3 bucket" \
     checkov -d "$g/tf-good" --framework terraform --quiet --compact --skip-download
 
-  age-keygen -o "$g/age.key" 2>/dev/null
+  age-keygen -o "$g/age.key" 2> /dev/null
   recipient="$(grep -o 'age1[0-9a-z]*' "$g/age.key")"
-  printf 'password: planted-plaintext\n' >"$g/secret.yaml"
-  if sops --disable-version-check encrypt --age "$recipient" "$g/secret.yaml" >"$g/secret.enc.yaml" &&
-    ! grep -q planted-plaintext "$g/secret.enc.yaml" &&
-    SOPS_AGE_KEY_FILE="$g/age.key" sops --disable-version-check decrypt "$g/secret.enc.yaml" | grep -q planted-plaintext; then
+  printf 'password: planted-plaintext\n' > "$g/secret.yaml"
+  if sops --disable-version-check encrypt --age "$recipient" "$g/secret.yaml" > "$g/secret.enc.yaml" \
+    && ! grep -q planted-plaintext "$g/secret.enc.yaml" \
+    && SOPS_AGE_KEY_FILE="$g/age.key" sops --disable-version-check decrypt "$g/secret.enc.yaml" | grep -q planted-plaintext; then
     ok "sops + age: encrypt hides plaintext, decrypt restores it"
   else bad "sops + age: round trip failed"; fi
 fi

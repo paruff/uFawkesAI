@@ -13,7 +13,10 @@ for arg in "$@"; do
     --days=*) DAYS="${arg#*=}" ;;
     --verbose) VERBOSE=1 ;;
     --save) SAVE=1 ;;
-    *) echo "Usage: bash scripts/agent-metrics.sh [--days=N] [--verbose] [--save]"; exit 1 ;;
+    *)
+      echo "Usage: bash scripts/agent-metrics.sh [--days=N] [--verbose] [--save]"
+      exit 1
+      ;;
   esac
 done
 
@@ -32,7 +35,7 @@ fi
 declare -a LOG_FILES=()
 while IFS= read -r -d '' f; do
   LOG_FILES+=("$f")
-done < <(find "${LOG_DIR}" -name "*.jsonl" -print0 2>/dev/null || true)
+done < <(find "${LOG_DIR}" -name "*.jsonl" -print0 2> /dev/null || true)
 
 if [ ${#LOG_FILES[@]} -eq 0 ]; then
   echo "No invocation logs found."
@@ -44,7 +47,8 @@ fi
 
 # Delegate aggregation to Python for portability (bash 3 on macOS has no associative arrays)
 export DAYS_FILTER="${DAYS}"
-report="$(python3 - "${LOG_FILES[@]}" <<'PY'
+report="$(
+  python3 - "${LOG_FILES[@]}" << 'PY'
 import datetime, json, os, sys
 from collections import Counter
 
@@ -180,7 +184,7 @@ if [ "${SAVE}" -eq 1 ]; then
   METRICS_DOC="${REPO_ROOT}/docs/AGENT_METRICS.md"
   if [ -f "${METRICS_DOC}" ]; then
     tmp_file="$(mktemp)"
-    report="${report}" python3 - "${METRICS_DOC}" <<'PY' >"${tmp_file}"
+    report="${report}" python3 - "${METRICS_DOC}" << 'PY' > "${tmp_file}"
 import os, pathlib, re, sys
 content = pathlib.Path(sys.argv[1]).read_text(encoding="utf-8")
 block = os.environ["report"]

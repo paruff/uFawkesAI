@@ -24,7 +24,7 @@ new_repo() {
   git -C "$repo" init -q -b main
   git -C "$repo" config user.email test@example.invalid
   git -C "$repo" config user.name test
-  echo "# app" >"$repo/README.md"
+  echo "# app" > "$repo/README.md"
   git -C "$repo" add -A
   git -C "$repo" commit -qm "chore: init"
   git -C "$repo" switch -qc pr
@@ -34,7 +34,7 @@ new_repo() {
 # commit <repo> <path> <content>
 commit() {
   mkdir -p "$(dirname "$1/$2")"
-  printf '%s\n' "$3" >"$1/$2"
+  printf '%s\n' "$3" > "$1/$2"
   git -C "$1" add -A
   git -C "$1" commit -qm "change $2"
 }
@@ -95,7 +95,10 @@ commit "$r" src/app.ts "export const x = 1"
 expect pass "top-level docs/ai-sdlc/plan.md, heading level/case-insensitive" "$r"
 
 r="$(new_repo large-plan)"
-{ printf '%s\n\n' "$PLAN_OK"; for i in $(seq 1 20000); do echo "- step $i of a long plan"; done; } >"$work/big-plan.md"
+{
+  printf '%s\n\n' "$PLAN_OK"
+  for i in $(seq 1 20000); do echo "- step $i of a long plan"; done
+} > "$work/big-plan.md"
 commit "$r" docs/ai-sdlc/login/plan.md "$(cat "$work/big-plan.md")"
 commit "$r" src/app.ts "export const x = 1"
 expect pass "large plan.md (~500 KB, heading near the top) is not misread via SIGPIPE" "$r"

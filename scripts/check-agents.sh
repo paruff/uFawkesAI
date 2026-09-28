@@ -1,33 +1,32 @@
 #!/usr/bin/env bash
-# scripts/check-agents.sh — validate the 4 execution-boundary agents.
+# scripts/check-agents.sh — the 4 execution-boundary agents must be valid
+# AND dispatchable. Canonical source: .agents/agents/; harness mounts are
+# symlinks into it so there is one source and nothing can shadow it.
 #
-# Why this exists: `dual-harness-smoke.sh` only ever did `test -f` on command
-# files. Agent *discovery* was never checked, so `@planner` could be entirely
-# undiscoverable and every check would still pass. That is how all four
-# agents sat at `mode: primary` — loadable in the TUI, but not dispatchable
-# as subagents, which is what an `@agent` mention requires.
-#
-# This validates statically and deterministically. Live invocation cannot be
-# checked here because opencode loads agent config once at startup and does
-# not hot-reload it: a newly added agent only becomes dispatchable after the
-# harness is restarted. See docs/HARNESS_DISPATCH.md.
+# Why this exists: agent *discovery* was never checked, so @planner could be
+# entirely undiscoverable and every check would still pass — e.g. all four
+# agents once sat at `mode: primary`, loadable in the TUI but not
+# dispatchable as subagents. This validates statically and deterministically;
+# live invocation needs an opencode restart because agent config is not
+# hot-reloaded. See docs/HARNESS_DISPATCH.md.
 #
 # Exit 0 = all four agents valid and dispatchable. Exit 1 otherwise.
-set -uo pipefail
 
-cd "$(dirname "$0")/.." || exit 1
+set -euo pipefail
 
-EXPECTED=(planner builder verifier operator)
+cd "$(dirname "$0")/.."
+
 CANONICAL=".agents/agents"
 MOUNT=".opencode/agents"
-FAIL=0
-ok()   { printf '  OK   %s\n' "$1"; }
-bad()  { printf '  FAIL %s\n' "$1"; FAIL=1; }
 
-# Frontmatter keys opencode accepts on an agent file. Anything else is routed
-# into `options`, which is how a typo silently becomes a no-op setting.
-ALLOWED='^(name|model|variant|description|mode|hidden|color|steps|options|permission|disable|temperature|top_p):'
-VALID_MODES='^(primary|subagent|all)$'
+EXPECTED=(planner builder verifier operator)
+
+FAIL=0
+ok() { printf '  OK   %s\n' "$1"; }
+bad() {
+  printf '  FAIL %s\n' "$1"
+  FAIL=1
+}
 
 echo "== Agent dispatch check =="
 
@@ -67,59 +66,62 @@ for agent in "${EXPECTED[@]}"; do
   fm="$(sed -n "2,$((fm_end - 1))p" "$file")"
 
   # name must match the filename, or dispatch by @name breaks.
-  name="$(sed -nE 's/^name:[[:space:]]*["'"'"']?([^"'"'"']*)["'"'"']?[[:space:]]*$/\1/p' <<<"$fm" | head -1)"
-  if [[ "$name" == "$agent" ]]; then
+  if ! grep -q "^name: $agent$" <<< "$fm"; then
+    bad "$agent: name mismatch (frontmatter 'name' must be '$agent')"
+  else
     ok "$agent: name matches filename"
-  else
-    bad "$agent: name is '${name:-<missing>}' but the file is $agent.md"
   fi
 
-  # description is what the model matches on; without it the agent is filtered out.
-  if grep -qE '^description:[[:space:]]*"?[^"]' <<<"$fm"; then
+  # description is required for discoverability.
+  if ! grep -q "^description:" <<< "$fm"; then
+    bad "$agent: missing description"
+  else
     ok "$agent: has a description"
-  else
-    bad "$agent: no description — the agent will never be surfaced"
   fi
 
-  # mode must be valid, and must permit subagent dispatch for @mentions.
-  mode="$(sed -nE 's/^mode:[[:space:]]*//p' <<<"$fm" | head -1)"
-  if [[ -z "$mode" ]]; then
+  # mode must be declared, valid, and permit subagent dispatch for @mentions.
+  if grep -q "^mode:" <<< "$fm"; then
+    mode_val="$(grep "^mode:" <<< "$fm" | head -1 | sed 's/^mode:[[:space:]]*//')"
+    if [[ ! "$mode_val" =~ ^(primary|subagent|all)$ ]]; then
+      bad "$agent: invalid mode '$mode_val' (want primary|subagent|all)"
+    elif [[ "$mode_val" == "primary" ]]; then
+      bad "$agent: mode=primary is TUI-only — not dispatchable via @agent. Use 'all'."
+    else
+      ok "$agent: mode=$mode_val (dispatchable)"
+    fi
+  else
     bad "$agent: no mode declared (defaults vary; declare it explicitly)"
-  elif ! grep -qE "$VALID_MODES" <<<"$mode"; then
-    bad "$agent: invalid mode '$mode' (want primary|subagent|all)"
-  elif [[ "$mode" == "primary" ]]; then
-    bad "$agent: mode=primary is TUI-only — not dispatchable via @agent. Use 'all'."
-  else
-    ok "$agent: mode=$mode (dispatchable)"
   fi
 
-  # Unknown frontmatter keys become `options` and do nothing.
-  unknown="$(grep -vE "$ALLOWED" <<<"$fm" | grep -E '^[a-zA-Z_][a-zA-Z0-9_-]*:' | sed -E 's/:.*//' | sort -u)"
-  if [[ -z "$unknown" ]]; then
+  # No unknown frontmatter keys.
+  unknown_keys=$(grep -E '^[a-z]+:' <<< "$fm" | grep -vE "^(name|model|variant|description|mode|hidden|color|steps|options|permission|disable|temperature|top_p):" | cut -d: -f1 || true)
+  if [[ -n "$unknown_keys" ]]; then
+    bad "$agent: unknown frontmatter keys: $unknown_keys"
+  else
     ok "$agent: no unknown frontmatter keys"
-  else
-    bad "$agent: unknown frontmatter key(s): $(tr '\n' ' ' <<<"$unknown")"
   fi
 done
 
-# No retired stage-agent may reappear in either location.
+# -- retired-agent guard --
 echo "-- retired-agent guard --"
-retired='^(docs-agent|design-agent|spec-agent|test-agent|test-execution-agent|review-agent|security-agent|cross-validation-agent|flow-agent|learn-agent|measure-agent|release-agent|discover-agent)$'
-for dir in "$CANONICAL" "$MOUNT"; do
-  [[ -d "$dir" ]] || continue
-  found="$(find "$dir" -maxdepth 1 -name '*.md' -printf '%f\n' 2>/dev/null | sed 's/\.md$//' | grep -E "$retired" || true)"
-  if [[ -z "$found" ]]; then
-    ok "$dir: no retired stage/flow agents"
-  else
-    bad "$dir: retired agent(s) present: $(tr '\n' ' ' <<<"$found")"
+shopt -s nullglob
+for f in .agents/agents/*.md .opencode/agents/*.md; do
+  [ -e "$f" ] || continue
+  base=$(basename "$f" .md)
+  if [[ ! " ${EXPECTED[*]} " =~ ${base} ]]; then
+    bad "$f: retired stage/flow agent still present (must be one of: ${EXPECTED[*]})"
   fi
 done
+if [[ "$FAIL" -eq 0 ]]; then
+  ok ".agents/agents: no retired stage/flow agents"
+  ok ".opencode/agents: no retired stage/flow agents"
+fi
 
 echo "=========================="
 if [[ "$FAIL" -eq 0 ]]; then
-  echo "PASS: all ${#EXPECTED[@]} execution-boundary agents are valid and dispatchable."
+  echo "PASS: all 4 execution-boundary agents are valid and dispatchable."
   echo "NOTE: live invocation needs an opencode restart — agent config is not hot-reloaded."
-  exit 0
+else
+  echo "FAIL: agent dispatch check found problems (see above)"
 fi
-echo "FAIL: agent dispatch check found problems (see above)"
-exit 1
+exit $FAIL

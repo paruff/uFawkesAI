@@ -22,15 +22,19 @@ fi
 # Report filename -> contract key in minimal-report.yaml.
 # Every key here MUST exist in the contract file; assertion-runner.sh now fails
 # loudly on an unknown key so a typo cannot degrade into a silent pass.
-declare -A CONTRACT_FOR_REPORT=(
-  [build-report.md]=build
-  [design-report.md]=design
-  [review-report.md]=review
-  [spec-report.md]=spec
-  [test-report.md]=test
-  [test-execution-report.md]=test-execution
-  [cross-validation-report.md]=cross-validation
-)
+get_contract_key() {
+  local report_filename="$1"
+  case "$report_filename" in
+    build-report.md) echo "build" ;;
+    design-report.md) echo "design" ;;
+    review-report.md) echo "review" ;;
+    spec-report.md) echo "spec" ;;
+    test-report.md) echo "test" ;;
+    test-execution-report.md) echo "test-execution" ;;
+    cross-validation-report.md) echo "cross-validation" ;;
+    *) echo "" ;; # Unknown report type
+  esac
+}
 
 STAGED_REPORTS=$(git diff --cached --name-only --diff-filter=ACM | grep -E '(^|/)[a-z-]+-report\.md$' || true)
 
@@ -47,7 +51,7 @@ while IFS= read -r report_path; do
   [ -f "${full_path}" ] || continue
 
   base="$(basename "${report_path}")"
-  contract="${CONTRACT_FOR_REPORT[$base]:-}"
+  contract="$(get_contract_key "${base}")"
 
   if [ -z "${contract}" ]; then
     # Say so out loud rather than pretending it was checked.
@@ -56,7 +60,7 @@ while IFS= read -r report_path; do
   fi
 
   echo "pre-commit-agent: validating ${base} against the '${contract}' contract..."
-  if bash "${ASSERTION_RUNNER}" "${full_path}" "${contract}" >/dev/null 2>&1; then
+  if bash "${ASSERTION_RUNNER}" "${full_path}" "${contract}" > /dev/null 2>&1; then
     echo "  OK"
   else
     echo "  FAILED — ${contract} contract not satisfied"

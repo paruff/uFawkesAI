@@ -94,7 +94,7 @@ LC_KEYWORDS='(api[_-]?key|apikey|secret[_-]?key|client[_-]?secret|access[_-]?key
 
 # A value matching any of these is a placeholder or a reference, not a secret.
 PLACEHOLDER_RE='^(invalid|none|null|nil|true|false|undefined|empty|default|omit|unused|n/a)$'
-PLACEHOLDER_SUBSTR='(changeme|change_me|change-me|example|placeholder|dummy|sample|fake|redacted|redact|\*\*\*+|x{4,}|\.\.\.|replace_me|replace-me|insert[_-]?here|your[_-]?|not[_-]?a[_-]?secret|no[_-]?secret|secretkeyref|secretnameref|secretgenerator|ext(ernal)?[-_ ]?secrets?|<[^>]*>|\$\{[A-Za-z_][A-Za-z0-9_]*\}|\$[A-Z_][A-Z0-9_]*|\{\{[^}]*\}\})'
+PLACEHOLDER_SUBSTR='(changeme|change_me|change-me|example|placeholder|dummy|sample|fake|redacted|redact|\*\*\*+|x{4,}|\.\.\.|replace_me|replace-me|insert[_-]?here|unused|\.get\(|test[_-]|your[_-]?|not[_-]?a[_-]?secret|no[_-]?secret|secretkeyref|secretnameref|secretgenerator|ext(ernal)?[-_ ]?secrets?|<[^>]*>|\$\{[A-Za-z_][A-Za-z0-9_]*\}|\$[A-Z_][A-Z0-9_]*|\{\{[^}]*\}\})'
 
 # K8s/GitOps keys that REFERENCE a Secret rather than hold one.
 REFERENCE_RE='(secretKeyRef|secretName|secretGenerator|secretRef|secrets:|existingSecret|envFrom)'
@@ -125,7 +125,10 @@ while [ $# -gt 0 ]; do
       ;;
     --)
       shift
-      while [ $# -gt 0 ]; do TARGETS+=("$1"); shift; done
+      while [ $# -gt 0 ]; do
+        TARGETS+=("$1")
+        shift
+      done
       ;;
     -*)
       echo "unknown option: $1" >&2
@@ -222,10 +225,10 @@ classify() {
     # is too weak, so the value has to earn the finding.
     if printf '%s' "$body" | LC_ALL=C grep -qiE -e "$PLACEHOLDER_SUBSTR"; then return 1; fi
     if printf '%s' "$body" | LC_ALL=C grep -qiE -e "$REFERENCE_RE"; then return 1; fi
-    hval="$(printf '%s' "$body" | tr '[:upper:]' '[:lower:]' |
-      grep -oE "${LC_KEYWORDS}[\"']?[[:space:]]*[:=][[:space:]]*[\"']?${ASSIGN_VALUE}" |
-      head -1 |
-      sed -E "s/^${LC_KEYWORDS}[\"']?[[:space:]]*[:=][[:space:]]*[\"']?//")"
+    hval="$(printf '%s' "$body" | tr '[:upper:]' '[:lower:]' \
+      | grep -oE "${LC_KEYWORDS}[\"']?[[:space:]]*[:=][[:space:]]*[\"']?${ASSIGN_VALUE}" \
+      | head -1 \
+      | sed -E "s/^${LC_KEYWORDS}[\"']?[[:space:]]*[:=][[:space:]]*[\"']?//")"
     [ -n "$hval" ] || return 1
     if printf '%s' "$hval" | LC_ALL=C grep -qiE -e "$PLACEHOLDER_RE"; then return 1; fi
     hid=assigned_credential
@@ -249,8 +252,8 @@ scan_chunk() {
     FINDINGS+=("${hid}|${hfile}|${hline}|$(printf '%s' "$hbody" | sed 's/^[[:space:]]*//' | cut -c1-120)")
   done < <(
     {
-      LC_ALL=C grep -nHE -e "$SHAPED_ONLY_RE" "${files[@]}" 2>/dev/null || true
-      LC_ALL=C grep -nHEi -e "$ASSIGN_RE" "${files[@]}" 2>/dev/null || true
+      LC_ALL=C grep -nHE -e "$SHAPED_ONLY_RE" "${files[@]}" 2> /dev/null || true
+      LC_ALL=C grep -nHEi -e "$ASSIGN_RE" "${files[@]}" 2> /dev/null || true
     } | LC_ALL=C sort -u
   )
 
@@ -258,18 +261,18 @@ scan_chunk() {
   local k1 k2 k3 k4 k5 k6
   while read -r k1 k2 k3 k4 k5 k6; do
     [ -n "${k1:-}${k2:-}${k3:-}${k4:-}${k5:-}${k6:-}" ] || continue
-    if [ "${k1:-0}" -gt 0 ]; then INVENTORY[token]=$(( ${INVENTORY[token]:-0} + k1 )); fi
-    if [ "${k2:-0}" -gt 0 ]; then INVENTORY[password]=$(( ${INVENTORY[password]:-0} + k2 )); fi
-    if [ "${k3:-0}" -gt 0 ]; then INVENTORY[secret]=$(( ${INVENTORY[secret]:-0} + k3 )); fi
-    if [ "${k4:-0}" -gt 0 ]; then INVENTORY[api_key]=$(( ${INVENTORY[api_key]:-0} + k4 )); fi
-    if [ "${k5:-0}" -gt 0 ]; then INVENTORY[bearer]=$(( ${INVENTORY[bearer]:-0} + k5 )); fi
-    if [ "${k6:-0}" -gt 0 ]; then INVENTORY[jwt]=$(( ${INVENTORY[jwt]:-0} + k6 )); fi
+    if [ "${k1:-0}" -gt 0 ]; then INVENTORY[token]=$((${INVENTORY[token]:-0} + k1)); fi
+    if [ "${k2:-0}" -gt 0 ]; then INVENTORY[password]=$((${INVENTORY[password]:-0} + k2)); fi
+    if [ "${k3:-0}" -gt 0 ]; then INVENTORY[secret]=$((${INVENTORY[secret]:-0} + k3)); fi
+    if [ "${k4:-0}" -gt 0 ]; then INVENTORY[api_key]=$((${INVENTORY[api_key]:-0} + k4)); fi
+    if [ "${k5:-0}" -gt 0 ]; then INVENTORY[bearer]=$((${INVENTORY[bearer]:-0} + k5)); fi
+    if [ "${k6:-0}" -gt 0 ]; then INVENTORY[jwt]=$((${INVENTORY[jwt]:-0} + k6)); fi
   done < <(LC_ALL=C awk '
     { lt = tolower($0)
       if (lt !~ /token|password|secret|api_key|bearer|jwt/) next
       print (lt ~ /token/)+0, (lt ~ /password/)+0, (lt ~ /secret/)+0, (lt ~ /api_key/)+0, (lt ~ /bearer/)+0, (lt ~ /jwt/)+0
     }
-  ' "${files[@]}" 2>/dev/null || true)
+  ' "${files[@]}" 2> /dev/null || true)
 }
 
 # Chunked so a large tree cannot exceed ARG_MAX in a single execve.
