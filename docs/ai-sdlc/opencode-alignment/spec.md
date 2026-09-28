@@ -21,8 +21,8 @@ D5 working in small batches · D6 user-centric focus · D7 quality internal plat
 ## Findings
 
 Evidence was gathered on 2026-09-28 from `~/.config/opencode/`, the `main` trees of the
-suite repos, and a **local, pre-overhaul** checkout of uFawkesAI. Anything marked
-*verify on main* comes from that older checkout.
+suite repos, and uFawkesAI `main`. F5 and F6 were confirmed against uFawkesAI `main` and
+opencode's own log.
 
 | ID | Finding | Evidence | Breaks | Severity |
 |---|---|---|---|---|
@@ -30,8 +30,8 @@ suite repos, and a **local, pre-overhaul** checkout of uFawkesAI. Anything marke
 | F2 | The same agent defined in up to three places | `.agents/agents/`, `.opencode/agents/`, `.claude/agents/` (uFawkesAI, Obs, uFawkes.dev) | A2, D4 | High |
 | F3 | Global `AGENTS.md` (loaded into every session) is an empty Claude-Mem placeholder | `~/.config/opencode/AGENTS.md`: "No context yet" | D1, A2 | Medium |
 | F4 | Model routing ignores triage | Default/`build`/`general`/`explore` use MiMo, but `tiers.json` puts all three tiers on Gemini (`@heavy` = `@medium`). `nemotron-3-ultra-free` is defined but routed nowhere. CI `opencode.yml` uses a fixed NIM → Gemini → DeepSeek chain and ignores `model:*` labels | A3, D7 | High |
-| F5 | The hook plugin may not be loaded | `ai-sdlc-hooks.ts` default-exports `{hooks:{PreToolUse:[…]}}`, which is Claude Code's settings shape. opencode plugins export a function returning handlers such as `tool.execute.before`; your global config records opencode rejecting a plugin with "Plugin export is not a function". *Verify on main* | A4, D4 | **Critical if confirmed.** The protected-path and secret-scan gates would be silent no-ops |
-| F6 | The formatter hook is non-deterministic and contradicts a decision | `black` for `.py` (rejected, and uninstalled so it will fail), `npx -y prettier` (unpinned). *Verify on main* | A4, D4 | High |
+| F5 | The hook plugin does not load | On `main`, `ai-sdlc-hooks.ts` (lines 48–72) default-exports `{hooks:{PreToolUse:[…], PostToolUse:[…]}}`, which is Claude Code's settings shape. opencode plugins export a function returning handlers such as `tool.execute.before`. opencode 1.18.30's log confirms it: `level=ERROR message="failed to load plugin" path=…/uFawkesAI/.opencode/plugins/ai-sdlc-hooks.ts error="Plugin export is not a function"` (2026-09-26). `opencode debug info` still lists the plugin, so the failure is invisible unless you read the log | A4, D4 | **Critical.** The protected-path and secret-scan gates are silent no-ops |
+| F6 | The formatter hook is non-deterministic and contradicts a decision | On `main`, lines 11–13: `black` for `.py` (rejected, and uninstalled so it would fail), `npx -y prettier` for `.ts`/`.js` (unpinned). Moot until F5 is fixed, then live | A4, D4 | High |
 | F7 | Skill sprawl with name collisions | 122 skills in uFawkesAI, 31 global, more per repo. Names overlap: `build`, `design`, `plan`, `spec`, `test`, `test-execution`, `review`, `verification` | A2, A5 | Medium |
 | F8 | CI can't run the triaged models, and fires too easily | No MiMo in `opencode.yml`. The `opencode` label triggers a run immediately. The NIM proxy was already removed locally as unreliable (a ~58% timeout rate, per `opencode.jsonc`) but is still primary in CI | D5, D7 | Medium |
 | F9 | "Done" is claimed without evidence on the default branch | 2026-09-27: follow-up commits were pushed to already-merged PRs, stranded, and reported as fixed | A1, D4, D5 | High |
@@ -110,8 +110,8 @@ suite repos, and a **local, pre-overhaul** checkout of uFawkesAI. Anything marke
 
 ## Suggested order (small batches, each its own PR)
 
-1. **R5, F5/F6 hooks**, after confirming them on uFawkesAI `main`. If the gates really are
-   no-ops, this is the only critical item.
+1. **R5, F5/F6 hooks.** Confirmed on uFawkesAI `main`: the gates are no-ops today. This is
+   the only critical item.
 2. **R3, global stance.** One file, highest leverage per line.
 3. **R4 + R7, routing and CI trigger.** This unlocks tomorrow's cheap-model queue.
 4. **R2, then R1, per repo.** uFawkes.dev, then Pipe, then Obs (largest), then DevX and

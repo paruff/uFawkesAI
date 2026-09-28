@@ -23,8 +23,9 @@ The suite's agent tooling has drifted into several incompatible shapes:
     same model as `@medium`.
   - Nemotron 3 Ultra is available free but routed nowhere.
   - The CI `opencode.yml` ignores the `model:*` labels now used to triage Project #7.
-- **Enforcement may be weaker than it looks.** The template's `ai-sdlc-hooks.ts` appears
-  to use Claude Code's settings shape rather than opencode's plugin API. Its formatter
+- **The enforcement hooks never run.** The template's `ai-sdlc-hooks.ts` uses Claude
+  Code's settings shape rather than opencode's plugin API, and opencode's log shows it
+  failing to load ("Plugin export is not a function"). Its formatter
   step runs `black`, which was rejected and uninstalled on 2026-09-27, and `npx -y
   prettier`, which is unpinned.
 - **The global `AGENTS.md`, injected into every opencode session, is an empty Claude-Mem
