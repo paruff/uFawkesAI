@@ -1,16 +1,20 @@
 import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import path from "node:path";
+import type { Plugin } from "@opencode-ai/plugin";
 
 const PROTECTED_PATHS_CONFIG = JSON.parse(
   readFileSync(path.join(process.cwd(), "scripts/hooks/protected-paths.json"), "utf-8")
 ) as { protectedBasenamePatterns: string[]; protectedPathSegments?: string[] };
 const PROTECTED_BASENAME = PROTECTED_PATHS_CONFIG.protectedBasenamePatterns.map((s) => new RegExp(s));
 const PROTECTED_SEGMENTS = PROTECTED_PATHS_CONFIG.protectedPathSegments ?? [".git"];
+
+// Use pinned prettier from local node_modules if available, fallback to npx with --yes removed
+// ruff format is the standard formatter for Python
 const FORMATTERS: Array<{ ext: string; cmd: string[] }> = [
-  { ext: ".ts", cmd: ["npx", "-y", "prettier", "--write"] },
-  { ext: ".js", cmd: ["npx", "-y", "prettier", "--write"] },
-  { ext: ".py", cmd: ["black"] },
+  { ext: ".ts", cmd: ["prettier", "--write"] },
+  { ext: ".js", cmd: ["prettier", "--write"] },
+  { ext: ".py", cmd: ["ruff", "format"] },
   { ext: ".go", cmd: ["gofmt", "-w"] },
   { ext: ".rs", cmd: ["rustfmt"] }
 ];
@@ -24,8 +28,6 @@ function isProtected(targetPath: string): boolean {
 }
 
 // Gate real commits only: not `git commit-tree`, not prose containing "git commit".
-// The scan itself lives in scripts/hooks/pre-commit-secret-scan.sh so this plugin
-// and .claude/settings.json share one implementation instead of two copies.
 const GIT_COMMIT = /(^|[;&|]\s*)git\s+(-\S+\s+)*commit(\s|$)/;
 
 function runSecretScan(): { exitCode: number; message?: string } {
@@ -45,56 +47,54 @@ function runSecretScan(): { exitCode: number; message?: string } {
   }
 }
 
-export default {
-  hooks: {
-    PreToolUse: [
-      {
-        matcher: "Edit|Write",
-        run: ({ filePath }: { filePath?: string }) => {
-          if (!filePath) return { exitCode: 0 };
-          if (isProtected(filePath)) {
-            return {
-              exitCode: 2,
-              message: `Blocked edit to protected path: ${filePath}`
-            };
-          }
-          return { exitCode: 0 };
-        }
-      },
-      {
-        matcher: "Bash",
-        run: ({ command }: { command?: string }) => {
-          if (!command || !GIT_COMMIT.test(command)) return { exitCode: 0 };
-          return runSecretScan();
+export const AiSdlcHooks: Plugin = async ({ $ }) => {
+  return {
+    "tool.execute.before": async (input, output) => {
+      // Protected path guard
+      if (input.tool === "edit" || input.tool === "write") {
+        const filePath = output.args.filePath;
+        if (filePath && isProtected(filePath)) {
+          throw new Error(`Blocked edit to protected path: ${filePath}`);
         }
       }
-    ],
-    PostToolUse: [
-      {
-        matcher: "Edit|Write",
-        run: ({ filePath }: { filePath?: string }) => {
-          if (!filePath) return { exitCode: 0 };
-          const ext = path.extname(filePath);
-          const formatter = FORMATTERS.find((f) => f.ext === ext);
-          if (!formatter) return { exitCode: 0 };
-          try {
-            execFileSync(formatter.cmd[0], [...formatter.cmd.slice(1), filePath], { stdio: "inherit" });
-            return { exitCode: 0 };
-          } catch (error) {
-            return { exitCode: 1, message: `Formatter failed for ${filePath}: ${String(error)}` };
+
+      // Secret scan on git commit
+      if (input.tool === "bash") {
+        const command = output.args.command;
+        if (command && GIT_COMMIT.test(command)) {
+          const result = runSecretScan();
+          if (result.exitCode !== 0) {
+            throw new Error(result.message ?? "Secret scan failed");
           }
         }
       }
-    ],
-    SessionStart: [
-      {
-        matcher: "compact",
-        run: () => ({
-          exitCode: 0,
-          message:
-            "Use the project's package manager. Run /verify before claiming completion. Never edit protected files."
-        })
+    },
+
+    "tool.execute.after": async (input, output) => {
+      // Auto-format after edits
+      if (input.tool === "edit" || input.tool === "write") {
+        const args = input.args as { filePath?: string } | undefined;
+        const filePath = args?.filePath;
+        if (typeof filePath !== "string") return;
+        const ext = path.extname(filePath);
+        const formatter = FORMATTERS.find((f) => f.ext === ext);
+        if (!formatter) return;
+        const fp = filePath;
+        const cmd = formatter.cmd[0] as string;
+        const restArgs = formatter.cmd.slice(1) as string[];
+        restArgs.push(fp);
+        try {
+          execFileSync(cmd, restArgs, { stdio: "inherit" });
+        } catch (error) {
+          throw new Error(`Formatter failed for ${fp}: ${String(error)}`);
+        }
       }
-    ]
-  }
+    },
+
+    "session.compacted": async () => {
+      return {
+        message: "Use the project's package manager. Run /verify before claiming completion. Never edit protected files."
+      };
+    }
+  };
 };
