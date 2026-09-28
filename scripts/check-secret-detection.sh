@@ -97,7 +97,7 @@ PLACEHOLDER_RE='^(invalid|none|null|nil|true|false|undefined|empty|default|omit|
 PLACEHOLDER_SUBSTR='(changeme|change_me|change-me|example|placeholder|dummy|sample|fake|redacted|redact|\*\*\*+|x{4,}|\.\.\.|replace_me|replace-me|insert[_-]?here|unused|\.get\(|test[_-]|your[_-]?|not[_-]?a[_-]?secret|no[_-]?secret|secretkeyref|secretnameref|secretgenerator|ext(ernal)?[-_ ]?secrets?|<[^>]*>|\$\{[A-Za-z_][A-Za-z0-9_]*\}|\$[A-Z_][A-Z0-9_]*|\{\{[^}]*\}\})'
 
 # K8s/GitOps keys that REFERENCE a Secret rather than hold one.
-REFERENCE_RE='(secretKeyRef|secretName|secretGenerator|secretRef|secrets:|existingSecret|envFrom)'
+REFERENCE_RE='(secretKey|secretName|secretGenerator|secretRef|secrets:|existingSecret|envFrom)'
 
 # Files expected to contain credential-shaped noise. Single line only.
 EXCLUDE_RE='(^\.secrets\.baseline$|^scripts/testdata/secret-detection/|\.lock\.json$|(^|/)(node_modules|\.git|dist|build|coverage)/|\.min\.(js|css)$|(^|/)package-lock\.json$|(^|/)yarn\.lock$|(^|/)pnpm-lock\.yaml$|(^|/)poetry\.lock$|(^|/)Cargo\.lock$|(^|/)go\.sum$)'
