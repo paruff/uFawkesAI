@@ -4,10 +4,10 @@ description: "Diagnose and repair CI/CD failures from logs and pipeline evidence
 kind: workflow
 mode: primary
 sequences:
-  - diagnose
+  - systematic-debugging
   - repair
-  - test
-  - verify
+  - test-driven-development
+  - verification-before-completion
   - report
 ---
 
@@ -71,7 +71,7 @@ Classify the failure type and route accordingly.
 
 Examples: compile error, lint failure, test failure
 
-Route to: the `build` skill under `@builder` for build/test repair
+Route to: Superpowers `systematic-debugging` then `test-driven-development` under `@builder` for build/test repair
 
 ### Dependency Failure
 

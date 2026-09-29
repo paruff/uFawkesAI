@@ -738,6 +738,50 @@
         "amd64": "763af386ef88a8cab18df00fcf055690e5a55e31a7088beabe02307142a6adce",
         "arm64": "568461b7d4d8c19865c97e9a1102e613049c6039d01fe772154de873c1865840"
       }
+    },
+    {
+      "name": "superpowers",
+      "variant": "ai",
+      "version": "6.4.2",
+      "source": {
+        "github": "obra/superpowers",
+        "tag": "v{version}"
+      },
+      "url": "https://github.com/obra/superpowers/archive/refs/tags/v{version}.tar.gz",
+      "arch": {
+        "amd64": "any",
+        "arm64": "any"
+      },
+      "format": "tar.gz",
+      "install": "tree",
+      "subdir": "skills",
+      "version_cmd": "cat /opt/agent-skills/superpowers/VERSION",
+      "sha256": {
+        "amd64": "66eae02bb1549ae289a14bb23a14c119d2e7ccdaf3b5fb8b95f17db581ef0249",
+        "arm64": "66eae02bb1549ae289a14bb23a14c119d2e7ccdaf3b5fb8b95f17db581ef0249"
+      }
+    },
+    {
+      "name": "flux-agent-skills",
+      "variant": "ai",
+      "version": "0.3.0",
+      "source": {
+        "github": "fluxcd/agent-skills",
+        "tag": "v{version}"
+      },
+      "url": "https://github.com/fluxcd/agent-skills/archive/refs/tags/v{version}.tar.gz",
+      "arch": {
+        "amd64": "any",
+        "arm64": "any"
+      },
+      "format": "tar.gz",
+      "install": "tree",
+      "subdir": "skills",
+      "version_cmd": "cat /opt/agent-skills/flux-agent-skills/VERSION",
+      "sha256": {
+        "amd64": "9a39378bcaff8d573941d25b113a9fa9c4b0dabc08fbda41e7d21bdf15d45330",
+        "arm64": "9a39378bcaff8d573941d25b113a9fa9c4b0dabc08fbda41e7d21bdf15d45330"
+      }
     }
   ]
 }

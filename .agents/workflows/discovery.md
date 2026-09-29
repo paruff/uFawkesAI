@@ -4,10 +4,9 @@ description: "Route an intent into the right delivery path (feature, hotfix, or 
 kind: workflow
 mode: primary
 sequences:
-  - discover
-  - spec
-  - design
-  - plan
+  - discovery
+  - brainstorming
+  - writing-plans
   - feature
 ---
 
@@ -51,7 +50,7 @@ Use when:
   Required stages:
 
 ```
-spec → design → plan
+brainstorming (spec + design) → writing-plans   # Superpowers
 ```
 
 Outputs:

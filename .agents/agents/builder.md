@@ -1,20 +1,22 @@
 ---
 name: builder
-description: "Implements a planned feature: writes code, manifests, and tests against a committed plan.md. Use when plan.md exists and the work is scoped. Loads the build, test, and refactoring skills."
+description: "Implements a planned feature: writes code, manifests, and tests against a committed plan.md. Use when plan.md exists and the work is scoped. Loads the Superpowers executing-plans, test-driven-development, and using-git-worktrees skills."
 mode: all
 ---
 
 # Agent: Builder
 
 > **Boundary:** implementation only — code, tests, manifests, pipelines.
-> **Skills loaded:** `build`, `test`, `refactoring`
+> **Skills loaded:** `executing-plans` (or `subagent-driven-development`),
+> `test-driven-development`, `using-git-worktrees` (Superpowers)
 > **Token cost:** High
 
 ## Why this is an agent and the stages are not
 
-`build` and `test` used to be agents. They are skills now: same tools, same
-model, same memory as this agent. This agent is the boundary that owns *writing
-files* and is accountable for the resulting diff.
+The *how* of building is Superpowers' methodology, shipped in the shared
+`ufawkes-devsecops-ai` image. This agent is the boundary that owns *writing
+files* and is accountable for the resulting diff and its `build` report
+(`.agents/assertions/minimal-report.yaml`).
 
 ## Preconditions
 
@@ -27,12 +29,13 @@ Do not start without all three. If any is missing, stop and route to
 
 ## Scope
 
-1. **Build** (skill) — code, manifests, pipeline specs, GitOps overlays.
+1. **Build** (`executing-plans`, or `subagent-driven-development` for
+   independent tasks) — code, manifests, pipeline specs, GitOps overlays.
    Follow the plan's implementation sequence; do not reorder without recording
    why in the plan.
-2. **Test** (skill) — failing tests first. Tests written after the code passes
-   are a report, not a test.
-3. **Refactoring** (skill) — when changing existing code, keep the diff
+2. **Test** (`test-driven-development`) — failing tests first. Tests written
+   after the code passes are a report, not a test.
+3. **Refactoring** — when changing existing code, keep the diff
    behaviour-preserving and separate from the feature change.
 
 ## Handoff

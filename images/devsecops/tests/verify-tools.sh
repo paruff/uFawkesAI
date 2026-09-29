@@ -64,8 +64,10 @@ expect_reject() {
 }
 
 echo "== 1. Locked versions (${VARIANT}) =="
-[ -f "$LOCK" ] || {
-  echo "missing $LOCK" >&2
+# -r, not -f: an unreadable lock made jq fail inside the process
+# substitution below, so section 1 ran zero checks and still passed.
+[ -r "$LOCK" ] || {
+  echo "missing or unreadable $LOCK" >&2
   exit 1
 }
 while IFS=$'\t' read -r name version cmd; do
@@ -92,6 +94,15 @@ while IFS=$'\t' read -r pkg version; do
   installed="$(jq -r .version "${OPT}/node/node_modules/${pkg}/package.json" 2> /dev/null)"
   if [ "$installed" = "$version" ]; then ok "npm $pkg $version"; else bad "npm $pkg: expected $version, got ${installed:-none}"; fi
 done < <(jq -r '.dependencies | to_entries[] | [.key, .value] | @tsv' "${OPT}/node/package.json")
+
+if [ "$VARIANT" = ai ]; then
+  while IFS=$'\t' read -r pkg version; do
+    installed="$(jq -r .version "${OPT}/node-ai/node_modules/${pkg}/package.json" 2> /dev/null)"
+    if [ "$installed" = "$version" ]; then ok "npm $pkg $version"; else bad "npm $pkg: expected $version, got ${installed:-none}"; fi
+  done < <(jq -r '.dependencies | to_entries[] | [.key, .value] | @tsv' "${OPT}/node-ai/package.json")
+  expect_pass "codex runs" codex --version
+  expect_pass "gemini runs" gemini --version
+fi
 
 echo "== 2. Gates accept clean input and reject planted-bad input =="
 t="$(mktemp -d)"
@@ -284,6 +295,14 @@ if [ "$VARIANT" = ai ]; then
   if [ -n "${NPM_CONFIG_PREFIX:-}" ] && mkdir -p "$NPM_CONFIG_PREFIX" && [ -w "$NPM_CONFIG_PREFIX" ]; then
     ok "user-writable npm prefix for pinned Claude Code install"
   else bad "NPM_CONFIG_PREFIX missing or not writable"; fi
+
+  echo "== 6. Agent skills visible to both harnesses =="
+  for skill in using-superpowers brainstorming writing-plans test-driven-development \
+    systematic-debugging verification-before-completion gitops-knowledge gitops-repo-audit; do
+    for h in "$HOME/.claude/skills" "$HOME/.config/opencode/skills"; do
+      if [ -f "${h}/${skill}/SKILL.md" ]; then ok "${h#"$HOME"/}: ${skill}"; else bad "${h}/${skill}/SKILL.md missing"; fi
+    done
+  done
 fi
 
 echo

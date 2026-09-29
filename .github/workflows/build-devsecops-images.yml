@@ -123,6 +123,8 @@ jobs:
     name: Build devcontainer image
     runs-on: ubuntu-latest
     needs: build-devsecops
+    outputs:
+      version: ${{ steps.meta-devcontainer.outputs.version }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -151,8 +153,8 @@ jobs:
       - name: Build and push devcontainer
         uses: docker/build-push-action@v6
         with:
-          context: ./images/devsecops
-          target: ai
+          context: .
+          file: .devcontainer/Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta-devcontainer.outputs.tags }}
           labels: ${{ steps.meta-devcontainer.outputs.labels }}
@@ -161,7 +163,7 @@ jobs:
           provenance: true
           sbom: true
           build-args: |
-            BASE_IMAGE=${{ env.REGISTRY }}/${{ env.OWNER }}/ufawkes-devsecops-ai:${{ github.ref_name }}
+            BASE_IMAGE=${{ env.REGISTRY }}/${{ env.OWNER }}/ufawkes-devsecops-ai@${{ needs.build-devsecops.outputs.ai-digest }}
 
   live-acceptance-tests:
     name: Live acceptance tests
@@ -169,7 +171,7 @@ jobs:
     needs: build-devcontainer
     if: github.event_name != 'pull_request'
     container:
-      image: ${{ env.REGISTRY }}/${{ env.OWNER }}/ufawkesai-devcontainer:${{ github.ref_name }}
+      image: ghcr.io/paruff/ufawkesai-devcontainer:${{ needs.build-devcontainer.outputs.version }}
       options: --user dev
     steps:
       - name: Checkout

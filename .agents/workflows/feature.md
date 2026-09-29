@@ -4,10 +4,10 @@ description: "Take a planned feature from branch to PR: build, test, review, cro
 kind: workflow
 mode: primary
 sequences:
-  - build
-  - test
-  - test-execution
-  - review
+  - executing-plans
+  - test-driven-development
+  - verification-before-completion
+  - requesting-code-review
   - cross-validation
 ---
 
@@ -95,7 +95,7 @@ If Ready is NO: **STOP**. Report which files are missing or invalid. Do not proc
 
 ## Phase 2 — Build
 
-Run the `build` skill under `@builder`, with `specification.md`, `design.md`,
+Run Superpowers `executing-plans` under `@builder`, with `specification.md`, `design.md`,
 `tasks.json`, and the session_id from Phase 0.
 
 Build responsibilities:
@@ -120,11 +120,11 @@ Build report must include:
 
 ## Phase 3 — Test Execution
 
-Run the `test-execution` skill under `@verifier` with `build-report.md`,
+Run Superpowers `verification-before-completion` under `@verifier` with `build-report.md`,
 `tasks.json`, and the session_id.
 
 This is local, pre-push verification — it runs the test suites and quality gates
-that already exist (written by the `test` skill during Phase 2) against
+that already exist (written test-first with Superpowers `test-driven-development` during Phase 2) against
 the new build output. It is not the same as remote/CI test execution, which
 happens after push and is handled by the `bugfix` workflow if it disagrees with this
 local result.
@@ -152,8 +152,7 @@ this phase is **required, not optional**. If none are tagged `live-system`,
 note that explicitly in the output and skip to Phase 4 — do not silently skip
 without saying so.
 
-Run the `live-system-verification` skill (see the
-`test-execution/live-system-verification` skill) to stand up a real instance
+Under `@verifier`, stand up a real instance
 of the affected component(s) and run the tagged acceptance criteria against
 it — not a mock, not a simulated environment.
 
@@ -171,7 +170,7 @@ discipline Phase 4.5 applies.
 
 ## Phase 4 — Review
 
-Run the `code-review` skill under `@verifier` with `design.md`, `build-report.md`,
+Run Superpowers `requesting-code-review` under `@verifier` with `design.md`, `build-report.md`,
 and `test-report.md`.
 
 Review checks:
@@ -223,7 +222,7 @@ report that made it:
 
 ## Phase 4.6 — Cross-Validation
 
-Run the `cross-validation` skill under `@verifier` with `specification.md`,
+Run `.agents/assertions/cross-validation-runner.sh` under `@verifier` with `specification.md`,
 `design.md`, `build-report.md`, `test-report.md`, and `review-report.md`.
 
 This is the final consistency gate before delivery prep. It checks that

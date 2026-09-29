@@ -107,9 +107,24 @@ RUN apt-get update \
  && useradd --uid "${USER_UID}" --gid "${USER_UID}" --create-home --shell /usr/bin/zsh "${DEV_USER}" \
  && echo "${DEV_USER} ALL=(ALL) NOPASSWD:ALL" >"/etc/sudoers.d/${DEV_USER}" \
  && chmod 0440 "/etc/sudoers.d/${DEV_USER}"
+# Codex and Gemini CLI (Apache-2.0) from a hash-locked package-lock.json, so
+# all four harnesses the multi-harness smoke test checks ship in the image.
+COPY node-ai/package.json node-ai/package-lock.json /opt/ufawkes/node-ai/
+RUN npm ci --prefix /opt/ufawkes/node-ai --omit=dev --ignore-scripts --no-audit --no-fund \
+ && ln -s /opt/ufawkes/node-ai/node_modules/.bin/codex /usr/local/bin/codex \
+ && ln -s /opt/ufawkes/node-ai/node_modules/.bin/gemini /usr/local/bin/gemini \
+ && npm cache clean --force
 ENV NPM_CONFIG_PREFIX=/home/${DEV_USER}/.npm-global \
     PATH=/home/${DEV_USER}/.npm-global/bin:$PATH
-LABEL org.opencontainers.image.description="uFawkes DevSecOps toolchain (ai): gitops + OpenCode, devcontainer user"
+LABEL org.opencontainers.image.description="uFawkes DevSecOps toolchain (ai): gitops + OpenCode, Codex, Gemini CLI, Superpowers + Flux agent skills, devcontainer user"
 USER ${DEV_USER}
 WORKDIR /home/${DEV_USER}
+# Locked agent skills (/opt/agent-skills, from tools.lock.json) linked into
+# both harnesses' user-level skill dirs, so every repo on this image — the
+# uFawkes suite and fawkes — gets Superpowers + Flux without per-repo setup.
+# Per-skill links leave room for a user's own skills alongside them.
+RUN for h in .claude/skills .config/opencode/skills; do \
+      mkdir -p "${h}" \
+      && for s in /opt/agent-skills/*/*/; do ln -sfn "${s%/}" "${h}/$(basename "${s}")"; done; \
+    done
 CMD ["zsh"]

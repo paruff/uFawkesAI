@@ -23,3 +23,8 @@ updates:
     schedule:
       interval: "weekly"
     labels: ["dependencies", "chore"]
+  - package-ecosystem: "npm"
+    directory: "/images/devsecops/node-ai"
+    schedule:
+      interval: "weekly"
+    labels: ["dependencies", "chore"]

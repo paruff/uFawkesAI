@@ -12,7 +12,7 @@ This repository includes AI SDLC scaffolding for planning, implementation, verif
 - `.claude/settings.json`: Claude Code's equivalent hooks (same protected-path list, shared via `scripts/hooks/protected-paths.json`)
 - `scripts/hooks/protected-paths.json`: the one thing shared between the two hook implementations above — see `docs/KNOWN_LIMITATIONS.md` (L-004) for what's *not* shared
 - `scripts/check-harness-parity.sh`: verifies the two harnesses haven't drifted apart (symlinks intact, MCP server sets match, no reserved-name collisions); run in CI
-- `scripts/dual-harness-smoke.sh`: the full smoke test proving one example each of MCP server, skill, hook, command, and rule works under both harnesses; run in CI
+- `scripts/multi-harness-smoke.sh`: the full smoke test proving one example each of MCP server, skill, hook, command, and rule works under both harnesses; run in CI
 - `rules/`: now just a pointer — the rule content that used to live here moved to `.opencode/skills/*-rules/` (see `rules/README.md`)
 - `scripts/AGENTS.md` (+ `scripts/CLAUDE.md` symlink): example of a nested, directory-scoped rule file — loads only when working under `scripts/`
 - `opencode.json`: OpenCode's MCP server registrations
