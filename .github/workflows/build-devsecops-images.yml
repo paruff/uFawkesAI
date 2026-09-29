@@ -174,7 +174,7 @@ jobs:
 
       - name: Tags for core
         id: meta-core
-        uses: docker/metadata-action@c299e40c65443455700f0fdfc63efafe5b349051 # v5.10.0
+        uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
         with:
           images: ${{ env.REGISTRY }}/ufawkes-devsecops-core
           tags: |
@@ -183,7 +183,7 @@ jobs:
             type=raw,value=latest,enable=${{ github.event_name == 'workflow_dispatch' }}
       - name: Tags for gitops
         id: meta-gitops
-        uses: docker/metadata-action@c299e40c65443455700f0fdfc63efafe5b349051 # v5.10.0
+        uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
         with:
           images: ${{ env.REGISTRY }}/ufawkes-devsecops-gitops
           tags: |
@@ -192,7 +192,7 @@ jobs:
             type=raw,value=latest,enable=${{ github.event_name == 'workflow_dispatch' }}
       - name: Tags for ai
         id: meta-ai
-        uses: docker/metadata-action@c299e40c65443455700f0fdfc63efafe5b349051 # v5.10.0
+        uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
         with:
           images: ${{ env.REGISTRY }}/ufawkes-devsecops-ai
           tags: |
@@ -201,7 +201,7 @@ jobs:
             type=raw,value=latest,enable=${{ github.event_name == 'workflow_dispatch' }}
       - name: Tags for devcontainer
         id: meta-devcontainer
-        uses: docker/metadata-action@c299e40c65443455700f0fdfc63efafe5b349051 # v5.10.0
+        uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
         with:
           images: ${{ env.REGISTRY }}/ufawkesai-devcontainer
           tags: |
