@@ -3,14 +3,13 @@
   "mcp": {
     "playwright": {
       "type": "local",
-      "command": "npx",
-      "args": ["-y", "@playwright/mcp"],
+      "command": ["npx", "-y", "@playwright/mcp"],
       "enabled": true
     },
     "serena": {
       "type": "local",
-      "command": "uvx",
-      "args": [
+      "command": [
+        "uvx",
         "--from",
         "serena-agent",
         "serena",
@@ -27,16 +26,15 @@
       "type": "remote",
       "url": "https://mcp.context7.com/mcp",
       "headers": {
-        "Authorization": "Bearer ${CONTEXT7_API_KEY}"
+        "Authorization": "Bearer {env:CONTEXT7_API_KEY}"
       },
       "enabled": true
     },
     "github": {
       "type": "local",
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-github"],
-      "env": {
-        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_TOKEN}"
+      "command": ["npx", "-y", "@modelcontextprotocol/server-github"],
+      "environment": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "{env:GITHUB_TOKEN}"
       },
       "enabled": true
     },
@@ -44,7 +42,7 @@
       "type": "remote",
       "url": "https://mcp.sentry.dev/mcp",
       "headers": {
-        "Authorization": "Bearer ${SENTRY_API_KEY}"
+        "Authorization": "Bearer {env:SENTRY_API_KEY}"
       },
       "enabled": true
     }
