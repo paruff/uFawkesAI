@@ -4,8 +4,12 @@ name: Agent Config Evals
 # .agents/evals/tasks against the new config and blocks if the pass rate drops
 # below .agents/evals/baseline.json (continuous-evals skill).
 #
-# Needs the ANTHROPIC_API_KEY repository secret. Without it the job FAILS with
-# an explicit message — a skipped eval must never look like a passing one.
+# Runs through OpenCode (first-class harness), reusing the suite's existing
+# provider keys. The model is the repository variable EVAL_MODEL (default
+# google/gemini-3.1-flash-lite); its provider prefix picks the key:
+#   google/*   -> GEMINI_API_KEY      opencode/* -> OPENCODE_API_KEY
+# Without that secret the job FAILS with an explicit message — a skipped eval
+# must never look like a passing one.
 
 on:
   pull_request:
@@ -25,6 +29,9 @@ concurrency:
   group: agent-config-evals-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  EVAL_MODEL: ${{ vars.EVAL_MODEL || 'google/gemini-3.1-flash-lite' }}
+
 jobs:
   evals:
     name: "🧪 Agent config evals"
@@ -38,21 +45,32 @@ jobs:
           persist-credentials: false
       - name: Require the API key (no silent skip)
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
         run: |
-          if [ -z "${ANTHROPIC_API_KEY}" ]; then
-            echo "::error::ANTHROPIC_API_KEY secret is not set — evals did NOT run. Add the secret or this gate stays red."
+          case "${EVAL_MODEL%%/*}" in
+            google) key=GEMINI_API_KEY ;;
+            opencode) key=OPENCODE_API_KEY ;;
+            *) echo "::error::EVAL_MODEL '${EVAL_MODEL}' has no key mapping (google/* or opencode/*)"; exit 1 ;;
+          esac
+          if [ -z "${!key}" ]; then
+            echo "::error::${key} secret is not set for ${EVAL_MODEL} — evals did NOT run. Add the secret or this gate stays red."
             exit 1
           fi
       - name: Self-test the gate (offline)
         run: bash scripts/test-run-evals.sh
-      # Same Claude Code version the devcontainer pins (.devcontainer/Dockerfile).
-      - name: Install Claude Code
-        run: npm install -g @anthropic-ai/claude-code@2.1.283
+      # Same OpenCode version the DevSecOps image pins (tools.lock.json).
+      - name: Install OpenCode
+        run: npm install -g opencode-ai@1.18.32
       - name: Run evals against this configuration
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-        run: bash scripts/run-evals.sh
+          # OpenCode's google provider reads GOOGLE_GENERATIVE_AI_API_KEY, not
+          # GEMINI_API_KEY (without it: "Google Generative AI API key is missing").
+          GOOGLE_GENERATIVE_AI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
+          EVAL_HARNESS: opencode
+        # Empty config dir: no machine/plugin config can change which model answers.
+        run: XDG_CONFIG_HOME="$(mktemp -d)" bash scripts/run-evals.sh
       - name: Upload eval report
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
