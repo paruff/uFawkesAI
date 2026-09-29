@@ -82,13 +82,6 @@ CMD ["bash"]
 # ── gitops: + Kubernetes, GitOps, IaC, policy-as-code, secrets-in-Git ──────
 FROM core AS gitops
 COPY --from=fetch-gitops /out/gitops/ /
-# checkov gets its own venv so its deps never conflict with semgrep's.
-COPY python/requirements-gitops.lock /opt/ufawkes/python/requirements-gitops.lock
-COPY python/requirements-gitops.in /etc/ufawkes/requirements-gitops.in
-RUN uv venv --python /usr/bin/python3 /opt/ufawkes/venv-gitops \
- && uv pip install --python /opt/ufawkes/venv-gitops --require-hashes \
-      -r /opt/ufawkes/python/requirements-gitops.lock \
- && ln -s /opt/ufawkes/venv-gitops/bin/checkov /usr/local/bin/checkov
 LABEL org.opencontainers.image.description="uFawkes DevSecOps toolchain (gitops): core + Kubernetes, GitOps, IaC and policy-as-code tools"
 
 # ── ai: + agent harness, non-root devcontainer user ───────────────────────

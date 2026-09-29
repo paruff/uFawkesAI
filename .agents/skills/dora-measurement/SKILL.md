@@ -1,6 +1,6 @@
 ---
 name: dora-measurement
-description: "Compute the four DORA delivery metrics from uFawkesObs. Implements DORA AI Capabilities 2, 7."
+description: "Compute the four DORA delivery metrics from uFawkesObs. Implements DORA AI Capability 7 (the platform feedback loop)."
 license: MIT
 compatibility: Claude Code, GitHub Copilot, OpenCode, Cursor, Codex, Gemini CLI
 metadata:
@@ -11,12 +11,12 @@ metadata:
 
 # Skill: dora-measurement
 
-> **Load trigger:** "load dora-measurement skill" > **DORA:** AI Capabilities 2, 7
+> **Load trigger:** "load dora-measurement skill" > **DORA:** AI Capability 7: Quality internal platforms
 > **Token cost:** Medium
 
 ## Purpose
 
-Compute the four DORA delivery metrics from uFawkesObs (Prometheus + Loki). Use when producing monthly DORA snapshots, validating post-release metric trends, or generating ROI evidence. Requires uFawkesObs running. Implements DORA AI Capabilities 2 and 7.
+Compute the four DORA delivery metrics from uFawkesObs (Prometheus + Loki). Use when producing monthly DORA snapshots, validating post-release metric trends, or generating ROI evidence. Requires uFawkesObs running. Implements DORA AI Capability 7: Quality internal platforms — measurement is the platform's feedback loop, not a data ecosystem (Cap 2).
 
 ## When to Use
 

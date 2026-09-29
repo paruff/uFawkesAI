@@ -61,7 +61,7 @@ Enforcement that actually exists today, verified against `.github/workflows/`:
 | Repo-wide secret scan            | `secret-scan.yml`      | gitleaks, exits non-zero on a finding          |
 | Dependency review                 | `dependency-review.yml` | gates newly introduced vulnerable or unlicensed deps |
 | Merge to `main`                   | `main-ci-guard.yml`    | blocks until `ci-quality` passes               |
-| Container CVEs                    | `image-build.yml`, `image-release.yml` | Trivy writes to the job summary only — advisory |
+| Container CVEs                    | `build-devsecops-images.yml` | Trivy writes to the job summary only — advisory |
 | Static analysis (SAST)            | none                   | no workflow runs Semgrep or CodeQL — advisory   |
 
 Anything not in that table is a reporting target, not a gate. Recording a

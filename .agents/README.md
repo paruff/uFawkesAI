@@ -168,7 +168,7 @@ The former stage skills (`spec`, `design`, `plan`, `build`, `test`,
 
 | Folder                    | Load Trigger                            | Purpose                                                              |
 | ---------------------------- | ------------------------------------------ | --------------------------------------------------------------------------- |
-| `dora-measurement/`       | monthly DORA snapshot                   | Compute the four DORA delivery metrics from uFawkesObs (AI Capability 2 + 7) |
+| `dora-measurement/`       | monthly DORA snapshot                   | Compute the four DORA delivery metrics from uFawkesObs (AI Capability 7) |
 | `ROI-reporting/`          | board/quarterly ROI evidence            | Monthly DORA ROI snapshot using the 2026 DORA ROI five-dimension framework |
 | `value-stream-mapping/`   | metrics plateau, high lead time         | Map the value stream to find bottlenecks consuming AI productivity gains |
 | `platform-feedback/`      | quarterly                                | Developer feedback collection — measures IDP cognitive-load reduction (AI Capability 7) |

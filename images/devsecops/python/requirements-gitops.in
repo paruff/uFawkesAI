@@ -1,6 +1,0 @@
-# Python-distributed tools for the gitops image, in their own venv
-# (/opt/ufawkes/venv-gitops) so their deps never conflict with core's.
-# Locked with:
-#   uv pip compile --universal --python-version 3.13 --generate-hashes \
-#     images/devsecops/python/requirements-gitops.in -o images/devsecops/python/requirements-gitops.lock
-checkov==3.3.19
