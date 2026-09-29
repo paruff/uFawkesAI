@@ -1,5 +1,5 @@
 name: CI Quality Gate
-true:
+on:
   pull_request:
     branches:
     - main
