@@ -6,10 +6,12 @@
 #     it offline (ai contains every core/gitops tool), Trivy report-only.
 #   Weekly schedule / manual run: same, plus the Trivy gate and a no-cache
 #     rebuild that must produce an identical toolchain (determinism).
-#   Tag v* (or manual run with publish): verify, then publish multi-arch zstd
-#     images reusing the verify jobs' build cache, keyless-sign every digest
-#     (GitHub OIDC), BuildKit SBOM + provenance, then run the live acceptance
-#     tests inside the published devcontainer.
+#   Tag image-v<SemVer 2.0> (docs/ai-sdlc/devsecops-image/spec.md R6; distinct
+#     from the template's v* release tags; always cut by a human): verify, then
+#     publish multi-arch zstd images tagged X.Y.Z, X.Y, X and latest (a
+#     pre-release gets only its exact version), reusing the verify jobs' build
+#     cache, keyless-sign every digest (GitHub OIDC), BuildKit SBOM +
+#     provenance, then run the live acceptance tests in the devcontainer.
 #
 # Verify a published image:
 #   cosign verify ghcr.io/paruff/ufawkes-devsecops-ai@<digest> \
@@ -22,6 +24,8 @@ on:
   pull_request:
     paths:
       - "images/devsecops/**"
+      - "opencode/**"
+      - ".agents/agents/**"
       - ".devcontainer/**"
       - "scripts/image-lock-refresh.sh"
       - "scripts/image-lock-bump.sh"
@@ -29,10 +33,12 @@ on:
       - ".github/workflows/build-devsecops-images.yml"
   push:
     branches: [main]
-    # Path filters are not evaluated for tag pushes, so every v* tag publishes.
-    tags: ["v*"]
+    # Path filters are not evaluated for tag pushes, so every image-v* tag publishes.
+    tags: ["image-v*"]
     paths:
       - "images/devsecops/**"
+      - "opencode/**"
+      - ".agents/agents/**"
       - ".devcontainer/**"
       - "scripts/image-lock-refresh.sh"
       - "scripts/image-lock-bump.sh"
@@ -41,11 +47,6 @@ on:
   schedule:
     - cron: "17 6 * * 1" # Mondays: re-verify the locked toolchain, rescan for new CVEs
   workflow_dispatch:
-    inputs:
-      publish:
-        description: "Also publish to GHCR as :latest after verification"
-        type: boolean
-        default: false
 
 permissions:
   contents: read
@@ -89,7 +90,7 @@ jobs:
         env:
           ARCH: ${{ matrix.arch }}
         run: |
-          TAG=ci docker buildx bake ai --load \
+          TAG=ci docker buildx bake ai --load --allow=fs.read=../../opencode --allow=fs.read=../../.agents/agents \
             --set "*.cache-from=type=gha,scope=devsecops-${ARCH}" \
             --set "*.cache-to=type=gha,mode=max,scope=devsecops-${ARCH}"
 
@@ -128,7 +129,7 @@ jobs:
               npm ls --prefix /opt/ufawkes/node-ai --all --json'
           }
           fingerprint ufawkes-devsecops-ai:ci >first.txt
-          (cd images/devsecops && TAG=rebuild docker buildx bake --load --no-cache ai)
+          (cd images/devsecops && TAG=rebuild docker buildx bake --load --no-cache --allow=fs.read=../../opencode --allow=fs.read=../../.agents/agents ai)
           fingerprint ufawkes-devsecops-ai:rebuild >second.txt
           diff -u first.txt second.txt
           echo "✅ Identical toolchain across two clean builds"
@@ -145,7 +146,7 @@ jobs:
   publish:
     name: "📦 publish + sign"
     needs: verify
-    if: startsWith(github.ref, 'refs/tags/v') || (github.event_name == 'workflow_dispatch' && inputs.publish)
+    if: startsWith(github.ref, 'refs/tags/image-v')
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     permissions:
@@ -172,42 +173,69 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      # Strict SemVer 2.0 (semver.org's official regex): a malformed tag must
+      # fail here, not publish an image nobody can pin.
+      - name: Validate SemVer 2.0 tag
+        id: semver
+        env:
+          REF_NAME: ${{ github.ref_name }}
+        run: |
+          v="${REF_NAME#image-v}"
+          re='^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(-((0|[1-9][0-9]*|[0-9]*[a-zA-Z-][0-9a-zA-Z-]*)(\.(0|[1-9][0-9]*|[0-9]*[a-zA-Z-][0-9a-zA-Z-]*))*))?(\+([0-9a-zA-Z-]+(\.[0-9a-zA-Z-]+)*))?$'
+          if ! [[ "$v" =~ $re ]]; then
+            echo "::error::'${REF_NAME}' is not image-v<SemVer 2.0> (e.g. image-v1.0.0, image-v1.1.0-rc.1)"
+            exit 1
+          fi
+          prerelease=false
+          [[ "$v" == *-* ]] && prerelease=true
+          echo "version=$v" >>"$GITHUB_OUTPUT"
+          echo "prerelease=$prerelease" >>"$GITHUB_OUTPUT"
+          echo "Publishing $v (prerelease=$prerelease)" | tee -a "$GITHUB_STEP_SUMMARY"
+
       - name: Tags for core
         id: meta-core
         uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
         with:
           images: ${{ env.REGISTRY }}/ufawkes-devsecops-core
           tags: |
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=raw,value=latest,enable=${{ github.event_name == 'workflow_dispatch' }}
+            type=semver,pattern={{version}},value=${{ steps.semver.outputs.version }}
+            type=semver,pattern={{major}}.{{minor}},value=${{ steps.semver.outputs.version }}
+            type=semver,pattern={{major}},value=${{ steps.semver.outputs.version }}
+            type=raw,value=latest,enable=${{ steps.semver.outputs.prerelease == 'false' }}
+          flavor: latest=false
       - name: Tags for gitops
         id: meta-gitops
         uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
         with:
           images: ${{ env.REGISTRY }}/ufawkes-devsecops-gitops
           tags: |
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=raw,value=latest,enable=${{ github.event_name == 'workflow_dispatch' }}
+            type=semver,pattern={{version}},value=${{ steps.semver.outputs.version }}
+            type=semver,pattern={{major}}.{{minor}},value=${{ steps.semver.outputs.version }}
+            type=semver,pattern={{major}},value=${{ steps.semver.outputs.version }}
+            type=raw,value=latest,enable=${{ steps.semver.outputs.prerelease == 'false' }}
+          flavor: latest=false
       - name: Tags for ai
         id: meta-ai
         uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
         with:
           images: ${{ env.REGISTRY }}/ufawkes-devsecops-ai
           tags: |
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=raw,value=latest,enable=${{ github.event_name == 'workflow_dispatch' }}
+            type=semver,pattern={{version}},value=${{ steps.semver.outputs.version }}
+            type=semver,pattern={{major}}.{{minor}},value=${{ steps.semver.outputs.version }}
+            type=semver,pattern={{major}},value=${{ steps.semver.outputs.version }}
+            type=raw,value=latest,enable=${{ steps.semver.outputs.prerelease == 'false' }}
+          flavor: latest=false
       - name: Tags for devcontainer
         id: meta-devcontainer
         uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
         with:
           images: ${{ env.REGISTRY }}/ufawkesai-devcontainer
           tags: |
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=raw,value=latest,enable=${{ github.event_name == 'workflow_dispatch' }}
+            type=semver,pattern={{version}},value=${{ steps.semver.outputs.version }}
+            type=semver,pattern={{major}}.{{minor}},value=${{ steps.semver.outputs.version }}
+            type=semver,pattern={{major}},value=${{ steps.semver.outputs.version }}
+            type=raw,value=latest,enable=${{ steps.semver.outputs.prerelease == 'false' }}
+          flavor: latest=false
 
       # One Dockerfile, three targets: gitops/ai reuse core's layers in-job,
       # and each arch reuses the verify job's cache for that arch.
@@ -217,6 +245,9 @@ jobs:
         uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
         with:
           context: ./images/devsecops
+          build-contexts: |
+            opencode-src=./opencode
+            agents-src=./.agents/agents
           target: core
           platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta-core.outputs.tags }}
@@ -235,6 +266,9 @@ jobs:
         uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
         with:
           context: ./images/devsecops
+          build-contexts: |
+            opencode-src=./opencode
+            agents-src=./.agents/agents
           target: gitops
           platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta-gitops.outputs.tags }}
@@ -253,6 +287,9 @@ jobs:
         uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
         with:
           context: ./images/devsecops
+          build-contexts: |
+            opencode-src=./opencode
+            agents-src=./.agents/agents
           target: ai
           platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta-ai.outputs.tags }}

@@ -248,13 +248,30 @@ if [ "$VARIANT" = ai ]; then
     ok "user-writable npm prefix for pinned Claude Code install"
   else bad "NPM_CONFIG_PREFIX missing or not writable"; fi
 
-  echo "== 6. Agent skills visible to both harnesses =="
+  echo "== 6. Skills, agents and OpenCode config baked in for both harnesses =="
+  oc="$HOME/.config/opencode"
+  # OpenCode registers Superpowers via skills.paths (plugin node_modules), not links.
   for skill in using-superpowers brainstorming writing-plans test-driven-development \
-    systematic-debugging verification-before-completion gitops-knowledge gitops-repo-audit; do
-    for h in "$HOME/.claude/skills" "$HOME/.config/opencode/skills"; do
-      if [ -f "${h}/${skill}/SKILL.md" ]; then ok "${h#"$HOME"/}: ${skill}"; else bad "${h}/${skill}/SKILL.md missing"; fi
+    systematic-debugging verification-before-completion; do
+    for d in "$HOME/.claude/skills" "$oc/node_modules/superpowers/skills"; do
+      if [ -f "${d}/${skill}/SKILL.md" ]; then ok "${d#"$HOME"/}: ${skill}"; else bad "${d}/${skill}/SKILL.md missing"; fi
     done
   done
+  for skill in gitops-knowledge gitops-repo-audit; do
+    for d in "$HOME/.claude/skills" "$oc/skills"; do
+      if [ -f "${d}/${skill}/SKILL.md" ]; then ok "${d#"$HOME"/}: ${skill}"; else bad "${d}/${skill}/SKILL.md missing"; fi
+    done
+  done
+  if [ -e "$oc/skills/using-superpowers" ]; then bad "superpowers registered twice for OpenCode (skills/ link + skills.paths)"; else ok "opencode: superpowers registered once"; fi
+  for a in planner builder verifier operator; do
+    for d in "$HOME/.claude/agents" "$oc/agents"; do
+      if [ -f "${d}/${a}.md" ]; then ok "${d#"$HOME"/}: ${a}"; else bad "${d}/${a}.md missing"; fi
+    done
+  done
+  if grep -q '"fast"' "$oc/opencode.jsonc" && ! grep -q '__HOME__' "$oc/opencode.jsonc" \
+    && grep -q '"enabled": false' "$oc/fallback.json" && [ ! -e "$oc/tiers.json" ]; then
+    ok "opencode config: tier agents, __HOME__ rendered, fallback off, no router"
+  else bad "opencode config not the deterministic baked version"; fi
 fi
 
 echo

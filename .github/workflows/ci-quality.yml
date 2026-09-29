@@ -69,7 +69,7 @@ jobs:
           driver: docker
       - name: Build the ai DevSecOps image locally (core/gitops are its build stages)
         working-directory: images/devsecops
-        run: TAG=ci docker buildx bake ai --load
+        run: TAG=ci docker buildx bake ai --load --allow=fs.read=../../opencode --allow=fs.read=../../.agents/agents
       - name: Build devcontainer image locally with local base image
         run: |
           docker buildx build --build-arg BASE_IMAGE=ufawkes-devsecops-ai:ci -f .devcontainer/Dockerfile -t ufawkesai-devcontainer:ci --load .
