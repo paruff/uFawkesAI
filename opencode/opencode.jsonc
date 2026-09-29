@@ -1,8 +1,13 @@
 {
   "$schema": "https://opencode.ai/config.json",
 
-  // SINGLE SOURCE OF TRUTH — the canonical copy lives in <repo>/opencode/ and is
-  // installed to this location by opencode/sync.sh. Edit there, not here.
+  // SINGLE SOURCE OF TRUTH — the canonical copy lives in paruff/uFawkesAI
+  // opencode/ and is installed to ~/.config/opencode by opencode/sync.sh.
+  // Edit there, not here.
+  //
+  // DETERMINISM: one explicit model per agent, no LLM-classified tier routing
+  // (opencode-tui-model-router removed) and no silent model fallback
+  // (fallback.json "enabled": false). Every MCP server is version-pinned.
   // Do not recreate opencode.json or a project-level .opencode/opencode.json(c) —
   // opencode merges config.json -> opencode.json -> opencode.jsonc ->
   // <project>/.opencode/opencode.json(c), later files WIN and arrays REPLACE
@@ -87,7 +92,7 @@
       "command": [
         "uvx",
         "--from",
-        "serena-agent",
+        "serena-agent==1.7.0",
         "serena",
         "start-mcp-server",
         "--project-from-cwd",
@@ -117,7 +122,6 @@
   // npm dependency in package.json remains solely to supply `skills.paths`
   // (below) — the authoritative, file-side registration of the skill files.
   "plugin": [
-    "opencode-tui-model-router",
     "opencode-auto-fallback",
     "opencode-antigravity-auth",
     "superpowers@git+https://github.com/obra/superpowers.git#8ca22dba9a94f28898bbce59f2537ff4d87c747d"
