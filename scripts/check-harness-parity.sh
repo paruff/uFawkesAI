@@ -88,15 +88,11 @@ for alias in CLAUDE.md GEMINI.md .cursorrules .cursor/rules/AGENTS.md .github/co
   fi
 done
 
-# 2. MCP server sets must match between opencode.json and .mcp.json —
+# 2. MCP server sets must match between .opencode/opencode.json and .mcp.json —
 #    the two harnesses should offer the same servers, even though each
 #    keeps its own file (the two schemas aren't identical, see spec.md).
-#    opencode.json is the MCP home per README-mcp.md. Do NOT add a
-#    project-level .opencode/opencode.json: opencode merges it LAST (later
-#    files win) and opencode/opencode.jsonc forbids the duplicate — see that
-#    file's header comment.
-if [ -f opencode.json ] && [ -f .mcp.json ]; then
-  oc_servers=$(jq -r '.mcp // {} | keys | sort | join(",")' opencode.json)
+if [ -f .opencode/opencode.json ] && [ -f .mcp.json ]; then
+  oc_servers=$(jq -r '.mcp // {} | keys | sort | join(",")' .opencode/opencode.json)
   cc_servers=$(jq -r '.mcpServers // {} | keys | sort | join(",")' .mcp.json)
   if [ "$oc_servers" = "$cc_servers" ]; then
     say_ok "MCP server sets match: $oc_servers"
