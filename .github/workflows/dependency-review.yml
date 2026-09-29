@@ -15,10 +15,10 @@ jobs:
     steps:
       - name: job-start
         run: echo "job-start $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - name: Check dependency graph availability
         id: dependency-graph
-        uses: actions/github-script@v9
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         with:
           script: |
             try {
@@ -48,7 +48,7 @@ jobs:
             }
       - name: Review dependencies
         if: steps.dependency-graph.outputs.enabled == 'true'
-        uses: actions/dependency-review-action@v5
+        uses: actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294 # v5.0.0
         with:
           fail-on-severity: high
       - name: job-finish

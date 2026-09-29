@@ -20,10 +20,10 @@
 
 ## 2. Project Identity
 
-**Product:** uFawkesAI — an agent orchestration framework for platform engineering, packaged as a template so its patterns (agents, skills, hooks, rules, dual-harness config) are directly reusable by other projects.
+**Product:** uFawkesAI — an agent orchestration framework for platform engineering, packaged as a template so its patterns (agents, skills, hooks, rules, multi-harness config) are directly reusable by other projects.
 **Stack:** TypeScript · Node 20 · GitHub Actions · OpenTelemetry
-**Harnesses:** OpenCode and Claude Code are first-class, dual-verified by `scripts/dual-harness-smoke.sh` in CI (see `docs/ai-sdlc/spec.md` R1); Cursor/Copilot/Gemini compatibility files are kept in sync automatically via symlink to this file.
-**Key constraints:** 4 execution-boundary agents + 9 stage skills + 3 workflows + 9 commands (see `.agents/README.md`), 33 skill areas, humans = routing layer
+**Harnesses:** OpenCode and Claude Code are first-class; Codex and Gemini CLI are compatibility harnesses. All four are verified by `scripts/multi-harness-smoke.sh` in CI (see `docs/ai-sdlc/spec.md` R1) and ship in the shared devcontainer image `ghcr.io/paruff/ufawkesai-devcontainer`; Cursor/Copilot/Gemini instruction files are kept in sync via symlink to this file.
+**Key constraints:** 4 execution-boundary agents + 3 workflows + 9 commands + 10 repo skills (see `.agents/README.md`); development methodology = Superpowers (15 skills) + Flux GitOps skills (3), both baked into the shared image; humans = routing layer
 
 ---
 
@@ -62,9 +62,13 @@ command (run on a cadence), or a workflow (a fixed sequence).
 | "Prove it works" / "Review"   | `@verifier` | the verdict; the only agent that can block  |
 | "Ship / release / tag"        | `@operator` | commit, PR, tag, publish — never merges     |
 
-Within an agent, load the skill for the stage: `discover`, `spec`, `design`,
-`plan`, `build`, `test`, `test-execution`, `code-review`, `cross-validation`,
-`learn`.
+Within an agent, load the Superpowers skill for the stage: `brainstorming`
+(spec + design), `writing-plans`, `executing-plans`, `test-driven-development`,
+`verification-before-completion`, `requesting-code-review`,
+`systematic-debugging`. Repo skills cover what Superpowers does not:
+`discovery`, `learn`, `continuous-evals`; cross-validation is
+`.agents/assertions/cross-validation-runner.sh`. Always-on rules live in
+`.agents/rules/`.
 
 ### Pipeline Sequence
 
@@ -90,13 +94,14 @@ always-loaded file lean.
 
 ## 6. On-Demand Skills (Load These Explicitly)
 
-| Skill                                   | When to load                        |
-| --------------------------------------- | ----------------------------------- |
-| `.agents/skills/model-routing/SKILL.md` | When unsure which model/mode to use |
-| `.agents/skills/observability/SKILL.md` | Adding telemetry to any agent       |
-| `.agents/skills/token-budget/SKILL.md`  | Checking token costs                |
+| Load                                       | When                                      |
+| ------------------------------------------ | ----------------------------------------- |
+| `docs/MODEL_ROUTING_GUIDE.md`              | When unsure which model/mode to use       |
+| `scripts/token-audit.sh`                   | Checking token costs                      |
+| `.agents/skills/continuous-evals/SKILL.md` | Changing any agent configuration          |
+| `.agents/skills/context-engineering/SKILL.md` | Session startup context check          |
 
-**Prompt example:** `"Use the model-routing skill before starting this task."`
+**Prompt example:** `"Read docs/MODEL_ROUTING_GUIDE.md before starting this task."`
 
 ---
 

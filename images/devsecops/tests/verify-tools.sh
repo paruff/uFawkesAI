@@ -64,8 +64,10 @@ expect_reject() {
 }
 
 echo "== 1. Locked versions (${VARIANT}) =="
-[ -f "$LOCK" ] || {
-  echo "missing $LOCK" >&2
+# -r, not -f: an unreadable lock made jq fail inside the process
+# substitution below, so section 1 ran zero checks and still passed.
+[ -r "$LOCK" ] || {
+  echo "missing or unreadable $LOCK" >&2
   exit 1
 }
 while IFS=$'\t' read -r name version cmd; do
@@ -84,14 +86,20 @@ check_pins() {
   done < <(grep -E '^[A-Za-z0-9_.-]+==' "$2")
 }
 check_pins "${OPT}/venv" "${ETC}/requirements.in"
-if [ "$VARIANT" != core ]; then
-  check_pins "${OPT}/venv-gitops" "${ETC}/requirements-gitops.in"
-fi
 
 while IFS=$'\t' read -r pkg version; do
   installed="$(jq -r .version "${OPT}/node/node_modules/${pkg}/package.json" 2> /dev/null)"
   if [ "$installed" = "$version" ]; then ok "npm $pkg $version"; else bad "npm $pkg: expected $version, got ${installed:-none}"; fi
 done < <(jq -r '.dependencies | to_entries[] | [.key, .value] | @tsv' "${OPT}/node/package.json")
+
+if [ "$VARIANT" = ai ]; then
+  while IFS=$'\t' read -r pkg version; do
+    installed="$(jq -r .version "${OPT}/node-ai/node_modules/${pkg}/package.json" 2> /dev/null)"
+    if [ "$installed" = "$version" ]; then ok "npm $pkg $version"; else bad "npm $pkg: expected $version, got ${installed:-none}"; fi
+  done < <(jq -r '.dependencies | to_entries[] | [.key, .value] | @tsv' "${OPT}/node-ai/package.json")
+  expect_pass "codex runs" codex --version
+  expect_pass "gemini runs" gemini --version
+fi
 
 echo "== 2. Gates accept clean input and reject planted-bad input =="
 t="$(mktemp -d)"
@@ -147,9 +155,11 @@ printf 'eval(input())\n' > "$t/evil.py"
 expect_reject "semgrep: local rule" env SEMGREP_ENABLE_VERSION_CHECK=0 \
   semgrep scan --metrics=off --disable-version-check --error --quiet --config "$t/rule.yaml" "$t/evil.py"
 
-if syft scan "dir:$t/clean" -o spdx-json 2> /dev/null | jq -e '.spdxVersion' > /dev/null; then
-  ok "syft: SPDX SBOM from a directory"
-else bad "syft: no SPDX output"; fi
+# trivy covers SBOMs (syft was dropped as a duplicate).
+if trivy fs --quiet --offline-scan --skip-db-update --scanners license --format spdx-json "$t/clean" 2> /dev/null \
+  | jq -e '.spdxVersion' > /dev/null; then
+  ok "trivy: SPDX SBOM from a directory"
+else bad "trivy: no SPDX output"; fi
 
 echo "== 3. Offline pre-commit baseline =="
 repo="$t/repo"
@@ -183,10 +193,10 @@ expect_reject "pre-commit baseline: planted token" \
 
 if [ "$VARIANT" != core ]; then
   echo "== 4. GitOps / IaC / policy gates (offline) =="
-  # kubectl, kubeconform, kind, flux and argocd need a cluster, schema
+  # kubectl, kubeconform, kind and flux need a cluster, schema
   # downloads or Docker for anything beyond the version check above.
   g="$t/gitops"
-  mkdir -p "$g/policy" "$g/tf-good" "$g/tf-bad" "$g/tf-lint"
+  mkdir -p "$g/policy"
   cat > "$g/pod.yaml" << 'YAML'
 apiVersion: v1
 kind: Pod
@@ -211,59 +221,12 @@ REGO
   expect_pass "conftest: pinned image" conftest test --policy "$g/policy" "$g/pod.yaml"
   expect_reject "conftest: :latest image" conftest test --policy "$g/policy" "$g/pod-latest.yaml"
 
-  cat > "$g/kyverno.yaml" << 'YAML'
-apiVersion: kyverno.io/v1
-kind: ClusterPolicy
-metadata:
-  name: disallow-latest
-spec:
-  validationFailureAction: Enforce
-  rules:
-    - name: no-latest
-      match:
-        any:
-          - resources:
-              kinds: [Pod]
-      validate:
-        message: ":latest is not allowed"
-        pattern:
-          spec:
-            containers:
-              - image: "!*:latest"
-YAML
-  expect_pass "kyverno: pinned image" kyverno apply "$g/kyverno.yaml" --resource "$g/pod.yaml"
-  expect_reject "kyverno: :latest image" kyverno apply "$g/kyverno.yaml" --resource "$g/pod-latest.yaml"
-
   printf 'resources:\n  - pod.yaml\n' > "$g/kustomization.yaml"
   expect_pass "kustomize: build" kustomize build "$g"
 
   expect_pass "helm: create + lint" bash -c "cd '$g' && helm create chart >/dev/null && helm lint chart"
   printf 'apiVersion: v2\n' > "$g/chart/Chart.yaml"
   expect_reject "helm: Chart.yaml missing name/version" helm lint "$g/chart"
-
-  cat > "$g/tf-good/main.tf" << 'HCL'
-terraform {
-  required_version = ">= 1.6"
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 5.0"
-    }
-  }
-}
-
-resource "aws_s3_bucket" "b" {
-  bucket = "x"
-}
-HCL
-  printf 'resource "aws_s3_bucket" "b" {\nbucket="x"\n}\n' > "$g/tf-bad/main.tf"
-  printf 'variable "unused" {}\n' > "$g/tf-lint/main.tf"
-  expect_pass "tofu fmt: formatted" tofu fmt -check "$g/tf-good"
-  expect_reject "tofu fmt: unformatted" tofu fmt -check "$g/tf-bad"
-  expect_pass "tflint: clean module" tflint --chdir "$g/tf-good"
-  expect_reject "tflint: unused variable" tflint --chdir "$g/tf-lint"
-  expect_reject "checkov: unencrypted S3 bucket" \
-    checkov -d "$g/tf-good" --framework terraform --quiet --compact --skip-download
 
   age-keygen -o "$g/age.key" 2> /dev/null
   recipient="$(grep -o 'age1[0-9a-z]*' "$g/age.key")"
@@ -284,6 +247,14 @@ if [ "$VARIANT" = ai ]; then
   if [ -n "${NPM_CONFIG_PREFIX:-}" ] && mkdir -p "$NPM_CONFIG_PREFIX" && [ -w "$NPM_CONFIG_PREFIX" ]; then
     ok "user-writable npm prefix for pinned Claude Code install"
   else bad "NPM_CONFIG_PREFIX missing or not writable"; fi
+
+  echo "== 6. Agent skills visible to both harnesses =="
+  for skill in using-superpowers brainstorming writing-plans test-driven-development \
+    systematic-debugging verification-before-completion gitops-knowledge gitops-repo-audit; do
+    for h in "$HOME/.claude/skills" "$HOME/.config/opencode/skills"; do
+      if [ -f "${h}/${skill}/SKILL.md" ]; then ok "${h#"$HOME"/}: ${skill}"; else bad "${h}/${skill}/SKILL.md missing"; fi
+    done
+  done
 fi
 
 echo

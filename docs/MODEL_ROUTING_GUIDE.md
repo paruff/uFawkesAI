@@ -160,5 +160,4 @@ Learning the right habits before you code prevents expensive retries:
 ## Related Files
 
 - `scripts/token-audit.sh` — measure your own token footprint before committing to a mode
-- `.agents/skills/model-routing/SKILL.md` — agent-loadable version of this guide
 - `docs/PROMPT_LIBRARY.md` — every prompt has a `Recommended model:` field

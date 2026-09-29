@@ -55,8 +55,8 @@ jobs:
           echo "✅ Agent symlinks resolve correctly"
       - name: job-finish
         run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
-  dual-harness-smoke:
-    name: "🧩 Dual-Harness Smoke Test"
+  multi-harness-smoke:
+    name: "🧩 Multi-Harness Smoke Test"
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -64,18 +64,18 @@ jobs:
         run: echo "job-start $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3.12.0
         with:
           driver: docker
-      - name: Build DevSecOps images locally (core, gitops, ai)
+      - name: Build the ai DevSecOps image locally (core/gitops are its build stages)
         working-directory: images/devsecops
-        run: TAG=ci docker buildx bake --load
+        run: TAG=ci docker buildx bake ai --load
       - name: Build devcontainer image locally with local base image
         run: |
           docker buildx build --build-arg BASE_IMAGE=ufawkes-devsecops-ai:ci -f .devcontainer/Dockerfile -t ufawkesai-devcontainer:ci --load .
       - name: Run smoke test in devcontainer
         run: |
-          docker run --rm -v "$PWD:/workspace" -w /workspace ufawkesai-devcontainer:ci bash scripts/dual-harness-smoke.sh
+          docker run --rm -v "$PWD:/workspace" -w /workspace ufawkesai-devcontainer:ci bash scripts/multi-harness-smoke.sh
       - name: job-finish
         run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
   lint-placeholder:
@@ -167,7 +167,7 @@ jobs:
       - lint
       - artifact-chain
       - symlink-check
-      - dual-harness-smoke
+      - multi-harness-smoke
       - lint-placeholder
       - typecheck
       - test
@@ -183,7 +183,7 @@ jobs:
              [ "${{ needs.lint.result }}" == "failure" ] || \
              [ "${{ needs.artifact-chain.result }}" != "success" ] || \
              [ "${{ needs.symlink-check.result }}" == "failure" ] || \
-             [ "${{ needs.dual-harness-smoke.result }}" == "failure" ] || \
+             [ "${{ needs.multi-harness-smoke.result }}" == "failure" ] || \
              [ "${{ needs.lint-placeholder.result }}" == "failure" ] || \
              [ "${{ needs.typecheck.result }}" == "failure" ] || \
              [ "${{ needs.test.result }}" == "failure" ] || \
@@ -203,7 +203,7 @@ jobs:
           echo "| Lint | ${{ needs.lint.result == 'success' && '✅ Pass' || (needs.lint.result == 'skipped' && '⏭️ Skipped' || '❌ Fail') }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Artifact Chain | ${{ needs.artifact-chain.result == 'success' && '✅ Pass' || '❌ Fail' }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Symlinks | ${{ needs.symlink-check.result == 'success' && '✅ Pass' || '❌ Fail' }} |" >> $GITHUB_STEP_SUMMARY
-          echo "| Dual-Harness Smoke | ${{ needs.dual-harness-smoke.result == 'success' && '✅ Pass' || '❌ Fail' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Multi-Harness Smoke | ${{ needs.multi-harness-smoke.result == 'success' && '✅ Pass' || '❌ Fail' }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Lint (Placeholder) | ${{ needs.lint-placeholder.result == 'success' && '✅ Pass' || '❌ Fail' }} |" >> $GITHUB_STEP_SUMMARY
           echo "| TypeScript | ${{ needs.typecheck.result == 'success' && '✅ Pass' || '❌ Fail' }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Tests | ${{ needs.test.result == 'success' && '✅ Pass' || '❌ Fail' }} |" >> $GITHUB_STEP_SUMMARY

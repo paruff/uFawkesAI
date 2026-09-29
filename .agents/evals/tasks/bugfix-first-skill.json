@@ -1,0 +1,6 @@
+{
+  "id": "bugfix-first-skill",
+  "why": "Superpowers adoption: the bugfix workflow starts with systematic-debugging.",
+  "prompt": "According to this repository's workflow definitions, which skill does the bugfix workflow run first? Answer with the skill name only.",
+  "expect": { "output_regex": "systematic-debugging" }
+}

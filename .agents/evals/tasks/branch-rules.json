@@ -1,0 +1,6 @@
+{
+  "id": "branch-rules",
+  "why": "Always-on rules (.agents/rules/gitops.md) are loaded without being asked for.",
+  "prompt": "Which branch-name prefixes does this repository allow? List them on one line.",
+  "expect": { "output_regex": "feat/.*fix/|fix/.*feat/" }
+}

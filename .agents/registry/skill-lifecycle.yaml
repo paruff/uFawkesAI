@@ -27,112 +27,65 @@
 # Status values: active, stable, beta, draft, deprecated, experimental
 # Version follows semver.
 #
-# Core Pipeline: spec → design → build → test → test-execution → review → delivery
+# Core loop: Superpowers (brainstorming → writing-plans → executing-plans → verification-before-completion → requesting-code-review)
 
 skills:
   # ============================================
   # Core Pipeline Skills
   # ============================================
 
+  # Retired 2026-09-29: Superpowers (baked into the ufawkes-devsecops-ai
+  # image, /opt/agent-skills) is the development methodology. uFawkesAI keeps
+  # the report contracts in .agents/assertions/minimal-report.yaml.
+
   spec:
-    status: stable
-    version: 1.1.0
-    dependencies: []
-    load_trigger: "load spec skill"
-    sub_skills:
-      - spec/requirements-extraction
-      - spec/spec-acceptance-criteria
-      - spec/policy-validation
-      - spec/pipeline-policy
-      - spec/k8s-policy
-      - spec/template-governance
+    status: deprecated
+    version: 2.0.0
+    replaced_by: superpowers/brainstorming
+    deprecation_reason: "Superpowers covers this stage; see .agents/README.md"
 
   design:
-    status: stable
-    version: 1.1.0
-    dependencies:
-      - spec
-    load_trigger: "load design skill"
-    sub_skills:
-      - design/architecture-decomposition
-      - design/component-identification
-      - design/interface-definition
-      - design/k8s-design-validation
+    status: deprecated
+    version: 2.0.0
+    replaced_by: superpowers/brainstorming
+    deprecation_reason: "Superpowers covers this stage; see .agents/README.md"
 
   plan:
-    status: stable
-    version: 1.1.0
-    dependencies:
-      - spec
-      - design
-    load_trigger: "load plan skill"
-    sub_skills:
-      - plan/task-decomposition
-      - plan/dependency-mapping
-      - plan/effort-estimation
-      - plan/risk-identification
-      - plan/governance-alignment
+    status: deprecated
+    version: 2.0.0
+    replaced_by: superpowers/writing-plans
+    deprecation_reason: "Superpowers covers this stage; see .agents/README.md"
 
   test:
-    status: stable
-    version: 1.1.0
-    dependencies:
-      - spec
-    load_trigger: "load test skill"
-    sub_skills: []
+    status: deprecated
+    version: 2.0.0
+    replaced_by: superpowers/test-driven-development
+    deprecation_reason: "Superpowers covers this stage; see .agents/README.md"
 
   build:
-    status: stable
-    version: 1.1.0
-    dependencies:
-      - design
-    load_trigger: "load build skill"
-    sub_skills:
-      - build/code-generation
-      - build/manifest-generation
-      - build/pipeline-generation
-      - build/gitops-overlay-generation
-      - build/governance-enforcement
-      - build/template-application
-      - build/refactoring
+    status: deprecated
+    version: 2.0.0
+    replaced_by: superpowers/executing-plans
+    deprecation_reason: "Superpowers covers this stage; see .agents/README.md"
 
   test-execution:
-    status: stable
-    version: 1.1.0
-    dependencies:
-      - build
-      - test
-    load_trigger: "load test-execution skill"
-    sub_skills:
-      - test-execution/unit-test-execution
-      - test-execution/integration-test-execution
-      - test-execution/e2e-test-execution
-      - test-execution/test-coverage-validation
-      - test-execution/pipeline-test-stage-validation
-      - test-execution/runtime-simulation-validation
-      - test-execution/performance-smoke-testing
+    status: deprecated
+    version: 2.0.0
+    replaced_by: superpowers/verification-before-completion
+    deprecation_reason: "Superpowers covers this stage; see .agents/README.md"
 
   review:
-    status: stable
+    status: deprecated
     version: 2.0.0
-    dependencies:
-      - build
-      - test-execution
-    load_trigger: "load review skill"
-    sub_skills:
-      - review/spec-compliance
-      - review/design-compliance
-      - review/code-quality
-      - review/review-acceptance-criteria
-      - review/security-rbac
-      - review/secret-governance
-      - review/policy-validation
-      - review/k8s-policy
-      - review/pipeline-policy
-      - review/gitops-overlay
-    modes:
-      - pr-review
-      - build-validation
+    replaced_by: superpowers/requesting-code-review
+    deprecation_reason: "Superpowers covers this stage; see .agents/README.md"
+
+  continuous-evals:
+    status: beta
+    version: 0.1.0
+    dependencies: []
+    load_trigger: "load continuous-evals skill"
+    sub_skills: []
 
   delivery:
     # Truth fix: this skill has no directory under .agents/skills/, so

@@ -14,7 +14,7 @@ This is the living AI stance for the `paruff/uFawkesAI` template repository. It 
 the authoritative policy document. `docs/AI_POLICY.md` is an unfilled starting
 template for new repositories and is not policy for this one.
 
-**Last reviewed:** 2026-09-27
+**Last reviewed:** 2026-09-29
 **Next review due:** 2026-12-27 (quarterly)
 
 ---
@@ -61,7 +61,7 @@ Enforcement that actually exists today, verified against `.github/workflows/`:
 | Repo-wide secret scan            | `secret-scan.yml`      | gitleaks, exits non-zero on a finding          |
 | Dependency review                 | `dependency-review.yml` | gates newly introduced vulnerable or unlicensed deps |
 | Merge to `main`                   | `main-ci-guard.yml`    | blocks until `ci-quality` passes               |
-| Container CVEs                    | `image-build.yml`, `image-release.yml` | Trivy writes to the job summary only — advisory |
+| Container CVEs                    | `build-devsecops-images.yml` | Trivy writes to the job summary only — advisory |
 | Static analysis (SAST)            | none                   | no workflow runs Semgrep or CodeQL — advisory   |
 
 Anything not in that table is a reporting target, not a gate. Recording a
@@ -71,8 +71,12 @@ finding in a report does not enforce anything on its own.
 
 | Tool             | Version / status                                                | Purpose                                     |
 | ---------------- | --------------------------------------------------------------- | ------------------------------------------- |
-| opencode         | 1.18.32 (pinned by the dual-harness smoke test)                  | Primary agentic development tool           |
-| Claude Code      | 2.1.283 (pinned by the dual-harness smoke test)                  | Skill authoring, code review, content      |
+| opencode         | 1.18.32 (pinned by the multi-harness smoke test)                 | Primary agentic development tool           |
+| Claude Code      | 2.1.283 (pinned by the multi-harness smoke test)                 | Skill authoring, code review, content      |
+| Codex CLI        | 0.159.0 (pinned in `images/devsecops/node-ai`)                  | Compatibility harness (reads `AGENTS.md`)   |
+| Gemini CLI       | 0.61.0 (pinned in `images/devsecops/node-ai`)                   | Compatibility harness (reads `GEMINI.md`)   |
+| Superpowers      | 6.4.2 skills (pinned in `images/devsecops/tools.lock.json`)     | Development methodology for all harnesses   |
+| Flux agent skills | 0.3.0 (pinned in `images/devsecops/tools.lock.json`)           | GitOps knowledge, repo audit, cluster debug |
 | Claude model     | not pinned in this repository; selected per session             | Reasoning backend                           |
 | GitHub Copilot   | current                                                          | IDE code completion                         |
 
@@ -104,7 +108,7 @@ finding in a report does not enforce anything on its own.
 | ------------------------------------------------------- | ------------------------------------------------------------------------- |
 | AI-generated code merged to `main`                       | Human review required; pre-commit and the enforced gates in section 2 must pass |
 | AI-assisted spec and design documents                    | `discovery-brief.md` must exist first                                      |
-| AI-authored agent, skill, or workflow definitions        | `scripts/check-harness-parity.sh` and `scripts/dual-harness-smoke.sh` must pass |
+| AI-authored agent, skill, or workflow definitions        | `scripts/check-harness-parity.sh` and `scripts/multi-harness-smoke.sh` must pass |
 | AI-authored hook or secret-scanner changes               | `scripts/test-check-secret-detection.sh` and the hook end-to-end tests must pass |
 | Agent sessions modifying infrastructure                   | Evidence gate passed by `@verifier`; human approval before release         |
 | AI-generated release notes and PR bodies                  | Human review before publishing                                             |

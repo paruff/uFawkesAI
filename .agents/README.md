@@ -36,8 +36,10 @@ The four execution boundaries. Invoke by `@name` in OpenCode or any compatible a
 plan(@planner) → build(@builder) → verify(@verifier) → ship(@operator) → human merges
 ```
 
-The plan/build/verify steps load the `spec`, `design`, `build`, `test`,
-`test-execution`, `code-review`, and `cross-validation` skills as needed.
+The plan/build/verify steps load **Superpowers** skills (`brainstorming`,
+`writing-plans`, `executing-plans`, `test-driven-development`,
+`verification-before-completion`, `requesting-code-review`), plus
+`cross-validation-runner.sh` for the four pairwise rules.
 
 ### Routing Guide
 
@@ -70,19 +72,43 @@ the stage you are on.
 
 ---
 
-## Rules — `.agents/skills/*-rules/`
+## Rules — `.agents/rules/`
 
-A rule is a constraint that is always true, not a task to perform. Same file
-format as a skill, but it states obligations rather than giving a procedure —
-so it applies whether or not anyone remembers to load it.
+A rule is a constraint that is always true, not a task to perform. Rules are
+**always loaded**: Claude Code reads `.claude/rules/` (a symlink to
+`.agents/rules/`), OpenCode reads them via `instructions` in `opencode.json`.
 
-| Rule                  | Applies when                                    |
-| --------------------- | ------------------------------------------------- |
-| `api-design-rules/`   | changing any public interface or API contract     |
-| `gitops-rules/`       | branching, committing, opening or reviewing a PR  |
-| `security-rules/`     | auth, permissions, data, dependencies, credentials |
-| `testing-rules/`      | writing, changing, or reviewing tests             |
-| `ai-policy-lifecycle/`| any change to AI tooling or `AI_STANCE.md`        |
+| Rule            | Applies when                                       |
+| --------------- | -------------------------------------------------- |
+| `api-design.md` | changing any public interface or API contract      |
+| `gitops.md`     | branching, committing, opening or reviewing a PR   |
+| `security.md`   | auth, permissions, data, dependencies, credentials |
+| `testing.md`    | writing, changing, or reviewing tests              |
+| `ai-policy.md`  | any change to AI tooling or `AI_STANCE.md`         |
+
+---
+
+## Superpowers + Flux — shared image
+
+The development methodology is [Superpowers](https://github.com/obra/superpowers)
+and GitOps knowledge comes from [Flux agent skills](https://github.com/fluxcd/agent-skills).
+Both are pinned by SHA-256 in `images/devsecops/tools.lock.json`, installed to
+`/opt/agent-skills` in the `ufawkes-devsecops-ai` image, and linked into
+`~/.claude/skills` and `~/.config/opencode/skills` — so every repo that uses
+`ghcr.io/paruff/ufawkesai-devcontainer` (the uFawkes suite and fawkes) gets them
+without per-repo setup. Outside the image, install Superpowers as a Claude Code
+plugin (`claude plugin install superpowers@claude-plugins-official`).
+
+| Stage          | Superpowers skill                                   | Report contract (`minimal-report.yaml`) |
+| -------------- | --------------------------------------------------- | --------------------------------------- |
+| spec + design  | `brainstorming`                                     | `spec`, `design`                        |
+| plan           | `writing-plans`                                     | —                                       |
+| build          | `executing-plans` / `subagent-driven-development`   | `build`                                 |
+| test           | `test-driven-development`                           | `test`                                  |
+| test-execution | `verification-before-completion`                    | `test-execution`                        |
+| review         | `requesting-code-review` / `receiving-code-review`  | `review`                                |
+| debugging      | `systematic-debugging`                              | —                                       |
+| GitOps         | `gitops-knowledge`, `gitops-repo-audit`, `gitops-cluster-debug` (Flux) | — |
 
 ---
 
@@ -93,24 +119,16 @@ Each skill is a folder containing `SKILL.md` per the [Agent Skills spec](https:/
 Skills are loaded on demand — they do not add to always-on context. Verify the
 current count with `ls .agents/skills/`; the tables below are grouped by purpose.
 
-These are the nine stage skills that used to be agents. Same procedures, no
-separate model or memory: an agent is only worth its cost when it *owns* a
-boundary.
+The former stage skills (`spec`, `design`, `plan`, `build`, `test`,
+`test-execution`, `code-review`) are retired in favour of Superpowers — see
+`registry/skill-lifecycle.yaml` for each `replaced_by`.
 
 ### Core Pipeline Skills
 
-| Folder              | Loaded by        | Purpose                                                        |
-| ------------------- | ---------------- | ---------------------------------------------------------------- |
-| `discover/`         | `@planner`, workflows | JTBD + acceptance-criteria discovery brief (AI Capability 6) |
-| `spec/`             | `@planner`       | Requirements, acceptance criteria, policy gates                |
-| `design/`           | `@planner`       | Architecture decomposition, K8s design validation              |
-| `plan/`             | `@planner`       | Task decomposition, dependency mapping, risk ID                |
-| `build/`            | `@builder`       | Code, manifests, pipelines, overlays, governance                |
-| `test/`             | `@builder`       | Failing tests, coverage priorities, language-specific examples |
-| `test-execution/`   | `@verifier`      | Unit, integration, E2E, coverage, smoke tests                  |
-| `code-review/`      | `@verifier`      | PR review, build validation, spec/design compliance            |
-| `cross-validation/` | `@verifier`      | Final gate — 4 pairwise consistency rules                      |
-| `learn/`            | after release    | Retrospective; maps findings to DORA AI capabilities, feeds `plan` |
+| Folder       | Loaded by             | Purpose                                                            |
+| ------------ | --------------------- | ------------------------------------------------------------------ |
+| `discovery/` | `@planner`, workflows | JTBD + acceptance-criteria discovery brief (AI Capability 6)       |
+| `learn/`     | after release         | Retrospective; maps findings to DORA AI capabilities, feeds `plan` |
 
 ### Testing Skills
 
@@ -150,7 +168,7 @@ boundary.
 
 | Folder                    | Load Trigger                            | Purpose                                                              |
 | ---------------------------- | ------------------------------------------ | --------------------------------------------------------------------------- |
-| `dora-measurement/`       | monthly DORA snapshot                   | Compute the four DORA delivery metrics from uFawkesObs (AI Capability 2 + 7) |
+| `dora-measurement/`       | monthly DORA snapshot                   | Compute the four DORA delivery metrics from uFawkesObs (AI Capability 7) |
 | `ROI-reporting/`          | board/quarterly ROI evidence            | Monthly DORA ROI snapshot using the 2026 DORA ROI five-dimension framework |
 | `value-stream-mapping/`   | metrics plateau, high lead time         | Map the value stream to find bottlenecks consuming AI productivity gains |
 | `platform-feedback/`      | quarterly                                | Developer feedback collection — measures IDP cognitive-load reduction (AI Capability 7) |
@@ -166,6 +184,7 @@ boundary.
 
 | Folder                  | Load Trigger                      | Purpose                                               |
 | -------------------------- | ------------------------------------ | ------------------------------------------------------ |
+| `continuous-evals/`     | changing agent configuration      | Replays `.agents/evals/tasks` against the new config; blocks below baseline |
 | `agent-observability/`  | agent telemetry                   | Invocation tracking, skill load, finding quality      |
 | `cross-validation/`     | cross-validation                  | Pairwise consistency validation between agent outputs |
 | `dev-experience/`       | dev environment setup             | Devcontainers, bootstrap, local sim, CLI tools        |

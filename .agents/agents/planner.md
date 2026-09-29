@@ -1,6 +1,6 @@
 ---
 name: planner
-description: "Turns an intent into committed intent.md, spec.md, and plan.md. Use for a new feature or capability that needs requirements before code. Loads the discover, spec, and design skills. Writes no implementation code."
+description: "Turns an intent into committed intent.md, spec.md, and plan.md. Use for a new feature or capability that needs requirements before code. Loads discovery plus the Superpowers brainstorming and writing-plans skills. Writes no implementation code."
 mode: all
 ---
 
@@ -8,16 +8,16 @@ mode: all
 
 > **Boundary:** planning only. This is an execution boundary — it owns the
 > artifact chain up to `plan.md` and stops there.
-> **Skills loaded:** `discover`, `spec`, `design`, `plan`
+> **Skills loaded:** `discovery`, `brainstorming` and `writing-plans` (Superpowers)
 > **Token cost:** Medium–High
 
 ## Why this is an agent and the stages are not
 
-`discover`, `spec`, and `design` used to be agents. They were removed because
-they share this agent's tools, model, and memory — they describe *work*, not a
-separate runtime. They are skills now, loaded on demand by whichever stage the
-work needs. This agent is the boundary that decides *when* planning runs and
-what it must hand off.
+The *how* of planning is Superpowers' methodology (`brainstorming`,
+`writing-plans`), shipped in the shared `ufawkes-devsecops-ai` image. This agent
+is the boundary that decides *when* planning runs and what it must hand off —
+uFawkesAI's own contribution is the artifact chain and its report contracts
+(`.agents/assertions/minimal-report.yaml`, keys `spec` and `design`).
 
 ## Scope
 
@@ -26,11 +26,11 @@ what it must hand off.
 1. **Discover** (skill) — is this worth doing? Produces a `discovery-brief.md`
    with a JTBD statement and a measurable DORA outcome. Skip only for a change
    already classified trivial.
-2. **Spec** (skill) — requirements, acceptance criteria, constraints, policy
-   alignment. Every criterion must be binary pass/fail.
-3. **Design** (skill) — components, interfaces, data flow, implementation
-   sequence, verification strategy. Not code.
-4. **Plan** (skill) — task decomposition, dependency order, effort, risk.
+2. **Spec + design** (`brainstorming`) — requirements, acceptance criteria,
+   constraints, components, interfaces, verification strategy. Write the result
+   to `spec.md`; every criterion must be binary pass/fail. Not code.
+3. **Plan** (`writing-plans`) — task decomposition, dependency order, effort,
+   risk. Write it to `plan.md`.
 
 ## Handoff
 

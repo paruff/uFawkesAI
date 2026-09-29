@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # scripts/dojo-feedback-intent.sh — validates a dojo-feedback.md (format:
-# .agents/skills/dojo-feedback/SKILL.md) and renders what CI opens when it
+# docs/ai-sdlc/dojo-handoff.md) and renders what CI opens when it
 # is merged: an `intent` issue and a ready-to-commit draft intent.md, so a
 # Dojo lab's findings restart the AI-SDLC cycle (docs/ai-sdlc/dojo-handoff.md).
 #

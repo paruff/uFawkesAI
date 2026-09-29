@@ -49,7 +49,19 @@ while IFS= read -r entry; do
   curl -fsSL --retry 3 -o "$file" "$url"
   echo "${sha}  ${file}" | sha256sum -c --quiet - || fail "${name}: checksum mismatch for ${url}"
 
-  if [ "$(jq -r '.install // "bin"' <<< "$entry")" = "prefix" ]; then
+  install_mode="$(jq -r '.install // "bin"' <<< "$entry")"
+  if [ "$install_mode" = "tree" ]; then
+    # Arch-independent content (e.g. agent skills): copy one subdirectory of
+    # the archive to <dest>/opt/agent-skills/<name>, plus a VERSION stamp
+    # that version_cmd reads back.
+    subdir="$(jq -r .subdir <<< "$entry")"
+    tree="${DEST}/opt/agent-skills/${name}"
+    mkdir -p "${work}/${name}" "$tree"
+    tar -xzf "$file" --strip-components=1 -C "${work}/${name}"
+    [ -d "${work}/${name}/${subdir}" ] || fail "${name}: archive has no ${subdir}/"
+    cp -a "${work}/${name}/${subdir}/." "$tree/"
+    echo "$version" > "${tree}/VERSION"
+  elif [ "$install_mode" = "prefix" ]; then
     # */include: C headers only matter for compiling native add-ons, and
     # every npm install in the image runs with --ignore-scripts (-67 MB).
     tar -xf "$file" --strip-components=1 -C "${DEST}/usr/local" \

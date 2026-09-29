@@ -1,0 +1,65 @@
+name: Agent Config Evals
+
+# Continuous evals: any change to the agent configuration replays
+# .agents/evals/tasks against the new config and blocks if the pass rate drops
+# below .agents/evals/baseline.json (continuous-evals skill).
+#
+# Needs the ANTHROPIC_API_KEY repository secret. Without it the job FAILS with
+# an explicit message — a skipped eval must never look like a passing one.
+
+on:
+  pull_request:
+    paths:
+      - "AGENTS.md"
+      - ".agents/**"
+      - ".claude/**"
+      - "opencode.json"
+      - "scripts/run-evals.sh"
+      - ".github/workflows/agent-config-ci.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: agent-config-evals-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  evals:
+    name: "🧪 Agent config evals"
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: job-start
+        run: echo "job-start $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: Require the API key (no silent skip)
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          if [ -z "${ANTHROPIC_API_KEY}" ]; then
+            echo "::error::ANTHROPIC_API_KEY secret is not set — evals did NOT run. Add the secret or this gate stays red."
+            exit 1
+          fi
+      - name: Self-test the gate (offline)
+        run: bash scripts/test-run-evals.sh
+      # Same Claude Code version the devcontainer pins (.devcontainer/Dockerfile).
+      - name: Install Claude Code
+        run: npm install -g @anthropic-ai/claude-code@2.1.283
+      - name: Run evals against this configuration
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: bash scripts/run-evals.sh
+      - name: Upload eval report
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: evals-report
+          path: .agents/logs/evals-report.json
+          if-no-files-found: warn
+      - name: job-finish
+        if: always()
+        run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ')"

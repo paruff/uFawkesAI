@@ -1,10 +1,13 @@
 #!/usr/bin/env bash
 #
-# scripts/dual-harness-smoke.sh — proves the dual-harness template actually
-# works: both CLIs present, and one example each of MCP server, skill,
-# hook, command, and rule verified functioning, per
-# docs/ai-sdlc/spec.md's success criteria. Run inside the devcontainer —
-# see .github/workflows/ci-quality.yml's `dual-harness-smoke` job.
+# scripts/multi-harness-smoke.sh — proves the multi-harness template actually
+# works. Claude Code and OpenCode are first-class: CLI present, and one example
+# each of MCP server, skill, hook, command, and rule verified functioning, per
+# docs/ai-sdlc/spec.md's success criteria. Codex and Gemini CLI are
+# compatibility harnesses: CLI present, instruction file resolves to AGENTS.md,
+# and the shared .agents/skills tree is in place. Run inside the devcontainer —
+# see .github/workflows/ci-quality.yml's `multi-harness-smoke` job.
+# (Was dual-harness-smoke.sh before Codex and Gemini were added.)
 
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -14,9 +17,17 @@ fail() {
   exit 1
 }
 
-echo "== 1. Both CLIs present =="
+echo "== 1. All four CLIs present =="
 opencode --version || fail "opencode CLI not found"
 claude --version || fail "claude CLI not found"
+codex --version || fail "codex CLI not found"
+gemini --version || fail "gemini CLI not found"
+
+echo "== 1b. Codex + Gemini read the same instructions and skills =="
+# Codex reads AGENTS.md natively; Gemini reads GEMINI.md, a symlink to it.
+test -f AGENTS.md || fail "AGENTS.md missing (Codex instruction file)"
+[ "$(readlink GEMINI.md)" = AGENTS.md ] || fail "GEMINI.md must be a symlink to AGENTS.md"
+test -d .agents/skills || fail ".agents/skills missing (agentskills.io path read by Codex and Gemini)"
 
 echo "== 2. Harness parity (no shadowing, MCP sets match) =="
 bash scripts/check-harness-parity.sh || fail "harness parity check failed"
@@ -38,9 +49,30 @@ if [ -e ".agents/commands/doctor.md" ] || [ -d ".claude/skills/doctor" ]; then
   fail "a project-level 'doctor' command/skill exists — this would shadow Claude Code's built-in /doctor"
 fi
 
-echo "== 5. One skill loadable under both harnesses: test-execution =="
-test -f ".claude/skills/test-execution/SKILL.md" || fail "test-execution skill missing at Claude Code path"
-test -f ".opencode/skills/test-execution/SKILL.md" || fail "test-execution skill missing at OpenCode path"
+echo "== 5. One skill loadable under both harnesses: discovery =="
+test -f ".claude/skills/discovery/SKILL.md" || fail "discovery skill missing at Claude Code path"
+test -f ".opencode/skills/discovery/SKILL.md" || fail "discovery skill missing at OpenCode path"
+
+echo "== 5a. Fan-out: a new skill in .agents/skills appears under both harnesses =="
+# Probe a symlink-preserving copy: in CI the checkout belongs to the runner
+# UID, not the container's dev user, so the workspace itself is not writable.
+fanout="$(mktemp -d)"
+trap 'rm -rf "$fanout"' EXIT
+cp -a .agents .claude .opencode "$fanout"/
+mkdir -p "$fanout/.agents/skills/zz-fanout-probe"
+printf -- '---\nname: zz-fanout-probe\ndescription: probe\n---\n' > "$fanout/.agents/skills/zz-fanout-probe/SKILL.md"
+for h in .claude .opencode; do
+  test -f "$fanout/$h/skills/zz-fanout-probe/SKILL.md" || fail "new skill not visible under $h/skills (fan-out must be $h -> .agents)"
+done
+
+# Superpowers is the core loop the agents route to; it ships in the shared
+# image (/opt/agent-skills), linked into each harness's user-level skill dir.
+if [ -d /opt/agent-skills ]; then
+  echo "== 5b. Superpowers skills visible to both harnesses =="
+  for d in "$HOME/.claude/skills" "$HOME/.config/opencode/skills"; do
+    test -f "$d/using-superpowers/SKILL.md" || fail "Superpowers missing at $d"
+  done
+fi
 
 echo "== 6. One hook: the protected-path blocker actually blocks =="
 # Run the real PreToolUse command from .claude/settings.json, fed the same

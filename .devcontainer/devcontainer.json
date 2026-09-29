@@ -1,9 +1,6 @@
 {
   "name": "uFawkesAI Development",
-  "image": "ghcr.io/paruff/ufawkesai/ufawkesai-devcontainer:latest",
-  "build": {
-    "dockerfile": "Dockerfile"
-  },
+  "image": "ghcr.io/paruff/ufawkesai-devcontainer:latest",
   "customizations": {
     "vscode": {
       "extensions": [

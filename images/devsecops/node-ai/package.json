@@ -1,0 +1,9 @@
+{
+  "name": "ufawkes-devsecops-node-ai-tools",
+  "private": true,
+  "description": "Agent harness CLIs baked into the ai image (Apache-2.0); installed with npm ci. Claude Code is not here: its licence reserves all rights, so .devcontainer/Dockerfile installs it.",
+  "dependencies": {
+    "@google/gemini-cli": "0.61.0",
+    "@openai/codex": "0.159.0"
+  }
+}

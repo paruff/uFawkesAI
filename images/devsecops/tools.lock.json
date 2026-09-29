@@ -300,54 +300,6 @@
       }
     },
     {
-      "name": "grype",
-      "variant": "core",
-      "version": "0.119.0",
-      "source": {
-        "github": "anchore/grype",
-        "tag": "v{version}"
-      },
-      "url": "https://github.com/anchore/grype/releases/download/v{version}/grype_{version}_linux_{arch}.tar.gz",
-      "arch": {
-        "amd64": "amd64",
-        "arm64": "arm64"
-      },
-      "checksum_url": "https://github.com/anchore/grype/releases/download/v{version}/grype_{version}_checksums.txt",
-      "format": "tar.gz",
-      "bins": [
-        "grype"
-      ],
-      "version_cmd": "grype version",
-      "sha256": {
-        "amd64": "3fa2dc4b924621ab65404cf08d0b8438d896d80ab949c9d5a4ca283c36004c9b",
-        "arm64": "29f0ec7c549ddb0e2b6a0ca714851f7399438afc399b80c12808e065edc9a8f8"
-      }
-    },
-    {
-      "name": "syft",
-      "variant": "core",
-      "version": "1.52.0",
-      "source": {
-        "github": "anchore/syft",
-        "tag": "v{version}"
-      },
-      "url": "https://github.com/anchore/syft/releases/download/v{version}/syft_{version}_linux_{arch}.tar.gz",
-      "arch": {
-        "amd64": "amd64",
-        "arm64": "arm64"
-      },
-      "checksum_url": "https://github.com/anchore/syft/releases/download/v{version}/syft_{version}_checksums.txt",
-      "format": "tar.gz",
-      "bins": [
-        "syft"
-      ],
-      "version_cmd": "syft version",
-      "sha256": {
-        "amd64": "caeedb81fb0491615f1ebd1761e4145d41ee86dd2cc7bf80669f9f5ad9d6133d",
-        "arm64": "c46d5e4c28e12aa4c5becfaa343ef1c7f89045b6b895f2c21d471c62db09c706"
-      }
-    },
-    {
       "name": "osv-scanner",
       "variant": "core",
       "version": "2.6.0",
@@ -390,27 +342,6 @@
       "sha256": {
         "amd64": "e65324f4430c2717591937edcec90ccbefaf14c174f8ec9415e03ca875b46e1a",
         "arm64": "7ff1dce33bdd18fd2a4affe63bdd47efcccca97b2cec1c1863ec26e9e2647540"
-      }
-    },
-    {
-      "name": "cosign",
-      "variant": "core",
-      "version": "3.1.3",
-      "source": {
-        "github": "sigstore/cosign",
-        "tag": "v{version}"
-      },
-      "url": "https://github.com/sigstore/cosign/releases/download/v{version}/cosign-linux-{arch}",
-      "arch": {
-        "amd64": "amd64",
-        "arm64": "arm64"
-      },
-      "checksum_url": "https://github.com/sigstore/cosign/releases/download/v{version}/cosign_checksums.txt",
-      "format": "binary",
-      "version_cmd": "cosign version",
-      "sha256": {
-        "amd64": "4629c757b7618056f8ddd7e2625ae9fdd94c0372a65049520bc7d9df9efc7f71",
-        "arm64": "c5d324e091826b0d7a78eb16fef316450b4eb9aaec045611c08ba06f5e73220a"
       }
     },
     {
@@ -552,75 +483,6 @@
       }
     },
     {
-      "name": "argocd",
-      "variant": "gitops",
-      "version": "3.5.3",
-      "source": {
-        "github": "argoproj/argo-cd",
-        "tag": "v{version}"
-      },
-      "url": "https://github.com/argoproj/argo-cd/releases/download/v{version}/argocd-linux-{arch}",
-      "arch": {
-        "amd64": "amd64",
-        "arm64": "arm64"
-      },
-      "checksum_url": "https://github.com/argoproj/argo-cd/releases/download/v{version}/cli_checksums.txt",
-      "format": "binary",
-      "version_cmd": "argocd version --client",
-      "sha256": {
-        "amd64": "b860f73f57cbddd993cd446f5236d797c1b1ac8554857b2683d2669f17e765b4",
-        "arm64": "bb37e5d62df897ea1610f7c647fdc78657a0e3a928dc21893faf7bf66a4646cb"
-      }
-    },
-    {
-      "name": "tofu",
-      "variant": "gitops",
-      "version": "1.12.6",
-      "source": {
-        "github": "opentofu/opentofu",
-        "tag": "v{version}"
-      },
-      "url": "https://github.com/opentofu/opentofu/releases/download/v{version}/tofu_{version}_linux_{arch}.tar.gz",
-      "arch": {
-        "amd64": "amd64",
-        "arm64": "arm64"
-      },
-      "checksum_url": "https://github.com/opentofu/opentofu/releases/download/v{version}/tofu_{version}_SHA256SUMS",
-      "format": "tar.gz",
-      "bins": [
-        "tofu"
-      ],
-      "version_cmd": "tofu version",
-      "sha256": {
-        "amd64": "50a6106fa4de523d09c87af85f3db1dd47535fc005727fdca6852146476b88ec",
-        "arm64": "9bd0228a81bcd0c88f7045c74378f45a815779f19897191dff7d9efba9976b9e"
-      }
-    },
-    {
-      "name": "tflint",
-      "variant": "gitops",
-      "version": "0.64.0",
-      "source": {
-        "github": "terraform-linters/tflint",
-        "tag": "v{version}"
-      },
-      "url": "https://github.com/terraform-linters/tflint/releases/download/v{version}/tflint_linux_{arch}.zip",
-      "arch": {
-        "amd64": "amd64",
-        "arm64": "arm64"
-      },
-      "checksum_url": "https://github.com/terraform-linters/tflint/releases/download/v{version}/checksums.txt",
-      "format": "zip",
-      "bins": [
-        "tflint"
-      ],
-      "version_cmd": "tflint --version",
-      "sha256": {
-        "amd64": "cca9d13e2e1d7a2c627af60ff899a3c9b74212899416aeb96ec764d2ef954537",
-        "arm64": "560da89aacf59389d4eb029730dd5b109b7288096c32f2726a0d9e783a5ea8eb"
-      }
-    },
-    {
       "name": "conftest",
       "variant": "gitops",
       "version": "0.70.1",
@@ -642,30 +504,6 @@
       "sha256": {
         "amd64": "613d124b8f6c1f3cee890491f7ab19114cca5a2102ca47cb2e6c35b4c23f9c8a",
         "arm64": "8eb914755cb1b3c610d557019d5f373d5528b366ba706961d1a23f2ec55eab57"
-      }
-    },
-    {
-      "name": "kyverno",
-      "variant": "gitops",
-      "version": "1.19.1",
-      "source": {
-        "github": "kyverno/kyverno",
-        "tag": "v{version}"
-      },
-      "url": "https://github.com/kyverno/kyverno/releases/download/v{version}/kyverno-cli_v{version}_linux_{arch}.tar.gz",
-      "arch": {
-        "amd64": "x86_64",
-        "arm64": "arm64"
-      },
-      "checksum_url": "https://github.com/kyverno/kyverno/releases/download/v{version}/checksums.txt",
-      "format": "tar.gz",
-      "bins": [
-        "kyverno"
-      ],
-      "version_cmd": "kyverno version",
-      "sha256": {
-        "amd64": "b38228f367fc0fdc2b08f4c83ea50ac5f16c60ff8d62d76a66157c33c47b70ae",
-        "arm64": "d78fecd183e1e6749c653fdb744c88d065e6737ec6856c97c4efac84bec54554"
       }
     },
     {
@@ -737,6 +575,50 @@
       "sha256": {
         "amd64": "763af386ef88a8cab18df00fcf055690e5a55e31a7088beabe02307142a6adce",
         "arm64": "568461b7d4d8c19865c97e9a1102e613049c6039d01fe772154de873c1865840"
+      }
+    },
+    {
+      "name": "superpowers",
+      "variant": "ai",
+      "version": "6.4.2",
+      "source": {
+        "github": "obra/superpowers",
+        "tag": "v{version}"
+      },
+      "url": "https://github.com/obra/superpowers/archive/refs/tags/v{version}.tar.gz",
+      "arch": {
+        "amd64": "any",
+        "arm64": "any"
+      },
+      "format": "tar.gz",
+      "install": "tree",
+      "subdir": "skills",
+      "version_cmd": "cat /opt/agent-skills/superpowers/VERSION",
+      "sha256": {
+        "amd64": "66eae02bb1549ae289a14bb23a14c119d2e7ccdaf3b5fb8b95f17db581ef0249",
+        "arm64": "66eae02bb1549ae289a14bb23a14c119d2e7ccdaf3b5fb8b95f17db581ef0249"
+      }
+    },
+    {
+      "name": "flux-agent-skills",
+      "variant": "ai",
+      "version": "0.3.0",
+      "source": {
+        "github": "fluxcd/agent-skills",
+        "tag": "v{version}"
+      },
+      "url": "https://github.com/fluxcd/agent-skills/archive/refs/tags/v{version}.tar.gz",
+      "arch": {
+        "amd64": "any",
+        "arm64": "any"
+      },
+      "format": "tar.gz",
+      "install": "tree",
+      "subdir": "skills",
+      "version_cmd": "cat /opt/agent-skills/flux-agent-skills/VERSION",
+      "sha256": {
+        "amd64": "9a39378bcaff8d573941d25b113a9fa9c4b0dabc08fbda41e7d21bdf15d45330",
+        "arm64": "9a39378bcaff8d573941d25b113a9fa9c4b0dabc08fbda41e7d21bdf15d45330"
       }
     }
   ]
