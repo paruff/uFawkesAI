@@ -1,6 +1,6 @@
 ---
 description: Verify OpenCode configuration, pinned agent models, determinism, and provider health
-agent: operator
+agent: general
 ---
 
 You are a configuration diagnostician for OpenCode. Perform a comprehensive
@@ -11,8 +11,7 @@ boots from). Never print a full API key — first 8 characters only.
 
 ## 1. Check Core Configuration Files
 
-Verify existence and syntax of (then run `bash opencode/validate.sh ~/.config/opencode`
-for the determinism invariants):
+Verify existence and syntax of:
 
 - `~/.config/opencode/opencode.jsonc` (JSONC — validate by running
   `opencode debug config` and checking it exits 0)
