@@ -60,6 +60,8 @@ jobs:
     - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
+      with:
+        driver: docker
     - name: Build DevSecOps images locally (core, gitops, ai)
       working-directory: images/devsecops
       run: TAG=ci docker buildx bake --load
