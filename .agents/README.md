@@ -184,6 +184,7 @@ The former stage skills (`spec`, `design`, `plan`, `build`, `test`,
 
 | Folder                  | Load Trigger                      | Purpose                                               |
 | -------------------------- | ------------------------------------ | ------------------------------------------------------ |
+| `continuous-evals/`     | changing agent configuration      | Replays `.agents/evals/tasks` against the new config; blocks below baseline |
 | `agent-observability/`  | agent telemetry                   | Invocation tracking, skill load, finding quality      |
 | `cross-validation/`     | cross-validation                  | Pairwise consistency validation between agent outputs |
 | `dev-experience/`       | dev environment setup             | Devcontainers, bootstrap, local sim, CLI tools        |

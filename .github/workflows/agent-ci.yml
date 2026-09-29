@@ -22,7 +22,7 @@ jobs:
       - name: job-start
         run: echo "job-start $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
 
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
       - name: Prove the secret-detection validator can still go red
         # Run the suite BEFORE the repo scan. A blocking validator that has
@@ -48,12 +48,32 @@ jobs:
 
       - name: Publish secrets.json
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: secret-detection-report
           path: .agents/logs/secret-detection.json
           if-no-files-found: warn
 
+      - name: job-finish
+        if: always()
+        run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+
+  sast:
+    name: "🔎 SAST (semgrep)"
+    runs-on: ubuntu-latest
+    steps:
+      - name: job-start
+        run: echo "job-start $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      # Same semgrep version the DevSecOps image pins
+      # (images/devsecops/python/requirements.in). p/ci covers workflow
+      # injection, unpinned actions and Dependabot cooldown; exit 1 blocks.
+      - name: Semgrep p/ci — blocking
+        run: |
+          pipx run semgrep==1.178.0 scan --config p/ci \
+            --metrics=off --disable-version-check --error
       - name: job-finish
         if: always()
         run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ')"

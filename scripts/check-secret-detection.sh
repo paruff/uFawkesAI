@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
-# scripts/check-secret-detection.sh — the runnable half of the secret-detection
-# agent skill (.agents/skills/security-testing/secret-detection/).
+# scripts/check-secret-detection.sh — the secret-detection validator. It started
+# as the runnable half of a security-testing skill (since consolidated away);
+# the always-on rule it enforces is .agents/rules/security.md.
 #
 # The skill declares Outputs `secrets.json` (SKILL.md:33-36) and a "Secret Types
 # Detected" table (SKILL.md:47-55). Until now nothing produced that JSON and
@@ -294,7 +295,7 @@ if [ "$finding_count" -gt 0 ]; then status=fail; else status=pass; fi
 
 if [ "$QUIET" -eq 0 ]; then
   echo "== secret-detection: agent skill validator =="
-  echo "  skill:   .agents/skills/security-testing/secret-detection/SKILL.md"
+  echo "  rule:    .agents/rules/security.md"
   echo "  files:   ${scanned_count} scanned"
   if [ "$finding_count" -gt 0 ]; then
     echo "  status:  FAIL — ${finding_count} finding(s)"

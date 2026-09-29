@@ -189,7 +189,7 @@ repos:
         entry: scripts/run-unit-tests.sh
         language: script
         stages: [pre-commit]
-        files: ^(scripts/(test-.*|emit-dora-event|check-secret-detection|check-ai-stance|check-dora-vocabulary|run-unit-tests).*|templates/.*\.py)$
+        files: ^(scripts/(test-.*|emit-dora-event|check-secret-detection|check-ai-stance|check-dora-vocabulary|run-unit-tests|run-evals).*|templates/.*\.py)$
         pass_filenames: false
 
       # 4 execution-boundary agents must be valid AND dispatchable

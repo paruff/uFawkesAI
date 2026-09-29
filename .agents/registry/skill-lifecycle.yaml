@@ -80,6 +80,13 @@ skills:
     replaced_by: superpowers/requesting-code-review
     deprecation_reason: "Superpowers covers this stage; see .agents/README.md"
 
+  continuous-evals:
+    status: beta
+    version: 0.1.0
+    dependencies: []
+    load_trigger: "load continuous-evals skill"
+    sub_skills: []
+
   delivery:
     # Truth fix: this skill has no directory under .agents/skills/, so
     # "status: stable" + "load delivery skill" pointed at nothing. It is a
