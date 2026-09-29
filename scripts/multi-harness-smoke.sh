@@ -54,14 +54,16 @@ test -f ".claude/skills/discovery/SKILL.md" || fail "discovery skill missing at 
 test -f ".opencode/skills/discovery/SKILL.md" || fail "discovery skill missing at OpenCode path"
 
 echo "== 5a. Fan-out: a new skill in .agents/skills appears under both harnesses =="
-probe=".agents/skills/zz-fanout-probe-$$"
-mkdir -p "$probe"
-trap 'rm -rf "$probe"' EXIT
-printf -- '---\nname: %s\ndescription: probe\n---\n' "${probe##*/}" > "$probe/SKILL.md"
+# Probe a symlink-preserving copy: in CI the checkout belongs to the runner
+# UID, not the container's dev user, so the workspace itself is not writable.
+fanout="$(mktemp -d)"
+trap 'rm -rf "$fanout"' EXIT
+cp -a .agents .claude .opencode "$fanout"/
+mkdir -p "$fanout/.agents/skills/zz-fanout-probe"
+printf -- '---\nname: zz-fanout-probe\ndescription: probe\n---\n' > "$fanout/.agents/skills/zz-fanout-probe/SKILL.md"
 for h in .claude .opencode; do
-  test -f "$h/skills/${probe##*/}/SKILL.md" || fail "new skill not visible under $h/skills (fan-out must be $h -> .agents)"
+  test -f "$fanout/$h/skills/zz-fanout-probe/SKILL.md" || fail "new skill not visible under $h/skills (fan-out must be $h -> .agents)"
 done
-rm -rf "$probe"
 
 # Superpowers is the core loop the agents route to; it ships in the shared
 # image (/opt/agent-skills), linked into each harness's user-level skill dir.
