@@ -81,6 +81,30 @@
     },
     "explore": {
       "model": "opencode/mimo-v2.6-flash-free"
+    },
+    // Tiers, deterministically: explicit subagents with a FIXED model and step
+    // cap, chosen by name (@fast / @medium / @heavy, or the Task tool) — never
+    // by an LLM classifying the prompt. Same choice -> same model, every time.
+    "fast": {
+      "mode": "subagent",
+      "model": "google/gemini-2.5-flash",
+      "steps": 5,
+      "description": "Read-only work: searches, file reads, grep/glob, trivial edits.",
+      "prompt": "You are the FAST tier. Handle read-only work, searches, simple file reads and straightforward edits. Be concise. No architecture or multi-step implementation."
+    },
+    "medium": {
+      "mode": "subagent",
+      "model": "google/gemini-3-flash-preview",
+      "steps": 15,
+      "description": "Implementation: writing code and tests, multi-step tasks, content authoring.",
+      "prompt": "You are the MEDIUM tier. Implement, write code and tests, author content. Follow the Superpowers workflow and TDD. Thorough but efficient."
+    },
+    "heavy": {
+      "mode": "subagent",
+      "model": "google/gemini-3-flash-preview",
+      "steps": 30,
+      "description": "Architecture, complex debugging, design and cross-cutting or irreversible decisions.",
+      "prompt": "You are the HEAVY tier. Architecture, complex debugging, system design, security and high-stakes decisions. Think deeply and apply rigorous analysis."
     }
   },
 

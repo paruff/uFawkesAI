@@ -112,12 +112,25 @@ ENV NPM_CONFIG_PREFIX=/home/${DEV_USER}/.npm-global \
 LABEL org.opencontainers.image.description="uFawkes DevSecOps toolchain (ai): gitops + OpenCode, Codex, Gemini CLI, Superpowers + Flux agent skills, devcontainer user"
 USER ${DEV_USER}
 WORKDIR /home/${DEV_USER}
-# Locked agent skills (/opt/agent-skills, from tools.lock.json) linked into
-# both harnesses' user-level skill dirs, so every repo on this image — the
-# uFawkes suite and fawkes — gets Superpowers + Flux without per-repo setup.
-# Per-skill links leave room for a user's own skills alongside them.
-RUN for h in .claude/skills .config/opencode/skills; do \
-      mkdir -p "${h}" \
-      && for s in /opt/agent-skills/*/*/; do ln -sfn "${s%/}" "${h}/$(basename "${s}")"; done; \
+# The versioned OpenCode config (opencode/: fixed model per agent, no model
+# router, fallback off, pinned plugins from package-lock.json) and the four
+# uFawkesAI agents are baked in, so no container ever runs sync.sh by hand.
+# Claude Code gets the same four agents in ~/.claude/agents.
+COPY --from=opencode-src --chown=${DEV_USER}:${DEV_USER} . /tmp/oc/opencode/
+COPY --from=agents-src --chown=${DEV_USER}:${DEV_USER} . /tmp/oc/.agents/agents/
+RUN git config --global url."https://github.com/".insteadOf "ssh://git@github.com/" \
+ && bash /tmp/oc/opencode/sync.sh --apply \
+ && mkdir -p .claude/agents && cp .config/opencode/agents/*.md .claude/agents/ \
+ && rm -rf /tmp/oc .npm/_cacache
+# Locked agent skills (/opt/agent-skills, from tools.lock.json), so every repo
+# on this image — the uFawkes suite and fawkes — gets them without setup.
+# Claude Code: all of them. OpenCode already registers Superpowers through the
+# config's skills.paths (same pinned version), so it links only the others:
+# a second registration triggers "duplicate skill name" warnings.
+RUN mkdir -p .claude/skills .config/opencode/skills \
+ && for s in /opt/agent-skills/*/*/; do ln -sfn "${s%/}" ".claude/skills/$(basename "${s}")"; done \
+ && for s in /opt/agent-skills/*/*/; do \
+      case "$s" in /opt/agent-skills/superpowers/*) continue ;; esac; \
+      ln -sfn "${s%/}" ".config/opencode/skills/$(basename "${s}")"; \
     done
 CMD ["zsh"]

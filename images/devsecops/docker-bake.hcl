@@ -22,6 +22,11 @@ group "default" {
 target "_common" {
   context    = "."
   dockerfile = "Dockerfile"
+  # The ai stage bakes the repo's OpenCode config and the four agents in.
+  contexts = {
+    opencode-src = "../../opencode"
+    agents-src   = "../../.agents/agents"
+  }
   labels = {
     "org.opencontainers.image.version"  = VERSION
     "org.opencontainers.image.revision" = REVISION

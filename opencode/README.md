@@ -1,34 +1,28 @@
 # opencode/ — versioned opencode configuration (single source of truth)
 
 This directory (in **paruff/uFawkesAI**, moved from learn-languages) is the **canonical** global opencode configuration for every uFawkes-suite repo and the
-machine it runs on (host + devcontainer). `~/.config/opencode` is an _install
-target_, not a source: it is overwritten by `opencode/sync.sh`.
+machine it runs on.
 
-> **Edit files here, never in `~/.config/opencode`.** opencode loads config
-> once at boot — re-run sync and restart the running opencode after any change.
+## Where it gets installed
 
-## Sync flow
+- **Devcontainer: nothing to do.** The `ufawkes-devsecops-ai` image bakes this
+  config, its pinned plugins, the four uFawkesAI agents (planner, builder,
+  verifier, operator; also in `~/.claude/agents`) and the tier subagents in at
+  build time. Rebuild or pull the image to pick up a change.
+- **Host machine: `sync.sh`, preview first.**
 
 ```bash
-bash opencode/sync.sh
+bash opencode/sync.sh          # preview: lists every file that would change, writes nothing
+bash opencode/sync.sh --apply  # backs up ~/.config/opencode to ~/opencode-config-backup-*.tgz, then installs
 ```
 
-Idempotent; runs on demand (and automatically in the devcontainer post-create):
-
-1. Copies `opencode.jsonc`, `fallback.json`, `package.json`, `package-lock.json`,
-   and the global `AGENTS.md` into `$OPENCODE_CONFIG_DIR` (default
-   `~/.config/opencode`), copies `commands/*.md` (global commands such as
-   `/doctor`) into `$OPENCODE_CONFIG_DIR/commands/`, and removes the stale
-   `plugins/superpowers-bridge.js` (retired bridge).
-2. Substitutes the `__HOME__` token with the current `$HOME`, so one committed
-   file works unchanged on host (`/Users/…`) and in the container (`/home/node/…`).
-3. Removes the legacy `skills/superpowers` symlink if present — skills are
-   registered **only** via `skills.paths`; a second registration path produced
-   "duplicate skill name" warnings on every boot.
-4. `npm ci` in the target dir: installs the exact-pinned plugin set from
-   `package.json` + `package-lock.json`. **Never `npm install` ad hoc** in the
-   target dir — it drifts the lockfile.
-5. Runs `validate.sh` against the installed dir (post-substitution).
+`--apply` renders `__HOME__`, copies `opencode.jsonc`, `fallback.json`,
+`package.json`, `package-lock.json`, the global `AGENTS.md`, `commands/*.md`
+and `../.agents/agents/*.md` into `$OPENCODE_CONFIG_DIR` (default
+`~/.config/opencode`), removes stale files from earlier layouts (`tiers.json`,
+the retired superpowers bridge, a duplicate `skills/superpowers` link), runs
+`npm ci` for the exact-pinned plugins, then `validate.sh`. It never touches
+`~/.claude`. Restart OpenCode afterwards — config loads once at boot.
 
 ## Files
 

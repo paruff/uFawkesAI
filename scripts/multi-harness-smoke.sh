@@ -69,7 +69,7 @@ done
 # image (/opt/agent-skills), linked into each harness's user-level skill dir.
 if [ -d /opt/agent-skills ]; then
   echo "== 5b. Superpowers skills visible to both harnesses =="
-  for d in "$HOME/.claude/skills" "$HOME/.config/opencode/skills"; do
+  for d in "$HOME/.claude/skills" "$HOME/.config/opencode/node_modules/superpowers/skills"; do
     test -f "$d/using-superpowers/SKILL.md" || fail "Superpowers missing at $d"
   done
 fi
