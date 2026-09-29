@@ -214,7 +214,7 @@ jobs:
       # zstd: smaller pulls and faster unpacking than gzip (needs Docker >= 23).
       - name: Build + push core
         id: core
-        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6.19.2
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
         with:
           context: ./images/devsecops
           target: core
@@ -232,7 +232,7 @@ jobs:
             REVISION=${{ github.sha }}
       - name: Build + push gitops
         id: gitops
-        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6.19.2
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
         with:
           context: ./images/devsecops
           target: gitops
@@ -250,7 +250,7 @@ jobs:
             REVISION=${{ github.sha }}
       - name: Build + push ai
         id: ai
-        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6.19.2
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
         with:
           context: ./images/devsecops
           target: ai
@@ -268,7 +268,7 @@ jobs:
             REVISION=${{ github.sha }}
       - name: Build + push devcontainer (on the ai digest just pushed)
         id: devcontainer
-        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6.19.2
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
         with:
           context: .
           file: .devcontainer/Dockerfile
