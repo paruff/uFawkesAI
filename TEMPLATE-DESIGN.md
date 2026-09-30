@@ -51,7 +51,7 @@ budget for the learning phase — and these control systems are that budget.
 | `docs/ARCHITECTURE.md`                         | DORA 2025 — Loosely Coupled       | Layer boundaries as convention today; wire a linter's import rules to them if you add application source (ARCH-01) |
 | `docs/GOLDEN_PATH.md`                          | DORA 2025 — Platform Eng          | 10-step idea→deploy workflow (PLAT-02)                                       |
 | `docs/PROMPT_LIBRARY.md`                       | Core: Prompt engineering         | Versioned task-specific prompt templates (AIOPS-04)                          |
-| `docs/METRICS.md`                              | DORA 2025 — Rework Rate           | Rework rate, change failure rate, PR revision rate (METRICS-02)              |
+| `docs/METRICS.md`                              | DORA 2025 — Rework Rate           | Rework rate, change fail rate, PR revision rate (METRICS-02)                 |
 | `docs/DEVEX_LOG.md`                            | DORA 2025 — DevEx                 | Monthly 5-dimension self-assessment (DEVEX-01)                               |
 | `docs/TEAM_ARCHETYPE.md`                       | DORA 2025 — Archetypes            | Seven archetype self-assessment; tailors issue priority (AIOPS-05)           |
 | `docs/VALUE_STREAM_MAP.md`                     | DORA 2025 — VSM                   | Issue→deploy flow with wait times; identifies bottleneck (VSM-01)            |

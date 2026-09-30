@@ -18,7 +18,7 @@ deliberately (`/release`) rather than selected by skill relevance.
 | --------------------- | ------------------------------------------------------------------ |
 | Weekly cadence        | Thursday: if increment is shippable, release it                  |
 | Feature complete      | All acceptance criteria from discovery-brief.md met              |
-| Hotfix                | Change failure rate event resolved, patch ready                  |
+| Hotfix                | Change fail rate event resolved, patch ready                     |
 | Documentation release | No code change required — doc, Dojo lab, or decision post counts |
 
 ## Pre-conditions

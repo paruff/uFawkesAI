@@ -48,24 +48,24 @@ they're user-ready.
 
 ## What DORA measures that your logs could now feed
 
-DORA's five core software delivery metrics — lead time for changes,
-deployment frequency, failed deployment recovery time, change failure rate,
+DORA's five core software delivery metrics — change lead time,
+deployment frequency, failed deployment recovery time, change fail rate,
 and deployment rework rate — are exactly the kind of thing your
 `session_id`-linked JSONL logs (once #5 and #13 close the gaps) could
 progressively feed:
 
-- **`feature` workflow**'s Phase 0→5 duration → lead time for changes
+- **`feature` workflow**'s Phase 0→5 duration → change lead time
 - **`bugfix` workflow**'s `root_cause_category` + `originating_session_id` → change
-  failure rate, once linked back to the feature session that introduced
+  fail rate, once linked back to the feature session that introduced
   the failure
 - Live-system verification pass/fail at Phase 3.5, fed forward into a
-  post-deploy smoke test (plan issue #12) → change failure rate at the
+  post-deploy smoke test (plan issue #12) → change fail rate at the
   production level, not just pre-merge
 
 ## Honest gap
 
 Nothing in the two reports I fetched gives a benchmarked number for "how much
-does live-system testing reduce change failure rate specifically" — that's a
+does live-system testing reduce change fail rate specifically" — that's a
 reasonable hypothesis, not a cited finding. Recommend treating it the way
 DORA recommends treating any of its own findings: as a hypothesis to test
 against your own before/after metrics, not an assumed truth.

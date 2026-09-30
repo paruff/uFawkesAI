@@ -43,8 +43,8 @@ what counts as an anomaly, and what to hand off.
 
 ### Phase 1 — Collect and translate (delegate to skills)
 
-Follow the `dora-measurement` skill to compute the four DORA delivery metrics
-(Deployment Frequency, Lead Time for Changes, Change Failure Rate, Time to Restore)
+Follow the `dora-measurement` skill to compute the five DORA software delivery metrics
+(Deployment Frequency, Change Lead Time, Failed Deployment Recovery Time, Change Fail Rate, Deployment Rework Rate)
 over the measurement window, using its Prometheus/Loki queries and proxy-metric
 fallback. Do not invent data — if `dora-measurement` flags `proxy_metrics: true`,
 carry that flag through unchanged.
@@ -82,41 +82,52 @@ Pass improvement items to `@planner` (label: `capability-improvement`).
   "window_days": 30,
   "proxy_metrics": false,
   "metrics": {
-    "deployment_frequency": {
-      "value": 3.2,
-      "unit": "deployments/week",
-      "trend": "up",
-      "dora_tier": "High",
-      "target": 5.0
+    "throughput": {
+      "deployment_frequency_per_week": {
+        "value": 3.2,
+        "unit": "deployments/week",
+        "trend": "up",
+        "dora_tier": "High",
+        "target": 5.0
+      },
+      "change_lead_time_hours": {
+        "value": 18.4,
+        "unit": "hours",
+        "trend": "down",
+        "dora_tier": "High",
+        "target": 24.0
+      },
+      "failed_deployment_recovery_time_hours": {
+        "value": 1.2,
+        "unit": "hours",
+        "trend": "down",
+        "dora_tier": "Elite",
+        "target": 1.0
+      }
     },
-    "lead_time_hours": {
-      "value": 18.4,
-      "unit": "hours",
-      "trend": "down",
-      "dora_tier": "High",
-      "target": 24.0
-    },
-    "change_failure_rate": {
-      "value": 0.08,
-      "unit": "ratio",
-      "trend": "stable",
-      "dora_tier": "High",
-      "target": 0.05
-    },
-    "time_to_restore_hours": {
-      "value": 1.2,
-      "unit": "hours",
-      "trend": "down",
-      "dora_tier": "Elite",
-      "target": 1.0
+    "instability": {
+      "change_fail_rate": {
+        "value": 0.08,
+        "unit": "ratio",
+        "trend": "stable",
+        "dora_tier": "High",
+        "target": 0.05
+      },
+      "deployment_rework_rate": {
+        "value": 0.04,
+        "unit": "ratio",
+        "trend": "down",
+        "dora_tier": "High",
+        "target": 0.05
+      }
     }
   },
   "roi_dimensions": {
-    "cost_efficiency": "CFR at 8% — 2 rework incidents avoided vs last month",
+    "cost_efficiency": "Change fail rate at 8% — 2 rework incidents avoided vs last month",
     "productivity": "Lead time improved 12% — delivering faster without more failures",
-    "developer_experience": "MTTR under 2hrs — on-call burden low",
+    "developer_experience": "Failed deployment recovery time under 2hrs — on-call burden low",
     "user_experience": "No user-visible outages this period",
-    "business_growth": "3 of 4 metrics trending toward Elite tier"
+    "business_growth": "4 of 5 metrics trending toward Elite tier"
   },
   "anomalies": [],
   "capability_gaps": [],
@@ -127,7 +138,7 @@ Pass improvement items to `@planner` (label: `capability-improvement`).
 
 ## Success Criteria
 
-- [ ] All four DORA metrics computed (or proxy flag set) — via `dora-measurement` skill
+- [ ] All five DORA metrics computed (or proxy flag set) — via `dora-measurement` skill
 - [ ] ROI dimensions populated in plain language — via `ROI-reporting` skill
 - [ ] Trend vs. previous snapshot computed
 - [ ] DORA tier assessed for each metric
