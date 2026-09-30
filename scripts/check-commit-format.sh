@@ -7,7 +7,7 @@ set -euo pipefail
 # Get the list of commits to check
 if [ -n "${GITHUB_PR_NUMBER:-}" ]; then
   # In CI with PR number
-  commits=$(gh api repos/paruff/uFawkesAI/pulls/$GITHUB_PR_NUMBER/commits --jq '.[] | .sha[0:7] + " " + (.commit.message | split("\n")[0])' 2> /dev/null || echo "")
+  commits=$(gh api repos/paruff/uFawkesAI/pulls/"$GITHUB_PR_NUMBER"/commits --jq '.[] | .sha[0:7] + " " + (.commit.message | split("\n")[0])' 2> /dev/null || echo "")
 elif [ -n "${CI_COMMIT_SHA:-}" ]; then
   # In CI without PR number, check last 10 commits
   commits=$(git log --oneline -10)
