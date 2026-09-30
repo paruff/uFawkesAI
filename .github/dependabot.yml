@@ -1,0 +1,45 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    labels: ["dependencies", "chore"]
+    # Let a new release age a week before adopting it (supply-chain cooldown).
+    cooldown:
+      default-days: 7
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    labels: ["dependencies", "chore"]
+    # Let a new release age a week before adopting it (supply-chain cooldown).
+    cooldown:
+      default-days: 7
+  # DevSecOps image: base image digest (Dockerfile FROM) and Node tools.
+  # Binary tools and Python locks (tools.lock.json, requirements*.lock) are
+  # not supported by Dependabot — .github/workflows/image-lock-bump.yml bumps them.
+  - package-ecosystem: "docker"
+    directory: "/images/devsecops"
+    schedule:
+      interval: "weekly"
+    labels: ["dependencies", "chore"]
+    # Let a new release age a week before adopting it (supply-chain cooldown).
+    cooldown:
+      default-days: 7
+  - package-ecosystem: "npm"
+    directory: "/images/devsecops/node"
+    schedule:
+      interval: "weekly"
+    labels: ["dependencies", "chore"]
+    # Let a new release age a week before adopting it (supply-chain cooldown).
+    cooldown:
+      default-days: 7
+  - package-ecosystem: "npm"
+    directory: "/images/devsecops/node-ai"
+    schedule:
+      interval: "weekly"
+    labels: ["dependencies", "chore"]
+    # Let a new release age a week before adopting it (supply-chain cooldown).
+    cooldown:
+      default-days: 7

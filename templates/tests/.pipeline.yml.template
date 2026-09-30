@@ -1,0 +1,110 @@
+# Pipeline contract template with test suite
+# Customize this for your project
+
+pipeline:
+  version: 2
+  name: <PROJECT_NAME>
+  type: <PROJECT_TYPE>  # stack, core, site, config
+
+gates:
+  preflight:
+    required: true
+    checks:
+      - pre-commit
+      - commit-format
+      - pr-size
+
+  lint:
+    required: true
+    tools:
+      - yamllint
+      - markdownlint
+      - prettier
+
+  security:
+    required: true
+    tools:
+      - gitleaks
+      - trivy
+      - detect-secrets
+
+  build:
+    required: true
+    steps:
+      - docker-compose-validate  # if stack
+      - jcasc-validate  # if pipe
+      - k8s-validate  # if core
+
+  tests:
+    required: true
+    tiers:
+      unit:
+        required: true
+        command: pytest tests/unit/ -v --tb=short
+        coverage:
+          total: 60
+          diff: 80
+      integration:
+        required: true  # if stack
+        command: pytest tests/integration/ -v --tb=short
+        coverage:
+          total: 50
+          diff: 70
+      smoke:
+        required: true  # if stack
+        command: pytest tests/smoke/ -v --tb=short
+      acceptance:
+        required: true  # if stack
+        command: pytest tests/acceptance/ -v --tb=short
+        coverage:
+          total: 50
+          diff: 70
+
+  deploy:
+    required: false
+    steps:
+      - docker-compose-up
+      - health-check
+
+supply-chain:
+  sbom:
+    enabled: true  # if stack
+    format: spdx-json
+    tool: syft
+  image-signing:
+    enabled: true  # if stack
+    tool: cosign
+    mode: keyless
+  attestation:
+    enabled: true  # if stack
+    type: slsa
+  container-scan:
+    enabled: true  # if stack
+    tool: trivy
+    severity: MEDIUM
+    fail-on: critical,high
+
+stages:
+  - name: preflight
+    parallel: false
+  - name: lint
+    parallel: true
+  - name: security
+    parallel: true
+  - name: build
+    parallel: false
+  - name: tests
+    parallel: true
+  - name: deploy
+    parallel: false
+
+environments:
+  dev:
+    auto-deploy: true
+    branch: main
+  staging:
+    auto-deploy: false
+    branch: release/*
+  production:
+    auto-deploy: false
+    branch: v*

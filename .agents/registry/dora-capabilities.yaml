@@ -1,0 +1,154 @@
+# MIT License
+#
+# Copyright (c) 2026 Phil Ruff
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+# Canonical DORA AI capability vocabulary — single source of truth.
+#
+# Source: DORA, "AI Capabilities Model" (2025).
+# https://dora.dev/ai/capabilities-model/report/
+#
+# Seven capabilities. The number is part of the name: skills reference these
+# as "AI Capability N: <Name>" and scripts/check-dora-vocabulary.sh asserts
+# that no file invents a different capability for a given number.
+#
+# Two axes are in play across this repo, and they must not be conflated:
+#
+#   AI Capability N  — one of the seven below. DORA-defined.
+#   Core: <name>     — a delivery practice that is NOT one of the seven
+#                      (observability, reliability, test automation, CI).
+#                      DORA's core software-delivery metrics cover some of
+#                      these, but they are not AI capabilities.
+#
+# Before the canonicalisation, "Cap 6" meant User-centric focus in some files
+# and Reliability / Operational Visibility / Fast Feedback Loops in others.
+# TEMPLATE-DESIGN.md additionally defined an eight-capability scheme that
+# included two invented capabilities. Do not reintroduce that.
+
+schema_version: 1
+source: "DORA AI Capabilities Model (2025) — https://dora.dev/ai/capabilities-model/report/"
+
+capabilities:
+  - number: 1
+    name: "Clear and communicated AI stance"
+    slug: clear-ai-stance
+    definition: >-
+      The organization's position on AI-assisted tools is clear and
+      well-communicated: expectations for AI use, support for
+      experimentation, and which tools are permitted. A clear stance
+      amplifies AI's impact regardless of what the stance actually says.
+    dci_dimensions:
+      - internal_platform
+      - user_centricity
+
+  - number: 2
+    name: "Healthy data ecosystems"
+    slug: healthy-data-ecosystems
+    definition: >-
+      Internal data is high-quality, easily accessible, and unified.
+      Substantially amplifies AI's influence on organizational performance.
+    dci_dimensions:
+      - user_centricity
+      - loosely_coupled
+
+  - number: 3
+    name: "AI-accessible internal data"
+    slug: ai-accessible-internal-data
+    definition: >-
+      AI tools are connected to internal data sources — documentation,
+      codebases — so they move beyond a general-purpose assistant into a
+      specialized tool. This is the capability often called "context
+      engineering".
+    dci_dimensions:
+      - internal_platform
+      - loosely_coupled
+
+  - number: 4
+    name: "Strong version control practices"
+    slug: version-control
+    definition: >-
+      With AI increasing the volume and velocity of code generation, strong
+      version control habits are a safety net. Frequent commits amplify
+      individual effectiveness; frequent use of rollback boosts team
+      performance.
+    dci_dimensions:
+      - loosely_coupled
+      - continuously_deliverable
+
+  - number: 5
+    name: "Working in small batches"
+    slug: small-batches
+    definition: >-
+      A long-standing DORA principle that is especially powerful in an
+      AI-assisted environment. Small batches are reviewable and testable,
+      counteracting the risk of large unreviewable generated blocks.
+    dci_dimensions:
+      - small_batches
+      - continuously_deliverable
+
+  - number: 6
+    name: "User-centric focus"
+    slug: user-centric-focus
+    definition: >-
+      A deep focus on the end user's experience. Without it, AI adoption can
+      have a *negative* impact on team performance: teams move quickly in the
+      wrong direction.
+    dci_dimensions:
+      - user_centricity
+
+  - number: 7
+    name: "Quality internal platforms"
+    slug: internal-platforms
+    definition: >-
+      Shared, automated, secure capabilities that let AI's benefits scale.
+      Prevents individual productivity gains from being absorbed by
+      downstream bottlenecks.
+    dci_dimensions:
+      - internal_platform
+      - fast_feedback
+
+# Not DORA AI capabilities. Use the "Core:" axis for these. Listed here so
+# scripts/check-dora-vocabulary.sh can name them explicitly when it rejects
+# a file that mislabels one as an AI capability.
+non_ai_capabilities:
+  - "Observability"
+  - "Reliability"
+  - "Operational resilience"
+  - "Operational visibility"
+  - "CI/CD automation"
+  - "Test automation"
+  - "Continuous delivery"
+  - "Continuous integration"
+  - "Fast feedback loops"
+  - "Prompt engineering"
+  - "Learning culture"
+  - "AI policy"
+
+# Retired vocabulary, kept only so the checker can detect reintroductions.
+retired_vocabulary:
+  - "Capability 6 — Fast Feedback Loops"
+  - "Capability 8 — Agent Skills"
+  - "Prompt Engineering as Core Skill"
+  - "AI Cap 2 — Prompt Engineering"
+  - "AI Cap 2 — Prompt Engineering as Core Skill"
+  - "Clarify AI Policies"
+  - "Shift Left on Quality"
+  - "AI-assisted development"
+  - "Context Engineering"

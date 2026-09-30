@@ -1,0 +1,25 @@
+{
+  "$comment": [
+    "Minimal, strict-by-default config for the repo's one TypeScript file:",
+    ".opencode/plugins/ai-sdlc-hooks.ts. There is no application source and",
+    "no build output — this repo is instructions, skills, hooks, and config.",
+    "noEmit: true because nothing is compiled or published; this type checks,",
+    "it does not build."
+  ],
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "types": ["node"],
+    "noEmit": true,
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "allowJs": false
+  },
+  "include": [".opencode/plugins/**/*.ts"]
+}

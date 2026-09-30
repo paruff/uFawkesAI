@@ -1,0 +1,15 @@
+{
+  "name": "ufawkes-devsecops-node-ai-tools",
+  "private": true,
+  "description": "Agent harness CLIs, qmd (local markdown search + MCP) and language servers baked into the ai image (Apache-2.0/MIT); installed with npm ci. Claude Code is not here: its licence reserves all rights, so .devcontainer/Dockerfile installs it.",
+  "dependencies": {
+    "@google/gemini-cli": "0.61.0",
+    "@openai/codex": "0.159.0",
+    "@tobilu/qmd": "2.8.3",
+    "bash-language-server": "5.8.1",
+    "pyright": "1.1.414",
+    "typescript": "5.9.3",
+    "typescript-language-server": "6.0.1",
+    "yaml-language-server": "1.24.0"
+  }
+}

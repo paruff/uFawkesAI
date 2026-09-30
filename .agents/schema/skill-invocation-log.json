@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Agent Invocation Log",
+  "description": "Structured log entry written by an agent after completing its task. One JSON object per invocation, appended to a dated log file.",
+  "type": "object",
+  "required": [
+    "agent",
+    "session_id",
+    "timestamp",
+    "decision",
+    "skills_loaded",
+    "findings"
+  ],
+  "properties": {
+    "agent": {
+      "type": "string",
+      "description": "Name of the agent that produced this log (matches filename without .md)"
+    },
+    "mode": {
+      "type": "string",
+      "description": "Operational mode if agent supports more than one (e.g. 'pr-audit', 'deep-review')"
+    },
+    "session_id": {
+      "type": "string",
+      "description": "Unique identifier for this invocation session"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 UTC timestamp of when the log was written"
+    },
+    "skills_loaded": {
+      "type": "array",
+      "description": "List of skills loaded during this invocation",
+      "items": { "type": "string" }
+    },
+    "inputs": {
+      "type": "object",
+      "description": "Which inputs were available during this invocation",
+      "properties": {
+        "specification": { "type": "boolean" },
+        "design": { "type": "boolean" },
+        "build_output": { "type": "boolean" },
+        "governance_rules": { "type": "boolean" },
+        "test_results": { "type": "boolean" }
+      }
+    },
+    "findings": {
+      "type": "array",
+      "description": "Findings produced during this invocation",
+      "items": {
+        "type": "object",
+        "required": ["severity", "category", "summary"],
+        "properties": {
+          "severity": {
+            "type": "string",
+            "enum": ["CRITICAL", "HIGH", "MEDIUM", "LOW", "INFO"]
+          },
+          "category": {
+            "type": "string",
+            "description": "Skill or check category that produced this finding"
+          },
+          "summary": {
+            "type": "string",
+            "description": "One-line summary of the finding"
+          },
+          "actionable": {
+            "type": "boolean",
+            "description": "Whether this finding requires a specific action to resolve"
+          },
+          "manual_review_needed": {
+            "type": "boolean",
+            "description": "Whether this finding requires human judgment to resolve"
+          }
+        }
+      }
+    },
+    "decision": {
+      "type": "string",
+      "enum": [
+        "PASS",
+        "FAIL",
+        "BLOCKED",
+        "APPROVE",
+        "REQUEST_CHANGES",
+        "ESCALATE"
+      ]
+    },
+    "blockers": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of CRITICAL or blocking findings"
+    },
+    "duration_seconds": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Approximate wall-clock duration of the invocation"
+    }
+  }
+}

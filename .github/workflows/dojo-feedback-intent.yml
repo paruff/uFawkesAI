@@ -1,0 +1,131 @@
+name: Dojo Feedback → Intent
+
+# Closes the Dojo learning loop (docs/ai-sdlc/dojo-handoff.md):
+#   * when a docs/ai-sdlc/**/dojo-feedback.md is merged to main, validate it
+#     (scripts/dojo-feedback-intent.sh) and open an issue labelled `intent`
+#     carrying the gaps and a ready-to-commit draft intent.md, so the
+#     AI-SDLC cycle restarts at the spec stage;
+#   * daily, label `intent-overdue` (and comment) on any `intent` issue still
+#     open after one sprint — DOJO_SPRINT_DAYS repo variable, default 7 days
+#     (the learn skill's weekly sprint cadence).
+# One issue per feedback file: an idempotency marker in the issue body
+# prevents duplicates when the file is edited or the run is retried.
+
+on:
+  push:
+    branches: [main]
+    paths: ["docs/ai-sdlc/**/dojo-feedback.md"]
+  schedule:
+    - cron: "41 7 * * *"
+  workflow_dispatch:
+    inputs:
+      feedback:
+        description: "Path of a dojo-feedback.md to (re)process"
+        required: false
+        type: string
+
+permissions: {}
+
+concurrency:
+  group: dojo-feedback-intent
+  cancel-in-progress: false
+
+env:
+  SPRINT_DAYS: ${{ vars.DOJO_SPRINT_DAYS || '7' }}
+
+jobs:
+  open-intent:
+    name: "🥋 Open intent issue from Dojo feedback"
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - name: job-start
+        run: echo "job-start $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Find merged feedback files
+        id: files
+        env:
+          BEFORE: ${{ github.event.before }}
+          INPUT_FEEDBACK: ${{ inputs.feedback }}
+        run: |
+          if [ -n "$INPUT_FEEDBACK" ]; then
+            files="$INPUT_FEEDBACK"
+          elif [ -n "$BEFORE" ] && ! [[ "$BEFORE" =~ ^0+$ ]]; then
+            files="$(git diff --name-only --diff-filter=AM "$BEFORE" "$GITHUB_SHA" -- ':(glob)docs/ai-sdlc/**/dojo-feedback.md')"
+          else
+            files="$(git show --name-only --diff-filter=AM --format= "$GITHUB_SHA" -- ':(glob)docs/ai-sdlc/**/dojo-feedback.md')"
+          fi
+          printf '%s\n' "$files" | sed '/^$/d' | tee "$RUNNER_TEMP/files.txt"
+
+      - name: Open one intent issue per feedback file
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # jq programs use jq variables ($m) — single quotes are intended.
+          # shellcheck disable=SC2016
+          gh label create intent --color 0E8A16 \
+            --description "Restart the AI-SDLC cycle: commit an intent.md" --force
+          gh label create intent-overdue --color D93F0B \
+            --description "intent issue open longer than one sprint" --force
+          while IFS= read -r f; do
+            [ -n "$f" ] || continue
+            out="$RUNNER_TEMP/render-$(echo "$f" | tr '/' '_')"
+            result="$(bash scripts/dojo-feedback-intent.sh "$f" --out-dir "$out" --sprint-days "$SPRINT_DAYS")"
+            if [ "$result" = "no-gaps" ]; then
+              echo "✅ ${f}: no gaps recorded — no new cycle needed" | tee -a "$GITHUB_STEP_SUMMARY"
+              continue
+            fi
+            marker="$(cat "$out/marker.txt")"
+            existing="$(gh issue list --state all --label intent --limit 200 --json number,body |
+              jq -r --arg m "$marker" '[.[] | select(.body | contains($m))][0].number // empty')"
+            if [ -n "$existing" ]; then
+              echo "↩️ ${f}: intent issue #${existing} already exists" | tee -a "$GITHUB_STEP_SUMMARY"
+              continue
+            fi
+            url="$(gh issue create --title "$(cat "$out/issue-title.txt")" \
+              --body-file "$out/issue.md" --label intent)"
+            echo "🥋 ${f} → ${url} (commit $(cat "$out/intent-path.txt"))" | tee -a "$GITHUB_STEP_SUMMARY"
+          done <"$RUNNER_TEMP/files.txt"
+      - name: job-finish
+        if: always()
+        run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+
+  overdue:
+    name: "⏰ Flag intent issues older than one sprint"
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      issues: write
+    steps:
+      - name: job-start
+        run: echo "job-start $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+      - name: Label and comment on overdue intent issues
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          # jq programs use jq variables ($c) — single quotes are intended.
+          # shellcheck disable=SC2016
+          cutoff="$(date -u -d "-${SPRINT_DAYS} days" +%Y-%m-%dT%H:%M:%SZ)"
+          gh issue list --repo "$REPO" --state open --label intent --limit 200 \
+            --json number,createdAt,labels |
+            jq -r --arg c "$cutoff" '.[] | select(.createdAt < $c)
+              | select([.labels[].name] | index("intent-overdue") | not) | .number' |
+            while IFS= read -r n; do
+              gh issue edit "$n" --repo "$REPO" --add-label intent-overdue
+              gh issue comment "$n" --repo "$REPO" --body \
+                "⏰ Open for more than one sprint (${SPRINT_DAYS} days) without an \`intent.md\`. Commit the draft (or close this if the gaps no longer apply) — see \`docs/ai-sdlc/dojo-handoff.md\`."
+              echo "⏰ #${n} marked intent-overdue" | tee -a "$GITHUB_STEP_SUMMARY"
+            done
+      - name: job-finish
+        if: always()
+        run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ')"

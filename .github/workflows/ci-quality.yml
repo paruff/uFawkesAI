@@ -1,0 +1,263 @@
+name: CI Quality Gate
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+  push:
+    branches:
+      - main
+  workflow_dispatch: null
+permissions:
+  contents: read
+  pull-requests: read
+concurrency:
+  group: ci-quality-${{ github.event_name == 'pull_request' && github.ref || github.sha }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+jobs:
+  preflight:
+    name: "✈️ Pre-flight"
+    uses: ./.github/workflows/reusable-preflight.yml
+    with:
+      pr-size-limit: 400
+      commit-format: conventional
+      emergency-bypass: true
+  lint:
+    name: "🔍 Lint"
+    uses: ./.github/workflows/reusable-lint.yml
+    with:
+      auto-detect: true
+      emergency-bypass: true
+  artifact-chain:
+    name: "🔗 Artifact Chain"
+    uses: ./.github/workflows/artifact-chain.yml
+  symlink-check:
+    name: "🔗 Agent Symlinks"
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: job-start
+        run: echo "job-start $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - name: Verify symlinks
+        run: |
+          test -L CLAUDE.md
+          test -L .github/copilot-instructions.md
+          test -L .cursorrules
+          test -f CLAUDE.md
+          test -f .github/copilot-instructions.md
+          test -f .cursorrules
+          test "$(readlink CLAUDE.md)" = "AGENTS.md"
+          test "$(readlink .github/copilot-instructions.md)" = "../AGENTS.md"
+          test "$(readlink .cursorrules)" = "AGENTS.md"
+          echo "✅ Agent symlinks resolve correctly"
+      - name: job-finish
+        run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+  multi-harness-smoke:
+    name: "🧩 Multi-Harness Smoke Test"
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: job-start
+        run: echo "job-start $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
+        with:
+          driver: docker
+      - name: Build the ai DevSecOps image locally (core/gitops are its build stages)
+        working-directory: images/devsecops
+        run: TAG=ci docker buildx bake ai --load --allow=fs.read=../../opencode --allow=fs.read=../../.agents/agents
+      - name: Build devcontainer image locally with local base image
+        run: |
+          docker buildx build --build-arg BASE_IMAGE=ufawkes-devsecops-ai:ci -f .devcontainer/Dockerfile -t ufawkesai-devcontainer:ci --load .
+      - name: Run smoke test in devcontainer
+        run: |
+          docker run --rm -v "$PWD:/workspace" -w /workspace ufawkesai-devcontainer:ci bash scripts/multi-harness-smoke.sh
+      - name: job-finish
+        run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+  lint-placeholder:
+    name: "🔍 Lint (Placeholder)"
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: job-start
+        run: echo "job-start $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: 22.23.2
+          cache: npm
+      - run: npm ci
+      - name: Run ESLint placeholder
+        run: |
+          npm run lint
+          echo "✅ Lint passed (placeholder)"
+      - name: job-finish
+        run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+  typecheck:
+    name: "🔷 TypeScript"
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: job-start
+        run: echo "job-start $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: 22.23.2
+          cache: npm
+      - run: npm ci
+      - name: Run TypeScript compiler placeholder
+        run: |
+          npm run typecheck
+          echo "✅ TypeScript passed (placeholder)"
+      - name: job-finish
+        run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+  test:
+    name: "🧪 Tests & Coverage"
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: job-start
+        run: echo "job-start $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: 22.23.2
+          cache: npm
+      - run: npm ci
+      - name: Run tests with coverage placeholder
+        run: |
+          npm run test:coverage
+          echo "✅ Tests passed (placeholder)"
+      - name: Check coverage threshold
+        run: |
+          # [PLACEHOLDER] — replace with your coverage tool's threshold check
+          # Example for Jest: configured in jest.config.js with coverageThreshold
+          # This step fails if coverage drops below 80%
+          echo "Coverage threshold: 80% (configured in jest.config.js)"
+      - name: job-finish
+        run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+  architecture:
+    name: "🏗️ Architecture Boundaries"
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: job-start
+        run: echo "job-start $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: 22.23.2
+          cache: npm
+      - run: npm ci
+      - name: Check architecture boundaries placeholder
+        run: |
+          npm run lint:architecture
+          echo "✅ Architecture boundaries respected (placeholder)"
+      - name: job-finish
+        run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+  ci-summary:
+    name: "✅ CI Complete"
+    needs:
+      - preflight
+      - lint
+      - artifact-chain
+      - symlink-check
+      - multi-harness-smoke
+      - lint-placeholder
+      - typecheck
+      - test
+      - architecture
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: job-start
+        run: echo "job-start $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+      - name: Check all gates
+        run: |
+          if [ "${{ needs.preflight.result }}" == "failure" ] || \
+             [ "${{ needs.lint.result }}" == "failure" ] || \
+             [ "${{ needs.artifact-chain.result }}" != "success" ] || \
+             [ "${{ needs.symlink-check.result }}" == "failure" ] || \
+             [ "${{ needs.multi-harness-smoke.result }}" == "failure" ] || \
+             [ "${{ needs.lint-placeholder.result }}" == "failure" ] || \
+             [ "${{ needs.typecheck.result }}" == "failure" ] || \
+             [ "${{ needs.test.result }}" == "failure" ] || \
+             [ "${{ needs.architecture.result }}" == "failure" ]; then
+            echo "❌ One or more CI gates failed"
+            exit 1
+          fi
+          echo "✅ All CI gates passed — ready for human review"
+      - name: Generate quality summary
+        if: always()
+        run: |
+          echo "## Quality Gate Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Gate | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Pre-flight | ${{ needs.preflight.result == 'success' && '✅ Pass' || (needs.preflight.result == 'skipped' && '⏭️ Skipped' || '❌ Fail') }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Lint | ${{ needs.lint.result == 'success' && '✅ Pass' || (needs.lint.result == 'skipped' && '⏭️ Skipped' || '❌ Fail') }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Artifact Chain | ${{ needs.artifact-chain.result == 'success' && '✅ Pass' || '❌ Fail' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Symlinks | ${{ needs.symlink-check.result == 'success' && '✅ Pass' || '❌ Fail' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Multi-Harness Smoke | ${{ needs.multi-harness-smoke.result == 'success' && '✅ Pass' || '❌ Fail' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Lint (Placeholder) | ${{ needs.lint-placeholder.result == 'success' && '✅ Pass' || '❌ Fail' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| TypeScript | ${{ needs.typecheck.result == 'success' && '✅ Pass' || '❌ Fail' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Tests | ${{ needs.test.result == 'success' && '✅ Pass' || '❌ Fail' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Architecture | ${{ needs.architecture.result == 'success' && '✅ Pass' || '❌ Fail' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### DORA Metrics" >> $GITHUB_STEP_SUMMARY
+          echo "- **Total gates**: 9" >> $GITHUB_STEP_SUMMARY
+          echo "- **Parallel execution**: Yes" >> $GITHUB_STEP_SUMMARY
+          echo "- **Estimated time**: ~5 min" >> $GITHUB_STEP_SUMMARY
+      - name: job-finish
+        run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+  dora-events:
+    name: "📡 Delivery Events"
+    needs: ci-summary
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      GH_TOKEN: ${{ github.token }}
+      OTEL_EXPORTER_OTLP_ENDPOINT: ${{ vars.OTEL_EXPORTER_OTLP_ENDPOINT }}
+      OTEL_SERVICE_NAME: ${{ vars.OTEL_SERVICE_NAME || 'ufawkesai' }}
+      OTEL_EXPORTER_OTLP_HEADERS: ${{ secrets.OTEL_EXPORTER_OTLP_HEADERS }}
+      DORA_EVENTS_FILE: ${{ github.workspace }}/dora-events.jsonl
+    steps:
+      - name: job-start
+        run: echo "job-start $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Self-test the emitter
+        run: |
+          pip install --quiet 'jsonschema==4.25.1'
+          bash scripts/test-emit-dora-event.sh
+      - name: Emit delivery events
+        env:
+          DEPLOY_ENVIRONMENT: ${{ vars.DORA_ENVIRONMENT || 'main' }}
+          IS_DELIVERY: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+        run: |
+          started_at="$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" --jq .run_started_at)"
+          bash scripts/emit-dora-event.sh job-start --step ci-quality --at "$started_at"
+          bash scripts/emit-dora-event.sh job-finish --step ci-quality --started-at "$started_at"
+          if [ "$IS_DELIVERY" = true ]; then
+            bash scripts/emit-dora-event.sh deploy-marker --step ci-quality --environment "$DEPLOY_ENVIRONMENT"
+          fi
+          {
+            echo "### 📡 Delivery events"
+            echo '```json'
+            jq . "$DORA_EVENTS_FILE"
+            echo '```'
+          } >>"$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: dora-events
+          path: dora-events.jsonl
+          if-no-files-found: error
+      - name: job-finish
+        if: always()
+        run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ')"

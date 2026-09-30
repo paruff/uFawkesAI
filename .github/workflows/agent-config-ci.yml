@@ -1,0 +1,83 @@
+name: Agent Config Evals
+
+# Continuous evals: any change to the agent configuration replays
+# .agents/evals/tasks against the new config and blocks if the pass rate drops
+# below .agents/evals/baseline.json (continuous-evals skill).
+#
+# Runs through OpenCode (first-class harness), reusing the suite's existing
+# provider keys. The model is the repository variable EVAL_MODEL (default
+# google/gemini-3.1-flash-lite); its provider prefix picks the key:
+#   google/*   -> GEMINI_API_KEY      opencode/* -> OPENCODE_API_KEY
+# Without that secret the job FAILS with an explicit message — a skipped eval
+# must never look like a passing one.
+
+on:
+  pull_request:
+    paths:
+      - "AGENTS.md"
+      - ".agents/**"
+      - ".claude/**"
+      - "opencode.json"
+      - "scripts/run-evals.sh"
+      - ".github/workflows/agent-config-ci.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: agent-config-evals-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  EVAL_MODEL: ${{ vars.EVAL_MODEL || 'google/gemini-3.1-flash-lite' }}
+
+jobs:
+  evals:
+    name: "🧪 Agent config evals"
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: job-start
+        run: echo "job-start $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: Require the API key (no silent skip)
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
+        run: |
+          case "${EVAL_MODEL%%/*}" in
+            google) key=GEMINI_API_KEY ;;
+            opencode) key=OPENCODE_API_KEY ;;
+            *) echo "::error::EVAL_MODEL '${EVAL_MODEL}' has no key mapping (google/* or opencode/*)"; exit 1 ;;
+          esac
+          if [ -z "${!key}" ]; then
+            echo "::error::${key} secret is not set for ${EVAL_MODEL} — evals did NOT run. Add the secret or this gate stays red."
+            exit 1
+          fi
+      - name: Self-test the gate (offline)
+        run: bash scripts/test-run-evals.sh
+      # Same OpenCode version the DevSecOps image pins (tools.lock.json).
+      - name: Install OpenCode
+        run: npm install -g opencode-ai@1.18.32
+      - name: Run evals against this configuration
+        env:
+          # OpenCode's google provider reads GOOGLE_GENERATIVE_AI_API_KEY, not
+          # GEMINI_API_KEY (without it: "Google Generative AI API key is missing").
+          GOOGLE_GENERATIVE_AI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
+          EVAL_HARNESS: opencode
+        # Empty config dir: no machine/plugin config can change which model answers.
+        run: XDG_CONFIG_HOME="$(mktemp -d)" bash scripts/run-evals.sh
+      - name: Upload eval report
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: evals-report
+          path: .agents/logs/evals-report.json
+          if-no-files-found: warn
+      - name: job-finish
+        if: always()
+        run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ')"

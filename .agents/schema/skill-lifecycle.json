@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Skill Lifecycle Registry",
+  "description": "Canonical lifecycle metadata for all uFawkesAI skills. The registry is the source of truth for status, version, dependencies, and deprecation.",
+  "type": "object",
+  "required": ["skills"],
+  "properties": {
+    "skills": {
+      "type": "object",
+      "description": "Map of skill paths to their lifecycle metadata",
+      "patternProperties": {
+        "^[a-z][a-z0-9/-]*$": {
+          "type": "object",
+          "required": ["status"],
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "active",
+                "beta",
+                "draft",
+                "deprecated",
+                "experimental",
+                "stable"
+              ],
+              "description": "Lifecycle stage of this skill"
+            },
+            "version": {
+              "type": "string",
+              "pattern": "^\\d+\\.\\d+\\.\\d+$",
+              "description": "Semantic version of this skill"
+            },
+            "replaced_by": {
+              "type": "string",
+              "description": "Skill path that replaces this deprecated skill"
+            },
+            "deprecation_reason": {
+              "type": "string",
+              "description": "Reason for deprecation"
+            },
+            "dependencies": {
+              "type": "array",
+              "description": "Skills or data sources this skill depends on",
+              "items": { "type": "string" }
+            },
+            "load_trigger": {
+              "type": "string",
+              "description": "Trigger phrase that causes this skill to be loaded"
+            },
+            "sub_skills": {
+              "type": "array",
+              "description": "Sub-skill paths under this skill domain",
+              "items": { "type": "string" }
+            }
+          }
+        }
+      }
+    }
+  }
+}
