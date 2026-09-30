@@ -147,10 +147,24 @@ always-loaded file lean.
 
 ---
 
-## 9. See Also
+## 9. Delivery Metrics
+
+Use these baselines before optimizing delivery flow. The authoritative formulas and worked examples live in [`docs/METRICS.md`](./docs/METRICS.md).
+
+- [Rework rate](./docs/METRICS.md#1-rework-rate) — target: < 10% green, 10–20% amber, > 20% red
+- [PR revision rate](./docs/METRICS.md#2-pr-revision-rate) — target: < 25% green, 25–40% amber, > 40% red
+- [CI cycle time](./docs/METRICS.md#3-ci-cycle-time) — target: < 4 min green, 4–10 min amber, > 10 min red
+- [Review turnaround](./docs/METRICS.md#4-review-turnaround) — target: < 24h green, 24–72h amber, > 72h red
+- [Failed deployment recovery time](./docs/METRICS.md#5-failed-deployment-recovery-time-fdrt) — target: < 1h green, 1–4h amber, > 4h red
+- [Reliability / change failure rate](./docs/METRICS.md#6-reliability--change-failure-rate) — target: improving trend green, flat amber, rising red
+
+---
+
+## 10. See Also
 
 - `.agents/README.md` — Full agent and skill documentation
 - `.agents/registry/` — Agent capabilities, cross-validation rules, skill lifecycle
 - `.agents/assertions/` — Report contracts, assertion runner, pre-commit hooks
 - `scripts/token-audit.sh` — Token footprint audit (run it before the bill arrives)
 - `docs/MODEL_ROUTING_GUIDE.md` — Which model/mode for which task
+- `docs/METRICS.md` — Baseline targets, formulas, data sources, and worked examples
