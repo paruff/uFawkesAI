@@ -2,7 +2,8 @@
 # uFawkesAI devcontainer image — the shared image for the uFawkes suite and fawkes.
 # Published to ghcr.io/paruff/ufawkesai-devcontainer by build-devsecops-images.yml.
 #
-# The ai base already includes: OpenCode, Superpowers + Flux agent skills
+# The ai base already includes: OpenCode, qmd, the language servers (TS/JS,
+# Python, Go, Java, C/C++, Bash, YAML), Superpowers + Flux + qmd agent skills
 # (linked into ~/.claude/skills and ~/.config/opencode/skills), pre-commit,
 # gh, the core/gitops scanners, zsh, sudo, and the dev user.
 
@@ -14,3 +15,12 @@ FROM ${BASE_IMAGE}
 ARG CLAUDE_CODE_VERSION=2.1.283
 RUN npm install -g @anthropic-ai/claude-code@${CLAUDE_CODE_VERSION} \
   && npm cache clean --force
+
+# Code intelligence + qmd for Claude Code. The language servers and qmd ship in
+# the ai base; the local ufawkes-lsp plugin (.devcontainer/claude-plugins) tells
+# Claude Code how to start them, and qmd is a user-scope MCP server so every
+# repo opened in this container gets it.
+COPY --chown=dev:dev .devcontainer/claude-plugins /home/dev/.local/share/ufawkes-claude-plugins
+RUN claude plugin marketplace add /home/dev/.local/share/ufawkes-claude-plugins \
+  && claude plugin install ufawkes-lsp@ufawkes --scope user \
+  && claude mcp add --scope user qmd -- qmd mcp

@@ -61,6 +61,17 @@ while IFS= read -r entry; do
     [ -d "${work}/${name}/${subdir}" ] || fail "${name}: archive has no ${subdir}/"
     cp -a "${work}/${name}/${subdir}/." "$tree/"
     echo "$version" > "${tree}/VERSION"
+  elif [ "$install_mode" = "opt" ]; then
+    # Self-contained application tree (e.g. jdtls: jars + launcher): unpack
+    # whole to /opt/<name>, stamp VERSION for version_cmd, and symlink its
+    # launchers onto PATH.
+    mkdir -p "${DEST}/opt/${name}"
+    tar -xf "$file" -C "${DEST}/opt/${name}"
+    echo "$version" > "${DEST}/opt/${name}/VERSION"
+    while IFS= read -r bin; do
+      [ -x "${DEST}/opt/${name}/${bin}" ] || fail "${name}: archive has no executable ${bin}"
+      ln -sf "/opt/${name}/${bin}" "${DEST}/usr/local/bin/$(basename "$bin")"
+    done < <(jq -r '.bins[]' <<< "$entry")
   elif [ "$install_mode" = "prefix" ]; then
     # */include: C headers only matter for compiling native add-ons, and
     # every npm install in the image runs with --ignore-scripts (-67 MB).

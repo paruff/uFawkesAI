@@ -92,23 +92,40 @@ FROM gitops AS ai
 ARG DEV_USER=dev
 ARG USER_UID=1000
 COPY --from=fetch-ai /out/ai/ /
+# Language toolchains for the LSP servers (Java: jdtls from tools.lock.json
+# runs on this Java 21 runtime and compiles with its own ECJ, so a JRE, not a
+# JDK; C/C++: clangd; Go: gopls needs the go toolchain + stdlib source).
+# Versions come from the apt snapshot, like everything else apt installs here.
 # hadolint ignore=DL3008
 RUN apt-get update \
  && apt-get install -y --no-install-recommends less sudo vim-tiny zsh \
+      openjdk-21-jre-headless clangd golang-go gopls \
  && rm -rf /var/lib/apt/lists/* \
  && groupadd --gid "${USER_UID}" "${DEV_USER}" \
  && useradd --uid "${USER_UID}" --gid "${USER_UID}" --create-home --shell /usr/bin/zsh "${DEV_USER}" \
  && echo "${DEV_USER} ALL=(ALL) NOPASSWD:ALL" >"/etc/sudoers.d/${DEV_USER}" \
  && chmod 0440 "/etc/sudoers.d/${DEV_USER}"
-# Codex and Gemini CLI (Apache-2.0) from a hash-locked package-lock.json, so
-# all four harnesses the multi-harness smoke test checks ship in the image.
+# From one hash-locked package-lock.json: Codex and Gemini CLI (so all four
+# harnesses the smoke test checks ship), qmd (local markdown search + MCP
+# server), and the TypeScript/JavaScript, Python, Bash and YAML language
+# servers. qmd's better-sqlite3 is the one package whose install script must
+# run (it fetches its native binding); node-llama-cpp's GPU builds are pruned
+# (CPU only in a devcontainer; builds for other platforms are dropped too).
 COPY node-ai/package.json node-ai/package-lock.json /opt/ufawkes/node-ai/
 RUN npm ci --prefix /opt/ufawkes/node-ai --omit=dev --ignore-scripts --no-audit --no-fund \
- && ln -s /opt/ufawkes/node-ai/node_modules/.bin/codex /usr/local/bin/codex \
- && ln -s /opt/ufawkes/node-ai/node_modules/.bin/gemini /usr/local/bin/gemini \
+ && npm rebuild --prefix /opt/ufawkes/node-ai better-sqlite3 \
+ && keep="linux-$(case "$(dpkg --print-architecture)" in amd64) echo x64 ;; *) echo arm64 ;; esac)" \
+ && find /opt/ufawkes/node-ai/node_modules/@node-llama-cpp -mindepth 1 -maxdepth 1 ! -name "$keep" -exec rm -rf {} + \
+ && for b in codex gemini qmd typescript-language-server tsserver pyright pyright-langserver \
+             bash-language-server yaml-language-server; do \
+      ln -s "/opt/ufawkes/node-ai/node_modules/.bin/${b}" "/usr/local/bin/${b}"; \
+    done \
  && npm cache clean --force
+# OpenCode would otherwise download missing language servers at runtime; every
+# server it needs is baked in above, so a download is never the answer.
 ENV NPM_CONFIG_PREFIX=/home/${DEV_USER}/.npm-global \
-    PATH=/home/${DEV_USER}/.npm-global/bin:$PATH
+    PATH=/home/${DEV_USER}/.npm-global/bin:$PATH \
+    OPENCODE_DISABLE_LSP_DOWNLOAD=true
 LABEL org.opencontainers.image.description="uFawkes DevSecOps toolchain (ai): gitops + OpenCode, Codex, Gemini CLI, Superpowers + Flux agent skills, devcontainer user"
 USER ${DEV_USER}
 WORKDIR /home/${DEV_USER}
@@ -127,7 +144,12 @@ RUN git config --global url."https://github.com/".insteadOf "ssh://git@github.co
 # Claude Code: all of them. OpenCode already registers Superpowers through the
 # config's skills.paths (same pinned version), so it links only the others:
 # a second registration triggers "duplicate skill name" warnings.
-RUN mkdir -p .claude/skills .config/opencode/skills \
+# qmd ships its own skill, pinned with the qmd package: installed to
+# ~/.agents/skills/qmd and linked into both harnesses.
+RUN qmd skill install --global --force \
+ && mkdir -p .claude/skills .config/opencode/skills \
+ && ln -sfn "$HOME/.agents/skills/qmd" .claude/skills/qmd \
+ && ln -sfn "$HOME/.agents/skills/qmd" .config/opencode/skills/qmd \
  && for s in /opt/agent-skills/*/*/; do ln -sfn "${s%/}" ".claude/skills/$(basename "${s}")"; done \
  && for s in /opt/agent-skills/*/*/; do \
       case "$s" in /opt/agent-skills/superpowers/*) continue ;; esac; \

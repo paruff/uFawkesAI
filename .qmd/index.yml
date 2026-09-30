@@ -20,12 +20,14 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+# Paths are relative to the repo root so the same file works on the host and
+# in the devcontainer (absolute host paths index nothing inside the container).
 collections:
   uFawkesAI-.agents:
-    path: /Users/philruff/projects/github/paruff/uFawkesAI/.agents
+    path: .agents
     pattern: "**/*.md"
   uFawkesAI-docs:
-    path: /Users/philruff/projects/github/paruff/uFawkesAI/docs
+    path: docs
     pattern: "**/*.md"
 models:
   embed: hf:ggml-org/embeddinggemma-300M-GGUF/embeddinggemma-300M-Q8_0.gguf
