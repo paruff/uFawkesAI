@@ -130,7 +130,7 @@ Examples:
 | ----------------------------- | --------------------------------------------------------------- |
 | DORA AI Capability improved   | [which of the 7 capabilities]                                   |
 | DORA Core Capability improved | [which core DevOps capability, if applicable]                   |
-| Metric that should improve    | [deployment frequency / lead time / CFR / MTTR]                 |
+| Metric that should improve    | [deployment frequency / change lead time / failed deployment recovery time / change fail rate / deployment rework rate] |
 | How measured                  | [uFawkesObs Prometheus query / uFawkesDORA dashboard / manual]  |
 | Baseline (current value)      | [current metric value, or "unknown — establish baseline first"] |
 
@@ -155,7 +155,7 @@ riskiest_assumption: "We assume ..."
 acceptance_criterion: "Given ..., when ..., then ..."
 dora_ai_capability: "6: User-centric focus"
 dora_core_capability: "Core: Continuous delivery"
-metric: "lead_time_hours"
+metric: "change_lead_time_hours"
 measurement_source: "uFawkesObs"
 baseline: "18.4 hours (2026-06-01)"
 prior_art: null
@@ -823,7 +823,7 @@ KNOWN_PRIOR_ART=(
   "GitOps: fluxcd/flux2, argoproj/argo-cd"
   "CDE: coder/coder, coder/code-server, devcontainers/spec"
   "golden paths: backstage/backstage, roadie-gg/roadie-backstage-plugins"
-  "DORA metrics: dora-team/fourkeys, LinearB, Sleuth"
+  "DORA metrics: LinearB, Sleuth, Faros AI"
   "security policy: open-policy-agent/opa, kyverno/kyverno"
 )
 echo "Known prior art for related domains:"

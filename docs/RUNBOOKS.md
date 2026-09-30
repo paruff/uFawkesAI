@@ -96,7 +96,7 @@ Review the output:
 | ------------------------ | ------------------------------------------------------------------------- |
 | Rework rate 10–20%       | Review recent Copilot output patterns; update AGENTS.md if drift observed |
 | Rework rate > 20%        | Stop features. Fix instructions. Run prompt library review.               |
-| Change failure rate > 5% | Review last 3 incidents. Improve test coverage in affected areas.         |
+| Change fail rate > 5% | Review last 3 incidents. Improve test coverage in affected areas.            |
 | CI time > 4 min          | File a performance issue for CI optimisation                              |
 | PR revision rate > 25%   | Review issue template quality — specs may be too vague                    |
 

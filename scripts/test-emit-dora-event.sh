@@ -191,8 +191,8 @@ else
   echo "  ❌ dora_event invalid:"
   echo "$out"
 fi
-check "dora_event carries cycle-time inputs and AI flag" \
-  '.first_commit_at == "2026-09-27T08:15:00Z" and .pr_merged_at == "2026-09-27T12:30:00Z" and .ai_assisted == true' \
+check "dora_event carries cycle-time inputs, AI flag, and deployment intent" \
+  '.first_commit_at == "2026-09-27T08:15:00Z" and .pr_merged_at == "2026-09-27T12:30:00Z" and .ai_assisted == true and .deployment_intent == "planned"' \
   "$(cat "$work/dora_event.json")"
 
 echo "== OTLP/HTTP export to /v1/logs =="

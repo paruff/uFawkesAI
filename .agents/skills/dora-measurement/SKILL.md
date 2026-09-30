@@ -1,6 +1,6 @@
 ---
 name: dora-measurement
-description: "Compute the four DORA delivery metrics from uFawkesObs. Implements DORA AI Capability 7 (the platform feedback loop)."
+description: "Compute the five DORA software delivery metrics from uFawkesObs. Implements DORA AI Capability 7 (the platform feedback loop)."
 license: MIT
 compatibility: Claude Code, GitHub Copilot, OpenCode, Cursor, Codex, Gemini CLI
 metadata:
@@ -16,7 +16,7 @@ metadata:
 
 ## Purpose
 
-Compute the four DORA delivery metrics from uFawkesObs (Prometheus + Loki). Use when producing monthly DORA snapshots, validating post-release metric trends, or generating ROI evidence. Requires uFawkesObs running. Implements DORA AI Capability 7: Quality internal platforms — measurement is the platform's feedback loop, not a data ecosystem (Cap 2).
+Compute the five DORA software delivery metrics from uFawkesObs (Prometheus + Loki). Use when producing monthly DORA snapshots, validating post-release metric trends, or generating ROI evidence. Requires uFawkesObs running. Implements DORA AI Capability 7: Quality internal platforms — measurement is the platform's feedback loop, not a data ecosystem (Cap 2).
 
 ## When to Use
 
@@ -35,7 +35,7 @@ Compute the four DORA delivery metrics from uFawkesObs (Prometheus + Loki). Use 
 
 ## Purpose
 
-Translate uFawkesObs telemetry into the four DORA delivery metrics and a plain-language
+Translate uFawkesObs telemetry into the five DORA software delivery metrics and a plain-language
 ROI signal. Bridges the gap between "substrate is running" and "we have DORA numbers."
 
 **Dependency:** uFawkesObs must be running and ingesting events. If deployment event
@@ -58,7 +58,7 @@ curl -s "${GRAFANA_URL}/api/health" | jq '.database' | grep -q "ok" || echo "ERR
 : "${REPO:?Set REPO (e.g. paruff/uFawkesObs)}"
 ```
 
-## The Four DORA Delivery Metrics
+## The Five DORA Software Delivery Metrics
 
 ### 1. Deployment Frequency
 
@@ -87,7 +87,7 @@ rate(github_pr_merged_total{repo=~"REPO"}[${WINDOW}d]) * 604800
 | Medium | 1/month to 1/week |
 | Low | Less than 1/month |
 
-### 2. Lead Time for Changes
+### 2. Change Lead Time
 
 Time from code committed to running in production.
 
@@ -123,7 +123,7 @@ histogram_quantile(0.50, rate(github_pr_time_to_merge_seconds_bucket[${WINDOW}d]
 | Medium | 1 week to 1 month |
 | Low    | > 1 month         |
 
-### 3. Change Failure Rate
+### 3. Change Fail Rate
 
 Percentage of deployments causing a production failure requiring remediation.
 
@@ -158,9 +158,9 @@ Percentage of deployments causing a production failure requiring remediation.
 | Medium | 10–15% |
 | Low | 15–100% |
 
-### 4. Time to Restore (MTTR)
+### 4. Failed Deployment Recovery Time
 
-How long it takes to recover from a production failure.
+How long it takes to recover from a failed deployment.
 
 **Primary query (Loki):**
 
@@ -193,6 +193,41 @@ histogram_quantile(0.50, rate(incident_resolution_time_seconds_bucket[${WINDOW}d
 | Medium | 1 day to 1 week |
 | Low    | > 1 week        |
 
+### 5. Deployment Rework Rate
+
+Percentage of deployments that are unplanned rework deployments.
+
+**Primary query (Prometheus):**
+
+```promql
+# Ratio of unplanned rework deployments to total deployments
+(
+  increase(deployment_events_total{repo=~"REPO", deployment_intent="unplanned_rework"}[${WINDOW}d])
+  /
+  increase(deployment_events_total{repo=~"REPO"}[${WINDOW}d])
+) * 100
+```
+
+**Proxy metric** (if deployment_intent is not yet wired — flag proxy_metrics: true):
+
+```promql
+# Hotfix PR rate as a proxy for deployment rework rate
+(
+  increase(github_pr_merged_total{repo=~"REPO", label="hotfix"}[${WINDOW}d])
+  /
+  increase(github_pr_merged_total{repo=~"REPO"}[${WINDOW}d])
+) * 100
+```
+
+**DORA tier thresholds:**
+
+| Tier | Value |
+| --- | --- |
+| Elite | 0–5% |
+| High | 5–10% |
+| Medium | 10–15% |
+| Low | 15–100% |
+
 ## ROI Translation (2026 DORA ROI Report Framework)
 
 Map metric values to five ROI dimensions. Produce plain-language interpretation
@@ -202,17 +237,17 @@ for each — no metric jargon in the output summary.
 # Pseudocode for ROI translation
 def translate_roi(metrics: dict, previous: dict) -> dict:
     return {
-        "cost_efficiency": f"CFR at {metrics['cfr']:.0%} — "
+        "cost_efficiency": f"Change fail rate at {metrics['change_fail_rate']:.0%} — "
         f"~{estimate_rework_incidents(metrics['cfr'], metrics['deploy_freq'])} "
         f"rework incidents avoided vs last period",
-        "productivity": f"Lead time {direction(metrics['lead_time'], previous['lead_time'])} "
-        f"{abs_change(metrics['lead_time'], previous['lead_time']):.0%} — "
+        "productivity": f"Change lead time {direction(metrics['change_lead_time'], previous['change_lead_time'])} "
+        f"{abs_change(metrics['change_lead_time'], previous['change_lead_time']):.0%} — "
         f"delivering {'faster' if improved else 'slower'} than last period",
-        "developer_experience": f"MTTR {metrics['mttr']:.1f}hrs — "
-        f"{'low' if metrics['mttr'] < 4 else 'moderate' if metrics['mttr'] < 24 else 'high'} "
+        "developer_experience": f"Failed deployment recovery time {metrics['failed_recovery_time']:.1f}hrs — "
+        f"{'low' if metrics['failed_recovery_time'] < 4 else 'moderate' if metrics['failed_recovery_time'] < 24 else 'high'} "
         f"on-call burden",
-        "user_experience": f"{'No user-visible outages' if metrics['cfr'] < 0.05 else str(incidents) + ' user-visible incidents'} this period",
-        "business_growth": f"{sum(1 for m in metrics.values() if is_elite(m))}/4 metrics at Elite tier",
+        "user_experience": f"{'No user-visible outages' if metrics['change_fail_rate'] < 0.05 else str(incidents) + ' user-visible incidents'} this period",
+        "business_growth": f"{sum(1 for m in metrics.values() if is_elite(m))}/5 metrics at Elite tier",
     }
 ```
 
@@ -266,7 +301,7 @@ def compute_metrics(prometheus_url: str, window_days: int, repo: str) -> dict:
         metrics["proxy_metrics"] = True
     metrics["deployment_frequency_per_week"] = df
 
-    # Lead Time (simplified — hours)
+    # Change Lead Time (simplified — hours)
     lt = query_prometheus(
         prometheus_url,
         f"histogram_quantile(0.50, rate(deployment_lead_time_seconds_bucket[{w}])) / 3600",
@@ -277,22 +312,37 @@ def compute_metrics(prometheus_url: str, window_days: int, repo: str) -> dict:
             f"histogram_quantile(0.50, rate(github_pr_time_to_merge_seconds_bucket[{w}])) / 3600",
         )
         metrics["proxy_metrics"] = True
-    metrics["lead_time_p50_hours"] = lt
+    metrics["change_lead_time_p50_hours"] = lt
 
-    # Change Failure Rate
+    # Change Fail Rate
     cfr = query_prometheus(
         prometheus_url,
         f'(increase(deployment_events_total{{repo=~"{repo}",status="failed"}}[{w}]) / '
         f'increase(deployment_events_total{{repo=~"{repo}"}}[{w}])) * 100',
     )
-    metrics["change_failure_rate_pct"] = cfr
+    metrics["change_fail_rate_pct"] = cfr
 
-    # MTTR (hours)
-    mttr = query_prometheus(
+    # Failed Deployment Recovery Time (hours)
+    recovery_time = query_prometheus(
         prometheus_url,
         f"histogram_quantile(0.50, rate(incident_resolution_time_seconds_bucket[{w}])) / 3600",
     )
-    metrics["mttr_p50_hours"] = mttr
+    metrics["failed_deployment_recovery_time_p50_hours"] = recovery_time
+
+    # Deployment Rework Rate
+    rework_rate = query_prometheus(
+        prometheus_url,
+        f'(increase(deployment_events_total{{repo=~"{repo}",deployment_intent="unplanned_rework"}}[{w}]) / '
+        f'increase(deployment_events_total{{repo=~"{repo}"}}[{w}])) * 100',
+    )
+    if rework_rate is None:
+        rework_rate = query_prometheus(
+            prometheus_url,
+            f'(increase(github_pr_merged_total{{repo=~"{repo}",label="hotfix"}}[{w}]) / '
+            f'increase(github_pr_merged_total{{repo=~"{repo}"}}[{w}])) * 100',
+        )
+        metrics["proxy_metrics"] = True
+    metrics["deployment_rework_rate_pct"] = rework_rate
 
     return metrics
 
@@ -302,9 +352,14 @@ def tier(metric_name: str, value: float | None) -> str:
         return "unknown"
     thresholds = {
         "deployment_frequency_per_week": [(7, "Elite"), (1, "High"), (0.25, "Medium")],
-        "lead_time_p50_hours": [(1, "Elite"), (24, "High"), (168, "Medium")],
-        "change_failure_rate_pct": [(5, "Elite"), (10, "High"), (15, "Medium")],
-        "mttr_p50_hours": [(1, "Elite"), (24, "High"), (168, "Medium")],
+        "change_lead_time_p50_hours": [(1, "Elite"), (24, "High"), (168, "Medium")],
+        "change_fail_rate_pct": [(5, "Elite"), (10, "High"), (15, "Medium")],
+        "failed_deployment_recovery_time_p50_hours": [
+            (1, "Elite"),
+            (24, "High"),
+            (168, "Medium"),
+        ],
+        "deployment_rework_rate_pct": [(5, "Elite"), (10, "High"), (15, "Medium")],
     }
     for freq_metrics in ["deployment_frequency_per_week"]:
         if metric_name == freq_metrics:
@@ -331,9 +386,10 @@ def main():
     # Add DORA tiers
     for m in [
         "deployment_frequency_per_week",
-        "lead_time_p50_hours",
-        "change_failure_rate_pct",
-        "mttr_p50_hours",
+        "change_lead_time_p50_hours",
+        "change_fail_rate_pct",
+        "failed_deployment_recovery_time_p50_hours",
+        "deployment_rework_rate_pct",
     ]:
         metrics[f"{m}_tier"] = tier(m, metrics.get(m))
 
@@ -371,12 +427,14 @@ if __name__ == "__main__":
   "proxy_metrics": false,
   "deployment_frequency_per_week": 3.2,
   "deployment_frequency_per_week_tier": "High",
-  "lead_time_p50_hours": 18.4,
-  "lead_time_p50_hours_tier": "High",
-  "change_failure_rate_pct": 8.0,
-  "change_failure_rate_pct_tier": "High",
-  "mttr_p50_hours": 1.2,
-  "mttr_p50_hours_tier": "Elite",
+  "change_lead_time_p50_hours": 18.4,
+  "change_lead_time_p50_hours_tier": "High",
+  "change_fail_rate_pct": 8.0,
+  "change_fail_rate_pct_tier": "High",
+  "failed_deployment_recovery_time_p50_hours": 1.2,
+  "failed_deployment_recovery_time_p50_hours_tier": "Elite",
+  "deployment_rework_rate_pct": 4.0,
+  "deployment_rework_rate_pct_tier": "High",
   "roi_dimensions": {
     "cost_efficiency": "string",
     "productivity": "string",
@@ -384,7 +442,7 @@ if __name__ == "__main__":
     "user_experience": "string",
     "business_growth": "string"
   },
-  "elite_count": 1,
+  "elite_count": 2,
   "computed_at": "2026-06-16T00:00:00Z"
 }
 ```
@@ -410,11 +468,11 @@ that framing into a one-page monthly report and a quarterly content piece.
 
 | Dimension                | What it measures                            | Primary DORA metric driver       |
 | ------------------------ | ------------------------------------------- | -------------------------------- |
-| **Cost efficiency**      | Rework cost avoided, incident cost reduced  | Change Failure Rate ↓            |
-| **Productivity**         | Features shipped per unit time              | Lead Time ↓ + Deploy Frequency ↑ |
-| **Developer experience** | Cognitive load, on-call burden, flow state  | MTTR ↓ + Deploy Frequency ↑      |
-| **User experience**      | Platform stability visible to end users     | Change Failure Rate ↓            |
-| **Business growth**      | Platform velocity enabling product velocity | All four metrics → Elite         |
+| **Cost efficiency**      | Rework cost avoided, incident cost reduced  | Change Fail Rate ↓ + Deployment Rework Rate ↓ |
+| **Productivity**         | Features shipped per unit time              | Change Lead Time ↓ + Deploy Frequency ↑ |
+| **Developer experience** | Cognitive load, on-call burden, flow state  | Failed Deployment Recovery Time ↓ + Deploy Frequency ↑ |
+| **User experience**      | Platform stability visible to end users     | Change Fail Rate ↓ |
+| **Business growth**      | Platform velocity enabling product velocity | All five metrics → Elite |
 
 ## Report Types
 
@@ -447,33 +505,34 @@ source: dora-snapshot-YYYY-MM.json
 | Metric              | This month | Last month | Trend | DORA tier          |
 | ------------------- | ---------- | ---------- | ----- | ------------------ |
 | Deploy frequency    | X/week     | Y/week     | ↑/↓/→ | Elite/High/Med/Low |
-| Lead time           | X hrs      | Y hrs      | ↑/↓/→ | Elite/High/Med/Low |
-| Change failure rate | X%         | Y%         | ↑/↓/→ | Elite/High/Med/Low |
-| Time to restore     | X hrs      | Y hrs      | ↑/↓/→ | Elite/High/Med/Low |
+| Change lead time    | X hrs      | Y hrs      | ↑/↓/→ | Elite/High/Med/Low |
+| Failed deployment recovery time | X hrs | Y hrs | ↑/↓/→ | Elite/High/Med/Low |
+| Change fail rate    | X%         | Y%         | ↑/↓/→ | Elite/High/Med/Low |
+| Deployment rework rate | X%      | Y%         | ↑/↓/→ | Elite/High/Med/Low |
 
 _[proxy_metrics: true — deployment events not yet wired from uFawkesPipe. Values approximate.]_
 
 ## What the numbers mean
 
-**Cost efficiency:** [One sentence. e.g., "CFR at 8% — 2 rework incidents this month,
+**Cost efficiency:** [One sentence. e.g., "Change fail rate at 8% — 2 rework incidents this month,
 down from 4 last month. ~4 hours of engineering time recovered."]
 
 **Productivity:** [One sentence. e.g., "Lead time improved 12% — from idea to deployed
 feature in 18hrs on average, vs 21hrs last month."]
 
-**Developer experience:** [One sentence. e.g., "MTTR under 2hrs all month — no
+**Developer experience:** [One sentence. e.g., "Failed deployment recovery time under 2hrs all month — no
 late-night incidents. On-call burden effectively zero."]
 
-**User experience:** [One sentence. e.g., "No user-visible outages. Change failure rate
+**User experience:** [One sentence. e.g., "No user-visible outages. Change fail rate
 improvements are translating to stability end users can feel."]
 
-**Business growth:** [One sentence. e.g., "3 of 4 metrics now at High or Elite tier.
+**Business growth:** [One sentence. e.g., "4 of 5 metrics now at High or Elite tier.
 Platform is performing at the level DORA research associates with high-performing teams."]
 
 ## One thing that improved this month
 
 [Named capability investment → metric improvement. e.g., "Added uFawkesObs smoke test
-to CI → CFR dropped from 15% to 8% because config errors are now caught before deploy."]
+to CI → change fail rate dropped from 15% to 8% because config errors are now caught before deploy."]
 
 ## One thing to improve next month
 
@@ -485,7 +544,7 @@ Sourced from `/measure` command anomaly flags and `learn` skill action items.]
 
 ```
 [Hook sentence — a number, a question, or a counterintuitive observation]
-Example: "We shipped 47 deployments last quarter with a 6% change failure rate.
+Example: "We shipped 47 deployments last quarter with a 6% change fail rate.
 Here's what actually moved that needle."
 
 [Paragraph 1: The problem we were solving]
@@ -509,8 +568,8 @@ cost efficiency in concrete terms (avoid inventing specific dollar figures):
 
 ```python
 def hours_recovered(
-    prev_cfr: float,  # previous change failure rate (0–1)
-    curr_cfr: float,  # current change failure rate (0–1)
+    prev_cfr: float,  # previous change fail rate (0–1)
+    curr_cfr: float,  # current change fail rate (0–1)
     deploys_per_month: int,  # deployment count
     rework_hours_per_incident: float = 4.0,  # conservative estimate
 ) -> float:
@@ -538,9 +597,10 @@ savings. Framing it as cost reduction leads to the wrong conversations.
 | Metric           | Jan | Apr | Jul  | Oct   | Dec   | Change   |
 | ---------------- | --- | --- | ---- | ----- | ----- | -------- |
 | Deploy frequency | Low | Low | Med  | High  | High  | +2 tiers |
-| Lead time        | Med | Med | Med  | High  | High  | +1 tier  |
-| CFR              | Low | Med | Med  | High  | High  | +2 tiers |
-| MTTR             | Med | Med | High | Elite | Elite | +2 tiers |
+| Change lead time | Med | Med | Med  | High  | High  | +1 tier  |
+| Change fail rate | Low | Med | Med  | High  | High  | +2 tiers |
+| Failed deployment recovery time | Med | Med | High | Elite | Elite | +2 tiers |
+| Deployment rework rate | Low | Low | Med | High | High | +2 tiers |
 
 ## What drove each improvement
 
@@ -783,7 +843,7 @@ handled by `fawkes/.agents/skills/value-stream-mapping/` when that skill is writ
 
 | Trigger                                             | Signal                                                                |
 | --------------------------------------------------- | --------------------------------------------------------------------- |
-| Lead time high despite fast coding                  | `lead_time_p50_hours` > 24hrs but `deployment_frequency_per_week` < 1 |
+| Change lead time high despite fast coding           | `change_lead_time_p50_hours` > 24hrs but `deployment_frequency_per_week` < 1 |
 | DORA metrics plateau                                | Two consecutive monthly snapshots show no improvement                 |
 | AI tool adoption not improving throughput           | opencode sessions frequent but deploy frequency unchanged             |
 | Planning a major capability                         | Before investing in a new stack (uFawkesDevX, uFawkesDORA)            |
@@ -801,7 +861,7 @@ data where available; direct observation otherwise.
 | 3. **Build**    | Spec to passing tests                  | build + `test` skill sessions (opencode logs) |
 | 4. **Review**   | Tests passing to review approved       | PR open to review approved (GitHub API)     |
 | 5. **Release**  | Review approved to deployed            | deploy time (uFawkesObs deployment events)  |
-| 6. **Verify**   | Deployed to "no regressions confirmed" | change failure rate \* time to detect       |
+| 6. **Verify**   | Deployed to "no regressions confirmed" | change fail rate \* time to detect          |
 | 7. **Learn**    | User feedback received to next spec    | platform-feedback cycle time                |
 
 ## Mapping Protocol (one session, ~60 min)
@@ -853,7 +913,7 @@ Common bottleneck patterns in solo-entrepreneur IDP work:
 | ---------------------------------------------- | ------------------------------- | ------------------------------------------------------ |
 | Review stage is the bottleneck                 | No reviewers — solo contributor | Automate review with `code-review` skill + code-quality skill |
 | Release stage is the bottleneck                | Manual release steps            | Automate with release skill                            |
-| Verify stage is the bottleneck                 | Thin test suite, high CFR       | j-curve-navigation + test investment                   |
+| Verify stage is the bottleneck                 | Thin test suite, high change fail rate | j-curve-navigation + test investment            |
 | Learn stage is the bottleneck                  | No feedback mechanism           | platform-feedback skill + quarterly cadence            |
 | Build stage is the bottleneck despite AI tools | Context re-discovery tax        | context-engineering skill                                |
 
@@ -895,7 +955,7 @@ File one GitHub issue per identified bottleneck intervention:
   "primary_bottleneck": "learn",
   "primary_bottleneck_type": "wait",
   "intervention": "platform-feedback quarterly cadence + `learn` skill monthly",
-  "dora_metric_target": "lead_time_p50_hours",
+  "dora_metric_target": "change_lead_time_p50_hours",
   "current_value": 759.0,
   "target_value": 36.0,
   "investment_sessions": 2,

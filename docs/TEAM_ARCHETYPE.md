@@ -32,7 +32,7 @@
 | ------------------------------------ | ----------------- |
 | Deployment frequency                 | deploys / week    |
 | Average PR cycle time (open → merge) | days              |
-| Change failure rate                  | %                 |
+| Change fail rate                     | %                 |
 | Rework rate                          | %                 |
 | DevEx score                          | /5 (if available) |
 | Team friction observations           | [describe]        |

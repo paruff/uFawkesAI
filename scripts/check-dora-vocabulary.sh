@@ -102,6 +102,19 @@ while IFS= read -r hit; do
   fail=1
 done < <(git grep -nIE 'Cap(ability)? ?[0-9]+ *[(—-] *(Observability|Reliability|Operational Resilience|Operational Visibility|CI/CD Automation|AI Policy|Context Engineering|AI-assisted development)' -- '*.md' || true)
 
+# ── 4. Retired software-delivery metric names must not reappear ──────────────
+# Allowed exception: history/changelog notes.
+while IFS= read -r hit; do
+  file="${hit%%:*}"
+  lineno="${hit#*:}"
+  lineno="${lineno%%:*}"
+  printf '  FAIL %s:%s retired software-delivery metric name: %s\n' \
+    "$file" "$lineno" "$(sed -E 's/^.{0,140}$/&/' <<< "$hit" | cut -c1-120)" >&2
+  fail=1
+done < <(git grep -nIE \
+  '(^|[^a-z])(MTTR)([^a-z]|$)|Lead Time for Changes|Change Failure Rate|Time to Restore( Service)?|four[- ]keys|four DORA (delivery|software delivery) metrics' \
+  -- '*.md' 'scripts/*.sh' ':!CHANGELOG.md' ':!scripts/check-dora-vocabulary.sh' || true)
+
 if [[ "$fail" -ne 0 ]]; then
   echo
   echo "DORA vocabulary check FAILED." >&2

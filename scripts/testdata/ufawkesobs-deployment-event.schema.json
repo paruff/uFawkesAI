@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://schemas.ufawkes.dev/dora/deployment-event.schema.json",
   "title": "Deployment Event",
-  "description": "Canonical schema for deployment lifecycle events used to compute Deployment Frequency, Lead Time, Change Failure Rate, and Time to Restore.",
+  "description": "Canonical schema for deployment lifecycle events used to compute Deployment Frequency, Change Lead Time, Failed Deployment Recovery Time, Change Fail Rate, and Deployment Rework Rate.",
   "type": "object",
   "properties": {
     "schema_version": {
@@ -45,6 +45,11 @@
       "type": "string",
       "enum": ["success", "failed", "rollback"]
     },
+    "deployment_intent": {
+      "description": "Whether the deployment was planned delivery work or an unplanned deployment used to remediate a failed change.",
+      "type": "string",
+      "enum": ["planned", "unplanned_rework"]
+    },
     "pipeline_url": {
       "description": "Link to the CI/CD pipeline run that performed the deployment.",
       "type": "string",
@@ -60,12 +65,12 @@
       "type": "boolean"
     },
     "first_commit_at": {
-      "description": "ISO 8601 timestamp of the first commit in the deployed change set. Used for exact Lead Time for Changes; preferred over pr_merged_at when both are present.",
+      "description": "ISO 8601 timestamp of the first commit in the deployed change set. Used for exact Change Lead Time; preferred over pr_merged_at when both are present.",
       "type": "string",
       "format": "date-time"
     },
     "pr_merged_at": {
-      "description": "ISO 8601 timestamp the pull request was merged. Used as a proxy for Lead Time for Changes when first_commit_at is unavailable.",
+      "description": "ISO 8601 timestamp the pull request was merged. Used as a proxy for Change Lead Time when first_commit_at is unavailable.",
       "type": "string",
       "format": "date-time"
     }
@@ -79,6 +84,7 @@
     "commit_sha",
     "deployed_at",
     "status",
+    "deployment_intent",
     "pipeline_url"
   ],
   "additionalProperties": false

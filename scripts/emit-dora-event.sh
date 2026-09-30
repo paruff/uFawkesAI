@@ -24,7 +24,8 @@
 # Usage:
 #   scripts/emit-dora-event.sh <job-start|job-finish|deploy-marker> \
 #     [--step NAME] [--status success|failure] [--at ISO-8601-UTC] \
-#     [--started-at ISO-8601-UTC] [--environment NAME] [--pr NUMBER]
+#     [--started-at ISO-8601-UTC] [--environment NAME] [--pr NUMBER] \
+#     [--deployment-intent planned|unplanned_rework]
 #
 # CI context comes from GitHub Actions (GITHUB_*) or Woodpecker (CI_*)
 # variables; PR data from the GitHub API via `gh` (GH_TOKEN). Missing
@@ -47,6 +48,7 @@ status="success"
 at=""
 started_at=""
 environment="${DORA_ENVIRONMENT:-production}"
+deployment_intent="${DORA_DEPLOYMENT_INTENT:-planned}"
 pr_number=""
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -74,12 +76,24 @@ while [ $# -gt 0 ]; do
       pr_number="$2"
       shift 2
       ;;
+    --deployment-intent)
+      deployment_intent="$2"
+      shift 2
+      ;;
     *)
       echo "unknown argument: $1" >&2
       exit 2
       ;;
   esac
 done
+
+case "$deployment_intent" in
+  planned | unplanned_rework) ;;
+  *)
+    echo "invalid --deployment-intent: $deployment_intent (expected planned|unplanned_rework)" >&2
+    exit 2
+    ;;
+esac
 
 warn() { echo "emit-dora-event: $*" >&2; }
 now_iso() { date -u +%Y-%m-%dT%H:%M:%SZ; }
@@ -189,12 +203,12 @@ case "$EVENT" in
     deploy_status="$status"
     [ "$status" = failure ] && deploy_status=failed
     line="$(jq -c --arg m "Delivered ${commit_sha:0:12} to ${environment}" --arg env "$environment" \
-      --arg status "$deploy_status" --argjson delivery "$delivery" '
+      --arg intent "$deployment_intent" --arg status "$deploy_status" --argjson delivery "$delivery" '
       . + {message: $m, status: $status, environment: $env} + $delivery
       | .dora_event = ({
           schema_version: "1.0", event_type: "deployment", repo: .repo, service: .service,
           environment: $env, commit_sha: .commit_sha, deployed_at: .["@timestamp"],
-          status: $status, pipeline_url: .pipeline_url,
+          status: $status, deployment_intent: $intent, pipeline_url: .pipeline_url,
           ai_assisted: (((.agent_tokens.output // 0) > 0) or ((.agent_tokens.ai_coauthored_commits // 0) > 0)),
           first_commit_at: .pr.first_commit_at, pr_merged_at: .pr.merged_at
         } | with_entries(select(.value != null)))' <<< "$base")"

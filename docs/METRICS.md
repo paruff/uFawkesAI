@@ -11,7 +11,7 @@ This page is the authoritative reference for the DORA-style metrics in this repo
 | CI cycle time | DORA 2025 delivery performance | GitHub Actions workflow runs | < 4 min | 4–10 min | > 10 min |
 | Review turnaround | DORA 2025 review speed | GitHub PR timestamps | < 24h | 24–72h | > 72h |
 | Failed deployment recovery time | DORA 2025 recovery / reliability | incident or deployment records | < 1h | 1–4h | > 4h |
-| Reliability / change failure rate | DORA 2025 delivery metrics | deployment and incident records | improving trend | flat | rising trend |
+| Reliability / change fail rate | DORA 2025 delivery metrics | deployment and incident records | improving trend | flat | rising trend |
 
 > The repo currently runs a local git heuristic for rework and PR revision rate. GitHub API-backed versions can replace the local proxy once a deployment/CI data source is wired in.
 
@@ -127,7 +127,7 @@ This metric matters because a slow recovery time often hurts user trust more tha
 
 ---
 
-## 6. Reliability / change failure rate
+## 6. Reliability / change fail rate
 
 - DORA source: DORA 2025 software delivery metrics
 - Formula: `(deployments causing incidents or rollback ÷ total deployments) × 100`, tracked over 90 days
@@ -138,7 +138,7 @@ This metric matters because a slow recovery time often hurts user trust more tha
 
 If 12 of 180 deployments caused incidents in the last quarter:
 
-- Change failure rate = `12 / 180 × 100 = 6.7%`
+- Change fail rate = `12 / 180 × 100 = 6.7%`
 - Result: amber if the trend is flat or red if it is rising; green only when the rate is decreasing over time.
 
 This is a trend metric rather than a one-off pass/fail ceiling.
