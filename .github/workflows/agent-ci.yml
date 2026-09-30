@@ -67,8 +67,8 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           persist-credentials: false
-      # Same semgrep version the DevSecOps image pins
-      # (images/devsecops/python/requirements.in). p/ci covers workflow
+      # semgrep runs only here (removed from the DevSecOps image: its 245 MB
+      # engine served no local hook). Bump the pin deliberately. p/ci covers workflow
       # injection, unpinned actions and Dependabot cooldown; exit 1 blocks.
       - name: Semgrep p/ci — blocking
         run: |

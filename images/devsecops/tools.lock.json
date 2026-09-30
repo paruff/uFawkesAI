@@ -623,7 +623,7 @@
     },
     {
       "name": "jdtls",
-      "variant": "ai",
+      "variant": "polyglot",
       "version": "1.61.0",
       "source": {
         "eclipse_jdtls": "milestones"

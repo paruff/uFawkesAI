@@ -1,7 +1,9 @@
 {
   "name": "ufawkes-lsp",
-  "version": "1.0.0",
-  "description": "Code intelligence for the uFawkesAI devcontainer. The server binaries ship in the image; this plugin only tells Claude Code how to start them.",
-  "author": { "name": "paruff" },
+  "version": "1.1.0",
+  "description": "Code intelligence for the uFawkesAI devcontainer (TypeScript/JavaScript, Python, Bash, YAML). The server binaries ship in the image; this plugin only tells Claude Code how to start them.",
+  "author": {
+    "name": "paruff"
+  },
   "license": "MIT"
 }

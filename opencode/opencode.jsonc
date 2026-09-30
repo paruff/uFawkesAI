@@ -110,8 +110,8 @@
 
   "disabled_providers": ["opencode-go"],
 
-  // Language servers: all baked into the devcontainer image (TypeScript/JS,
-  // Python, Go, Java, C/C++, Bash, YAML); OPENCODE_DISABLE_LSP_DOWNLOAD=true
+  // Language servers: baked into the devcontainer image (TypeScript/JS,
+  // Python, Bash, YAML; Java in the polyglot variant); OPENCODE_DISABLE_LSP_DOWNLOAD=true
   // there, so a missing server is an image bug, never a runtime download.
   // An object (not `true`) still enables every built-in server. TypeScript and
   // Java are pinned to the baked binaries: their built-ins fetch their own copy
