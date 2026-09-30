@@ -17,3 +17,7 @@ ci-*.md
 !CLAUDE.md
 !.cursorrules
 !.github/copilot-instructions.md
+
+# QMD search index (local build artifact; .qmd/index.yml config is committed)
+.qmd/*
+!.qmd/index.yml
