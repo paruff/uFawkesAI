@@ -16,9 +16,11 @@
 #     "expect": { "output_regex"?: ERE, "file_absent"?: path, "file_present"?: path } }
 #
 # Env:
-#   EVAL_MODEL      model for the agent (default: claude-haiku-4-5-20251001)
+#   EVAL_HARNESS    claude (default) or opencode
+#   EVAL_MODEL      model (default: claude-haiku-4-5-20251001 for claude,
+#                   google/gemini-3.1-flash-lite for opencode)
 #   EVAL_AGENT_CMD  agent command; called as: $EVAL_AGENT_CMD <prompt> <permission_mode>
-#                   in the task's copy. Default runs `claude -p`. Tests stub it.
+#                   in the task's copy. Default is the harness's CLI. Tests stub it.
 #   EVAL_TASKS      task dir (default .agents/evals/tasks)
 #   EVAL_BASELINE   baseline file (default .agents/evals/baseline.json)
 #   EVAL_REPORT     report path (default .agents/logs/evals-report.json)
@@ -31,12 +33,26 @@ cd "$(dirname "$0")/.." || exit 2
 TASKS="${EVAL_TASKS:-.agents/evals/tasks}"
 BASELINE="${EVAL_BASELINE:-.agents/evals/baseline.json}"
 REPORT="${EVAL_REPORT:-.agents/logs/evals-report.json}"
-MODEL="${EVAL_MODEL:-claude-haiku-4-5-20251001}"
+HARNESS="${EVAL_HARNESS:-claude}"
 
-default_agent() {
+claude_agent() {
   claude -p "$1" --model "$MODEL" --permission-mode "$2" --max-turns 8 --output-format text
 }
-AGENT="${EVAL_AGENT_CMD:-default_agent}"
+# OpenCode is the other first-class harness: it reads AGENTS.md, the
+# instructions in opencode.json (.agents/rules) and the .opencode plugin hooks,
+# so it exercises the same configuration with any provider key the repo has.
+opencode_agent() {
+  opencode run --model "$MODEL" "$1"
+}
+case "$HARNESS" in
+  claude) MODEL="${EVAL_MODEL:-claude-haiku-4-5-20251001}" ;;
+  opencode) MODEL="${EVAL_MODEL:-google/gemini-3.1-flash-lite}" ;;
+  *)
+    echo "FAIL: EVAL_HARNESS must be claude or opencode, got '$HARNESS'" >&2
+    exit 2
+    ;;
+esac
+AGENT="${EVAL_AGENT_CMD:-${HARNESS}_agent}"
 
 command -v jq > /dev/null || {
   echo "FAIL: jq is required" >&2
