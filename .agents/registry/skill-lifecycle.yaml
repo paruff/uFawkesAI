@@ -300,3 +300,10 @@ skills:
     dependencies: []
     load_trigger: "load dojo-feedback skill"
     sub_skills: []
+
+  ufawkes-knowledge:
+    status: active
+    version: 1.0.0
+    dependencies: []
+    load_trigger: "searching this repo's knowledge via qmd"
+    sub_skills: []
