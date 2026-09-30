@@ -1,100 +1,98 @@
 # Contributing to uFawkesAI
 
-Welcome to the uFawkesAI open-source project! We are thrilled to have you contribute.
+Thanks for helping improve this repository. We are building an AI-ready project template that emphasizes disciplined workflow, clear guardrails, and reviewable changes.
 
-This repository is an AI agent starter template. Our core philosophy is that contributions must work with real, functional agents, not just pass automated CI checks. We rely on human expertise and rigorous testing to maintain quality.
+## Before you start
 
-## Prerequisites
+- Use Git and a clean branch for every change.
+- Install Node.js 20 or newer and a recent Bash environment.
+- Run `pre-commit run --all-files` before pushing.
+- Keep secrets and credentials out of the repository. Do not commit `.env` files or tokens.
+- Read `AGENTS.md`, `README.md`, and the relevant docs for the area you are editing before making a change.
 
-Before you begin, ensure you have the following tools installed:
+## Local setup
 
-- **Git**: For version control.
-- **Node.js 20+**: The required runtime environment.
-- **bash 4.4+**: The shell environment. (Note: macOS ships with bash 3.2, so please use `brew install bash` to update.)
-- **shellcheck**: A linter for shell scripts. (`brew install shellcheck` or `apt install shellcheck`)
-- **An AI agent**: We recommend using GitHub Copilot, Claude Code, Cursor, or Codex for development assistance.
+1. Fork and clone the repository.
+2. Run:
 
-## Local Setup
-
-Follow these steps to get your local environment running:
-
-1.  **Fork and Clone**: Fork the repository to your GitHub account and clone it locally.
-2.  **Run Setup Script**: Execute `./scripts/setup.sh`. This script is crucial as it creates necessary symlinks (e.g., `CLAUDE.md`, `.github/copilot-instructions.md`, `.cursorrules`, `.cursor/rules/AGENTS.md`) and installs git hooks from the `.github/hooks/` directory.
-3.  **Run Preflight Check**: Execute `npm run preflight`. This command performs several critical checks:
-    - `shellcheck` runs on all `.sh` files to catch scripting errors.
-    - It verifies that `AGENTS.md` contains no `[PLACEHOLDER]` markers (it will warn only in template mode; set `PREFLIGHT_ENFORCE_PLACEHOLDERS=1` to enforce).
-    - It confirms that all required symlinks exist and resolve correctly.
-4.  **Customize Agents**: Replace all `[PLACEHOLDER]` sections within `AGENTS.md` with your project's specific details.
-
-**Dry Run Example:**
-To see what the setup script will do without making any changes, run:
-`./scripts/setup.sh --dry-run`
-
-## Test Your Contribution With an AI Agent
-
-We strongly encourage using an AI agent to review your own changes before submitting a Pull Request (PR).
-
-**Example Workflow (using Claude Code):**
-
-1.  Open `AGENTS.md` and the specific file you modified (e.g., `src/utils/auth.ts`) in your editor.
-2.  Run the prompt: `"Review my changes to src/utils/auth.ts against the acceptance criteria in AGENTS.md"`
-3.  **Good Output:** The agent provides specific, actionable feedback, pointing out potential race conditions or missing type guards, and suggests code improvements.
-4.  **Red Flags:** The agent ignores parts of the code or gives vague, high-level advice.
-
-**Rule:** Every PR must include a description stating which AI agent was used for testing and what specific criteria were tested.
-
-## PR Lifecycle
-
-The contribution process is designed to be highly automated and quality-gated.
-
-```
-  fork → branch → change → npm run preflight → commit → PR → CI gates → human review → merge
+```bash
+./scripts/setup.sh
+npm install
+npm run preflight
 ```
 
-**CI Gate Explanations:**
+3. If the repo is missing expected symlinks or hooks, rerun `./scripts/setup.sh`.
+4. Use `npm test` or `npm run verify` for repository-level validation when your change affects project behavior.
 
-- 🔗 **Agent Symlinks**: The CI system verifies that all necessary symlinks resolve correctly on a fresh clone.
-- 🔢 **PR Size Gate**: PRs are limited to a maximum of 400 changed lines. If the change is genuinely atomic and cannot be split, a human maintainer must apply the `large-pr-approved` label. You cannot self-approve this.
-- 🔍 **Lint**: `npm run lint` checks for stylistic and structural code consistency.
-- 🔷 **TypeScript**: `npm run typecheck` ensures type safety across the entire codebase.
-- 🧪 **Tests & Coverage**: `npm run test:coverage` runs all unit and integration tests. The minimum required coverage threshold is 80%.
-- 🏗️ **Architecture Boundaries**: `npm run lint:architecture` enforces adherence to defined architectural layers and boundaries.
+## Contribution workflow
 
-**Note:** `scripts/verify.sh` checks that `AGENTS.md` does not exceed 300 lines (warns at 250) — it is not yet wired into CI, so run it manually: `./scripts/verify.sh`.
+```text
+fork -> branch -> edit -> validate -> commit -> push -> PR -> CI -> review -> merge
+```
 
-## Contribution Areas → Dojo Module Map
+Keep changes focused. If a task grows beyond one theme, split it into smaller PRs.
 
-Use this map to guide your learning path.
+## Branches and commit messages
 
-| Contribution Area                           | Recommended Dojo Module               | Belt      | URL                                                                                        |
-| :------------------------------------------ | :------------------------------------ | :-------- | :----------------------------------------------------------------------------------------- |
-| AGENTS.md / agent instructions              | Module 1: Internal Delivery Platforms | ⚪ White  | https://paruff.github.io/fawkes/dojo/modules/white-belt/module-01-what-is-idp/             |
-| DORA metrics / docs/METRICS.md              | Module 2: DORA Metrics                | ⚪ White  | https://paruff.github.io/fawkes/dojo/modules/white-belt/module-02-dora-metrics/            |
-| CI workflows / .github/workflows/           | Module 5: CI Fundamentals             | 🟡 Yellow | https://paruff.github.io/fawkes/dojo/modules/yellow-belt/module-05-ci-fundamentals/        |
-| Security scanning / SECURITY.md             | Module 7: Security & Quality Gates    | 🟡 Yellow | https://paruff.github.io/fawkes/dojo/modules/yellow-belt/module-07-security-quality-gates/ |
-| Observability / scripts/weekly-metrics.sh   | Module 13: Metrics, Logs & Traces     | 🟤 Brown  | https://paruff.github.io/fawkes/dojo/modules/brown-belt/module-13-metrics-logs-traces/     |
-| DORA deep dive / docs/METRICS.md advanced   | Module 14: DORA Deep Dive             | 🟤 Brown  | https://paruff.github.io/fawkes/dojo/modules/brown-belt/module-14-dora-deep-dive/          |
-| Architecture / .github/skills/architecture/ | Module 17: Platform as a Product      | ⚫ Black  | https://paruff.github.io/fawkes/dojo/modules/black-belt/module-17-platform-as-product/     |
+Use short-lived feature branches off `main`:
 
-You don't need to complete a module before contributing — but the module will help you understand the intent behind the code you're changing.
+- `feat/<slug>`
+- `fix/<slug>`
+- `docs/<slug>`
+- `chore/<slug>`
 
-## FAQ: Why Is My PR Blocked?
+Use Conventional Commits for commit titles and PR titles:
 
-**The PR Size Gate failed.**
-Your PR changed more than 400 lines. Split it into smaller PRs. If the change is genuinely atomic and cannot be split, ask a maintainer to apply the `large-pr-approved` label. You cannot apply this label yourself.
+```text
+type(scope): description
+```
 
-**Preflight failed on shellcheck.**
-Run `shellcheck scripts/<your-script>.sh` locally. Fix all warnings before pushing. The CI gate is not lenient.
+Examples:
 
-**AGENTS.md line count warning.**
-`scripts/verify.sh` warns at 250 lines and blocks at 300 — run it locally before pushing (not yet enforced in CI). Move content to a skill file in `.github/skills/` and load it on demand instead.
+- `docs(contrib): expand contributor guide`
+- `fix(agents): correct setup instructions`
+- `feat(ci): add quality gate validation`
 
-**Symlink check failed.**
-Run `./scripts/setup.sh` to recreate symlinks. This usually means you cloned without running setup.
+## Pull request expectations
 
-**I didn't test with a real agent.**
-PR descriptions must state which agent you used and what you tested. PRs without this will be returned for revision.
+Before opening a PR:
 
-## Code of Conduct
+- Keep the scope narrow and reviewable.
+- Check the affected behavior with the smallest relevant command.
+- Include a short summary of the change and the validation you ran.
+- If you used an AI coding agent, state which one and what was checked.
 
-We are committed to providing a safe and welcoming environment for all contributors. Please read and adhere to the [Contributor Covenant 2.1](https://www.contributor-covenant.org/version/2/1/code_of_conduct/).
+For this repository, the expected checks are:
+
+```bash
+npm run preflight
+npm test
+npm run verify
+pre-commit run --all-files
+```
+
+If the change is documentation-only, keep the scope to the relevant docs and confirm the content stays accurate.
+
+## Dojo learning path
+
+Use these modules to understand the intent behind the repository and the practices it promotes:
+
+- `AGENTS.md` and AI workflow design: https://paruff.github.io/fawkes/dojo/modules/white-belt/module-01-what-is-idp/
+- DORA metrics and delivery health: https://paruff.github.io/fawkes/dojo/modules/white-belt/module-02-dora-metrics/
+- CI fundamentals: https://paruff.github.io/fawkes/dojo/modules/yellow-belt/module-05-ci-fundamentals/
+- Security and quality gates: https://paruff.github.io/fawkes/dojo/modules/yellow-belt/module-07-security-quality-gates/
+- Metrics, logs, and traces: https://paruff.github.io/fawkes/dojo/modules/brown-belt/module-13-metrics-logs-traces/
+- Platform-as-product thinking: https://paruff.github.io/fawkes/dojo/modules/black-belt/module-17-platform-as-product/
+
+You do not need to complete a module before contributing; use them as a guide to the surrounding context.
+
+## Review and maintenance
+
+- Keep code, docs, and agent instructions consistent with one another.
+- Do not modify `AGENTS.md` indirectly through a generated alias; update the source file and refresh symlinks if needed.
+- Prefer small, understandable changes over broad refactors.
+- If something is unclear, document the assumption or flag it in the PR instead of guessing.
+
+## Code of conduct
+
+We expect respectful collaboration. Please treat contributors, maintainers, and users with professionalism, and keep the project safe, readable, and welcoming for everyone.
