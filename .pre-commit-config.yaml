@@ -152,6 +152,19 @@ repos:
         stages: [commit-msg]
 
   # ============================================================================
+  # Commit Message Validation (pre-commit stage - runs in CI)
+  # ============================================================================
+  - repo: local
+    hooks:
+      - id: commit-format-check
+        name: Validate Conventional Commits format (branch)
+        entry: scripts/check-commit-format.sh
+        language: script
+        stages: [pre-commit]
+        pass_filenames: false
+        always_run: true
+
+  # ============================================================================
   # uFawkes Suite Specific Validations
   # ============================================================================
   - repo: local
