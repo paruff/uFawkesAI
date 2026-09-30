@@ -116,6 +116,19 @@ Use the **Feature — Assign to Agent** issue template (`.github/ISSUE_TEMPLATE/
 | User-centric focus               | `docs/GOLDEN_PATH.md`, `docs/VALUE_STREAM_MAP.md`     |
 | Quality internal platforms       | `docs/GOLDEN_PATH.md`, agent specialist profiles      |
 
+## Container images
+
+Built and signed by [`build-devsecops-images.yml`](.github/workflows/build-devsecops-images.yml) on every `image-v<semver>` tag (also shown under **Packages** in the repo sidebar):
+
+| Image | Use |
+| --- | --- |
+| [`ghcr.io/paruff/ufawkesai-devcontainer`](https://github.com/paruff/uFawkesAI/pkgs/container/ufawkesai-devcontainer) | Shared devcontainer for the uFawkes suite and fawkes: Claude Code, OpenCode, Codex, Gemini CLI, LSP for 7 languages, qmd |
+| [`ghcr.io/paruff/ufawkes-devsecops-ai`](https://github.com/paruff/uFawkesAI/pkgs/container/ufawkes-devsecops-ai) | Base of the devcontainer: gitops + agent harnesses and skills |
+| [`ghcr.io/paruff/ufawkes-devsecops-gitops`](https://github.com/paruff/uFawkesAI/pkgs/container/ufawkes-devsecops-gitops) | core + Kubernetes/Flux/policy tools |
+| [`ghcr.io/paruff/ufawkes-devsecops-core`](https://github.com/paruff/uFawkesAI/pkgs/container/ufawkes-devsecops-core) | Linters, secret/vuln/SAST scanners, pre-commit |
+
+Tags: `X.Y.Z`, `X.Y`, `X`, `latest`. Pin by digest in consumers; verify with `cosign verify` (see the workflow header).
+
 ## Works with
 
 - GitHub Copilot (native AGENTS.md support since Aug 2025 — server-side auto-load)

@@ -194,6 +194,10 @@ jobs:
 
       - name: Tags for core
         id: meta-core
+        # Index-level annotations carry org.opencontainers.image.source, which is
+        # what links a multi-arch GHCR package to this repo (labels alone don't).
+        env:
+          DOCKER_METADATA_ANNOTATIONS_LEVELS: manifest,index
         uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
         with:
           images: ${{ env.REGISTRY }}/ufawkes-devsecops-core
@@ -205,6 +209,8 @@ jobs:
           flavor: latest=false
       - name: Tags for gitops
         id: meta-gitops
+        env:
+          DOCKER_METADATA_ANNOTATIONS_LEVELS: manifest,index
         uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
         with:
           images: ${{ env.REGISTRY }}/ufawkes-devsecops-gitops
@@ -216,6 +222,8 @@ jobs:
           flavor: latest=false
       - name: Tags for ai
         id: meta-ai
+        env:
+          DOCKER_METADATA_ANNOTATIONS_LEVELS: manifest,index
         uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
         with:
           images: ${{ env.REGISTRY }}/ufawkes-devsecops-ai
@@ -227,6 +235,8 @@ jobs:
           flavor: latest=false
       - name: Tags for devcontainer
         id: meta-devcontainer
+        env:
+          DOCKER_METADATA_ANNOTATIONS_LEVELS: manifest,index
         uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
         with:
           images: ${{ env.REGISTRY }}/ufawkesai-devcontainer
@@ -252,6 +262,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta-core.outputs.tags }}
           labels: ${{ steps.meta-core.outputs.labels }}
+          annotations: ${{ steps.meta-core.outputs.annotations }}
           outputs: type=image,push=true,compression=zstd,force-compression=true,oci-mediatypes=true
           cache-from: |
             type=gha,scope=devsecops-amd64
@@ -273,6 +284,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta-gitops.outputs.tags }}
           labels: ${{ steps.meta-gitops.outputs.labels }}
+          annotations: ${{ steps.meta-gitops.outputs.annotations }}
           outputs: type=image,push=true,compression=zstd,force-compression=true,oci-mediatypes=true
           cache-from: |
             type=gha,scope=devsecops-amd64
@@ -294,6 +306,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta-ai.outputs.tags }}
           labels: ${{ steps.meta-ai.outputs.labels }}
+          annotations: ${{ steps.meta-ai.outputs.annotations }}
           outputs: type=image,push=true,compression=zstd,force-compression=true,oci-mediatypes=true
           cache-from: |
             type=gha,scope=devsecops-amd64
@@ -312,6 +325,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta-devcontainer.outputs.tags }}
           labels: ${{ steps.meta-devcontainer.outputs.labels }}
+          annotations: ${{ steps.meta-devcontainer.outputs.annotations }}
           outputs: type=image,push=true,compression=zstd,force-compression=true,oci-mediatypes=true
           provenance: mode=max
           sbom: true
