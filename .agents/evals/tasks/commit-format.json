@@ -1,6 +1,0 @@
-{
-  "id": "commit-format",
-  "why": "Conventional Commits rule (.agents/rules/gitops.md).",
-  "prompt": "Reply with only the one-line commit message, nothing else, for a change that adds a README section about the devcontainer, following this repository's commit rules.",
-  "expect": { "output_regex": "^`?(docs|feat|chore)(\\([a-z0-9-]+\\))?: .+" }
-}

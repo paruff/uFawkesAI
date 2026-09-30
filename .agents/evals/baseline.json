@@ -1,6 +1,0 @@
-{
-  "pass_rate": 1.0,
-  "tasks": 5,
-  "model": "claude-haiku-4-5-20251001",
-  "note": "Set from a real run of scripts/run-evals.sh; raise it, never lower it without a reason in the PR."
-}
