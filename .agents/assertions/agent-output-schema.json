@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Agent Output Contract Schema",
+  "description": "Defines the required structure for an agent's output contract. Each agent defines its contract in minimal-report.yaml using this schema.",
+  "type": "object",
+  "required": ["agents"],
+  "properties": {
+    "agents": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-z-]+$": {
+          "type": "object",
+          "required": ["required_sections"],
+          "properties": {
+            "required_sections": {
+              "type": "array",
+              "description": "Markdown headings that must appear in the agent's report",
+              "items": { "type": "string" }
+            },
+            "optional_sections": {
+              "type": "array",
+              "description": "Markdown headings that may appear if applicable",
+              "items": { "type": "string" }
+            },
+            "required_fields": {
+              "type": "object",
+              "description": "Fields that must be present (e.g. decision, risk level)",
+              "patternProperties": {
+                "^[a-zA-Z_]+$": { "type": "boolean" }
+              }
+            },
+            "findings_required_when": {
+              "type": "string",
+              "enum": [
+                "FAIL",
+                "BLOCKED",
+                "REQUEST_CHANGES",
+                "CRITICAL",
+                "never"
+              ],
+              "description": "When findings must be non-empty"
+            },
+            "severity_classification": {
+              "type": "boolean",
+              "description": "Whether findings must include severity levels"
+            },
+            "forbidden_patterns": {
+              "type": "array",
+              "description": "Regex patterns that must NOT appear in the report",
+              "items": { "type": "string" }
+            },
+            "required_patterns": {
+              "type": "array",
+              "description": "Regex patterns that MUST appear in the report",
+              "items": { "type": "string" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,115 @@
+# MIT License
+#
+# Copyright (c) 2026 Phil Ruff
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+# Agent Output Contracts
+# Each agent's report must satisfy its contract before being considered complete.
+# Schema: .agents/assertions/agent-output-schema.json
+# Runner: bash .agents/assertions/assertion-runner.sh <report.md> <contract-key>
+#
+# Keys are report kinds, not agent names. Under the current taxonomy the owning
+# agent is @planner, @builder, @verifier, or @operator — but a contract is
+# enforced against the shape of a report, so the key stays the report kind.
+# The report-filename -> key mapping lives in .agents/hooks/pre-commit-agent.sh.
+# An unknown key is a hard failure, not a silent pass.
+
+agents:
+  build:
+    required_sections:
+      - "Build Report"
+      - "Tasks Completed"
+      - "Artifacts Produced"
+      - "Validation Results"
+    required_fields:
+      status: true
+    findings_required_when: never
+
+  design:
+    required_sections:
+      - "Design:"
+      - "Architecture Overview"
+      - "Components"
+      - "Tradeoffs"
+      - "Governance Alignment"
+      - "Implementation Sequence"
+      - "Verification Strategy"
+    findings_required_when: never
+
+  review:
+    # Two modes: PR Review and Build Validation
+    # PR Review Mode requires: Review Agent Assessment, Architecture Violations, Test Gaps
+    # Build Validation Mode requires: Build Review Report, Spec Compliance, Design Compliance, Acceptance Criteria, Code Quality, Findings
+    required_sections:
+      - "Review Agent Assessment"
+      - "Architecture Violations"
+      - "Test Gaps"
+    required_fields:
+      size_decision: true
+    findings_required_when: REQUEST_CHANGES
+    forbidden_patterns:
+      - "LGTM"
+      - "looks good"
+
+  spec:
+    required_sections:
+      - "Specification:"
+      - "Functional Requirements"
+      - "Acceptance Criteria"
+      - "Governance Alignment"
+    findings_required_when: never
+
+  test:
+    required_sections: []
+    findings_required_when: never
+    forbidden_patterns:
+      - "expect(true).toBe(true)"
+      - 'it("works"'
+    required_patterns:
+      - "TDD"
+      - "test:.*failing"
+      - "feat:.*implement"
+
+  test-execution:
+    required_sections:
+      - "Test Report"
+      - "Test Results"
+      - "Coverage"
+    required_fields:
+      decision: true
+    findings_required_when: FAIL
+    forbidden_patterns:
+      - "no tests exist"
+
+  cross-validation:
+    required_sections:
+      - "Cross-Validation Report"
+      - "Validation Results"
+      - "Findings"
+    required_fields:
+      decision: true
+    findings_required_when: never
+    forbidden_patterns:
+      - "I think"
+      - "probably"
+      - "might be"
+    required_patterns:
+      - "All 4 rules must pass"
+      - "pipeline blocked"

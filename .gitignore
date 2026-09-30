@@ -1,0 +1,23 @@
+node_modules/
+
+# macOS
+.DS_Store
+
+# Agent tooling logs and CI report scratch files
+.agents/logs/
+ci-*.md
+
+# Serena MCP local tool state
+.serena/
+
+# Claude Code local-only settings (per-user overrides, never shared)
+.claude/settings.local.json
+
+# Ensure agent instruction symlinks remain tracked
+!CLAUDE.md
+!.cursorrules
+!.github/copilot-instructions.md
+
+# QMD search index (local build artifact; .qmd/index.yml config is committed)
+.qmd/*
+!.qmd/index.yml
