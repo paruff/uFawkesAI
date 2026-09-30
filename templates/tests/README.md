@@ -24,10 +24,8 @@ tests/
 | `unit/conftest.py`                               | Shared fixtures                    | All repos                     |
 | `unit/test_workflow_validation.py`               | GitHub Actions workflow validation | All repos                     |
 | `unit/test_docker_compose_validation.py`         | Docker Compose validation          | Stack repos (Obs, Pipe, DevX) |
-| `unit/test_jenkinsfile_validation.py`            | Jenkinsfile validation             | Pipe repo                     |
 | `unit/test_k8s_validation.py`                    | Kubernetes manifest validation     | Core repos (fawkes)           |
 | `integration/test_docker_compose_integration.py` | Docker Compose stack integration   | Stack repos                   |
-| `smoke/test_jenkins_health.py`                   | Jenkins health checks              | Pipe repo                     |
 | `acceptance/test_pipeline_acceptance.py`         | Full pipeline acceptance           | Stack repos                   |
 | `Makefile`                                       | Test commands                      | All repos                     |
 | `.pipeline.yml.template`                         | Pipeline contract template         | All repos                     |

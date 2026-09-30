@@ -52,7 +52,7 @@ Beyond the minimum, each repo has domain-specific files that should be in the co
 | `fawkes`      | `.agents/` directory tree, `ROADMAP.md`, `.opencode/plans/roadmap.md`, `.gitops-templates/`                |
 | `uFawkesObs`  | `docs/ARCHITECTURE.md`, `PROMPT_LIBRARY.md`, `tests/acceptance/` structure, `docs/production-hardening.md` |
 | `uFawkesAI`   | Full `.agents/skills/` directory tree, all agent `.md` files                                               |
-| `uFawkesPipe` | Pipeline definition files (`.woodpecker.yml` or `Jenkinsfile`), `docker-compose.yml`                       |
+| `uFawkesPipe` | Pipeline definition files (`.woodpecker.yml`), `docker-compose.yml`                                         |
 | `uFawkesDevX` | `devcontainer.json`, golden path templates                                                                 |
 | `uFawkesDORA` | Dashboard JSON, metric query definitions                                                                   |
 | `uFawkesSec`  | Policy definitions (OPA Rego or Kyverno), threat model                                                     |
