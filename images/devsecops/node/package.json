@@ -1,8 +1,0 @@
-{
-  "name": "ufawkes-devsecops-node-tools",
-  "private": true,
-  "description": "Node-distributed tools baked into the DevSecOps image; installed with npm ci.",
-  "dependencies": {
-    "markdownlint-cli2": "0.23.3"
-  }
-}
