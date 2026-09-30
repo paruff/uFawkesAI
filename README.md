@@ -122,7 +122,7 @@ Built and signed by [`build-devsecops-images.yml`](.github/workflows/build-devse
 
 | Image | Use |
 | --- | --- |
-| [`ghcr.io/paruff/ufawkesai-devcontainer`](https://github.com/paruff/uFawkesAI/pkgs/container/ufawkesai-devcontainer) | Shared devcontainer for the uFawkes suite and fawkes: Claude Code, OpenCode, Codex, Gemini CLI, LSP for 7 languages, qmd |
+| [`ghcr.io/paruff/ufawkesai-devcontainer`](https://github.com/paruff/uFawkesAI/pkgs/container/ufawkesai-devcontainer) | Shared devcontainer for the uFawkes suite and fawkes: Claude Code, OpenCode, Codex, Gemini CLI, LSP (TS/JS, Python, Bash, YAML), qmd. Tag `polyglot` adds Java |
 | [`ghcr.io/paruff/ufawkes-devsecops-ai`](https://github.com/paruff/uFawkesAI/pkgs/container/ufawkes-devsecops-ai) | Base of the devcontainer: gitops + agent harnesses and skills |
 | [`ghcr.io/paruff/ufawkes-devsecops-gitops`](https://github.com/paruff/uFawkesAI/pkgs/container/ufawkes-devsecops-gitops) | core + Kubernetes/Flux/policy tools |
 | [`ghcr.io/paruff/ufawkes-devsecops-core`](https://github.com/paruff/uFawkesAI/pkgs/container/ufawkes-devsecops-core) | Linters, secret/vuln/SAST scanners, pre-commit |

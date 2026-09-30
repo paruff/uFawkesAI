@@ -85,12 +85,12 @@ jobs:
         run: bash scripts/test-image-lock-bump.sh
 
       # Per-arch GHA cache: later runs and the publish job reuse these layers.
-      - name: Build ai (core and gitops are its build stages)
+      - name: Build ai + polyglot (core and gitops are their build stages)
         working-directory: images/devsecops
         env:
           ARCH: ${{ matrix.arch }}
         run: |
-          TAG=ci docker buildx bake ai --load --allow=fs.read=../../opencode --allow=fs.read=../../.agents/agents \
+          TAG=ci docker buildx bake ai polyglot --load --allow=fs.read=../../opencode --allow=fs.read=../../.agents/agents \
             --set "*.cache-from=type=gha,scope=devsecops-${ARCH}" \
             --set "*.cache-to=type=gha,mode=max,scope=devsecops-${ARCH}"
 
@@ -99,6 +99,9 @@ jobs:
           docker run --rm --network none \
             -v "$PWD/images/devsecops/tests:/tests:ro" \
             ufawkes-devsecops-ai:ci /tests/verify-tools.sh ai
+          docker run --rm --network none \
+            -v "$PWD/images/devsecops/tests:/tests:ro" \
+            ufawkes-devsecops-ai:ci-polyglot /tests/verify-tools.sh polyglot
 
       # Report-only on PRs/pushes (a newly published CVE must not block
       # unrelated work); the gate fails on weekly and manual runs so fixable
@@ -137,7 +140,7 @@ jobs:
       - name: Image size
         if: always()
         run: |
-          docker image ls --filter 'reference=ufawkes-devsecops-ai:ci' \
+          docker image ls --filter 'reference=ufawkes-devsecops-ai:ci*' \
             --format '{{.Repository}}:{{.Tag}} {{.Size}}' | tee -a "$GITHUB_STEP_SUMMARY"
       - name: job-finish
         if: always()
@@ -247,6 +250,36 @@ jobs:
             type=raw,value=latest,enable=${{ steps.semver.outputs.prerelease == 'false' }}
           flavor: latest=false
 
+      - name: Tags for ai polyglot
+        id: meta-ai-polyglot
+        env:
+          DOCKER_METADATA_ANNOTATIONS_LEVELS: manifest,index
+        uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
+        with:
+          images: ${{ env.REGISTRY }}/ufawkes-devsecops-ai
+          tags: |
+            type=semver,pattern={{version}},value=${{ steps.semver.outputs.version }}
+            type=semver,pattern={{major}}.{{minor}},value=${{ steps.semver.outputs.version }}
+            type=semver,pattern={{major}},value=${{ steps.semver.outputs.version }}
+            type=raw,value=polyglot,suffix=,enable=${{ steps.semver.outputs.prerelease == 'false' }}
+          flavor: |
+            latest=false
+            suffix=-polyglot
+      - name: Tags for devcontainer polyglot
+        id: meta-devcontainer-polyglot
+        env:
+          DOCKER_METADATA_ANNOTATIONS_LEVELS: manifest,index
+        uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
+        with:
+          images: ${{ env.REGISTRY }}/ufawkesai-devcontainer
+          tags: |
+            type=semver,pattern={{version}},value=${{ steps.semver.outputs.version }}
+            type=semver,pattern={{major}}.{{minor}},value=${{ steps.semver.outputs.version }}
+            type=semver,pattern={{major}},value=${{ steps.semver.outputs.version }}
+            type=raw,value=polyglot,suffix=,enable=${{ steps.semver.outputs.prerelease == 'false' }}
+          flavor: |
+            latest=false
+            suffix=-polyglot
       # One Dockerfile, three targets: gitops/ai reuse core's layers in-job,
       # and each arch reuses the verify job's cache for that arch.
       # zstd: smaller pulls and faster unpacking than gzip (needs Docker >= 23).
@@ -332,15 +365,57 @@ jobs:
           build-args: |
             BASE_IMAGE=${{ env.REGISTRY }}/ufawkes-devsecops-ai@${{ steps.ai.outputs.digest }}
 
+      - name: Build + push ai polyglot (ai + Java LSP)
+        id: ai-polyglot
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
+        with:
+          context: ./images/devsecops
+          build-contexts: |
+            opencode-src=./opencode
+            agents-src=./.agents/agents
+          target: polyglot
+          platforms: linux/amd64,linux/arm64
+          tags: ${{ steps.meta-ai-polyglot.outputs.tags }}
+          labels: ${{ steps.meta-ai-polyglot.outputs.labels }}
+          annotations: ${{ steps.meta-ai-polyglot.outputs.annotations }}
+          outputs: type=image,push=true,compression=zstd,force-compression=true,oci-mediatypes=true
+          cache-from: |
+            type=gha,scope=devsecops-amd64
+            type=gha,scope=devsecops-arm64
+          provenance: mode=max
+          sbom: true
+          build-args: |
+            VERSION=${{ steps.meta-ai-polyglot.outputs.version }}
+            REVISION=${{ github.sha }}
+      - name: Build + push devcontainer polyglot (on the polyglot digest)
+        id: devcontainer-polyglot
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
+        with:
+          context: .
+          file: .devcontainer/Dockerfile
+          platforms: linux/amd64,linux/arm64
+          tags: ${{ steps.meta-devcontainer-polyglot.outputs.tags }}
+          labels: ${{ steps.meta-devcontainer-polyglot.outputs.labels }}
+          annotations: ${{ steps.meta-devcontainer-polyglot.outputs.annotations }}
+          outputs: type=image,push=true,compression=zstd,force-compression=true,oci-mediatypes=true
+          provenance: mode=max
+          sbom: true
+          build-args: |
+            BASE_IMAGE=${{ env.REGISTRY }}/ufawkes-devsecops-ai@${{ steps.ai-polyglot.outputs.digest }}
+            LSP_PLUGINS=ufawkes-lsp ufawkes-lsp-java
+
       - name: Sign every digest (keyless, GitHub OIDC)
         env:
           CORE: ${{ steps.core.outputs.digest }}
           GITOPS: ${{ steps.gitops.outputs.digest }}
           AI: ${{ steps.ai.outputs.digest }}
           DEVCONTAINER: ${{ steps.devcontainer.outputs.digest }}
+          AI_POLYGLOT: ${{ steps.ai-polyglot.outputs.digest }}
+          DEVCONTAINER_POLYGLOT: ${{ steps.devcontainer-polyglot.outputs.digest }}
         run: |
           for ref in "ufawkes-devsecops-core@${CORE}" "ufawkes-devsecops-gitops@${GITOPS}" \
-            "ufawkes-devsecops-ai@${AI}" "ufawkesai-devcontainer@${DEVCONTAINER}"; do
+            "ufawkes-devsecops-ai@${AI}" "ufawkesai-devcontainer@${DEVCONTAINER}" \
+            "ufawkes-devsecops-ai@${AI_POLYGLOT}" "ufawkesai-devcontainer@${DEVCONTAINER_POLYGLOT}"; do
             cosign sign --yes "${REGISTRY}/${ref}"
             echo "- signed \`${REGISTRY}/${ref}\`" >>"$GITHUB_STEP_SUMMARY"
           done

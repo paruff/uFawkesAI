@@ -1,7 +1,9 @@
 {
   "typescript": {
     "command": "typescript-language-server",
-    "args": ["--stdio"],
+    "args": [
+      "--stdio"
+    ],
     "extensionToLanguage": {
       ".ts": "typescript",
       ".tsx": "typescriptreact",
@@ -15,38 +17,32 @@
   },
   "python": {
     "command": "pyright-langserver",
-    "args": ["--stdio"],
-    "extensionToLanguage": { ".py": "python", ".pyi": "python" }
-  },
-  "go": {
-    "command": "gopls",
-    "args": ["serve"],
-    "extensionToLanguage": { ".go": "go" }
-  },
-  "java": {
-    "command": "jdtls",
-    "extensionToLanguage": { ".java": "java" },
-    "startupTimeout": 120000
-  },
-  "c": {
-    "command": "clangd",
+    "args": [
+      "--stdio"
+    ],
     "extensionToLanguage": {
-      ".c": "c",
-      ".h": "c",
-      ".cc": "cpp",
-      ".cpp": "cpp",
-      ".cxx": "cpp",
-      ".hpp": "cpp"
+      ".py": "python",
+      ".pyi": "python"
     }
   },
   "bash": {
     "command": "bash-language-server",
-    "args": ["start"],
-    "extensionToLanguage": { ".sh": "shellscript", ".bash": "shellscript" }
+    "args": [
+      "start"
+    ],
+    "extensionToLanguage": {
+      ".sh": "shellscript",
+      ".bash": "shellscript"
+    }
   },
   "yaml": {
     "command": "yaml-language-server",
-    "args": ["--stdio"],
-    "extensionToLanguage": { ".yaml": "yaml", ".yml": "yaml" }
+    "args": [
+      "--stdio"
+    ],
+    "extensionToLanguage": {
+      ".yaml": "yaml",
+      ".yml": "yaml"
+    }
   }
 }

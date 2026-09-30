@@ -1,0 +1,9 @@
+{
+  "name": "ufawkes-lsp-java",
+  "version": "1.0.0",
+  "description": "Java code intelligence (jdtls) for the polyglot uFawkesAI devcontainer. jdtls and the Java 21 runtime ship in that image variant only.",
+  "author": {
+    "name": "paruff"
+  },
+  "license": "MIT"
+}

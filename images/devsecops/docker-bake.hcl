@@ -50,3 +50,9 @@ target "ai" {
   target   = "ai"
   tags     = ["ufawkes-devsecops-ai:${TAG}"]
 }
+
+target "polyglot" {
+  inherits = ["_common"]
+  target   = "polyglot"
+  tags     = ["ufawkes-devsecops-ai:${TAG}-polyglot"]
+}

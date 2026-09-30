@@ -7,7 +7,12 @@
     {
       "name": "ufawkes-lsp",
       "source": "./ufawkes-lsp",
-      "description": "Language servers baked into the uFawkesAI devcontainer: TypeScript/JavaScript, Python, Go, Java, C/C++, Bash, YAML"
+      "description": "Language servers baked into the uFawkesAI devcontainer: TypeScript/JavaScript, Python, Bash, YAML"
+    },
+    {
+      "name": "ufawkes-lsp-java",
+      "source": "./ufawkes-lsp-java",
+      "description": "Java (jdtls) \u2014 polyglot devcontainer variant only"
     }
   ],
   "metadata": {
