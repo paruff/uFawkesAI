@@ -272,6 +272,41 @@ if [ "$VARIANT" = ai ]; then
     && grep -q '"enabled": false' "$oc/fallback.json" && [ ! -e "$oc/tiers.json" ]; then
     ok "opencode config: tier agents, __HOME__ rendered, fallback off, no router"
   else bad "opencode config not the deterministic baked version"; fi
+
+  echo "== 7. Language servers (TS/JS, Python, Go, Java, C/C++, Bash, YAML) =="
+  # Each must start and answer, not merely exist on PATH.
+  check_lsp() {
+    local label="$1" out
+    shift
+    if out="$("$@" 2>&1)" && [ -n "$out" ]; then ok "lsp ${label}: $(head -1 <<< "$out" | cut -c1-60)"; else bad "lsp ${label}: '$*' failed" "$out"; fi
+  }
+  check_lsp typescript typescript-language-server --version
+  check_lsp tsserver ls -L /usr/local/bin/tsserver
+  check_lsp python pyright --version
+  check_lsp go gopls version
+  check_lsp go-toolchain go version
+  check_lsp java java -version
+  check_lsp jdtls cat /opt/jdtls/VERSION
+  check_lsp c clangd --version
+  check_lsp bash bash-language-server --version
+  check_lsp yaml ls -L /usr/local/bin/yaml-language-server
+  if [ "${OPENCODE_DISABLE_LSP_DOWNLOAD:-}" = true ] && grep -q '"jdtls": {' "$oc/opencode.jsonc"; then
+    ok "opencode: lsp on (TS + Java pinned to baked servers), runtime downloads off"
+  else bad "opencode: expected pinned lsp servers and OPENCODE_DISABLE_LSP_DOWNLOAD=true"; fi
+
+  echo "== 8. qmd: search works end to end, skill + MCP wired =="
+  qd="$(mktemp -d)"
+  mkdir -p "$qd/docs" "$qd/.qmd"
+  printf '# Rework rate\n\nDeployment rework rate counts unplanned deploys.\n' > "$qd/docs/a.md"
+  printf 'collections:\n  t:\n    path: docs\n    pattern: "**/*.md"\n' > "$qd/.qmd/index.yml"
+  if out="$(cd "$qd" && git init -q && qmd update 2>&1 && qmd search rework -n 1 2>&1)" && grep -q 'a.md' <<< "$out"; then
+    ok "qmd update + search (native sqlite binding loads)"
+  else bad "qmd search failed" "$out"; fi
+  rm -rf "$qd"
+  for d in "$HOME/.claude/skills" "$oc/skills"; do
+    if [ -f "$d/qmd/SKILL.md" ]; then ok "${d#"$HOME"/}: qmd skill"; else bad "$d/qmd/SKILL.md missing"; fi
+  done
+  if grep -q '"qmd"' "$oc/opencode.jsonc"; then ok "opencode: qmd MCP server configured"; else bad "opencode: qmd MCP server missing"; fi
 fi
 
 echo

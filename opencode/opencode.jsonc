@@ -110,7 +110,30 @@
 
   "disabled_providers": ["opencode-go"],
 
+  // Language servers: all baked into the devcontainer image (TypeScript/JS,
+  // Python, Go, Java, C/C++, Bash, YAML); OPENCODE_DISABLE_LSP_DOWNLOAD=true
+  // there, so a missing server is an image bug, never a runtime download.
+  // An object (not `true`) still enables every built-in server. TypeScript and
+  // Java are pinned to the baked binaries: their built-ins fetch their own copy
+  // and, with downloads off, silently start nothing.
+  "lsp": {
+    "typescript": {
+      "command": ["typescript-language-server", "--stdio"],
+      "extensions": [".ts", ".tsx", ".mts", ".cts", ".js", ".jsx", ".mjs", ".cjs"]
+    },
+    "jdtls": {
+      "command": ["jdtls"],
+      "extensions": [".java"]
+    }
+  },
+
   "mcp": {
+    // qmd: local markdown search over the repo's .qmd index (qmd skill).
+    "qmd": {
+      "type": "local",
+      "command": ["qmd", "mcp"],
+      "enabled": true
+    },
     "serena": {
       "type": "local",
       "command": [

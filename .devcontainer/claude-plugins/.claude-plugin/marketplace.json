@@ -1,0 +1,16 @@
+{
+  "name": "ufawkes",
+  "owner": {
+    "name": "paruff"
+  },
+  "plugins": [
+    {
+      "name": "ufawkes-lsp",
+      "source": "./ufawkes-lsp",
+      "description": "Language servers baked into the uFawkesAI devcontainer: TypeScript/JavaScript, Python, Go, Java, C/C++, Bash, YAML"
+    }
+  ],
+  "metadata": {
+    "description": "uFawkesAI devcontainer plugins"
+  }
+}
