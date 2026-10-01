@@ -292,7 +292,7 @@ Prompts for measuring and improving DORA metrics using AI assistance.
 
 ### What Dojo module should I complete before implementing [capability]?
 
-**Context to open:** `AGENTS.md`, `docs/DOJO_MAP.md`, `.github/skills/dojo-navigator/SKILL.md`
+**Context to open:** `AGENTS.md`, `docs/DOJO_MAP.md`, `.agents/skills/dojo-navigator/SKILL.md`
 
 ```
 Read AGENTS.md and docs/DOJO_MAP.md, then recommend the correct Fawkes Dojo module to complete before implementing {{CAPABILITY}}.

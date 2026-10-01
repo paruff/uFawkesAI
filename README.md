@@ -49,7 +49,7 @@ Dojo module → repo template → production workflow
 - Apply the pattern in the repo’s agent guidance and templates
 - Ship the change through the same workflow the team already uses
 
-The Dojo map lives in [`docs/DOJO_MAP.md`](./docs/DOJO_MAP.md), and the agent skill for this flow is `.github/skills/dojo-navigator/SKILL.md`.
+The Dojo map lives in [`docs/DOJO_MAP.md`](./docs/DOJO_MAP.md), and the agent skill for this flow is `.agents/skills/dojo-navigator/SKILL.md`.
 
 ## 5-minute quick start
 

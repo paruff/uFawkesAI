@@ -164,6 +164,7 @@ The former stage skills (`spec`, `design`, `plan`, `build`, `test`,
 | `documentation/`        | pre-release audit, repo onboarding    | Enforce minimum documentation standard across uFawkes* repos (AI Capability 3) |
 | `context-engineering/`  | session startup                       | Verify internal context is complete and placeholder-free before each agent session (AI Capability 3) |
 | `ufawkes-knowledge/`    | answering from repo knowledge via qmd | QMD collections + query patterns for this repo's indexed docs (`.agents/`, `docs/`) |
+| `dojo-navigator/`       | capability-focused task               | Surface the matching Fawkes Dojo module for the task's DORA capability (`docs/DOJO_MAP.md`) |
 
 ### DORA Measurement & Reporting Skills
 

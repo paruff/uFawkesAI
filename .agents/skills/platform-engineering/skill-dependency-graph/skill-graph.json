@@ -1,0 +1,487 @@
+{
+  "skill": "skill-dependency-graph",
+  "generated_at": "2026-10-01 15:34:26Z",
+  "registry": "skill-lifecycle.yaml",
+  "total_skills": 63,
+  "deprecated_skills": 7,
+  "edges": 8,
+  "nodes": [
+    {
+      "id": "agent-observability",
+      "level": "domain",
+      "status": "active",
+      "version": "1.0.0"
+    },
+    {
+      "id": "chaos-testing",
+      "level": "domain",
+      "status": "active",
+      "version": "1.0.0"
+    },
+    {
+      "id": "continuous-evals",
+      "level": "domain",
+      "status": "beta",
+      "version": "0.1.0"
+    },
+    {
+      "id": "cross-validation",
+      "level": "domain",
+      "status": "active",
+      "version": "1.0.0"
+    },
+    {
+      "id": "delivery",
+      "level": "domain",
+      "status": "planned",
+      "version": "1.1.0"
+    },
+    {
+      "id": "dev-experience",
+      "level": "domain",
+      "status": "stable",
+      "version": "1.0.0"
+    },
+    {
+      "id": "dojo-feedback",
+      "level": "domain",
+      "status": "beta",
+      "version": "0.1.0"
+    },
+    {
+      "id": "dojo-navigator",
+      "level": "domain",
+      "status": "beta",
+      "version": "0.1.0"
+    },
+    {
+      "id": "e2e-testing",
+      "level": "domain",
+      "status": "active",
+      "version": "1.0.0"
+    },
+    {
+      "id": "golden-paths",
+      "level": "domain",
+      "status": "active",
+      "version": "1.0.0"
+    },
+    {
+      "id": "integration-testing",
+      "level": "domain",
+      "status": "active",
+      "version": "1.0.0"
+    },
+    {
+      "id": "lang-go",
+      "level": "domain",
+      "status": "stable",
+      "version": "1.0.0"
+    },
+    {
+      "id": "lang-python",
+      "level": "domain",
+      "status": "stable",
+      "version": "1.0.0"
+    },
+    {
+      "id": "lang-typescript",
+      "level": "domain",
+      "status": "stable",
+      "version": "1.0.0"
+    },
+    {
+      "id": "load-testing",
+      "level": "domain",
+      "status": "active",
+      "version": "1.0.0"
+    },
+    {
+      "id": "model-routing",
+      "level": "domain",
+      "status": "active",
+      "version": "1.0.0"
+    },
+    {
+      "id": "observability",
+      "level": "domain",
+      "status": "active",
+      "version": "1.0.0"
+    },
+    {
+      "id": "observability-testing",
+      "level": "domain",
+      "status": "active",
+      "version": "1.0.0"
+    },
+    {
+      "id": "runtime-operations",
+      "level": "domain",
+      "status": "active",
+      "version": "1.0.0"
+    },
+    {
+      "id": "security-testing",
+      "level": "domain",
+      "status": "active",
+      "version": "1.0.0"
+    },
+    {
+      "id": "token-budget",
+      "level": "domain",
+      "status": "active",
+      "version": "1.0.0"
+    },
+    {
+      "id": "ufawkes-knowledge",
+      "level": "domain",
+      "status": "active",
+      "version": "1.0.0"
+    },
+    {
+      "id": "agent-observability/invocation-tracking",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "agent-observability/skill-load-events",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "agent-observability/finding-quality",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "agent-observability/decision-logging",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "chaos-testing/chaos-injection",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "chaos-testing/cluster-chaos",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "chaos-testing/failure-modes",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "chaos-testing/gitops-drift-chaos",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "dev-experience/dev-container-setup",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "dev-experience/local-environment-simulation",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "dev-experience/workspace-bootstrap",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "e2e-testing/e2e-deployment-validation",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "e2e-testing/e2e-failure-paths",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "e2e-testing/e2e-happy-path",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "e2e-testing/e2e-rollback",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "integration-testing/full-stack",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "integration-testing/gitops-to-controller",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "integration-testing/obs-to-gitops",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "integration-testing/pipe-to-obs",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "load-testing/obs-gitops-load",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "load-testing/pipeline-throughput",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "load-testing/registry-load",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "load-testing/system-stress",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "observability-testing/log-schema-validation",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "observability-testing/metrics-validation",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "observability-testing/observability-health",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "observability-testing/trace-propagation",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "runtime-operations/auto-remediation",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "runtime-operations/capacity-management",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "runtime-operations/drift-detection",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "runtime-operations/health-monitoring",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "runtime-operations/incident-correlation",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "runtime-operations/incident-detection",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "runtime-operations/incident-triage",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "runtime-operations/multi-cluster-ops",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "runtime-operations/runbook-automation",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "runtime-operations/slo-management",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "security-testing/container-security",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "security-testing/dependency-scanning",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "security-testing/sast",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    },
+    {
+      "id": "security-testing/secret-detection",
+      "level": "sub-skill",
+      "status": "active",
+      "version": "0.0.0"
+    }
+  ],
+  "edges_list": [
+    {
+      "from": "spec",
+      "to": "cross-validation"
+    },
+    {
+      "from": "design",
+      "to": "cross-validation"
+    },
+    {
+      "from": "build",
+      "to": "cross-validation"
+    },
+    {
+      "from": "test",
+      "to": "cross-validation"
+    },
+    {
+      "from": "test-execution",
+      "to": "cross-validation"
+    },
+    {
+      "from": "review",
+      "to": "cross-validation"
+    },
+    {
+      "from": "build",
+      "to": "delivery"
+    },
+    {
+      "from": "review",
+      "to": "delivery"
+    }
+  ],
+  "topological_order": [
+    "agent-observability",
+    "agent-observability/decision-logging",
+    "agent-observability/finding-quality",
+    "agent-observability/invocation-tracking",
+    "agent-observability/skill-load-events",
+    "chaos-testing",
+    "chaos-testing/chaos-injection",
+    "chaos-testing/cluster-chaos",
+    "chaos-testing/failure-modes",
+    "chaos-testing/gitops-drift-chaos",
+    "continuous-evals",
+    "cross-validation",
+    "delivery",
+    "dev-experience",
+    "dev-experience/dev-container-setup",
+    "dev-experience/local-environment-simulation",
+    "dev-experience/workspace-bootstrap",
+    "dojo-feedback",
+    "dojo-navigator",
+    "e2e-testing",
+    "e2e-testing/e2e-deployment-validation",
+    "e2e-testing/e2e-failure-paths",
+    "e2e-testing/e2e-happy-path",
+    "e2e-testing/e2e-rollback",
+    "golden-paths",
+    "integration-testing",
+    "integration-testing/full-stack",
+    "integration-testing/gitops-to-controller",
+    "integration-testing/obs-to-gitops",
+    "integration-testing/pipe-to-obs",
+    "lang-go",
+    "lang-python",
+    "lang-typescript",
+    "load-testing",
+    "load-testing/obs-gitops-load",
+    "load-testing/pipeline-throughput",
+    "load-testing/registry-load",
+    "load-testing/system-stress",
+    "model-routing",
+    "observability",
+    "observability-testing",
+    "observability-testing/log-schema-validation",
+    "observability-testing/metrics-validation",
+    "observability-testing/observability-health",
+    "observability-testing/trace-propagation",
+    "runtime-operations",
+    "runtime-operations/auto-remediation",
+    "runtime-operations/capacity-management",
+    "runtime-operations/drift-detection",
+    "runtime-operations/health-monitoring",
+    "runtime-operations/incident-correlation",
+    "runtime-operations/incident-detection",
+    "runtime-operations/incident-triage",
+    "runtime-operations/multi-cluster-ops",
+    "runtime-operations/runbook-automation",
+    "runtime-operations/slo-management",
+    "security-testing",
+    "security-testing/container-security",
+    "security-testing/dependency-scanning",
+    "security-testing/sast",
+    "security-testing/secret-detection",
+    "token-budget",
+    "ufawkes-knowledge"
+  ]
+}
