@@ -1,6 +1,6 @@
 # Specification: Delivery events that work outside CI
 
-**Traces to:** [`intent.md`](intent.md) | **Status:** Draft | **Revision:** 1
+**Traces to:** [`intent.md`](intent.md) | **Status:** Draft | **Revision:** 2
 **Builds on:** [`../dora-events/`](../dora-events/) (evidence:
 [`dojo-feedback.md`](../dora-events/dojo-feedback.md))
 
@@ -74,6 +74,13 @@ uFawkesDojo Lab 02 (a cross-repo follow-up, handed off through
 - [ ] AC-04: against a running uFawkesObs, an event emitted over OTLP is found in Loki by the documented LogQL query within the timeout; with the stack down the script exits 2 with a SKIP — `test_type: live-system`
 - [ ] AC-05: the prerequisites and the LogQL query appear in `docs/UFAWKES_INTEGRATION.md`, and the stale "jsonschema" row in the dora-events plan is corrected — `test_type: unit` (checked by `grep` in the unit suite)
 
+## Decisions
+
+- **Unknown repo: warn and continue** (owner, 2026-10-01). REQ-002 stands as
+  written: the emitter warns on stderr, emits `repo: "unknown"` and exits 0, so a
+  misconfigured emitter can never break a pipeline. A `--strict` flag can be
+  added later if a consumer needs it.
+
 ## Open questions
 
 1. **Loki label mapping is unverified.** uFawkesObs's own docs query Loki by
@@ -81,10 +88,7 @@ uFawkesDojo Lab 02 (a cross-repo follow-up, handed off through
    resource attributes become through the collector's Loki exporter. Plan
    step 0 settles this by running the stack; the LogQL in REQ-003 must come
    from that run, not from this spec.
-2. **Warn-and-continue vs. fail** when the repo is unknown (REQ-002).
-   Recommendation: warn and continue, so a misconfigured emitter can never
-   break a pipeline. A `--strict` flag can be added later if a consumer needs it.
-3. **Loki's host port** (assumed `3100`) must be read from uFawkesObs's compose
+2. **Loki's host port** (assumed `3100`) must be read from uFawkesObs's compose
    file, not assumed.
 
 ## Governance Alignment
