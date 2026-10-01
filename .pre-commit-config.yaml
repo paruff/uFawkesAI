@@ -354,5 +354,5 @@ ci:
   autoupdate_branch: ""
   autoupdate_commit_msg: "[pre-commit.ci] pre-commit autoupdate"
   autoupdate_schedule: monthly
-  skip: [terraform_tflint, terraform_tfsec, kustomize-validate, helm-lint, mkdocs-validate, argocd-validate, helm-lint, backstage-catalog-validate]
+  skip: [terraform_tflint, kustomize-validate, helm-lint, mkdocs-validate, argocd-validate, backstage-catalog-validate]
   submodules: false
