@@ -23,9 +23,8 @@ LOCK="${ETC}/tools.lock.json"
 
 case "$VARIANT" in
   core) VARIANTS='["core"]' ;;
-  gitops) VARIANTS='["core","gitops"]' ;;
-  ai) VARIANTS='["core","gitops","ai"]' ;;
-  polyglot) VARIANTS='["core","gitops","ai","polyglot"]' ;;
+  ai) VARIANTS='["core","ai"]' ;;
+  polyglot) VARIANTS='["core","ai","polyglot"]' ;;
   *)
     echo "unknown variant: $VARIANT" >&2
     exit 2
@@ -180,55 +179,8 @@ git -C "$repo" add -A
 expect_reject "pre-commit baseline: planted token" \
   env PRE_COMMIT_HOME="$t/pc-home" bash -c "cd '$repo' && pre-commit run --all-files"
 
-if [ "$VARIANT" != core ]; then
-  echo "== 4. GitOps / IaC / policy gates (offline) =="
-  # kubectl, kubeconform, kind and flux need a cluster, schema
-  # downloads or Docker for anything beyond the version check above.
-  g="$t/gitops"
-  mkdir -p "$g/policy"
-  cat > "$g/pod.yaml" << 'YAML'
-apiVersion: v1
-kind: Pod
-metadata:
-  name: web
-spec:
-  containers:
-    - name: web
-      image: nginx:1.27.0
-YAML
-  sed 's/nginx:1.27.0/nginx:latest/' "$g/pod.yaml" > "$g/pod-latest.yaml"
-
-  cat > "$g/policy/latest.rego" << 'REGO'
-package main
-import rego.v1
-deny contains msg if {
-  some c in input.spec.containers
-  endswith(c.image, ":latest")
-  msg := sprintf("container %s uses :latest", [c.name])
-}
-REGO
-  expect_pass "conftest: pinned image" conftest test --policy "$g/policy" "$g/pod.yaml"
-  expect_reject "conftest: :latest image" conftest test --policy "$g/policy" "$g/pod-latest.yaml"
-
-  printf 'resources:\n  - pod.yaml\n' > "$g/kustomization.yaml"
-  expect_pass "kustomize: build" kustomize build "$g"
-
-  expect_pass "helm: create + lint" bash -c "cd '$g' && helm create chart >/dev/null && helm lint chart"
-  printf 'apiVersion: v2\n' > "$g/chart/Chart.yaml"
-  expect_reject "helm: Chart.yaml missing name/version" helm lint "$g/chart"
-
-  age-keygen -o "$g/age.key" 2> /dev/null
-  recipient="$(grep -o 'age1[0-9a-z]*' "$g/age.key")"
-  printf 'password: planted-plaintext\n' > "$g/secret.yaml"
-  if sops --disable-version-check encrypt --age "$recipient" "$g/secret.yaml" > "$g/secret.enc.yaml" \
-    && ! grep -q planted-plaintext "$g/secret.enc.yaml" \
-    && SOPS_AGE_KEY_FILE="$g/age.key" sops --disable-version-check decrypt "$g/secret.enc.yaml" | grep -q planted-plaintext; then
-    ok "sops + age: encrypt hides plaintext, decrypt restores it"
-  else bad "sops + age: round trip failed"; fi
-fi
-
 if [ "$VARIANT" = ai ] || [ "$VARIANT" = polyglot ]; then
-  echo "== 5. Devcontainer user =="
+  echo "== 4. Devcontainer user =="
   if [ "$(id -un)" = dev ] && [ "$(id -u)" = 1000 ]; then ok "runs as dev (1000)"; else bad "expected user dev/1000, got $(id -un)/$(id -u)"; fi
   expect_pass "passwordless sudo" sudo -n true
   expect_pass "zsh present" zsh -c 'exit 0'
@@ -237,17 +189,12 @@ if [ "$VARIANT" = ai ] || [ "$VARIANT" = polyglot ]; then
     ok "user-writable npm prefix for pinned Claude Code install"
   else bad "NPM_CONFIG_PREFIX missing or not writable"; fi
 
-  echo "== 6. Skills, agents and OpenCode config baked in for both harnesses =="
+  echo "== 5. Skills, agents and OpenCode config baked in for both harnesses =="
   oc="$HOME/.config/opencode"
   # OpenCode registers Superpowers via skills.paths (plugin node_modules), not links.
   for skill in using-superpowers brainstorming writing-plans test-driven-development \
     systematic-debugging verification-before-completion; do
     for d in "$HOME/.claude/skills" "$oc/node_modules/superpowers/skills"; do
-      if [ -f "${d}/${skill}/SKILL.md" ]; then ok "${d#"$HOME"/}: ${skill}"; else bad "${d}/${skill}/SKILL.md missing"; fi
-    done
-  done
-  for skill in gitops-knowledge gitops-repo-audit; do
-    for d in "$HOME/.claude/skills" "$oc/skills"; do
       if [ -f "${d}/${skill}/SKILL.md" ]; then ok "${d#"$HOME"/}: ${skill}"; else bad "${d}/${skill}/SKILL.md missing"; fi
     done
   done
@@ -262,7 +209,7 @@ if [ "$VARIANT" = ai ] || [ "$VARIANT" = polyglot ]; then
     ok "opencode config: tier agents, __HOME__ rendered, fallback off, no router"
   else bad "opencode config not the deterministic baked version"; fi
 
-  echo "== 7. Language servers (TS/JS, Python, Bash, YAML; + Java in polyglot) =="
+  echo "== 6. Language servers (TS/JS, Python, Bash, YAML; + Java in polyglot) =="
   # Each must start and answer, not merely exist on PATH.
   check_lsp() {
     local label="$1" out
@@ -288,7 +235,7 @@ if [ "$VARIANT" = ai ] || [ "$VARIANT" = polyglot ]; then
     ok "opencode: lsp on (TS + Java pinned to baked servers), runtime downloads off"
   else bad "opencode: expected pinned lsp servers and OPENCODE_DISABLE_LSP_DOWNLOAD=true"; fi
 
-  echo "== 8. qmd: search works end to end, skill + MCP wired =="
+  echo "== 7. qmd: search works end to end, skill + MCP wired =="
   qd="$(mktemp -d)"
   mkdir -p "$qd/docs" "$qd/.qmd"
   printf '# Rework rate\n\nDeployment rework rate counts unplanned deploys.\n' > "$qd/docs/a.md"

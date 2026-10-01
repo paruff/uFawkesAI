@@ -3,9 +3,9 @@
 # Published to ghcr.io/paruff/ufawkesai-devcontainer by build-devsecops-images.yml.
 #
 # The ai base already includes: OpenCode, qmd, the language servers (TS/JS,
-# Python, Bash, YAML; the polyglot base adds Java), Superpowers + Flux + qmd agent skills
+# Python, Bash, YAML; the polyglot base adds Java), Superpowers + qmd agent skills
 # (linked into ~/.claude/skills and ~/.config/opencode/skills), pre-commit,
-# gh, the core/gitops scanners, zsh, sudo, and the dev user.
+# gh, the core scanners, zsh, sudo, and the dev user.
 
 ARG BASE_IMAGE=ghcr.io/paruff/ufawkes-devsecops-ai:latest
 FROM ${BASE_IMAGE}

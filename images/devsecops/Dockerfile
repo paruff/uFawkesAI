@@ -34,14 +34,9 @@ RUN /build/install-tools.sh /build/tools.lock.json core /out/core
 
 # Each later variant starts from the previous variant's manifest, so
 # /etc/ufawkes/tools.json always lists every tool the image contains.
-FROM fetch AS fetch-gitops
-RUN mkdir -p /out/gitops/etc \
- && cp -a /out/core/etc/ufawkes /out/gitops/etc/ \
- && /build/install-tools.sh /build/tools.lock.json gitops /out/gitops
-
-FROM fetch-gitops AS fetch-ai
+FROM fetch AS fetch-ai
 RUN mkdir -p /out/ai/etc \
- && cp -a /out/gitops/etc/ufawkes /out/ai/etc/ \
+ && cp -a /out/core/etc/ufawkes /out/ai/etc/ \
  && /build/install-tools.sh /build/tools.lock.json ai /out/ai
 
 FROM fetch-ai AS fetch-polyglot
@@ -84,16 +79,11 @@ LABEL org.opencontainers.image.source="https://github.com/paruff/uFawkesAI" \
       org.opencontainers.image.licenses="MIT"
 CMD ["bash"]
 
-# ── gitops: + Kubernetes, GitOps, IaC, policy-as-code, secrets-in-Git ──────
-FROM core AS gitops
-COPY --from=fetch-gitops /out/gitops/ /
-LABEL org.opencontainers.image.description="uFawkes DevSecOps toolchain (gitops): core + Kubernetes, GitOps, IaC and policy-as-code tools"
-
 # ── ai: + agent harness, non-root devcontainer user ───────────────────────
 # Claude Code is not baked in: its licence reserves all rights, so the
 # devcontainer installs the pinned version from npm at create time (spec R2
 # fallback). NPM_CONFIG_PREFIX lets `dev` do that without sudo.
-FROM gitops AS ai
+FROM core AS ai
 ARG DEV_USER=dev
 ARG USER_UID=1000
 COPY --from=fetch-ai /out/ai/ /
@@ -128,7 +118,7 @@ RUN npm ci --prefix /opt/ufawkes/node-ai --omit=dev --ignore-scripts --no-audit 
 ENV NPM_CONFIG_PREFIX=/home/${DEV_USER}/.npm-global \
     PATH=/home/${DEV_USER}/.npm-global/bin:$PATH \
     OPENCODE_DISABLE_LSP_DOWNLOAD=true
-LABEL org.opencontainers.image.description="uFawkes DevSecOps toolchain (ai): gitops + OpenCode, Codex, Gemini CLI, Superpowers + Flux agent skills, devcontainer user"
+LABEL org.opencontainers.image.description="uFawkes DevSecOps toolchain (ai): core + OpenCode, Codex, Gemini CLI, Superpowers agent skills, devcontainer user"
 USER ${DEV_USER}
 WORKDIR /home/${DEV_USER}
 # The versioned OpenCode config (opencode/: fixed model per agent, no model

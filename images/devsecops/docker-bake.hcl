@@ -1,6 +1,6 @@
-# Builds all three layered variants with one shared cache:
+# Builds the layered variants with one shared cache:
 #   cd images/devsecops && docker buildx bake --load
-# Each variant is a Dockerfile target; gitops builds FROM core, ai FROM gitops.
+# Each variant is a Dockerfile target; ai builds FROM core, polyglot FROM ai.
 
 variable "TAG" {
   default = "local"
@@ -16,7 +16,7 @@ variable "REVISION" {
 }
 
 group "default" {
-  targets = ["core", "gitops", "ai"]
+  targets = ["core", "ai"]
 }
 
 target "_common" {
@@ -37,12 +37,6 @@ target "core" {
   inherits = ["_common"]
   target   = "core"
   tags     = ["ufawkes-devsecops-core:${TAG}"]
-}
-
-target "gitops" {
-  inherits = ["_common"]
-  target   = "gitops"
-  tags     = ["ufawkes-devsecops-gitops:${TAG}"]
 }
 
 target "ai" {

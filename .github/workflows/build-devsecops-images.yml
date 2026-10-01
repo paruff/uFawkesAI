@@ -1,9 +1,9 @@
-# The one workflow for the uFawkes DevSecOps images (core, gitops, ai) and the
+# The one workflow for the uFawkes DevSecOps images (core, ai) and the
 # shared devcontainer (ghcr.io/paruff/ufawkesai-devcontainer) used by the
 # uFawkes suite and fawkes. Replaces image-build.yml + image-release.yml.
 #
 #   PR / push to main (image paths): build ai natively on amd64 + arm64, verify
-#     it offline (ai contains every core/gitops tool), Trivy report-only.
+#     it offline (ai contains every core tool), Trivy report-only.
 #   Weekly schedule / manual run: same, plus the Trivy gate and a no-cache
 #     rebuild that must produce an identical toolchain (determinism).
 #   Tag image-v<SemVer 2.0> (docs/ai-sdlc/devsecops-image/spec.md R6; distinct
@@ -85,7 +85,7 @@ jobs:
         run: bash scripts/test-image-lock-bump.sh
 
       # Per-arch GHA cache: later runs and the publish job reuse these layers.
-      - name: Build ai + polyglot (core and gitops are their build stages)
+      - name: Build ai + polyglot (core is their build stage)
         working-directory: images/devsecops
         env:
           ARCH: ${{ matrix.arch }}
@@ -210,19 +210,6 @@ jobs:
             type=semver,pattern={{major}},value=${{ steps.semver.outputs.version }}
             type=raw,value=latest,enable=${{ steps.semver.outputs.prerelease == 'false' }}
           flavor: latest=false
-      - name: Tags for gitops
-        id: meta-gitops
-        env:
-          DOCKER_METADATA_ANNOTATIONS_LEVELS: manifest,index
-        uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
-        with:
-          images: ${{ env.REGISTRY }}/ufawkes-devsecops-gitops
-          tags: |
-            type=semver,pattern={{version}},value=${{ steps.semver.outputs.version }}
-            type=semver,pattern={{major}}.{{minor}},value=${{ steps.semver.outputs.version }}
-            type=semver,pattern={{major}},value=${{ steps.semver.outputs.version }}
-            type=raw,value=latest,enable=${{ steps.semver.outputs.prerelease == 'false' }}
-          flavor: latest=false
       - name: Tags for ai
         id: meta-ai
         env:
@@ -280,7 +267,7 @@ jobs:
           flavor: |
             latest=false
             suffix=-polyglot
-      # One Dockerfile, three targets: gitops/ai reuse core's layers in-job,
+      # One Dockerfile, several targets: ai reuses core's layers in-job,
       # and each arch reuses the verify job's cache for that arch.
       # zstd: smaller pulls and faster unpacking than gzip (needs Docker >= 23).
       - name: Build + push core
@@ -304,28 +291,6 @@ jobs:
           sbom: true
           build-args: |
             VERSION=${{ steps.meta-core.outputs.version }}
-            REVISION=${{ github.sha }}
-      - name: Build + push gitops
-        id: gitops
-        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
-        with:
-          context: ./images/devsecops
-          build-contexts: |
-            opencode-src=./opencode
-            agents-src=./.agents/agents
-          target: gitops
-          platforms: linux/amd64,linux/arm64
-          tags: ${{ steps.meta-gitops.outputs.tags }}
-          labels: ${{ steps.meta-gitops.outputs.labels }}
-          annotations: ${{ steps.meta-gitops.outputs.annotations }}
-          outputs: type=image,push=true,compression=zstd,force-compression=true,oci-mediatypes=true
-          cache-from: |
-            type=gha,scope=devsecops-amd64
-            type=gha,scope=devsecops-arm64
-          provenance: mode=max
-          sbom: true
-          build-args: |
-            VERSION=${{ steps.meta-gitops.outputs.version }}
             REVISION=${{ github.sha }}
       - name: Build + push ai
         id: ai
@@ -407,13 +372,12 @@ jobs:
       - name: Sign every digest (keyless, GitHub OIDC)
         env:
           CORE: ${{ steps.core.outputs.digest }}
-          GITOPS: ${{ steps.gitops.outputs.digest }}
           AI: ${{ steps.ai.outputs.digest }}
           DEVCONTAINER: ${{ steps.devcontainer.outputs.digest }}
           AI_POLYGLOT: ${{ steps.ai-polyglot.outputs.digest }}
           DEVCONTAINER_POLYGLOT: ${{ steps.devcontainer-polyglot.outputs.digest }}
         run: |
-          for ref in "ufawkes-devsecops-core@${CORE}" "ufawkes-devsecops-gitops@${GITOPS}" \
+          for ref in "ufawkes-devsecops-core@${CORE}" \
             "ufawkes-devsecops-ai@${AI}" "ufawkesai-devcontainer@${DEVCONTAINER}" \
             "ufawkes-devsecops-ai@${AI_POLYGLOT}" "ufawkesai-devcontainer@${DEVCONTAINER_POLYGLOT}"; do
             cosign sign --yes "${REGISTRY}/${ref}"
