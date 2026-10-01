@@ -65,7 +65,7 @@ Test-first throughout: each behaviour change starts with a failing test.
    read the Loki host port from its compose file; emit one event with
    `OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318`; in Loki, record which
    labels the event actually carries and the LogQL that finds it. This answers
-   spec open questions 1 and 3 and fixes the query used in steps 4 and 5.
+   spec open questions 1 and 2 and fixes the query used in steps 4 and 5.
    Record the evidence (query, response) in the PR.
 1. **REQ-002 tests (red).** Extend `scripts/test-emit-dora-event.sh` with the
    AC-02 and AC-03 cases using throwaway git repos with an https remote, an
