@@ -290,6 +290,27 @@ invalid input, and edge cases.
 
 Prompts for measuring and improving DORA metrics using AI assistance.
 
+### What Dojo module should I complete before implementing [capability]?
+
+**Context to open:** `AGENTS.md`, `docs/DOJO_MAP.md`, `.agents/skills/dojo-navigator/SKILL.md`
+
+```
+Read AGENTS.md and docs/DOJO_MAP.md, then recommend the correct Fawkes Dojo module to complete before implementing {{CAPABILITY}}.
+
+Use this structure in the answer:
+1. DORA capability being worked on
+2. Matching Dojo belt and module name
+3. Public module URL
+4. One sentence explaining why this module is the best prerequisite for the task
+5. One suggested implementation checkpoint in this repo after the module is complete
+
+Capability: {{CAPABILITY}}
+```
+
+**Expected output:** A concise recommendation tying the current repo work to the matching Dojo module and a concrete learning-to-build handoff.
+
+---
+
 ### Run DORA Archetype Self-Assessment
 
 **Context to open:** `docs/TEAM_ARCHETYPE.md`, `docs/METRICS.md`, `.github/skills/dora-metrics/SKILL.md`
