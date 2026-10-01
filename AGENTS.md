@@ -21,9 +21,9 @@
 ## 2. Project Identity
 
 **Product:** uFawkesAI — an agent orchestration framework for platform engineering, packaged as a template so its patterns (agents, skills, hooks, rules, multi-harness config) are directly reusable by other projects.
-**Stack:** TypeScript · Node 20 · GitHub Actions · OpenTelemetry
+**Stack:** TypeScript · Node 22 · GitHub Actions · OpenTelemetry
 **Harnesses:** OpenCode and Claude Code are first-class; Codex and Gemini CLI are compatibility harnesses. All four are verified by `scripts/multi-harness-smoke.sh` in CI (see `docs/ai-sdlc/spec.md` R1) and ship in the shared devcontainer image `ghcr.io/paruff/ufawkesai-devcontainer`; Cursor/Copilot/Gemini instruction files are kept in sync via symlink to this file.
-**Key constraints:** 4 execution-boundary agents + 3 workflows + 9 commands + 10 repo skills (see `.agents/README.md`); development methodology = Superpowers (15 skills) + Flux GitOps skills (3), both baked into the shared image; humans = routing layer
+**Key constraints:** 4 execution-boundary agents + 3 workflows + 9 commands + 11 repo skills (see `.agents/README.md`); development methodology = Superpowers (15 skills) + Flux GitOps skills (3), both baked into the shared image; humans = routing layer
 
 ---
 
@@ -109,7 +109,7 @@ always-loaded file lean.
 
 ### Commit Format
 
-- Conventional Commits required: `type(scope): description` (max 120 chars)
+- Conventional Commits required: `type(scope): description` (description max 72 chars)
 - Types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`, `ci`, `perf`, `build`, `revert`
 
 ### Pre-commit Hooks
