@@ -7,7 +7,6 @@
   "scripts": {
     "lint": "bash scripts/run-lint.sh",
     "typecheck": "bash scripts/run-typecheck.sh",
-    "test:coverage": "echo \"No coverage tooling configured; see scripts/run-unit-tests.sh for the suites that do run.\"",
     "lint:architecture": "bash scripts/check-harness-parity.sh && bash scripts/check-dora-vocabulary.sh",
     "metrics": "bash scripts/weekly-metrics.sh",
     "token-audit": "bash scripts/token-audit.sh",
