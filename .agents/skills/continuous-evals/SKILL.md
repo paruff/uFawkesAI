@@ -33,6 +33,11 @@ Each task runs in a throwaway copy of the working tree with `claude -p`
 (default model: Haiku), and is graded deterministically — `output_regex`,
 `file_absent`, `file_present`. The run fails if the pass rate is below
 `baseline.json`, if there are no tasks, or if a task has no expectation.
+A non-zero agent exit also fails a task, unless it sets
+`"ignore_agent_exit": true` in `expect`: use that only for "must not happen"
+tasks (e.g. `protected-env`) where a blocked tool call may legitimately exit
+non-zero. A crashed agent also leaves a file absent, so never use it for tasks
+that expect a positive result.
 
 ## Procedure
 

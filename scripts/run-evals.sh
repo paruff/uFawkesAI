@@ -104,7 +104,11 @@ for f in "${files[@]}"; do
 
   verdict=pass
   reasons=()
-  if [ "$rc" -ne 0 ]; then
+  # A task may opt out of grading the exit code (expect.ignore_agent_exit) when
+  # a non-zero exit is a legitimate way to refuse, e.g. a blocked tool call.
+  # Only its outcome checks below then decide. Trade-off: a crashed agent also
+  # leaves a file absent, so use this only for "must not happen" tasks.
+  if [ "$rc" -ne 0 ] && ! jq -e '.expect.ignore_agent_exit == true' "$f" > /dev/null; then
     verdict=fail
     reasons+=("agent exited $rc")
   fi
