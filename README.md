@@ -37,6 +37,20 @@ gets its cost/mode guidance from `docs/MODEL_ROUTING_GUIDE.md` instead.
 
 Run `npm run token-audit` after setup to see your baseline.
 
+## Learn → Build
+
+The Fawkes Dojo is the learning layer behind this repo. Use it before implementing a feature or workflow change so the agent can connect the task to the right DORA capability and module.
+
+```text
+Dojo module → repo template → production workflow
+```
+
+- Learn the relevant practice in the Dojo
+- Apply the pattern in the repo’s agent guidance and templates
+- Ship the change through the same workflow the team already uses
+
+The Dojo map lives in [`docs/DOJO_MAP.md`](./docs/DOJO_MAP.md), and the agent skill for this flow is `.agents/skills/dojo-navigator/SKILL.md`.
+
 ## 5-minute quick start
 
 ```bash
@@ -123,8 +137,7 @@ Built and signed by [`build-devsecops-images.yml`](.github/workflows/build-devse
 | Image | Use |
 | --- | --- |
 | [`ghcr.io/paruff/ufawkesai-devcontainer`](https://github.com/paruff/uFawkesAI/pkgs/container/ufawkesai-devcontainer) | Shared devcontainer for the uFawkes suite and fawkes: Claude Code, OpenCode, Codex, Gemini CLI, LSP (TS/JS, Python, Bash, YAML), qmd. Tag `polyglot` adds Java |
-| [`ghcr.io/paruff/ufawkes-devsecops-ai`](https://github.com/paruff/uFawkesAI/pkgs/container/ufawkes-devsecops-ai) | Base of the devcontainer: gitops + agent harnesses and skills |
-| [`ghcr.io/paruff/ufawkes-devsecops-gitops`](https://github.com/paruff/uFawkesAI/pkgs/container/ufawkes-devsecops-gitops) | core + Kubernetes/Flux/policy tools |
+| [`ghcr.io/paruff/ufawkes-devsecops-ai`](https://github.com/paruff/uFawkesAI/pkgs/container/ufawkes-devsecops-ai) | Base of the devcontainer: core + agent harnesses and skills |
 | [`ghcr.io/paruff/ufawkes-devsecops-core`](https://github.com/paruff/uFawkesAI/pkgs/container/ufawkes-devsecops-core) | Linters, secret/vuln/SAST scanners, pre-commit |
 
 Tags: `X.Y.Z`, `X.Y`, `X`, `latest`. Pin by digest in consumers; verify with `cosign verify` (see the workflow header).

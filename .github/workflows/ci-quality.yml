@@ -67,7 +67,7 @@ jobs:
         uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
         with:
           driver: docker
-      - name: Build the ai DevSecOps image locally (core/gitops are its build stages)
+      - name: Build the ai DevSecOps image locally (core is its build stage)
         working-directory: images/devsecops
         run: TAG=ci docker buildx bake ai --load --allow=fs.read=../../opencode --allow=fs.read=../../.agents/agents
       - name: Build devcontainer image locally with local base image

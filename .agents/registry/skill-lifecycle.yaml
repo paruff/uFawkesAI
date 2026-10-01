@@ -307,3 +307,10 @@ skills:
     dependencies: []
     load_trigger: "searching this repo's knowledge via qmd"
     sub_skills: []
+
+  dojo-navigator:
+    status: beta
+    version: 0.1.0
+    dependencies: []
+    load_trigger: "load dojo-navigator skill"
+    sub_skills: []

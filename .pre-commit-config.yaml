@@ -261,14 +261,6 @@ repos:
         pass_filenames: false
         files: '(catalog-info|\.catalog-info)\.yaml$'
 
-      # ArgoCD Application validation (render check)
-      - id: argocd-validate
-        name: Validate ArgoCD applications (render check)
-        entry: scripts/render-all-applications.sh
-        language: system
-        pass_filenames: false
-        files: 'platform/apps/.*-application\.yaml$'
-
       # Helm chart linting
       - id: helm-lint
         name: Lint Helm charts
@@ -354,5 +346,5 @@ ci:
   autoupdate_branch: ""
   autoupdate_commit_msg: "[pre-commit.ci] pre-commit autoupdate"
   autoupdate_schedule: monthly
-  skip: [terraform_tflint, kustomize-validate, helm-lint, mkdocs-validate, argocd-validate, backstage-catalog-validate, unit-tests, harness-parity]
+  skip: [terraform_tflint, kustomize-validate, helm-lint, mkdocs-validate, backstage-catalog-validate, unit-tests, harness-parity]
   submodules: false
