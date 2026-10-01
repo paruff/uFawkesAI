@@ -49,9 +49,6 @@ on:
       typescript-detected:
         description: "TypeScript files detected"
         value: ${{ jobs.detect-changes.outputs.typescript }}
-      go-detected:
-        description: "Go files detected"
-        value: ${{ jobs.detect-changes.outputs.go }}
 
 permissions: {}  # deny all at workflow level; grant per job below
 
@@ -70,7 +67,6 @@ jobs:
       shell: ${{ steps.filter.outputs.shell }}
       yaml: ${{ steps.filter.outputs.yaml }}
       typescript: ${{ steps.filter.outputs.typescript }}
-      go: ${{ steps.filter.outputs.go }}
     steps:
       - name: DORA job start
         run: |
@@ -118,13 +114,6 @@ jobs:
             echo "typescript=true" >> $GITHUB_OUTPUT
           else
             echo "typescript=false" >> $GITHUB_OUTPUT
-          fi
-
-          # Detect Go files
-          if git diff --name-only "$BASE" HEAD 2>/dev/null | grep -qE '\.go$'; then
-            echo "go=true" >> $GITHUB_OUTPUT
-          else
-            echo "go=false" >> $GITHUB_OUTPUT
           fi
 
       - name: DORA job finish
@@ -288,7 +277,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020  # v6.3.0
         with:
-          node-version: "20"
+          node-version: "22"
           cache: "npm"
 
       - name: Install dependencies
@@ -296,46 +285,6 @@ jobs:
 
       - name: Run ESLint
         run: npm run lint
-
-      - name: DORA job finish
-        if: always()
-        run: echo "job-finish:$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-
-  # ════════════════════════════════════════════════════════════════════════════
-  # Go Linting (golangci-lint)
-  # ════════════════════════════════════════════════════════════════════════════
-  go-lint:
-    name: Go Lint
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    timeout-minutes: ${{ inputs.timeout-minutes }}
-    needs: detect-changes
-    if: |
-      needs.detect-changes.outputs.go == 'true' &&
-      inputs.emergency-bypass != true
-    steps:
-      - name: DORA job start
-        run: |
-          echo "job-start:$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-          echo "sha:${{ github.sha }}"
-          echo "workflow:${{ github.workflow }}"
-          echo "job:${{ github.job }}"
-
-      - name: Checkout code
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
-
-      - name: Setup Go
-        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e  # v6.3.0
-        with:
-          go-version: "1.24"
-          cache: true
-
-      - name: Run golangci-lint
-        uses: golangci/golangci-lint-action@63c23d5020da8f97005b6de340504130bdbe42c7  # v9.3.0
-        with:
-          version: latest
-          args: --timeout=5m
 
       - name: DORA job finish
         if: always()
@@ -356,7 +305,6 @@ jobs:
       - shell-lint
       - yaml-lint
       - typescript-lint
-      - go-lint
     if: always()
     outputs:
       result: ${{ steps.outcome.outputs.result }}
@@ -374,8 +322,7 @@ jobs:
           if [[ "${{ needs.python-lint.result }}" == "failure" ]] || \
              [[ "${{ needs.shell-lint.result }}" == "failure" ]] || \
              [[ "${{ needs.yaml-lint.result }}" == "failure" ]] || \
-             [[ "${{ needs.typescript-lint.result }}" == "failure" ]] || \
-             [[ "${{ needs.go-lint.result }}" == "failure" ]]; then
+             [[ "${{ needs.typescript-lint.result }}" == "failure" ]]; then
             echo "result=fail" >> $GITHUB_OUTPUT
             exit 1
           fi
@@ -392,7 +339,6 @@ jobs:
           echo "| Shell | ${{ needs.shell-lint.result == 'skipped' && '⏭️ N/A' || (needs.shell-lint.result == 'success' && '✅ Pass' || '❌ Fail') }} |" >> $GITHUB_STEP_SUMMARY
           echo "| YAML | ${{ needs.yaml-lint.result == 'skipped' && '⏭️ N/A' || (needs.yaml-lint.result == 'success' && '✅ Pass' || '❌ Fail') }} |" >> $GITHUB_STEP_SUMMARY
           echo "| TypeScript | ${{ needs.typescript-lint.result == 'skipped' && '⏭️ N/A' || (needs.typescript-lint.result == 'success' && '✅ Pass' || '❌ Fail') }} |" >> $GITHUB_STEP_SUMMARY
-          echo "| Go | ${{ needs.go-lint.result == 'skipped' && '⏭️ N/A' || (needs.go-lint.result == 'success' && '✅ Pass' || '❌ Fail') }} |" >> $GITHUB_STEP_SUMMARY
 
       - name: DORA job finish
         if: always()

@@ -96,16 +96,6 @@ repos:
         exclude: '^scripts/buildplatform\.sh$|^.*\.zsh$'
 
   # ============================================================================
-  # Go Code Quality
-  # ============================================================================
-  - repo: https://github.com/golangci/golangci-lint
-    rev: v2.12.2
-    hooks:
-      - id: golangci-lint
-        name: Lint Go code
-        exclude: ^(jenkins-shared-library/|platform/apps-deferred/unleash/examples/)
-
-  # ============================================================================
   # Terraform (for repos with infra/)
   # ============================================================================
   - repo: https://github.com/antonbabenko/pre-commit-terraform

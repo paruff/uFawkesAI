@@ -15,5 +15,8 @@
     "preflight": "bash scripts/preflight.sh",
     "test": "bash scripts/run-unit-tests.sh",
     "verify": "bash scripts/check-agents.sh && bash scripts/check-ai-stance.sh && bash scripts/check-dora-vocabulary.sh && bash scripts/check-harness-parity.sh && bash scripts/run-unit-tests.sh"
+  },
+  "engines": {
+    "node": ">=22"
   }
 }

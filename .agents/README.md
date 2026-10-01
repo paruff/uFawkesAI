@@ -198,7 +198,6 @@ The former stage skills (`spec`, `design`, `plan`, `build`, `test`,
 | --------------------- | ----------------------------- | -------------------------------------------- |
 | `lang-typescript/` | TypeScript project context | ESLint, tsc, Jest, npm toolchain         |
 | `lang-python/`     | Python project context     | ruff, mypy, pytest, uv toolchain         |
-| `lang-go/`         | Go project context         | golangci-lint, go test, go mod toolchain |
 
 ## Skill Lifecycle
 

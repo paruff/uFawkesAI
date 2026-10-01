@@ -56,30 +56,6 @@ def docker_compose_config(docker_compose_file):
 
 
 @pytest.fixture
-def jenkinsfile(project_root):
-    """Return the Jenkinsfile path."""
-    return project_root / "Jenkinsfile"
-
-
-@pytest.fixture
-def jenkinsfile_content(jenkinsfile):
-    """Read and return the Jenkinsfile content."""
-    if not jenkinsfile.exists():
-        pytest.skip("Jenkinsfile not found")
-    with open(jenkinsfile) as f:
-        return f.read()
-
-
-@pytest.fixture
-def jcasc_dir(project_root):
-    """Return the JCasC configuration directory."""
-    path = project_root / "jenkins"
-    if not path.exists():
-        pytest.skip("jenkins/ directory not found")
-    return path
-
-
-@pytest.fixture
 def k8s_dir(project_root):
     """Return the Kubernetes manifests directory."""
     path = project_root / "k8s"
