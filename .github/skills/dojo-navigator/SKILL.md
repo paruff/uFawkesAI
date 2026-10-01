@@ -23,6 +23,16 @@ When a task is about a specific delivery capability, the agent should surface th
 
 The full, versioned map lives in `docs/DOJO_MAP.md`. This skill should surface the relevant module from that source of truth rather than maintaining a second copy of the table.
 
+## Learning flow
+
+Use this order for AI-assisted work:
+
+1. Read `AGENTS.md` and the task issue
+2. Identify the relevant DORA AI capability
+3. Complete the corresponding Dojo module
+4. Implement the change in the repo
+5. Verify with the smallest relevant local check
+
 ## Recommended response pattern
 
 When invoked, the agent should answer in this shape:
