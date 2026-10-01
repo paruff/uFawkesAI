@@ -100,6 +100,7 @@ always-loaded file lean.
 | `scripts/token-audit.sh`                   | Checking token costs                      |
 | `.agents/skills/continuous-evals/SKILL.md` | Changing any agent configuration          |
 | `.agents/skills/context-engineering/SKILL.md` | Session startup context check          |
+| `.github/skills/dojo-navigator/SKILL.md` | Surfacing the matching Dojo module for the current task |
 
 **Prompt example:** `"Read docs/MODEL_ROUTING_GUIDE.md before starting this task."`
 
@@ -168,3 +169,29 @@ Use these baselines before optimizing delivery flow. The authoritative formulas 
 - `scripts/token-audit.sh` — Token footprint audit (run it before the bill arrives)
 - `docs/MODEL_ROUTING_GUIDE.md` — Which model/mode for which task
 - `docs/METRICS.md` — Baseline targets, formulas, data sources, and worked examples
+
+## 12. Learning Resources
+
+The Fawkes Dojo is the project’s learning layer. Before implementing a capability, surface the matching module to keep the agent in the correct learning-to-build flow.
+
+### DORA capability → Dojo module map
+
+Use the current task’s DORA AI capability to choose the nearest prerequisite module before coding. The authoritative, single-source table lives in `docs/DOJO_MAP.md`.
+
+When you need a quick pointer: begin with the task’s DORA capability, then look up the matching belt/module in `docs/DOJO_MAP.md` before writing code.
+
+### Skill to load when the task is capability-focused
+
+- `.github/skills/dojo-navigator/SKILL.md` — when invoked, the agent should recommend the relevant Dojo module and link it to the task at hand.
+
+### Learning flow
+
+Use this order for AI-assisted work:
+
+1. Read `AGENTS.md` and the task issue
+2. Identify the relevant DORA AI capability
+3. Complete the corresponding Dojo module
+4. Implement the change in the repo
+5. Verify with the smallest relevant local check
+
+This keeps the learning path visible inside the same workflow the repo already uses.

@@ -37,6 +37,20 @@ gets its cost/mode guidance from `docs/MODEL_ROUTING_GUIDE.md` instead.
 
 Run `npm run token-audit` after setup to see your baseline.
 
+## Learn → Build
+
+The Fawkes Dojo is the learning layer behind this repo. Use it before implementing a feature or workflow change so the agent can connect the task to the right DORA capability and module.
+
+```text
+Dojo module → repo template → production workflow
+```
+
+- Learn the relevant practice in the Dojo
+- Apply the pattern in the repo’s agent guidance and templates
+- Ship the change through the same workflow the team already uses
+
+The Dojo map lives in [`docs/DOJO_MAP.md`](./docs/DOJO_MAP.md), and the agent skill for this flow is `.github/skills/dojo-navigator/SKILL.md`.
+
 ## 5-minute quick start
 
 ```bash
