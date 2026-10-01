@@ -13,6 +13,7 @@ Why agents read this: This document prevents agents from wasting cycles on known
 | L-002 | Billing System | Cannot process transactions older than 6 months.                       | Use the manual reconciliation dashboard for historical data. | [JIRA-456]   |
 | L-003 | Data Volume    | Cannot process datasets exceeding 1TB.                                 | Implement chunking and process data in batches of 500GB.     | [JIRA-789]   |
 | L-004 | Dual-Harness Hooks | Claude Code hooks (declarative JSON in `.claude/settings.json`) and OpenCode hooks (imperative TypeScript in `.opencode/plugins/ai-sdlc-hooks.ts`) cannot be generated from one source — the two hook APIs are structurally different. Only the protected-path block-list is shared (`scripts/hooks/protected-paths.json`); the formatter dispatch table and the `SessionStart` reminder message remain separately hand-written per harness and can drift. | When changing hook *logic* (not the protected-path list), update both `.claude/settings.json` and `.opencode/plugins/ai-sdlc-hooks.ts` in the same commit. | — |
+| L-005 | No measured test coverage | The repo's tests are bash suites (`scripts/test-*.sh`, run by `scripts/run-unit-tests.sh` in CI via `npm test`). No coverage tool measures them, so the 80% target in the global testing rules is not enforced; CI enforces that every suite passes, not a percentage. | Add a test for every behavioural change. Adopting `kcov` for the bash suites would make coverage measurable. | — |
 
 ## Deferred Decisions
 
