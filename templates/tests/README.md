@@ -26,7 +26,6 @@ tests/
 | `unit/test_docker_compose_validation.py`         | Docker Compose validation          | Stack repos (Obs, Pipe, DevX) |
 | `unit/test_k8s_validation.py`                    | Kubernetes manifest validation     | Core repos (fawkes)           |
 | `integration/test_docker_compose_integration.py` | Docker Compose stack integration   | Stack repos                   |
-| `acceptance/test_pipeline_acceptance.py`         | Full pipeline acceptance           | Stack repos                   |
 | `Makefile`                                       | Test commands                      | All repos                     |
 | `.pipeline.yml.template`                         | Pipeline contract template         | All repos                     |
 

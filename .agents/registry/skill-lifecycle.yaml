@@ -149,13 +149,6 @@ skills:
     load_trigger: "Python project context"
     sub_skills: []
 
-  lang-go:
-    status: stable
-    version: 1.0.0
-    dependencies: []
-    load_trigger: "Go project context"
-    sub_skills: []
-
   # ============================================
   # Testing Skills
   # ============================================

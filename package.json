@@ -1,5 +1,5 @@
 {
-  "name": "copilot-starter-template",
+  "name": "ufawkesai",
   "version": "1.0.0",
   "private": true,
   "description": "Starter template for AI-assisted workflows and docs",
@@ -14,5 +14,8 @@
     "preflight": "bash scripts/preflight.sh",
     "test": "bash scripts/run-unit-tests.sh",
     "verify": "bash scripts/check-agents.sh && bash scripts/check-ai-stance.sh && bash scripts/check-dora-vocabulary.sh && bash scripts/check-harness-parity.sh && bash scripts/run-unit-tests.sh"
+  },
+  "engines": {
+    "node": ">=22"
   }
 }
