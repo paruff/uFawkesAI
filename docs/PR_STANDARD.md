@@ -11,7 +11,7 @@ type(scope): description
 **Types:** `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`, `ci`, `perf`, `build`, `revert`
 
 **Rules:**
-- Max 120 characters
+- Max 72 characters for the description after `type(scope):` (enforced by `scripts/commit-msg.sh` and Pre-flight)
 - First word after `type(scope):` must be lowercase
 - Scope is optional but encouraged (e.g., `feat(agents):`, `fix(skills):`)
 

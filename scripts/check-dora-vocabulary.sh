@@ -68,7 +68,7 @@ while IFS= read -r hit; do
   num="$(sed -nE 's/.*AI Capabilit(y|ies) ([0-9]+).*/\2/p' <<< "$text" | head -1)"
   [[ -n "$num" ]] || continue
   # extract the name that follows the number
-  name="$(sed -nE 's/.*AI Capabilit(y|ies) [0-9]+ *[:—-] *//p' <<< "$text" | head -1)"
+  name="$(sed -nE 's/.*AI Capabilit(y|ies) [0-9]+ *(:|—|-) *//p' <<< "$text" | head -1)"
   [[ -n "$name" ]] || continue
   name="${name%%$'\r'}"
   # Trim trailing punctuation/quotes that belong to the sentence, not the name.
@@ -82,7 +82,7 @@ while IFS= read -r hit; do
       "$file" "$lineno" "$num" "$name" "$num" "$want" >&2
     fail=1
   fi
-done < <(git grep -nIE 'AI Capabilit(y|ies) [0-9]+ *[:—-]' -- '*.md' || true)
+done < <(git grep -nIE 'AI Capabilit(y|ies) [0-9]+ *(:|—|-)' -- '*.md' || true)
 
 # ── 2. Retired vocabulary must not reappear ──────────────────────────────────
 # Each pattern is a string that was previously used as a capability name.
@@ -100,7 +100,7 @@ while IFS= read -r hit; do
   printf '  FAIL %s non-DORA practice numbered as an AI capability: %s\n' \
     "$(cut -d: -f1 <<< "$hit")" "$(cut -c1-110 <<< "$hit")" >&2
   fail=1
-done < <(git grep -nIE 'Cap(ability)? ?[0-9]+ *[(—-] *(Observability|Reliability|Operational Resilience|Operational Visibility|CI/CD Automation|AI Policy|Context Engineering|AI-assisted development)' -- '*.md' || true)
+done < <(git grep -nIE 'Cap(ability)? ?[0-9]+ *(\(|—|-) *(Observability|Reliability|Operational Resilience|Operational Visibility|CI/CD Automation|AI Policy|Context Engineering|AI-assisted development)' -- '*.md' || true)
 
 # ── 4. Retired software-delivery metric names must not reappear ──────────────
 # Allowed exception: history/changelog notes.
