@@ -1,0 +1,27 @@
+# CodeQL configuration for uFawkesAI
+# This disables the GitHub Actions analysis since this repo doesn't
+# contain GitHub Actions workflow files as source code to analyze.
+# The analysis runs on push/PR but the "actions" language finds no code.
+
+name: "uFawkesAI CodeQL Config"
+
+# Disable the default "actions" language analysis
+languages:
+  - javascript-typescript
+  - python
+  - go
+
+# Disable default queries for actions
+paths-ignore:
+  - ".github/workflows/**"
+
+# Only analyze source code, not CI configuration
+paths:
+  - "scripts/**"
+  - ".agents/**"
+  - "templates/**"
+  - "docs/**"
+  - "*.py"
+  - "*.js"
+  - "*.ts"
+  - "*.go"
