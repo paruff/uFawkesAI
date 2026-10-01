@@ -11,11 +11,20 @@ Each artifact is versioned and should be committed in a PR (or attached to the f
 - `plan.md`: executable implementation sequence and verification strategy
 
 Each feature gets its own directory: `docs/ai-sdlc/<feature>/intent.md`,
-`spec.md`, `plan.md`. The chain is carried by two agents and their skills:
-`@planner` reads `intent.md`, loads the `discover`, `spec`, `design`, and
-`plan` skills, and writes `spec.md` and `plan.md`; `@builder` reads `plan.md`,
-loads `build` and `test`, and writes the code diff. `@verifier` then checks the
-diff against those artifacts, and `@operator` ships it.
+`spec.md`, `plan.md`. The chain is carried by the four agents and the
+Superpowers skills for each stage: `@planner` reads `intent.md`, loads
+`brainstorming` (spec and design) and `writing-plans`, and writes `spec.md`
+and `plan.md`; `@builder` reads `plan.md`, loads `executing-plans` and
+`test-driven-development`, and writes the code diff. `@verifier` then checks
+the diff against those artifacts (`verification-before-completion`,
+`requesting-code-review`), and `@operator` ships it. The repo skills
+`discovery` (before `intent.md`) and `learn` (after release) bracket the chain.
+
+A feature need not have its own `plan.md`: the checker only requires an
+`intent.md` beside every `spec.md`, and a `plan.md` when a PR changes `src/`.
+`opencode-alignment/` is implemented by the repo-level [`plan.md`](plan.md),
+which cites that spec's requirements (R1–R8). `dora-events-portability/` is an
+intent awaiting its spec and plan.
 
 ## Closing the loop — Dojo
 
