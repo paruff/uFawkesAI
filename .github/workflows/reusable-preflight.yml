@@ -202,13 +202,10 @@ jobs:
               });
               commits = prCommits.map(c => ({ message: c.commit.message.split('\n')[0], sha: c.sha }));
             } else {
-              const { data: pushCommits } = await github.rest.repos.listCommits({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                sha: context.sha,
-                per_page: 10
-              });
-              commits = pushCommits.map(c => ({ message: c.commit.message.split('\n')[0], sha: c.sha }));
+              // Only the commits in this push. Re-checking the last N commits on the
+              // branch kept main red for N pushes after one bad merged title.
+              // ponytail: the push payload lists at most 20 commits; use compareCommits if pushes get bigger
+              commits = (context.payload.commits || []).map(c => ({ message: c.message.split('\n')[0], sha: c.id }));
             }
 
             let failures = 0;
