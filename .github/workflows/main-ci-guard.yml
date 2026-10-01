@@ -11,6 +11,7 @@ on:
 permissions:
   contents: read
   actions: read
+  checks: read
 
 jobs:
   main-ci-guard:
@@ -41,30 +42,53 @@ jobs:
               per_page: 100,
             });
 
-            if (runs.workflow_runs.length === 0) {
-              core.setFailed('No completed CI Quality Gate runs found on main');
-              return;
-            }
-
+            // Primary source: the completed ci-quality run for main's HEAD.
+            // The run listing can lag or omit it right after a merge, so when
+            // it is missing fall back to the HEAD commit's own check run: the
+            // same `✅ CI Complete` context the ruleset requires. Never a pass
+            // by default: no completed result from either source fails.
+            let conclusion;
+            let url;
             const currentMainRun = runs.workflow_runs.find(
               (run) => run.head_sha === mainHeadSha,
             );
 
-            if (!currentMainRun) {
-              core.setFailed(
-                `No completed CI Quality Gate run found for current main HEAD ${mainHeadSha} in the latest 100 runs.`,
+            if (currentMainRun) {
+              conclusion = currentMainRun.conclusion;
+              url = currentMainRun.html_url;
+            } else {
+              core.warning(
+                `No completed CI Quality Gate run listed for main HEAD ${mainHeadSha}; ` +
+                  'falling back to the commit check runs.',
               );
-              return;
+              const { data: checks } = await github.rest.checks.listForRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: mainHeadSha,
+                check_name: '✅ CI Complete',
+                per_page: 100,
+              });
+              const check = checks.check_runs.find((c) => c.status === 'completed');
+              if (!check) {
+                core.setFailed(
+                  `No completed "✅ CI Complete" result for current main HEAD ${mainHeadSha} ` +
+                    'from either the workflow runs or the commit check runs: main CI has not ' +
+                    'finished (or never ran). Re-run this check once it completes.',
+                );
+                return;
+              }
+              conclusion = check.conclusion;
+              url = check.html_url;
             }
 
             core.info(`Current main HEAD: ${mainHeadSha}`);
-            core.info(`CI run for main HEAD: ${currentMainRun.html_url}`);
-            core.info(`Conclusion: ${currentMainRun.conclusion}`);
+            core.info(`CI result for main HEAD: ${url}`);
+            core.info(`Conclusion: ${conclusion}`);
 
-            if (currentMainRun.conclusion !== 'success') {
+            if (conclusion !== 'success') {
               core.setFailed(
-                `CI Quality Gate for current main HEAD is ${currentMainRun.conclusion}. ` +
-                  `Fix main CI before merging PRs. ${currentMainRun.html_url}`,
+                `CI Quality Gate for current main HEAD is ${conclusion}. ` +
+                  `Fix main CI before merging PRs. ${url}`,
               );
             }
 

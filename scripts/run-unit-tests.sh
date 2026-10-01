@@ -23,6 +23,7 @@ SUITES=(
   scripts/test-dojo-feedback-intent.sh
   scripts/test-run-evals.sh
   scripts/test-image-lock-bump.sh
+  scripts/test-main-ci-guard.sh
 )
 
 failed=0
