@@ -91,7 +91,7 @@ repos:
   # Shell Formatting (shfmt)
   # ============================================================================
   - repo: https://github.com/scop/pre-commit-shfmt
-    rev: v3.13.1-1
+    rev: v3.14.1-1
     hooks:
       - id: shfmt
         name: Format shell scripts with shfmt
@@ -102,7 +102,7 @@ repos:
   # Terraform (for repos with infra/)
   # ============================================================================
   - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.108.1
+    rev: v1.109.1
     hooks:
       - id: terraform_fmt
         name: Terraform format
