@@ -43,3 +43,14 @@ updates:
     # Let a new release age a week before adopting it (supply-chain cooldown).
     cooldown:
       default-days: 7
+  - package-ecosystem: "pre-commit"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    commit-message:
+      prefix: "ci"
+    groups:
+      pre-commit-hooks:
+        patterns: ["*"]
+    cooldown:
+      default-days: 7

@@ -9,6 +9,9 @@
 exclude: |
   ^graphify-out/|^\.opencode/|^\.serena/|^\.agents/logs/|^\.claude/worktrees/
 
+# One `pre-commit install` sets up every stage below (commit-msg and pre-push
+# hooks are defined but only run if they are installed).
+default_install_hook_types: [pre-commit, commit-msg, pre-push]
 default_stages: [pre-commit]
 
 repos:
@@ -326,15 +329,3 @@ repos:
         stages: [pre-push]
         always_run: true
         pass_filenames: false
-
-ci:
-  autofix_commit_msg: |
-    [pre-commit.ci] auto fixes from pre-commit hooks
-
-    for more information, see https://pre-commit.ci
-  autofix_prs: true
-  autoupdate_branch: ""
-  autoupdate_commit_msg: "[pre-commit.ci] pre-commit autoupdate"
-  autoupdate_schedule: monthly
-  skip: [terraform_tflint, kustomize-validate, helm-lint, mkdocs-validate, backstage-catalog-validate, unit-tests, harness-parity]
-  submodules: false
