@@ -1,0 +1,7 @@
+# Paths whose changes need a docs/ai-sdlc/**/plan.md with a
+# "## Verification Strategy" in the same PR. One git pathspec per line.
+# uFawkesAI is a template, so its code is the scripts, the image and the
+# templates it ships. (The default, src/, does not exist here.)
+scripts/
+images/
+templates/
