@@ -8,7 +8,7 @@
     "@tobilu/qmd": "2.8.3",
     "bash-language-server": "5.8.1",
     "pyright": "1.1.414",
-    "typescript": "5.9.3",
+    "typescript": "7.0.2",
     "typescript-language-server": "6.0.1",
     "yaml-language-server": "1.24.0"
   }
