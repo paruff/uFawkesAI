@@ -69,6 +69,8 @@ code AGENTS.md
 # Your agent now knows your project from session one
 ```
 
+Or invest 8 hours and go deep → [docs/DOJO_LEARNING_PATH.md](./docs/DOJO_LEARNING_PATH.md)
+
 ## Writing your first agent-ready issue
 
 Use the **Feature — Assign to Agent** issue template (`.github/ISSUE_TEMPLATE/feature.yml`). Here is an example of a well-formed feature issue that Copilot can implement immediately:
