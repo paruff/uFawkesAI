@@ -43,6 +43,12 @@ updates:
     # Let a new release age a week before adopting it (supply-chain cooldown).
     cooldown:
       default-days: 7
+    # Hold TypeScript at 5.x. 7.x fails the image build with ERESOLVE: @tobilu/qmd
+    # (via node-llama-cpp) has a peer range that excludes it (see PR #139).
+    # Remove this once qmd supports TypeScript 7.
+    ignore:
+      - dependency-name: "typescript"
+        update-types: ["version-update:semver-major"]
   - package-ecosystem: "pre-commit"
     directory: "/"
     schedule:
