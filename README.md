@@ -164,7 +164,7 @@ Integration entry point: [`docs/UFAWKES_INTEGRATION.md`](./docs/UFAWKES_INTEGRAT
 | uFawkesAI                | AI plane (agent policy, context, controls)                 | [paruff/uFawkesAI](https://github.com/paruff/uFawkesAI)             |
 | uFawkesPipe              | CI/CD and delivery pipeline plane                           | [paruff/uFawkesPipe](https://github.com/paruff/uFawkesPipe)         |
 | uFawkesObs               | Observability and reliability plane                         | [paruff/uFawkesObs](https://github.com/paruff/uFawkesObs)           |
-| uFawkesDORA              | Delivery metrics and engineering effectiveness plane        | [uFawkesDORA (planned)](https://github.com/paruff/uFawkesAI/issues) |
+| uFawkesDORA              | Merged into uFawkesObs (DORA dashboards and collectors)     | [paruff/uFawkesObs](https://github.com/paruff/uFawkesObs)           |
 | uFawkesApp / uFawkesData | Product and data plane pair (implementation + analytics)   | [planned](https://github.com/paruff/uFawkesAI/issues)               |
 
 **Product Suite Roadmap**: [fawkes/ROADMAP.md](https://github.com/paruff/fawkes/blob/main/ROADMAP.md)
@@ -172,7 +172,7 @@ Integration entry point: [`docs/UFAWKES_INTEGRATION.md`](./docs/UFAWKES_INTEGRAT
 Quick integration hooks:
 
 - **uFawkesObs:** set `OTEL_EXPORTER_OTLP_ENDPOINT` and `OTEL_SERVICE_NAME` in the instrumented runtime/service that uses this template; this repository does not emit OTEL spans by itself.
-- **uFawkesDORA:** `npm run metrics` currently summarizes local git/coverage signals; `GITHUB_TOKEN`, `GITHUB_OWNER`, and `GITHUB_REPO` are for external/future GitHub API-backed DORA collectors.
+- **DORA metrics (now part of uFawkesObs):** `npm run metrics` currently summarizes local git/coverage signals; `GITHUB_TOKEN`, `GITHUB_OWNER`, and `GITHUB_REPO` are for external/future GitHub API-backed DORA collectors.
 - **uFawkesPipe:** run the Golden Path (`docs/GOLDEN_PATH.md`) so AI-authored PRs flow through the `deliveryd` CI contract (uFawkesPipe pipeline contract: [paruff/uFawkesPipe](https://github.com/paruff/uFawkesPipe)).
 
 ## Rework rate
