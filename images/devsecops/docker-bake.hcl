@@ -1,6 +1,6 @@
 # Builds the layered variants with one shared cache:
 #   cd images/devsecops && docker buildx bake --load
-# Each variant is a Dockerfile target; ai builds FROM core, polyglot FROM ai.
+# Each variant is a Dockerfile target; ai builds FROM core.
 
 variable "TAG" {
   default = "local"
@@ -43,10 +43,4 @@ target "ai" {
   inherits = ["_common"]
   target   = "ai"
   tags     = ["fawkes-space-ai:${TAG}"]
-}
-
-target "polyglot" {
-  inherits = ["_common"]
-  target   = "polyglot"
-  tags     = ["fawkes-space-ai:${TAG}-polyglot"]
 }

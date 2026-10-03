@@ -21,7 +21,6 @@ version `V`:
 | `core-<arch>` | `ghcr.io/paruff/fawkes-core:V` |
 | `ai-<arch>` | `ghcr.io/paruff/fawkes-space-ai:V` |
 | `devcontainer-<arch>` | `ghcr.io/paruff/fawkes-space:V` |
-| `devcontainer-polyglot-<arch>` | `ghcr.io/paruff/fawkes-space:V-polyglot` |
 
 **R3 — Cold start** = `docker pull` + first `docker run --rm --network none
 <ref> true`, with the image removed locally first.
@@ -49,7 +48,7 @@ stderr, one JSON line on stdout (`key`, `image`, `cold_ms`, `warm_ms`,
 
 1. `images/devsecops/tests/test-benchmark-start.sh` passes: no baseline →
    pass; faster than baseline → pass; slower beyond threshold → fail.
-2. On a release tag, the `benchmark` job reports 4 keys per arch (8 total).
+2. On a release tag, the `benchmark` job reports 3 keys per arch (6 total; the polyglot variant was dropped 2026-10-03).
 3. A regression > 10% fails the job.
 
 ## Risks

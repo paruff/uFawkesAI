@@ -111,19 +111,16 @@
   "disabled_providers": ["opencode-go"],
 
   // Language servers: baked into the devcontainer image (TypeScript/JS,
-  // Python, Bash, YAML; Java in the polyglot variant); OPENCODE_DISABLE_LSP_DOWNLOAD=true
-  // there, so a missing server is an image bug, never a runtime download.
-  // An object (not `true`) still enables every built-in server. TypeScript and
-  // Java are pinned to the baked binaries: their built-ins fetch their own copy
-  // and, with downloads off, silently start nothing.
+  // Python, Bash, YAML); OPENCODE_DISABLE_LSP_DOWNLOAD=true there, so a missing
+  // server is an image bug, never a runtime download. An object (not `true`)
+  // still enables every built-in server. TypeScript is pinned to the baked
+  // binary: its built-in fetches its own copy and, with downloads off, starts
+  // nothing. Java isn't baked: a Java repo adds a JDK and sets
+  // OPENCODE_DISABLE_LSP_DOWNLOAD=false so OpenCode's built-in fetches jdtls.
   "lsp": {
     "typescript": {
       "command": ["typescript-language-server", "--stdio"],
       "extensions": [".ts", ".tsx", ".mts", ".cts", ".js", ".jsx", ".mjs", ".cjs"]
-    },
-    "jdtls": {
-      "command": ["jdtls"],
-      "extensions": [".java"]
     }
   },
 

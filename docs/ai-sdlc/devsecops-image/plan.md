@@ -332,3 +332,17 @@ docker run --rm --network none -v "$PWD/images/devsecops/tests:/tests:ro" \
   2026-10-03 (run 37124317809). The sha256 check still guards every retry.
   Verify: the image builds in `build-devsecops-images.yml` and the
   Multi-Harness Smoke Test.
+
+## Dropped: the polyglot variant (2026-10-03)
+
+Owner decision: no Java in the image. The `polyglot` target (OpenJDK 21 JRE +
+jdtls), its `fawkes-space-ai:<v>-polyglot` and `fawkes-space:<v>-polyglot`
+tags, the jdtls lock entry, the `ufawkes-lsp-java` Claude plugin listing and
+OpenCode's jdtls pin are removed. A Java repo adds a JDK to its own
+devcontainer and sets `OPENCODE_DISABLE_LSP_DOWNLOAD=false`; OpenCode's
+built-in LSP then fetches jdtls. Nothing was ever published under the
+polyglot tags.
+
+Verify: `verify-tools.sh ai` reports java/jdtls absent and the OpenCode LSP
+config pinned (TS) with downloads off; `actionlint` on
+`build-devsecops-images.yml`; `git grep -i polyglot` finds only this history.

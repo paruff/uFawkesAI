@@ -390,31 +390,6 @@
         "amd64": "66eae02bb1549ae289a14bb23a14c119d2e7ccdaf3b5fb8b95f17db581ef0249",
         "arm64": "66eae02bb1549ae289a14bb23a14c119d2e7ccdaf3b5fb8b95f17db581ef0249"
       }
-    },
-    {
-      "name": "jdtls",
-      "variant": "polyglot",
-      "version": "1.61.0",
-      "source": {
-        "eclipse_jdtls": "milestones"
-      },
-      "url": "https://download.eclipse.org/jdtls/milestones/{version}/jdt-language-server-{version}-202609031315.tar.gz",
-      "arch": {
-        "amd64": "any",
-        "arm64": "any"
-      },
-      "checksum_url": "https://download.eclipse.org/jdtls/milestones/{version}/jdt-language-server-{version}-202609031315.tar.gz.sha256",
-      "note": "Java language server (EPL-2.0), pure Java: runs on the apt openjdk-21 JDK. The build timestamp is in the file name, so a version bump must update url too.",
-      "format": "tar.gz",
-      "install": "opt",
-      "bins": [
-        "bin/jdtls"
-      ],
-      "version_cmd": "cat /opt/jdtls/VERSION",
-      "sha256": {
-        "amd64": "338e7e73d61836651ba2453919a0d34fa763eb4e7c03342092309bffb8934c64",
-        "arm64": "338e7e73d61836651ba2453919a0d34fa763eb4e7c03342092309bffb8934c64"
-      }
     }
   ]
 }

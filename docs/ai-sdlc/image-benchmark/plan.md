@@ -17,7 +17,7 @@
 | AC | How it is proven | Command / CI job |
 |---|---|---|
 | 1 | Self-test | `bash images/devsecops/tests/test-benchmark-start.sh` |
-| 2 | Release run | `benchmark` job summary on `v2.0.0-rc.1` shows 8 rows |
+| 2 | Release run | `benchmark` job summary on `v2.0.0-rc.1` shows 6 rows (3 per arch) |
 | 3 | Gate | Self-test case 3 (regression fails); on CI, a baseline set below the measured values fails the job |
 
 Lint: `actionlint .github/workflows/build-devsecops-images.yml`,
