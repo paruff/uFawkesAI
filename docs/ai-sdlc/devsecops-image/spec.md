@@ -37,8 +37,11 @@ tool set at the same versions:
   no per-repo environment downloads.
 - This repo's `.pre-commit-config.yaml` migrates to that baseline (plus its
   local `commit-msg` hook).
-- For repos that keep remote-rev hooks, the image pre-warms `PRE_COMMIT_HOME`
-  for the baseline's revs as a best-effort cache (not a guarantee).
+- Repos that keep remote-rev hooks download their hook environments once,
+  into the user's `~/.cache/pre-commit`, on first run (amended 2026-10-03:
+  AC-AI-09 accepts a one-time download; the earlier root-owned
+  `PRE_COMMIT_HOME` pre-warm held no remote environments and wasn't writable
+  by `dev`).
 
 **R5 — Supply-chain integrity.** Every published image is:
 
