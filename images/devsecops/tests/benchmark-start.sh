@@ -15,6 +15,9 @@
 #   BASELINE_FILE         default: images/devsecops/benchmarks/baseline.json
 #   REGRESSION_THRESHOLD  percent allowed (default: 10)
 #   RUNS                  warm runs (default: 3)
+#   BENCH_PRUNE=1         remove ALL unused images first, so shared layers
+#                         don't make a later variant's cold start look warm.
+#                         CI only: never set it on a machine with images you keep.
 #
 # Prints progress on stderr and one JSON line on stdout. Exit 1 on regression.
 
@@ -31,6 +34,7 @@ run_once() { docker run --rm --network none "$REF" true > /dev/null; }
 
 echo "== Benchmark: ${REF} (${KEY}) ==" >&2
 docker image rm -f "$REF" > /dev/null 2>&1 || true
+[ "${BENCH_PRUNE:-0}" = 1 ] && docker image prune -af > /dev/null
 
 start=$(now_ms)
 docker pull -q "$REF" > /dev/null || {

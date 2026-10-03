@@ -15,7 +15,8 @@
 #     SBOM + provenance, then: live acceptance tests in the devcontainer, the
 #     cold/warm start benchmark (AC-AI-08), and the digests into the release.
 #
-# Verify a published image:
+# Verify a published image (cosign v3+: the signatures are OCI referrers,
+# which cosign v2 reports as "no signatures found"):
 #   cosign verify ghcr.io/paruff/fawkes-space@<digest> \
 #     --certificate-identity-regexp '^https://github.com/paruff/uFawkesAI/' \
 #     --certificate-oidc-issuer https://token.actions.githubusercontent.com
@@ -400,6 +401,9 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Benchmark each published variant
         env:
+          # Clear cached images before each pull: the variants share layers,
+          # so without this only the first one's cold start is really cold.
+          BENCH_PRUNE: "1"
           V: ${{ needs.publish.outputs.version }}
           ARCH: ${{ matrix.arch }}
         run: |
@@ -467,7 +471,7 @@ jobs:
           |---|---|
           | \`${REGISTRY}/fawkes-space:${V}\` | \`${DIGEST}\` |
 
-          Verify:
+          Verify (cosign **v3+**; v2 reports \"no signatures found\"):
 
           \`\`\`bash
           cosign verify ${REGISTRY}/fawkes-space@${DIGEST} \\

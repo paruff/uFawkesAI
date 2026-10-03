@@ -142,8 +142,8 @@ The [AI-Native SDLC Playbook](https://claude.com/blog/the-ai-native-sdlc-playboo
 | Tools / MCP               | `.mcp.json`, `opencode.json`, `scripts/hooks/protected-paths.json`, `fawkes-space` image (pre-installed CLIs) | ✅ Provided |
 | Sandbox                   | `.devcontainer/devcontainer.json` → `ghcr.io/paruff/fawkes-space` (non-root, pin a version or digest) | ✅ Provided |
 | Orchestration & model routing | `docs/MODEL_ROUTING_GUIDE.md`, `.agents/agents/` (4 execution-boundary agents: planner, builder, verifier, operator) | ✅ Provided |
-| Hooks                     | `.pre-commit-config.yaml` (pre-baked in image), `.github/workflows/ci-quality.yml` (Pre-flight job), `scripts/hooks/` | ✅ Provided |
-| Observability             | `scripts/dora-events.sh` (emits JSONL), `.github/workflows/ci-quality.yml` (`job-start`/`job-finish` timestamps), uFawkesObs integration via OTEL | ✅ Provided |
+| Hooks                     | `.pre-commit-config.yaml` (pre-commit in the image; hook envs install once on first run), `.github/workflows/ci-quality.yml` (Pre-flight job), `scripts/hooks/` | ✅ Provided |
+| Observability             | `scripts/emit-dora-event.sh` (JSON events; OTLP export to uFawkesObs Loki, verified by `scripts/verify-dora-event-in-loki.sh`), `.github/workflows/ci-quality.yml` (`job-start`/`job-finish` timestamps) | ✅ Provided |
 
 > **Upstream references:** [The AI-Native SDLC Playbook](https://claude.com/blog/the-ai-native-sdlc-playbook) (Claxton, Anthropic, 2026-08-21); DORA, _State of AI-assisted Software Development_ (2025) — AI Capabilities Model companion report (Dec 2025).
 > **Claim scope:** Only the items above ship in the template or the `fawkes-space` image. No external services, paid tiers, or unreleased features are claimed.
@@ -163,8 +163,8 @@ The [AI-Native SDLC Playbook](https://claude.com/blog/the-ai-native-sdlc-playboo
 | TDD requirement (golden path)       | 5 — Small batches        | `docs/GOLDEN_PATH.md` step 4: failing test first                                     |
 | Feature flags (golden path)         | 5 — Small batches        | Every feature behind a flag; remote disable                                          |
 | `discovery` skill + workflow        | 6 — User-centric focus   | JTBD + acceptance criteria before any `spec`                                         |
-| `docs/GOLDEN_PATH.md`               | 7 — Quality platforms    | One route idea→deploy; `npm run preflight` / `pr-ready`                              |
-| `.devcontainer` + shared image      | 7 — Quality platforms    | Same image local/CI; pre-baked hooks; harness parity                                 |
+| `docs/GOLDEN_PATH.md`               | 7 — Quality platforms    | One route idea→deploy; `npm run preflight`                              |
+| `.devcontainer` + shared image      | 7 — Quality platforms    | Same image local/CI; pre-commit pre-installed; harness parity                                 |
 | `scripts/weekly-metrics.sh`         | 7 — Quality platforms    | Rework rate, PR revision rate, CI cycle time; platform feedback loop                 |
 | `docs/DEVEX_LOG.md`                 | 7 — Quality platforms    | Monthly 5-dimension self-assessment (SPACE)                                          |
 
@@ -194,7 +194,7 @@ Built and signed by [`build-devsecops-images.yml`](.github/workflows/build-devse
 | [`ghcr.io/paruff/fawkes-space-ai`](https://github.com/paruff/uFawkesAI/pkgs/container/fawkes-space-ai) | Base of the devcontainer: core + agent harnesses and skills |
 | [`ghcr.io/paruff/fawkes-core`](https://github.com/paruff/uFawkesAI/pkgs/container/fawkes-core) | Linters, secret/vuln/SAST scanners, pre-commit |
 
-Tags: `X.Y.Z`, `X.Y`, `X`, `latest`. Pin by digest in consumers; verify with `cosign verify` (see the workflow header).
+Tags: `X.Y.Z`, `X.Y`, `X`, `latest`. Pin by digest in consumers; verify with `cosign verify`, **cosign v3 or later** (the command is in each release's notes and the workflow header; cosign v2 reports "no signatures found").
 
 ## Works with
 

@@ -70,3 +70,12 @@ task status.
 | Half-done rename leaves `devcontainer.json` pointing at an unpublished image | Certain until step 2 | Step 2 fixes the workflow before rc.1 |
 | `main` unprotected, so gates are advisory | Certain until owner acts | Owner actions above, before rc.1 |
 | uFawkesObs claim stays unverified | Medium | Step 4's fallback removes the claim |
+
+## Release readiness (2026-10-03, after rc.3)
+
+| Item | AC | Check |
+|---|---|---|
+| cosign v3+ stated wherever `cosign verify` is documented | AI-01 | v3.1.3 verifies `fawkes-space@sha256:491546e9…`; v2.5.0 reports "no signatures found" |
+| README maps name only shipped files and npm scripts | AI-04 | `bash scripts/check-readme-claims.sh` (in the unit suite, with a self-test) |
+| Warm-start baseline from rc.3; cold baseline after a pruned run | AI-08 | `images/devsecops/benchmarks/baseline.json`; `benchmark` job with `BENCH_PRUNE=1` |
+| DevEx grounding of the CDE | AI-08 | `devsecops-image/spec.md` R10 maps each dimension to a check and its status |
