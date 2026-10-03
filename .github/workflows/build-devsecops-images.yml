@@ -100,9 +100,11 @@ jobs:
         run: |
           docker run --rm --network none \
             -v "$PWD/images/devsecops/tests:/tests:ro" \
+            -v "$PWD/images/devsecops/benchmarks:/devsecops/benchmarks:ro" \
             fawkes-space-ai:ci /tests/verify-tools.sh ai
           docker run --rm --network none \
             -v "$PWD/images/devsecops/tests:/tests:ro" \
+            -v "$PWD/images/devsecops/benchmarks:/devsecops/benchmarks:ro" \
             fawkes-space-ai:ci-polyglot /tests/verify-tools.sh polyglot
 
       # Report-only on PRs/pushes (a newly published CVE must not block
@@ -144,6 +146,97 @@ jobs:
         run: |
           docker image ls --filter 'reference=fawkes-space-ai:ci*' \
             --format '{{.Repository}}:{{.Tag}} {{.Size}}' | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - name: Cold/warm start benchmark
+        if: env.SCHEDULED == 'true' || startsWith(github.ref, 'refs/tags/image-v')
+        env:
+          REGISTRY: ${{ env.REGISTRY }}
+          BASELINE_FILE: ${{ github.workspace }}/images/devsecops/benchmarks/baseline.json
+          REGRESSION_THRESHOLD: 10
+          RUNS: 3
+        run: |
+          echo "## Cold/Warm Start Benchmark" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Variant | Arch | Image | Cold (ms) | Warm (ms) | Baseline Cold | Baseline Warm | Cold Δ% | Warm Δ% | Pass |" >> "$GITHUB_STEP_SUMMARY"
+          echo "|---------|------|-------|-----------|-----------|---------------|---------------|---------|---------|------|" >> "$GITHUB_STEP_SUMMARY"
+
+          RESULTS_FILE=$(mktemp)
+          ALL_PASS=true
+
+          BENCH_SCRIPT="${{ github.workspace }}/images/devsecops/tests/benchmark-start.sh"
+
+          for variant in core ai devcontainer; do
+            for arch in amd64 arm64; do
+              if [[ "$variant" == "core" ]]; then
+                IMAGE="fawkes-space-core"
+              elif [[ "$variant" == "ai" ]]; then
+                IMAGE="fawkes-space-ai"
+              else
+                IMAGE="fawkes-space-devcontainer"
+              fi
+              TAG="${{ needs.publish.outputs.version }}"
+              # For PRs/pushes without tag, use ci tag
+              if [[ -z "$TAG" || "$TAG" == "null" ]]; then
+                TAG="ci"
+              fi
+
+              echo "Benchmarking $IMAGE:$TAG-$arch ($variant-$arch)..."
+              if RESULT=$("$BENCH_SCRIPT" "$IMAGE" "$TAG" "$variant" "$arch" 2>&1); then
+                echo "$RESULT" >> "$RESULTS_FILE"
+              else
+                echo "Benchmark failed for $variant-$arch"
+                cat <<< "$RESULT"
+                ALL_PASS=false
+              fi
+            done
+          done
+
+          # Also benchmark polyglot variants if ai exists
+          for arch in amd64 arm64; do
+            echo "Benchmarking fawkes-space-ai:$TAG-$arch (devcontainer-polyglot-$arch)..."
+            if RESULT=$("$BENCH_SCRIPT" "fawkes-space-ai" "$TAG" "devcontainer-polyglot" "$arch" 2>&1); then
+              echo "$RESULT" >> "$RESULTS_FILE"
+            else
+              echo "Benchmark failed for devcontainer-polyglot-$arch"
+              cat <<< "$RESULT"
+              ALL_PASS=false
+            fi
+          done
+
+          # Aggregate results into summary table
+          while IFS= read -r line; do
+            if echo "$line" | jq -e '.key' >/dev/null 2>&1; then
+              key=$(echo "$line" | jq -r '.key')
+              variant=$(echo "$line" | jq -r '.variant')
+              arch=$(echo "$line" | jq -r '.arch')
+              image=$(echo "$line" | jq -r '.image')
+              cold=$(echo "$line" | jq -r '.cold_ms')
+              warm=$(echo "$line" | jq -r '.warm_ms')
+              base_cold=$(echo "$line" | jq -r '.baseline_cold_ms')
+              base_warm=$(echo "$line" | jq -r '.baseline_warm_ms')
+              reg_cold=$(echo "$line" | jq -r '.cold_regression_pct')
+              reg_warm=$(echo "$line" | jq -r '.warm_regression_pct')
+              pass=$(echo "$line" | jq -r '.pass')
+
+              cold_status="✅"
+              warm_status="✅"
+              [[ $reg_cold -gt 10 ]] && cold_status="❌"
+              [[ $reg_warm -gt 10 ]] && warm_status="❌"
+              [[ $pass == "false" ]] && ALL_PASS=false
+
+              pass_icon="❌"
+              [[ $pass == "true" ]] && pass_icon="✅"
+              echo "| $variant | $arch | $image | $cold | $warm | $base_cold | $base_warm | ${reg_cold}% $cold_status | ${reg_warm}% $warm_status | $pass_icon |" >> "$GITHUB_STEP_SUMMARY"
+            fi
+          done < "$RESULTS_FILE"
+
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          if [[ "$ALL_PASS" == "true" ]]; then
+            echo "✅ All benchmarks within 10% threshold" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "❌ Some benchmarks exceeded 10% regression threshold" >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
       - name: job-finish
         if: always()
         run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
