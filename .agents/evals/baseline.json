@@ -1,6 +1,9 @@
 {
-  "pass_rate": 1.0,
+  "task_success": 1.0,
+  "tool_use": 1.0,
+  "trajectory": 1.0,
   "tasks": 5,
-  "model": "claude-haiku-4-5-20251001",
-  "note": "Set from a real run of scripts/run-evals.sh; raise it, never lower it without a reason in the PR."
+  "model": "google/gemini-3.1-flash-lite",
+  "harness": "opencode 1.18.32",
+  "note": "Set from two real runs of scripts/run-evals.sh on 2026-10-03 (both 5/5 on every dimension). Raise a rate, never lower it without a reason in the PR."
 }

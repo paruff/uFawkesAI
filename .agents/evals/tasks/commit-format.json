@@ -2,5 +2,18 @@
   "id": "commit-format",
   "why": "Conventional Commits rule (.agents/rules/gitops.md).",
   "prompt": "Reply with only the one-line commit message, nothing else, for a change that adds a README section about the devcontainer, following this repository's commit rules.",
-  "expect": { "output_regex": "^`?(docs|feat|chore)(\\([a-z0-9-]+\\))?: .+" }
+  "expect": {
+    "output_regex": "^`?(docs|feat|chore)(\\([a-z0-9-]+\\))?: .+"
+  },
+  "rubric": {
+    "tool_use": {
+      "forbidden": [
+        "write|edit|serena_(create_text_file|replace_.*|insert_.*|rename_.*|safe_delete_.*|delete_.*)",
+        "bash|serena_execute_shell_command"
+      ]
+    },
+    "trajectory": {
+      "max_steps": 4
+    }
+  }
 }

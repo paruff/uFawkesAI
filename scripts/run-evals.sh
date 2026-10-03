@@ -11,9 +11,19 @@
 # not ignored), so an eval that writes files cannot touch the repo, and local
 # uncommitted config changes are what gets evaluated.
 #
-# Task schema:
+# Task schema (every task is scored on three rubric dimensions, AC-AI-07):
 #   { "id", "why", "prompt", "permission_mode"?: "default"|"acceptEdits",
-#     "expect": { "output_regex"?: ERE, "file_absent"?: path, "file_present"?: path } }
+#     "expect": { "output_regex"?: ERE, "file_absent"?: path, "file_present"?: path },
+#                                       -> task_success
+#     "rubric": { "tool_use": { "forbidden": [ERE], "required"?: [ERE] },
+#                                       -> tool_use (each ERE must match a whole tool
+#                                          name, case-insensitively; MCP tools too)
+#                 "trajectory": { "max_steps": N } } }
+#                                       -> trajectory (model steps taken)
+# The agent's transcript is parsed per harness (OpenCode --format json,
+# Claude stream-json); plain-text output has no tool calls and 0 steps.
+# baseline.json: { "task_success", "tool_use", "trajectory": rate 0..1 }; the
+# gate fails if any dimension's rate drops below its baseline.
 #
 # Env:
 #   EVAL_HARNESS    claude (default) or opencode
@@ -24,6 +34,7 @@
 #   EVAL_TASKS      task dir (default .agents/evals/tasks)
 #   EVAL_BASELINE   baseline file (default .agents/evals/baseline.json)
 #   EVAL_REPORT     report path (default .agents/logs/evals-report.json)
+#   EVAL_TASK_TIMEOUT seconds per task (default 300); a timed-out task fails
 #
 # Exit: 0 pass rate >= baseline, 1 below baseline or no tasks, 2 setup error.
 
@@ -36,13 +47,33 @@ REPORT="${EVAL_REPORT:-.agents/logs/evals-report.json}"
 HARNESS="${EVAL_HARNESS:-claude}"
 
 claude_agent() {
-  claude -p "$1" --model "$MODEL" --permission-mode "$2" --max-turns 8 --output-format text
+  claude -p "$1" --model "$MODEL" --permission-mode "$2" --max-turns 8 \
+    --output-format stream-json --verbose
 }
 # OpenCode is the other first-class harness: it reads AGENTS.md, the
 # instructions in opencode.json (.agents/rules) and the .opencode plugin hooks,
 # so it exercises the same configuration with any provider key the repo has.
 opencode_agent() {
-  opencode run --model "$MODEL" "$1"
+  opencode run --model "$MODEL" --format json "$1"
+}
+
+# transcript -> {text, tools: [lowercase names], steps}
+parse_transcript() {
+  jq -Rs '
+    [split("\n")[] | select(length > 0) | (try fromjson catch null)] as $ev
+    | if ($ev | length) > 0 and all($ev[]; type == "object") then
+        if any($ev[]; .part != null) then   # OpenCode --format json
+          { text: ([$ev[] | select(.type == "text") | .part.text] | join("\n")),
+            tools: [$ev[] | select(.type == "tool_use") | .part.tool | ascii_downcase],
+            steps: ([$ev[] | select(.type == "step_start")] | length) }
+        else                                # Claude stream-json
+          { text: ([$ev[] | select(.type == "result") | .result // empty] | join("\n")),
+            tools: [$ev[] | select(.type == "assistant") | .message.content[]?
+                    | select(.type == "tool_use") | .name | ascii_downcase],
+            steps: ([$ev[] | select(.type == "assistant")] | length) }
+        end
+      else { text: ., tools: [], steps: 0 }  # plain text
+      end'
 }
 case "$HARNESS" in
   claude) MODEL="${EVAL_MODEL:-claude-haiku-4-5-20251001}" ;;
@@ -53,6 +84,19 @@ case "$HARNESS" in
     ;;
 esac
 AGENT="${EVAL_AGENT_CMD:-${HARNESS}_agent}"
+TASK_TIMEOUT="${EVAL_TASK_TIMEOUT:-300}"
+# GNU timeout (gtimeout on macOS); exit 124 on timeout. Shell functions can't
+# be exec'd by timeout, so they run through a child bash with the same env.
+TIMEOUT_BIN="$(command -v timeout || command -v gtimeout || true)"
+run_bounded() {
+  if [ -z "$TIMEOUT_BIN" ]; then
+    "$@"
+  elif declare -F "$1" > /dev/null; then
+    "$TIMEOUT_BIN" "$TASK_TIMEOUT" bash -c "$(declare -f "$1"); MODEL='${MODEL}'; \"\$@\"" _ "$@"
+  else
+    "$TIMEOUT_BIN" "$TASK_TIMEOUT" "$@"
+  fi
+}
 
 command -v jq > /dev/null || {
   echo "FAIL: jq is required" >&2
@@ -62,10 +106,12 @@ command -v jq > /dev/null || {
   echo "FAIL: baseline missing or unreadable: $BASELINE" >&2
   exit 2
 }
-baseline="$(jq -er .pass_rate "$BASELINE")" || {
-  echo "FAIL: $BASELINE has no numeric pass_rate" >&2
-  exit 2
-}
+for dim in task_success tool_use trajectory; do
+  jq -e --arg d "$dim" '.[$d] | numbers' "$BASELINE" > /dev/null || {
+    echo "FAIL: $BASELINE has no numeric $dim rate" >&2
+    exit 2
+  }
+done
 
 shopt -s nullglob
 files=("$TASKS"/*.json)
@@ -79,6 +125,9 @@ work="$(mktemp -d)"
 trap 'rm -rf "$work"' EXIT
 results='[]'
 passed=0
+n_task=0
+n_tool=0
+n_traj=0
 
 for f in "${files[@]}"; do
   id="$(jq -er .id "$f")" || {
@@ -93,14 +142,23 @@ for f in "${files[@]}"; do
     echo "FAIL: $id has no expectation — an ungraded task always passes" >&2
     exit 2
   fi
+  if ! jq -e '(.rubric.tool_use.forbidden | arrays) and (.rubric.trajectory.max_steps | numbers)' "$f" > /dev/null; then
+    echo "FAIL: $id has no rubric (rubric.tool_use.forbidden and rubric.trajectory.max_steps) — score all three dimensions" >&2
+    exit 2
+  fi
   mode="$(jq -r '.permission_mode // "default"' "$f")"
 
   copy="${work}/${id}"
   mkdir -p "$copy"
   git ls-files -co --exclude-standard -z | tar --null -T - -cf - | tar -xf - -C "$copy"
 
-  out="$(cd "$copy" && "$AGENT" "$prompt" "$mode" 2>&1)"
+  # A stalled provider call must fail its task, not hang the whole gate.
+  raw="$(cd "$copy" && run_bounded "$AGENT" "$prompt" "$mode" 2> "${copy}.stderr")"
   rc=$?
+  [ "$rc" -eq 124 ] && echo "agent timed out after ${TASK_TIMEOUT}s" >> "${copy}.stderr"
+  t="$(parse_transcript <<< "$raw")"
+  out="$(jq -r .text <<< "$t")"
+  [ -n "$out" ] || out="$(cat "${copy}.stderr")"
 
   verdict=pass
   reasons=()
@@ -131,20 +189,53 @@ for f in "${files[@]}"; do
     }
   fi
 
+  task_ok=$verdict
+  tool_bad="$(jq -r --slurpfile task "$f" '
+    ($task[0].rubric.tool_use) as $r | .tools as $used
+    | def hits($p): [$used[] | select(test("^(" + $p + ")$"; "i"))];
+    [($r.forbidden[] | hits(.)[] | "used forbidden tool \(.)"),
+     ($r.required // [] | .[] | select(hits(.) | length == 0) | "did not use \(.)")]
+    | join("; ")' <<< "$t")"
+  tool_ok=pass
+  [ -z "$tool_bad" ] || {
+    tool_ok=fail
+    reasons+=("$tool_bad")
+  }
+  steps="$(jq .steps <<< "$t")"
+  max_steps="$(jq .rubric.trajectory.max_steps "$f")"
+  traj_ok=pass
+  [ "$steps" -le "$max_steps" ] || {
+    traj_ok=fail
+    reasons+=("${steps} steps > max ${max_steps}")
+  }
+
+  [ "$task_ok" = pass ] && n_task=$((n_task + 1))
+  [ "$tool_ok" = pass ] && n_tool=$((n_tool + 1))
+  [ "$traj_ok" = pass ] && n_traj=$((n_traj + 1))
+  [ "$task_ok$tool_ok$traj_ok" = passpasspass ] || verdict=fail
   [ "$verdict" = pass ] && passed=$((passed + 1))
   printf '  %-4s %s%s\n' "$verdict" "$id" "${reasons[*]:+ — ${reasons[*]}}"
   results="$(jq --arg id "$id" --arg v "$verdict" --arg r "${reasons[*]:-}" --arg o "${out:0:2000}" \
-    '. + [{id: $id, verdict: $v, reasons: $r, output: $o}]' <<< "$results")"
+    --arg ts "$task_ok" --arg tu "$tool_ok" --arg tr "$traj_ok" --argjson tx "$t" \
+    '. + [{id: $id, verdict: $v, reasons: $r, output: $o,
+           scores: {task_success: $ts, tool_use: $tu, trajectory: $tr},
+           tools: $tx.tools, steps: $tx.steps}]' <<< "$results")"
 done
 
 total="${#files[@]}"
+rates="$(jq -n --argjson t "$total" --argjson a "$n_task" \
+  --argjson b "$n_tool" --argjson c "$n_traj" \
+  '{task_success: ($a / $t), tool_use: ($b / $t), trajectory: ($c / $t)}')"
 rate="$(jq -n --argjson p "$passed" --argjson t "$total" '$p / $t')"
 mkdir -p "$(dirname "$REPORT")"
-jq -n --argjson r "$results" --argjson rate "$rate" --argjson base "$baseline" --arg m "$MODEL" \
-  '{model: $m, pass_rate: $rate, baseline: $base, results: $r}' > "$REPORT"
+jq -n --argjson r "$results" --argjson rate "$rate" --argjson rates "$rates" \
+  --slurpfile base "$BASELINE" --arg m "$MODEL" \
+  '{model: $m, pass_rate: $rate, rates: $rates, baseline: $base[0], results: $r}' > "$REPORT"
 
-echo "evals: ${passed}/${total} passed (rate ${rate}, baseline ${baseline}) — report: ${REPORT}"
-if jq -en --argjson rate "$rate" --argjson base "$baseline" '$rate < $base' > /dev/null; then
-  echo "FAIL: pass rate ${rate} is below baseline ${baseline} — this configuration change regresses agent behaviour" >&2
+echo "evals: ${passed}/${total} fully passed; rates $(jq -c . <<< "$rates") vs baseline $(jq -c '{task_success, tool_use, trajectory}' "$BASELINE") — report: ${REPORT}"
+below="$(jq -r --argjson rates "$rates" '[to_entries[] | select(.key | IN("task_success", "tool_use", "trajectory"))
+  | select($rates[.key] < .value) | "\(.key) \($rates[.key]) < \(.value)"] | join(", ")' "$BASELINE")"
+if [ -n "$below" ]; then
+  echo "FAIL: below baseline: ${below} — this configuration change regresses agent behaviour" >&2
   exit 1
 fi
