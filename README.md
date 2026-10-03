@@ -139,14 +139,14 @@ The [AI-Native SDLC Playbook](https://claude.com/blog/the-ai-native-sdlc-playboo
 | Harness component         | Provided by in template / image                              | Status       |
 | ------------------------- | ------------------------------------------------------------ | ------------ |
 | Instructions              | `AGENTS.md`, `.github/copilot-instructions.md`, `CLAUDE.md`, `.cursorrules` | ✅ Provided |
-| Tools / MCP               | `.mcp.json`, `opencode.json`, `scripts/hooks/protected-paths.json`, `fawkes-space-devcontainer` image (pre-installed CLIs) | ✅ Provided |
-| Sandbox                   | `.devcontainer/devcontainer.json` → `ghcr.io/paruff/fawkes-space-devcontainer` (non-root, pinned digest) | ✅ Provided |
+| Tools / MCP               | `.mcp.json`, `opencode.json`, `scripts/hooks/protected-paths.json`, `fawkes-space` image (pre-installed CLIs) | ✅ Provided |
+| Sandbox                   | `.devcontainer/devcontainer.json` → `ghcr.io/paruff/fawkes-space` (non-root, pin a version or digest) | ✅ Provided |
 | Orchestration & model routing | `docs/MODEL_ROUTING_GUIDE.md`, `.agents/agents/` (4 execution-boundary agents: planner, builder, verifier, operator) | ✅ Provided |
 | Hooks                     | `.pre-commit-config.yaml` (pre-baked in image), `.github/workflows/ci-quality.yml` (Pre-flight job), `scripts/hooks/` | ✅ Provided |
 | Observability             | `scripts/dora-events.sh` (emits JSONL), `.github/workflows/ci-quality.yml` (`job-start`/`job-finish` timestamps), uFawkesObs integration via OTEL | ✅ Provided |
 
 > **Upstream references:** [The AI-Native SDLC Playbook](https://claude.com/blog/the-ai-native-sdlc-playbook) (Claxton, Anthropic, 2026-08-21); DORA, _State of AI-assisted Software Development_ (2025) — AI Capabilities Model companion report (Dec 2025).
-> **Claim scope:** Only the items above ship in the template or the `fawkes-space-devcontainer` image. No external services, paid tiers, or未released features are claimed.
+> **Claim scope:** Only the items above ship in the template or the `fawkes-space` image. No external services, paid tiers, or unreleased features are claimed.
 
 ## DORA AI Capability → Feature map
 
@@ -186,7 +186,7 @@ The AI-Native SDLC Playbook defines six stages. This template's coverage:
 
 ## Container images
 
-Built and signed by [`build-devsecops-images.yml`](.github/workflows/build-devsecops-images.yml) on every `image-v<semver>` tag (also shown under **Packages** in the repo sidebar):
+Built and signed by [`build-devsecops-images.yml`](.github/workflows/build-devsecops-images.yml) on every `v<semver>` release tag (also shown under **Packages** in the repo sidebar):
 
 | Image | Use |
 | --- | --- |
