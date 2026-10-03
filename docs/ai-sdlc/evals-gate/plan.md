@@ -15,3 +15,10 @@ job to branch protection.
 | REQ-003 | Real run (`EVAL_HARNESS=opencode`, `google/gemini-3.1-flash-lite`, OpenCode 1.18.32): 5/5 on all three dimensions, twice, recorded in `baseline.json` |
 | REQ-005 | `actionlint`; the job runs on this PR; a test PR that breaks a rule file goes red (AC-AI-07) |
 | AC-AI-07 | Owner: `gh api repos/paruff/uFawkesAI/branches/main/protection` lists `🧪 Agent config evals` |
+
+## Review fix (2026-10-03)
+
+Claude `stream-json` emits one `assistant` event per content block, blocks of
+one message sharing `message.id`; a 2-message run counted 4 steps. Steps now
+count distinct message ids. Proven by the self-test case "claude: steps count
+messages, not content blocks" (`bash scripts/test-run-evals.sh`).

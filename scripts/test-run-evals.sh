@@ -30,8 +30,16 @@ case "${STUB_FORMAT:-text}" in
     for t in "${tools[@]}"; do jq -cn --arg t "$t" '{type:"tool_use",part:{type:"tool",tool:$t}}'; done
     jq -cn --arg r "${STUB_REPLY:-}" '{type:"text",part:{type:"text",text:$r}}' ;;
   claude)
-    for t in "${tools[@]}"; do jq -cn --arg t "$t" '{type:"assistant",message:{content:[{type:"tool_use",name:$t}]}}'; done
-    jq -cn --arg r "${STUB_REPLY:-}" '{type:"assistant",message:{content:[{type:"text",text:$r}]}}'
+    # Like Claude Code: one assistant event per content block (thinking, then
+    # tool_use or text), blocks of one message sharing its id.
+    n=0
+    for t in "${tools[@]}"; do
+      n=$((n + 1))
+      jq -cn --arg id "msg_$n" '{type:"assistant",message:{id:$id,content:[{type:"thinking"}]}}'
+      jq -cn --arg id "msg_$n" --arg t "$t" '{type:"assistant",message:{id:$id,content:[{type:"tool_use",name:$t}]}}'
+    done
+    jq -cn '{type:"assistant",message:{id:"msg_final",content:[{type:"thinking"}]}}'
+    jq -cn --arg r "${STUB_REPLY:-}" '{type:"assistant",message:{id:"msg_final",content:[{type:"text",text:$r}]}}'
     jq -cn --arg r "${STUB_REPLY:-}" '{type:"result",result:$r}' ;;
   *) printf '%s\n' "${STUB_REPLY:-}" ;;
 esac
@@ -98,6 +106,8 @@ expect "opencode: forbidden tool used -> red" 1 EVAL_TASKS="$tmp/tooled" STUB_FO
 expect "opencode: required tool not used -> red" 1 EVAL_TASKS="$tmp/tooled" STUB_FORMAT=opencode STUB_TOOLS=grep STUB_REPLY="@builder"
 expect "opencode: too many steps -> red" 1 EVAL_TASKS="$tmp/tooled" STUB_FORMAT=opencode STUB_TOOLS=read STUB_STEPS=4 STUB_REPLY="@builder"
 expect "claude stream-json, clean (case-insensitive tools) -> green" 0 EVAL_TASKS="$tmp/tooled" STUB_FORMAT=claude STUB_TOOLS=Read STUB_REPLY="@builder"
+# 2 tool messages + 1 answer = 3 steps (6 events): within max_steps 3.
+expect "claude: steps count messages, not content blocks -> green" 0 EVAL_TASKS="$tmp/tooled" STUB_FORMAT=claude STUB_TOOLS=Read,Grep STUB_REPLY="@builder"
 expect "claude: forbidden Write -> red" 1 EVAL_TASKS="$tmp/tooled" STUB_FORMAT=claude STUB_TOOLS=Read,Write STUB_REPLY="@builder"
 mkdir -p "$tmp/mcp"
 printf '{"id":"mcp","prompt":"q","expect":{"output_regex":"@?builder"},"rubric":{"tool_use":{"forbidden":["write|serena_create_.*"]},"trajectory":{"max_steps":3}}}\n' > "$tmp/mcp/mcp.json"

@@ -27,7 +27,10 @@ fi
 
 marker="verify-$(date -u +%Y%m%dT%H%M%SZ)-$$"
 event="$(OTEL_EXPORTER_OTLP_ENDPOINT="$otlp" bash scripts/emit-dora-event.sh job-finish \
-  --step "$marker" --status success 2> /dev/null)"
+  --step "$marker" --status success 2> /dev/null)" || {
+  echo "❌ scripts/emit-dora-event.sh failed; run it directly to see why."
+  exit 1
+}
 service="$(jq -r .service <<< "$event")"
 
 query="{service_name=\"${service}\", exporter=\"OTLP\"} | json | line_format \"{{.body}}\" | json | event=\"job-finish\" | step=\"${marker}\""
