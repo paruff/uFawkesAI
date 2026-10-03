@@ -315,7 +315,7 @@ if [ "$QUIET" -eq 0 ]; then
     done
     echo
     echo "  Fix the finding, or suppress a false positive with a trailing"
-    echo "  '# pragma: allowlist secret' on the offending line (AGENTS.md:100)."
+    echo "  '# pragma: allowlist secret' on the offending line (AGENTS.md §5)."
   else
     echo "  status:  PASS — no credential-shaped findings"
   fi
