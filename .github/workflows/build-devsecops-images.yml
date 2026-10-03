@@ -165,6 +165,15 @@ jobs:
 
           BENCH_SCRIPT="${{ github.workspace }}/images/devsecops/tests/benchmark-start.sh"
 
+          # Determine tag: on tag pushes (image-v*), extract version; otherwise use 'ci'
+          # github.ref_name is available in the runner context; use bash parameter expansion
+          REF_NAME="${{ github.ref_name }}"
+          if [[ "$REF_NAME" == image-v* ]]; then
+            TAG="${REF_NAME#image-v}"
+          else
+            TAG="ci"
+          fi
+
           for variant in core ai devcontainer; do
             for arch in amd64 arm64; do
               if [[ "$variant" == "core" ]]; then
@@ -173,11 +182,6 @@ jobs:
                 IMAGE="fawkes-space-ai"
               else
                 IMAGE="fawkes-space-devcontainer"
-              fi
-              TAG="${{ needs.publish.outputs.version }}"
-              # For PRs/pushes without tag, use ci tag
-              if [[ -z "$TAG" || "$TAG" == "null" ]]; then
-                TAG="ci"
               fi
 
               echo "Benchmarking $IMAGE:$TAG-$arch ($variant-$arch)..."
