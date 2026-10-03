@@ -57,8 +57,11 @@ GAP-03, #157). If not verified by the tag, the README and
 (`devsecops-image/`) is grounded in the DevEx research (#150).
 
 **REQ-008 — One hook gate (AC-AI-09).** `.pre-commit-config.yaml` is the only
-hook definition, pre-installed in the image, run by Pre-flight as a required
-check. No `ci:` block. A monthly workflow opens a `pre-commit autoupdate` PR.
+hook definition. pre-commit and the baseline's tools are pre-installed in the
+image; a repo's remote hook environments download once, on first run (owner
+decision 2026-10-03: no offline-on-first-open requirement). It runs in
+Pre-flight as a required check. No `ci:` block. A monthly workflow opens a
+`pre-commit autoupdate` PR.
 
 **REQ-009 — Site current (AC-SITE-01).** ufawkes.dev `/compatibility/` lists
 uFawkesAI `v2.0.0`, the image version, and the uFawkesObs row from REQ-006.

@@ -204,6 +204,14 @@ is what `scripts/image-lock-bump.sh` runs for each bumped tool.
 
 ## Verification Strategy (pre-bake hook environments)
 
+> **Reverted 2026-10-03.** The bake ran the baseline config, whose hooks are
+> `language: system`, so it cached no remote environments; and it created
+> `PRE_COMMIT_HOME` as root, so `dev` could not write to it. AC-AI-09 now
+> accepts a one-time download into `~/.cache/pre-commit`. Verify: in the
+> published devcontainer, as `dev`, `pre-commit run --all-files` succeeds
+> (the live acceptance tests in `build-devsecops-images.yml` run exactly that).
+> The original section follows for the record.
+
 This PR adds pre-baking of hook environments at image build time (R4 of spec.md).
 The change modifies `images/devsecops/Dockerfile` to:
 

@@ -59,7 +59,7 @@ task status.
 | REQ-005 | AC-AI-07 | `gh api repos/paruff/uFawkesAI/branches/main/protection` lists the eval job; a test PR breaking a rule file fails it |
 | REQ-006 | AC-AI-06 | LogQL query in uFawkesObs returns the emitted event, or `grep -i uFawkesObs README.md docs/UFAWKES_INTEGRATION.md` shows no feed claim |
 | REQ-007 | AC-AI-08 | `images/devsecops/benchmarks/baseline.json` updated from the rc.1 run; benchmark table in the release notes |
-| REQ-008 | AC-AI-09 | No `^ci:` in any suite repo's `.pre-commit-config.yaml`; protection lists Pre-flight; `pre-commit run --all-files` passes offline in a fresh devcontainer |
+| REQ-008 | AC-AI-09 | No `^ci:` in any suite repo's `.pre-commit-config.yaml`; protection lists Pre-flight; `pre-commit run --all-files` passes as `dev` in a fresh devcontainer (the live acceptance tests run it; network allowed for the one-time hook download) |
 | REQ-009 | AC-SITE-01 | ufawkes.dev `/compatibility/` shows uFawkesAI `v2.0.0` |
 
 ## Risks
