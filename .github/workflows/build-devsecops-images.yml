@@ -154,6 +154,8 @@ jobs:
           BASELINE_FILE: ${{ github.workspace }}/images/devsecops/benchmarks/baseline.json
           REGRESSION_THRESHOLD: 10
           RUNS: 3
+          GITHUB_WORKSPACE: ${{ github.workspace }}
+          GITHUB_REF_NAME: ${{ github.ref_name }}
         run: |
           echo "## Cold/Warm Start Benchmark" >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
@@ -163,7 +165,16 @@ jobs:
           RESULTS_FILE=$(mktemp)
           ALL_PASS=true
 
-          BENCH_SCRIPT="${{ github.workspace }}/images/devsecops/tests/benchmark-start.sh"
+          BENCH_SCRIPT="${GITHUB_WORKSPACE}/images/devsecops/tests/benchmark-start.sh"
+
+          # Determine tag: on tag pushes (image-v*), extract version; otherwise use 'ci'
+          # github.ref_name is available in the runner context; use bash parameter expansion
+          REF_NAME="${GITHUB_REF_NAME}"
+          if [[ "$REF_NAME" == image-v* ]]; then
+            TAG="${REF_NAME#image-v}"
+          else
+            TAG="ci"
+          fi
 
           for variant in core ai devcontainer; do
             for arch in amd64 arm64; do
@@ -173,11 +184,6 @@ jobs:
                 IMAGE="fawkes-space-ai"
               else
                 IMAGE="fawkes-space-devcontainer"
-              fi
-              TAG="${{ needs.publish.outputs.version }}"
-              # For PRs/pushes without tag, use ci tag
-              if [[ -z "$TAG" || "$TAG" == "null" ]]; then
-                TAG="ci"
               fi
 
               echo "Benchmarking $IMAGE:$TAG-$arch ($variant-$arch)..."

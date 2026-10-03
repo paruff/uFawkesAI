@@ -56,7 +56,10 @@ measure_startup() {
 
 # Cold start: pull image first, then measure
 echo "  Cold start (pull + first run)..."
-docker pull "${FULL_IMAGE}" > /dev/null 2>&1
+if ! docker pull "${FULL_IMAGE}" > /dev/null 2>&1; then
+  echo "    ❌ Failed to pull ${FULL_IMAGE}"
+  exit 1
+fi
 cold_ms=$(measure_startup "${FULL_IMAGE}")
 echo "    Cold: ${cold_ms} ms"
 
@@ -77,14 +80,14 @@ baseline_warm=$(jq -r ".${KEY}.warm_ms // 0" "${BASELINE_FILE}")
 
 echo "  Baseline: cold=${baseline_cold} ms, warm=${baseline_warm} ms"
 
-# Compute regression
+# Compute regression using awk for floating-point precision
 regress_cold=0
 regress_warm=0
 if [[ "${baseline_cold}" -gt 0 ]]; then
-  regress_cold=$((((cold_ms - baseline_cold) * 100) / baseline_cold))
+  regress_cold=$(awk -v c="${cold_ms}" -v b="${baseline_cold}" 'BEGIN { printf "%.0f", ((c - b) * 100) / b }')
 fi
 if [[ "${baseline_warm}" -gt 0 ]]; then
-  regress_warm=$((((warm_avg - baseline_warm) * 100) / baseline_warm))
+  regress_warm=$(awk -v w="${warm_avg}" -v b="${baseline_warm}" 'BEGIN { printf "%.0f", ((w - b) * 100) / b }')
 fi
 
 echo "  Regression: cold=${regress_cold}%, warm=${regress_warm}% (threshold: ${THRESHOLD}%)"
@@ -104,7 +107,7 @@ if [[ "${fail}" -eq 0 ]]; then
   echo "  ✅ Within threshold"
 fi
 
-# Output JSON for aggregation
+# Output JSON for aggregation (use original integer values for consistency)
 jq -n \
   --arg key "${KEY}" \
   --arg variant "${VARIANT}" \

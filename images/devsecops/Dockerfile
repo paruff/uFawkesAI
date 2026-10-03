@@ -92,7 +92,8 @@ RUN mkdir -p "${PRE_COMMIT_HOME}" \
   && chmod +x run.sh \
   && printf -- '---\nname: ci\non: push\npermissions: {}\njobs:\n  build:\n    runs-on: ubuntu-latest\n    steps:\n      - run: echo "ok"\n' > .github/workflows/ci.yml \
   && git add -A \
-  && pre-commit run --all-files
+  && pre-commit run --all-files \
+  && rm -rf /tmp/precommit-cache
 
 LABEL org.opencontainers.image.source="https://github.com/paruff/uFawkesAI" \
       org.opencontainers.image.description="uFawkes DevSecOps toolchain (core): pre-commit, linters, secret/vuln/SAST scanners" \

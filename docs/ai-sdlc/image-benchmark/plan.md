@@ -11,6 +11,8 @@ This PR implements the cold/warm start benchmark as a single cohesive change:
    - Tests all variants: core, ai, devcontainer, devcontainer-polyglot
    - Tests both architectures: amd64, arm64
    - Outputs JSON for aggregation and markdown for release notes
+   - Uses awk for floating-point regression calculation precision
+   - Validates docker pull success before measuring cold start
 
 2. **Baseline file**: `images/devsecops/benchmarks/baseline.json`
    - Initial baseline values for all 8 variant/arch combinations
@@ -21,6 +23,10 @@ This PR implements the cold/warm start benchmark as a single cohesive change:
    - Skips on regular PR/push to avoid slowing down CI
    - Fails if any variant/arch regresses > 10% vs baseline
    - Publishes markdown table to workflow summary for release notes
+   - Fixed: computes TAG from github.ref_name in verify job (not from needs.publish)
+
+4. **Dockerfile fix**: Pre-bake hook environments cleanup
+   - Removes /tmp/precommit-cache after populating pre-commit cache
 
 ## Verification Strategy
 

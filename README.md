@@ -132,6 +132,58 @@ Use the **Feature — Assign to Agent** issue template (`.github/ISSUE_TEMPLATE/
 | User-centric focus               | `docs/GOLDEN_PATH.md`, `docs/VALUE_STREAM_MAP.md`     |
 | Quality internal platforms       | `docs/GOLDEN_PATH.md`, agent specialist profiles      |
 
+## Harness anatomy (AI-Native SDLC Playbook)
+
+The [AI-Native SDLC Playbook](https://claude.com/blog/the-ai-native-sdlc-playbook) (Claxton, Anthropic, 2026-08-21) defines six components of an agent harness. This template provides:
+
+| Harness component         | Provided by in template / image                              | Status       |
+| ------------------------- | ------------------------------------------------------------ | ------------ |
+| Instructions              | `AGENTS.md`, `.github/copilot-instructions.md`, `CLAUDE.md`, `.cursorrules` | ✅ Provided |
+| Tools / MCP               | `.mcp.json`, `opencode.json`, `scripts/hooks/protected-paths.json`, `fawkes-space-devcontainer` image (pre-installed CLIs) | ✅ Provided |
+| Sandbox                   | `.devcontainer/devcontainer.json` → `ghcr.io/paruff/fawkes-space-devcontainer` (non-root, pinned digest) | ✅ Provided |
+| Orchestration & model routing | `docs/MODEL_ROUTING_GUIDE.md`, `.agents/agents/` (4 execution-boundary agents: planner, builder, verifier, operator) | ✅ Provided |
+| Hooks                     | `.pre-commit-config.yaml` (pre-baked in image), `.github/workflows/ci-quality.yml` (Pre-flight job), `scripts/hooks/` | ✅ Provided |
+| Observability             | `scripts/dora-events.sh` (emits JSONL), `.github/workflows/ci-quality.yml` (`job-start`/`job-finish` timestamps), uFawkesObs integration via OTEL | ✅ Provided |
+
+> **Upstream references:** [The AI-Native SDLC Playbook](https://claude.com/blog/the-ai-native-sdlc-playbook) (Claxton, Anthropic, 2026-08-21); DORA, _State of AI-assisted Software Development_ (2025) — AI Capabilities Model companion report (Dec 2025).
+> **Claim scope:** Only the items above ship in the template or the `fawkes-space-devcontainer` image. No external services, paid tiers, or未released features are claimed.
+
+## DORA AI Capability → Feature map
+
+| Template feature                    | DORA AI Capability (1–7) | Evidence in template                                                                 |
+| ----------------------------------- | ------------------------ | ------------------------------------------------------------------------------------ |
+| `AI_STANCE.md` + `AGENTS.md` §1     | 1 — Clear AI stance      | Explicit stance file; required in every repo                                          |
+| `docs/CHANGE_IMPACT_MAP.md`         | 2 — Healthy data ecosystems | Cross-file impact map; prevents AI omissions                                        |
+| `docs/API_SURFACE.md`               | 2 — Healthy data ecosystems | All public functions; AI reads before generating                                    |
+| `AGENTS.md` context index           | 3 — AI-accessible data   | Context index loads in every session; `.vscode/settings.json` auto-loads            |
+| `docs/KNOWN_LIMITATIONS.md`         | 3 — AI-accessible data   | What agents must not make worse                                                     |
+| `docs/PROMPT_LIBRARY.md`            | Core: Prompt engineering | Versioned task-specific prompts (not a DORA capability)                              |
+| CI PR size block (400 lines)        | 4 — Strong version control | `ci-quality.yml` gate; conventional commits enforced                                 |
+| `main-ci-guard.yml`                 | 4 — Strong version control | Blocks merge until CI green                                                          |
+| TDD requirement (golden path)       | 5 — Small batches        | `docs/GOLDEN_PATH.md` step 4: failing test first                                     |
+| Feature flags (golden path)         | 5 — Small batches        | Every feature behind a flag; remote disable                                          |
+| `discovery` skill + workflow        | 6 — User-centric focus   | JTBD + acceptance criteria before any `spec`                                         |
+| `docs/GOLDEN_PATH.md`               | 7 — Quality platforms    | One route idea→deploy; `npm run preflight` / `pr-ready`                              |
+| `.devcontainer` + shared image      | 7 — Quality platforms    | Same image local/CI; pre-baked hooks; harness parity                                 |
+| `scripts/weekly-metrics.sh`         | 7 — Quality platforms    | Rework rate, PR revision rate, CI cycle time; platform feedback loop                 |
+| `docs/DEVEX_LOG.md`                 | 7 — Quality platforms    | Monthly 5-dimension self-assessment (SPACE)                                          |
+
+## Playbook six-stage map
+
+The AI-Native SDLC Playbook defines six stages. This template's coverage:
+
+| Playbook stage               | Status      | Provided by in template / image                                                                 |
+| ---------------------------- | ----------- | ----------------------------------------------------------------------------------------------- |
+| 1. Clarify AI policies       | ✅ Provided | `AI_STANCE.md`, `AGENTS.md` §1, `docs/AI_POLICY.md`, `docs/TEAM_ARCHETYPE.md`                  |
+| 2. Connect AI to context     | ✅ Provided | `AGENTS.md` context index, `.github/copilot-instructions.md`, `docs/API_SURFACE.md`, `docs/KNOWN_LIMITATIONS.md`, `.vscode/settings.json` |
+| 3. Prioritise foundations    | ✅ Provided | `ci-quality.yml` (PR size, lint, test), `main-ci-guard.yml`, `docs/ARCHITECTURE.md`, conventional commits |
+| 4. Fortify safety nets       | ✅ Provided | `docs/RUNBOOKS.md` (rollback, disable), `scripts/weekly-metrics.sh` (rework rate), feature flags in golden path |
+| 5. Invest in platform        | ✅ Provided | `docs/GOLDEN_PATH.md`, `.agents/agents/` (4 agents), `docs/PROMPT_LIBRARY.md`, `.devcontainer/` |
+| 6. Focus on end-users        | 🟡 Partial  | `discovery` skill (JTBD), `docs/VALUE_STREAM_MAP.md`, `docs/DEVEX_LOG.md`; Dojo labs for learning are in uFawkesDojo (separate repo) |
+
+> **Upstream references:** [The AI-Native SDLC Playbook](https://claude.com/blog/the-ai-native-sdlc-playbook) (Claxton, Anthropic, 2026-08-21); DORA, _State of AI-assisted Software Development_ (2025).
+> **Claim scope:** Stages 1–5 are fully provided by this template and its devcontainer image. Stage 6 is partial — the template provides the discovery/JTBD tooling and value-stream mapping; end-user learning labs live in uFawkesDojo. No claims are made for features not in the template or image.
+
 ## Container images
 
 Built and signed by [`build-devsecops-images.yml`](.github/workflows/build-devsecops-images.yml) on every `image-v<semver>` tag (also shown under **Packages** in the repo sidebar):
