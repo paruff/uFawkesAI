@@ -36,17 +36,17 @@ target "_common" {
 target "core" {
   inherits = ["_common"]
   target   = "core"
-  tags     = ["ufawkes-devsecops-core:${TAG}"]
+  tags     = ["fawkes-space-core:${TAG}"]
 }
 
 target "ai" {
   inherits = ["_common"]
   target   = "ai"
-  tags     = ["ufawkes-devsecops-ai:${TAG}"]
+  tags     = ["fawkes-space-ai:${TAG}"]
 }
 
 target "polyglot" {
   inherits = ["_common"]
   target   = "polyglot"
-  tags     = ["ufawkes-devsecops-ai:${TAG}-polyglot"]
+  tags     = ["fawkes-space-ai:${TAG}-polyglot"]
 }

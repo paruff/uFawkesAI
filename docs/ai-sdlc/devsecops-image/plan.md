@@ -154,8 +154,7 @@ Deviations from the layout above, made while building PR 1:
 
 1. Merge to `main`; wait for `image-build.yml` to pass on `main`.
 2. `git tag image-vX.Y.Z <merged-sha> && git push origin image-vX.Y.Z`.
-3. First release only: in GitHub → Packages, set `fawkes-space-core`,
-   `-gitops` and `-ai` to **public** (spec decision).
+3. First release only: in GitHub → Packages, set `fawkes-space-core` and `-ai` to **public** (spec decision).
 4. Copy the index digests from the release run's summary into consumers.
 
 ## Implementation notes (lock bump)
@@ -260,7 +259,7 @@ docker run --rm --network none -v "$PWD/images/devsecops/tests:/tests:ro" \
 ### PR 3 — `ci(image): publish, scan, sign, attest`
 
 - `image-build.yml` gains a publish job on tags `image-v*`: push to
-  `ghcr.io/paruff/fawkes-space-{core,gitops,ai}`, Trivy gate
+  `ghcr.io/paruff/fawkes-space-{core,ai}`, Trivy gate
   (CRITICAL/HIGH with fix → fail; `.trivyignore` reviewed), SBOM
   (syft, SPDX), `actions/attest-build-provenance`, cosign keyless sign.
   Permissions: `packages: write`, `id-token: write`, `attestations: write`
@@ -281,7 +280,7 @@ docker run --rm --network none -v "$PWD/images/devsecops/tests:/tests:ro" \
 - `images/devsecops/pre-commit/baseline.yaml` (`language: system` hooks);
   `.pre-commit-config.yaml` switches to it + local `commit-msg`.
 - `.github/workflows/reusable-devsecops.yml` (`workflow_call`, `container:`
-  core/gitops digest input, runs pre-commit + trivy fs + zizmor +
+  core digest input, runs pre-commit + trivy fs + zizmor +
   osv-scanner).
 - `ci-quality.yml`: `dual-harness-smoke` runs in the `ai` image; add a
   `devsecops` job calling the reusable workflow.
