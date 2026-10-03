@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 # uFawkes DevSecOps toolchain image — see docs/ai-sdlc/devsecops-image/spec.md.
 #
-#   docker buildx build --target core -t fawkes-space-core images/devsecops
+#   docker buildx build --target core -t fawkes-core images/devsecops
 #
 # Determinism: base pinned by digest, apt pinned to a dated snapshot, every
 # downloaded tool pinned by SHA-256 in tools.lock.json, Python deps
@@ -173,7 +173,7 @@ CMD ["zsh"]
 # Opt-in variant for repos with Java: jdtls (tools.lock.json, variant
 # polyglot) on a Java 21 runtime. jdtls compiles with its own ECJ, so a JRE,
 # not a JDK. Published as fawkes-space-ai:<v>-polyglot and
-# fawkes-space-devcontainer:<v>-polyglot / :polyglot.
+# fawkes-space:<v>-polyglot / :polyglot.
 FROM ai AS polyglot
 USER root
 COPY --from=fetch-polyglot /out/polyglot/ /

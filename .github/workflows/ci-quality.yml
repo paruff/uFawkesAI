@@ -72,10 +72,10 @@ jobs:
         run: TAG=ci docker buildx bake ai --load --allow=fs.read=../../opencode --allow=fs.read=../../.agents/agents
       - name: Build devcontainer image locally with local base image
         run: |
-          docker buildx build --build-arg BASE_IMAGE=fawkes-space-ai:ci -f .devcontainer/Dockerfile -t fawkes-space-devcontainer:ci --load .
+          docker buildx build --build-arg BASE_IMAGE=fawkes-space-ai:ci -f .devcontainer/Dockerfile -t fawkes-space:ci --load .
       - name: Run smoke test in devcontainer
         run: |
-          docker run --rm -v "$PWD:/workspace" -w /workspace fawkes-space-devcontainer:ci bash scripts/multi-harness-smoke.sh
+          docker run --rm -v "$PWD:/workspace" -w /workspace fawkes-space:ci bash scripts/multi-harness-smoke.sh
       - name: job-finish
         run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
   lint-placeholder:
