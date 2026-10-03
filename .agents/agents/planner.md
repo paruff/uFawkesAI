@@ -14,7 +14,7 @@ mode: all
 ## Why this is an agent and the stages are not
 
 The *how* of planning is Superpowers' methodology (`brainstorming`,
-`writing-plans`), shipped in the shared `ufawkes-devsecops-ai` image. This agent
+`writing-plans`), shipped in the shared `fawkes-space-ai` image. This agent
 is the boundary that decides *when* planning runs and what it must hand off —
 uFawkesAI's own contribution is the artifact chain and its report contracts
 (`.agents/assertions/minimal-report.yaml`, keys `spec` and `design`).

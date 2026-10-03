@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Install the versioned OpenCode config from this directory into a config dir.
 #
-# In the devcontainer you do not need this: the ufawkes-devsecops-ai image
+# In the devcontainer you do not need this: the fawkes-space-ai image
 # bakes the config, pinned plugins and the four uFawkesAI agents in at build
 # time. This script is for a HOST machine, and it is deliberately cautious:
 #

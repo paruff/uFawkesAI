@@ -1,5 +1,5 @@
 {
-  "name": "ufawkes-devsecops-node-tools",
+  "name": "fawkes-space-node-tools",
   "private": true,
   "description": "Node-distributed tools baked into the DevSecOps image; installed with npm ci.",
   "dependencies": {

@@ -92,9 +92,9 @@ A rule is a constraint that is always true, not a task to perform. Rules are
 
 The development methodology is [Superpowers](https://github.com/obra/superpowers),
 pinned by SHA-256 in `images/devsecops/tools.lock.json`, installed to
-`/opt/agent-skills` in the `ufawkes-devsecops-ai` image, and linked into
+`/opt/agent-skills` in the `fawkes-space-ai` image, and linked into
 `~/.claude/skills` and `~/.config/opencode/skills` — so every repo that uses
-`ghcr.io/paruff/ufawkesai-devcontainer` (the uFawkes suite and fawkes) gets it
+`ghcr.io/paruff/fawkes-space-devcontainer` (the uFawkes suite and fawkes) gets it
 without per-repo setup. Outside the image, install Superpowers as a Claude Code
 plugin (`claude plugin install superpowers@claude-plugins-official`).
 

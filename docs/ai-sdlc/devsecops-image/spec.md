@@ -56,7 +56,7 @@ tool set at the same versions:
 
 **R6 — Versioning and updates.**
 
-- Tags: `ghcr.io/paruff/ufawkes-devsecops-<variant>:<semver>` plus
+- Tags: `ghcr.io/paruff/fawkes-space-<variant>:<semver>` plus
   `:<major>` and `:<major>.<minor>`; **consumers pin the digest**.
 - Release trigger: git tag `image-v<semver>` in this repo (distinct from any
   template release tags).
@@ -163,7 +163,7 @@ package-lock.json┘                                                  │
 
 ### How consumers use it
 
-- **Devcontainer:** `"image": "ghcr.io/paruff/ufawkes-devsecops-ai:<v>@sha256:…"`;
+- **Devcontainer:** `"image": "ghcr.io/paruff/fawkes-space-ai:<v>@sha256:…"`;
   `postCreateCommand` shrinks to `npm ci && ./scripts/setup.sh`.
 - **CI:** `jobs.<id>.container.image` set to the `core` (or `gitops`) digest;
   or call `reusable-devsecops.yml`. The existing `actions/setup-*` and

@@ -15,7 +15,7 @@ mode: all
 ## Why this is an agent and the stages are not
 
 The _how_ of verifying is Superpowers' methodology, shipped in the shared
-`ufawkes-devsecops-ai` image. What makes this an execution boundary is that this
+`fawkes-space-ai` image. What makes this an execution boundary is that this
 agent is the one allowed to **block**. A skill can recommend; only the verifier
 stops the pipeline. Its reports must satisfy the `test-execution`, `review`, and
 `cross-validation` contracts in `.agents/assertions/minimal-report.yaml`.

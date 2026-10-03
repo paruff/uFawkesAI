@@ -5,7 +5,7 @@
 #
 #   docker run --rm --user root -v /var/run/docker.sock:/var/run/docker.sock \
 #     -v "$PWD/images/devsecops:/devsecops:ro" -v "$PWD/scan-out:/out" \
-#     ufawkes-devsecops-core:<tag> /devsecops/scan.sh <image> <gate-exit-code>
+#     fawkes-space-core:<tag> /devsecops/scan.sh <image> <gate-exit-code>
 #
 # 1. Report (never fails): every CRITICAL/HIGH with a fix available across
 #    the whole image, summarised per target into /out/trivy-report.md.

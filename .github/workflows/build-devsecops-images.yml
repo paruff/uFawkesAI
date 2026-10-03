@@ -1,5 +1,5 @@
 # The one workflow for the uFawkes DevSecOps images (core, ai) and the
-# shared devcontainer (ghcr.io/paruff/ufawkesai-devcontainer) used by the
+# shared devcontainer (ghcr.io/paruff/fawkes-space-devcontainer) used by the
 # uFawkes suite and fawkes. Replaces image-build.yml + image-release.yml.
 #
 #   PR / push to main (image paths): build ai natively on amd64 + arm64, verify
@@ -14,7 +14,7 @@
 #     provenance, then run the live acceptance tests in the devcontainer.
 #
 # Verify a published image:
-#   cosign verify ghcr.io/paruff/ufawkes-devsecops-ai@<digest> \
+#   cosign verify ghcr.io/paruff/fawkes-space-ai@<digest> \
 #     --certificate-identity-regexp '^https://github.com/paruff/uFawkesAI/' \
 #     --certificate-oidc-issuer https://token.actions.githubusercontent.com
 
@@ -98,10 +98,10 @@ jobs:
         run: |
           docker run --rm --network none \
             -v "$PWD/images/devsecops/tests:/tests:ro" \
-            ufawkes-devsecops-ai:ci /tests/verify-tools.sh ai
+            fawkes-space-ai:ci /tests/verify-tools.sh ai
           docker run --rm --network none \
             -v "$PWD/images/devsecops/tests:/tests:ro" \
-            ufawkes-devsecops-ai:ci-polyglot /tests/verify-tools.sh polyglot
+            fawkes-space-ai:ci-polyglot /tests/verify-tools.sh polyglot
 
       # Report-only on PRs/pushes (a newly published CVE must not block
       # unrelated work); the gate fails on weekly and manual runs so fixable
@@ -114,8 +114,8 @@ jobs:
           docker run --rm --user root \
             -v /var/run/docker.sock:/var/run/docker.sock \
             -v "$PWD/images/devsecops:/devsecops:ro" -v "$PWD/scan-out:/out" \
-            ufawkes-devsecops-ai:ci \
-            /devsecops/scan.sh ufawkes-devsecops-ai:ci "$GATE_EXIT"
+            fawkes-space-ai:ci \
+            /devsecops/scan.sh fawkes-space-ai:ci "$GATE_EXIT"
       - name: Trivy report to summary
         if: always()
         run: cat scan-out/trivy-report.md >>"$GITHUB_STEP_SUMMARY" 2>/dev/null || true
@@ -131,16 +131,16 @@ jobs:
               npm ls --prefix /opt/ufawkes/node --all --json
               npm ls --prefix /opt/ufawkes/node-ai --all --json'
           }
-          fingerprint ufawkes-devsecops-ai:ci >first.txt
+          fingerprint fawkes-space-ai:ci >first.txt
           (cd images/devsecops && TAG=rebuild docker buildx bake --load --no-cache --allow=fs.read=../../opencode --allow=fs.read=../../.agents/agents ai)
-          fingerprint ufawkes-devsecops-ai:rebuild >second.txt
+          fingerprint fawkes-space-ai:rebuild >second.txt
           diff -u first.txt second.txt
           echo "✅ Identical toolchain across two clean builds"
 
       - name: Image size
         if: always()
         run: |
-          docker image ls --filter 'reference=ufawkes-devsecops-ai:ci*' \
+          docker image ls --filter 'reference=fawkes-space-ai:ci*' \
             --format '{{.Repository}}:{{.Tag}} {{.Size}}' | tee -a "$GITHUB_STEP_SUMMARY"
       - name: job-finish
         if: always()
@@ -203,7 +203,7 @@ jobs:
           DOCKER_METADATA_ANNOTATIONS_LEVELS: manifest,index
         uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
         with:
-          images: ${{ env.REGISTRY }}/ufawkes-devsecops-core
+          images: ${{ env.REGISTRY }}/fawkes-space-core
           tags: |
             type=semver,pattern={{version}},value=${{ steps.semver.outputs.version }}
             type=semver,pattern={{major}}.{{minor}},value=${{ steps.semver.outputs.version }}
@@ -216,7 +216,7 @@ jobs:
           DOCKER_METADATA_ANNOTATIONS_LEVELS: manifest,index
         uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
         with:
-          images: ${{ env.REGISTRY }}/ufawkes-devsecops-ai
+          images: ${{ env.REGISTRY }}/fawkes-space-ai
           tags: |
             type=semver,pattern={{version}},value=${{ steps.semver.outputs.version }}
             type=semver,pattern={{major}}.{{minor}},value=${{ steps.semver.outputs.version }}
@@ -229,7 +229,7 @@ jobs:
           DOCKER_METADATA_ANNOTATIONS_LEVELS: manifest,index
         uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
         with:
-          images: ${{ env.REGISTRY }}/ufawkesai-devcontainer
+          images: ${{ env.REGISTRY }}/fawkes-space-devcontainer
           tags: |
             type=semver,pattern={{version}},value=${{ steps.semver.outputs.version }}
             type=semver,pattern={{major}}.{{minor}},value=${{ steps.semver.outputs.version }}
@@ -243,7 +243,7 @@ jobs:
           DOCKER_METADATA_ANNOTATIONS_LEVELS: manifest,index
         uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
         with:
-          images: ${{ env.REGISTRY }}/ufawkes-devsecops-ai
+          images: ${{ env.REGISTRY }}/fawkes-space-ai
           tags: |
             type=semver,pattern={{version}},value=${{ steps.semver.outputs.version }}
             type=semver,pattern={{major}}.{{minor}},value=${{ steps.semver.outputs.version }}
@@ -258,7 +258,7 @@ jobs:
           DOCKER_METADATA_ANNOTATIONS_LEVELS: manifest,index
         uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
         with:
-          images: ${{ env.REGISTRY }}/ufawkesai-devcontainer
+          images: ${{ env.REGISTRY }}/fawkes-space-devcontainer
           tags: |
             type=semver,pattern={{version}},value=${{ steps.semver.outputs.version }}
             type=semver,pattern={{major}}.{{minor}},value=${{ steps.semver.outputs.version }}
@@ -328,7 +328,7 @@ jobs:
           provenance: mode=max
           sbom: true
           build-args: |
-            BASE_IMAGE=${{ env.REGISTRY }}/ufawkes-devsecops-ai@${{ steps.ai.outputs.digest }}
+            BASE_IMAGE=${{ env.REGISTRY }}/fawkes-space-ai@${{ steps.ai.outputs.digest }}
 
       - name: Build + push ai polyglot (ai + Java LSP)
         id: ai-polyglot
@@ -366,7 +366,7 @@ jobs:
           provenance: mode=max
           sbom: true
           build-args: |
-            BASE_IMAGE=${{ env.REGISTRY }}/ufawkes-devsecops-ai@${{ steps.ai-polyglot.outputs.digest }}
+            BASE_IMAGE=${{ env.REGISTRY }}/fawkes-space-ai@${{ steps.ai-polyglot.outputs.digest }}
             LSP_PLUGINS=ufawkes-lsp ufawkes-lsp-java
 
       - name: Sign every digest (keyless, GitHub OIDC)
@@ -377,9 +377,9 @@ jobs:
           AI_POLYGLOT: ${{ steps.ai-polyglot.outputs.digest }}
           DEVCONTAINER_POLYGLOT: ${{ steps.devcontainer-polyglot.outputs.digest }}
         run: |
-          for ref in "ufawkes-devsecops-core@${CORE}" \
-            "ufawkes-devsecops-ai@${AI}" "ufawkesai-devcontainer@${DEVCONTAINER}" \
-            "ufawkes-devsecops-ai@${AI_POLYGLOT}" "ufawkesai-devcontainer@${DEVCONTAINER_POLYGLOT}"; do
+          for ref in "fawkes-space-core@${CORE}" \
+            "fawkes-space-ai@${AI}" "fawkes-space-devcontainer@${DEVCONTAINER}" \
+            "fawkes-space-ai@${AI_POLYGLOT}" "fawkes-space-devcontainer@${DEVCONTAINER_POLYGLOT}"; do
             cosign sign --yes "${REGISTRY}/${ref}"
             echo "- signed \`${REGISTRY}/${ref}\`" >>"$GITHUB_STEP_SUMMARY"
           done
@@ -393,7 +393,7 @@ jobs:
     needs: publish
     container:
       # `env` is not available in jobs.<id>.container, hence the literal path.
-      image: ghcr.io/paruff/ufawkesai-devcontainer:${{ needs.publish.outputs.version }}
+      image: ghcr.io/paruff/fawkes-space-devcontainer:${{ needs.publish.outputs.version }}
       options: --user dev
     steps:
       - name: job-start
