@@ -54,3 +54,6 @@ Alloy picks up JSON lines from job logs, the same path as dora-log.sh.
 | AC-03 | jsonschema Draft-07 validation with format checks        | unit        | `scripts/test-emit-dora-event.sh`         |
 | AC-04 | local listener captures the POST; port 9 must only warn  | integration | `scripts/test-emit-dora-event.sh`         |
 | AC-05 | download the run's `dora-events` artifact and inspect it | live-system | `ci-quality.yml` › `📡 Delivery Events`   |
+| AC-06 | emitter works outside CI with inferred/explicit `--repo` | unit        | `scripts/test-emit-dora-event.sh`         |
+
+Prerequisites for local verification: `bash`, `jq`, `python3` (stdlib only — no `pip install` needed). The embedded validator uses only `datetime`, `json`, `re`, `sys`, `urllib.parse`.

@@ -13,10 +13,12 @@
 #     unreachable endpoint warns without failing.
 # GitHub API calls are served by a stub `gh` with fixture data.
 #
-# Needs python3 and jq only (set PYTHON to override the interpreter). No
-# third-party modules: the schema is a flat draft-07 object, so it is
-# validated with the stdlib. That keeps this test runnable on any machine
-# with a stock python3 instead of only where `pip install jsonschema` ran.
+# Prerequisites:
+#   - bash
+#   - jq
+#   - python3 (stdlib only: datetime, json, re, sys, urllib.parse)
+# No third-party Python modules required — the schema is a flat draft-07
+# object validated with a stdlib-only validator embedded in this script.
 # Report-only. Exit 0 = every check passed.
 
 set -euo pipefail

@@ -25,11 +25,13 @@
 #   scripts/emit-dora-event.sh <job-start|job-finish|deploy-marker> \
 #     [--step NAME] [--status success|failure] [--at ISO-8601-UTC] \
 #     [--started-at ISO-8601-UTC] [--environment NAME] [--pr NUMBER] \
-#     [--deployment-intent planned|unplanned_rework]
+#     [--deployment-intent planned|unplanned_rework] [--repo OWNER/REPO]
 #
 # CI context comes from GitHub Actions (GITHUB_*) or Woodpecker (CI_*)
-# variables; PR data from the GitHub API via `gh` (GH_TOKEN). Missing
-# context yields null fields, never an error.
+# variables; PR data from the GitHub API via `gh` (GH_TOKEN).
+# Outside CI, --repo can be supplied or the repo is inferred from
+# `git remote get-url origin`. Missing context yields null fields with
+# a warning, never an error.
 
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -50,6 +52,7 @@ started_at=""
 environment="${DORA_ENVIRONMENT:-production}"
 deployment_intent="${DORA_DEPLOYMENT_INTENT:-planned}"
 pr_number=""
+repo_override=""
 while [ $# -gt 0 ]; do
   case "$1" in
     --step)
@@ -80,6 +83,10 @@ while [ $# -gt 0 ]; do
       deployment_intent="$2"
       shift 2
       ;;
+    --repo)
+      repo_override="$2"
+      shift 2
+      ;;
     *)
       echo "unknown argument: $1" >&2
       exit 2
@@ -95,15 +102,33 @@ case "$deployment_intent" in
     ;;
 esac
 
+# Infer repo from --repo flag, GITHUB_REPOSITORY, CI_REPO, or git remote
+if [ -n "$repo_override" ]; then
+  repo="$repo_override"
+elif [ -n "${GITHUB_REPOSITORY:-}" ]; then
+  repo="$GITHUB_REPOSITORY"
+elif [ -n "${CI_REPO:-}" ]; then
+  repo="$CI_REPO"
+else
+  # Try to infer from git remote (strip .git suffix if present)
+  repo="$(git remote get-url origin 2> /dev/null | sed -E 's#.*[:/]([^/]+/[^.]+)(\.git)?$#\1#' || true)"
+  if [ -z "$repo" ]; then
+    warn "could not determine repository (no GITHUB_REPOSITORY, CI_REPO, or git remote); repo field will be 'unknown'"
+    repo="unknown"
+  fi
+fi
+
 warn() { echo "emit-dora-event: $*" >&2; }
 now_iso() { date -u +%Y-%m-%dT%H:%M:%SZ; }
 to_epoch() { date -u -d "$1" +%s 2> /dev/null || date -u -j -f '%Y-%m-%dT%H:%M:%SZ' "$1" +%s; }
 
 at="${at:-$(now_iso)}"
-repo="${GITHUB_REPOSITORY:-${CI_REPO:-unknown}}"
 pipeline="${GITHUB_RUN_NUMBER:-${CI_PIPELINE_NUMBER:-unknown}}"
+[ "$pipeline" = unknown ] && warn "pipeline number not available (no GITHUB_RUN_NUMBER or CI_PIPELINE_NUMBER); pipeline field will be 'unknown'"
 service="${OTEL_SERVICE_NAME:-${repo##*/}}"
+[ "$service" = unknown ] && warn "service name not available (no OTEL_SERVICE_NAME and repo is unknown); service field will be 'unknown'"
 commit_sha="${GITHUB_SHA:-${CI_COMMIT_SHA:-$(git rev-parse HEAD 2> /dev/null || echo "")}}"
+[ -z "$commit_sha" ] && warn "commit SHA not available; commit_sha field will be null"
 if [ -n "${GITHUB_RUN_ID:-}" ]; then
   pipeline_url="${GITHUB_SERVER_URL:-https://github.com}/${repo}/actions/runs/${GITHUB_RUN_ID}"
 else
