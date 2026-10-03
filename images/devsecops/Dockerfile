@@ -74,6 +74,12 @@ COPY tools.lock.json /etc/ufawkes/tools.lock.json
 COPY python/requirements.in /etc/ufawkes/requirements.in
 COPY pre-commit/baseline.yaml /opt/ufawkes/pre-commit/baseline.yaml
 
+# Pre-bake hook environments: run install-hooks for the baseline config so
+# pre-commit uses cached environments at runtime (no network needed).
+ENV PRE_COMMIT_HOME=/opt/ufawkes/pre-commit/cache
+RUN mkdir -p "${PRE_COMMIT_HOME}" \
+  && pre-commit install-hooks -c /opt/ufawkes/pre-commit/baseline.yaml
+
 LABEL org.opencontainers.image.source="https://github.com/paruff/uFawkesAI" \
       org.opencontainers.image.description="uFawkes DevSecOps toolchain (core): pre-commit, linters, secret/vuln/SAST scanners" \
       org.opencontainers.image.licenses="MIT"
