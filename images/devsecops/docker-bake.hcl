@@ -36,7 +36,7 @@ target "_common" {
 target "core" {
   inherits = ["_common"]
   target   = "core"
-  tags     = ["fawkes-space-core:${TAG}"]
+  tags     = ["fawkes-core:${TAG}"]
 }
 
 target "ai" {

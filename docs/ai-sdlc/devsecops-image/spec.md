@@ -56,10 +56,13 @@ tool set at the same versions:
 
 **R6 — Versioning and updates.**
 
-- Tags: `ghcr.io/paruff/fawkes-<variant>:<semver>` plus
-  `:<major>` and `:<major>.<minor>`; **consumers pin the digest**.
-- Release trigger: git tag `image-v<semver>` in this repo (distinct from any
-  template release tags).
+- Images: `ghcr.io/paruff/fawkes-space` (the devcontainer, covered by the
+  v2 contract in [`../v2.0.0/spec.md`](../v2.0.0/spec.md)), plus its bases
+  `fawkes-space-ai` and `fawkes-core`. Tags `:<semver>`, `:<major>.<minor>`
+  and `:<major>`; **consumers pin the version or digest**.
+- Release trigger: the template's own git tag `v<semver>` (since v2.0.0; the
+  image and template share one version). `image-v<semver>` is accepted until
+  v2.1.0, then retired.
 - Dependabot (the repo's existing updater) opens PRs for the base image
   digest (Dockerfile `FROM`) and the Node tools. `tools.lock.json` and the
   Python locks are beyond Dependabot; `image-lock-bump.yml` (weekly,
