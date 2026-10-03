@@ -14,6 +14,9 @@
 # Environment:
 #   BASELINE_FILE         default: images/devsecops/benchmarks/baseline.json
 #   REGRESSION_THRESHOLD  percent allowed (default: 10)
+#   REGRESSION_MIN_MS     absolute slowdown also required to fail (default: 50).
+#                         Warm starts are ~100 ms and vary >20% between runner
+#                         runs, so a percentage alone would fail on noise.
 #   RUNS                  warm runs (default: 3)
 #   BENCH_PRUNE=1         remove ALL unused images first, so shared layers
 #                         don't make a later variant's cold start look warm.
@@ -27,6 +30,7 @@ REF="${1:?usage: $0 <image-ref> <key>}"
 KEY="${2:?usage: $0 <image-ref> <key>}"
 BASELINE_FILE="${BASELINE_FILE:-images/devsecops/benchmarks/baseline.json}"
 THRESHOLD="${REGRESSION_THRESHOLD:-10}"
+MIN_MS="${REGRESSION_MIN_MS:-50}"
 RUNS="${RUNS:-3}"
 
 now_ms() { perl -MTime::HiRes=time -e 'printf "%d\n", time * 1000'; }
@@ -61,11 +65,13 @@ pct() { # measured baseline -> integer percent change, 0 when no baseline
 reg_cold=$(pct "$cold" "$base_cold")
 reg_warm=$(pct "$warm" "$base_warm")
 
+# regressed <pct> <measured> <baseline>: over the percentage AND the floor.
+regressed() { [ "$3" -gt 0 ] && [ "$1" -gt "$THRESHOLD" ] && [ $(($2 - $3)) -gt "$MIN_MS" ]; }
 pass=true
-[ "$reg_cold" -gt "$THRESHOLD" ] && pass=false
-[ "$reg_warm" -gt "$THRESHOLD" ] && pass=false
+if regressed "$reg_cold" "$cold" "$base_cold"; then pass=false; fi
+if regressed "$reg_warm" "$warm" "$base_warm"; then pass=false; fi
 [ "$base_cold" -eq 0 ] && echo "  no baseline for ${KEY}: record cold=${cold} warm=${warm}" >&2
-echo "  cold=${cold}ms (${reg_cold}%) warm=${warm}ms (${reg_warm}%) threshold=${THRESHOLD}% pass=${pass}" >&2
+echo "  cold=${cold}ms (${reg_cold}%) warm=${warm}ms (${reg_warm}%) threshold=${THRESHOLD}%+${MIN_MS}ms pass=${pass}" >&2
 
 jq -cn --arg key "$KEY" --arg image "$REF" \
   --argjson cold "$cold" --argjson warm "$warm" \
