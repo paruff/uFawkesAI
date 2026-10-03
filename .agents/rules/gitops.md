@@ -3,7 +3,7 @@
 > Always loaded (`.claude/rules/` in Claude Code, `instructions` in `opencode.json`).
 > Applies when: branching, committing, opening or reviewing a PR.
 
-- Branch naming: `feat/*`, `fix/*`, `chore/*`, `docs/*`, `refactor/*`, `test/*`.
+- Branch naming: `wip/*` only.
 - Commit format: Conventional Commits (`type(scope): description`).
 - PRs must include summary, verification evidence, risk notes, and rollback plan.
 - Keep changes scoped and traceable to intent/spec/plan artifacts.
