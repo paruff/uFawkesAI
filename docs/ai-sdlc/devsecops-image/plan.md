@@ -359,3 +359,14 @@ POST fails the checks instead of hanging.
 Verify: `verify-tools.sh` reports `curl`; in the image as `dev`,
 `scripts/run-unit-tests.sh` completes; on the host,
 `bash scripts/test-emit-dora-event.sh` passes.
+
+## One-page AGENTS.md (2026-10-03, R10 cognitive load)
+
+`AGENTS.md` loads on every request; AC-AI-08 asks for a static rule file of
+one page or less. 170 → 50 lines, with every removed line moved verbatim to
+`docs/AGENT_REFERENCE.md`. `scripts/check-secret-detection.sh`'s hint now
+points at `AGENTS.md §5` (the pragma line) instead of a stale line number.
+
+Verify: `wc -l AGENTS.md` ≤ 60; `bash scripts/check-harness-parity.sh` (the
+symlinks still mirror it); `bash scripts/test-check-secret-detection.sh`; the
+required evals on the PR show no regression in agent behaviour.
