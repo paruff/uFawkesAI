@@ -70,7 +70,8 @@ parse_transcript() {
           { text: ([$ev[] | select(.type == "result") | .result // empty] | join("\n")),
             tools: [$ev[] | select(.type == "assistant") | .message.content[]?
                     | select(.type == "tool_use") | .name | ascii_downcase],
-            steps: ([$ev[] | select(.type == "assistant")] | length) }
+            # one event per content block; blocks of a message share its id
+            steps: ([$ev[] | select(.type == "assistant") | .message.id] | unique | length) }
         end
       else { text: ., tools: [], steps: 0 }  # plain text
       end'

@@ -325,9 +325,15 @@ jobs:
     name: Live acceptance tests
     runs-on: ubuntu-latest
     needs: publish
+    permissions:
+      contents: read
+      packages: read # a first GHCR publish is private until made public
     container:
       # `env` is not available in jobs.<id>.container, hence the literal path.
       image: ghcr.io/paruff/fawkes-space:${{ needs.publish.outputs.version }}
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
       options: --user dev
     steps:
       - name: job-start
@@ -416,10 +422,12 @@ jobs:
         run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
 
   # AC-AI-01: the GitHub Release for a v* tag carries the signed devcontainer
-  # digests. Creates a draft release if the release agent hasn't made one yet.
+  # digests, once the image passed its live acceptance tests and the benchmark
+  # (a >10% regression fails the release, AC-AI-08). Creates a draft release
+  # if the release agent hasn't made one yet.
   release-digest:
     name: "🏷️ digest into release"
-    needs: publish
+    needs: [publish, live-acceptance-tests, benchmark]
     if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     timeout-minutes: 5
