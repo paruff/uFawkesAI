@@ -68,7 +68,7 @@ budget for the learning phase — and these control systems are that budget.
 | `scripts/AGENTS.md` + `scripts/CLAUDE.md`       | OpenCode "Rules" / Claude Code memory | Directory-scoped rule example — loads only when working under `scripts/` |
 | `scripts/check-harness-parity.sh`               | Dual-Harness — Anti-Shadowing     | CI check: `.claude`↔`.opencode` symlinks intact, MCP server sets match, no reserved-name collisions |
 | `scripts/multi-harness-smoke.sh`                 | Multi-Harness — CI Smoke Test      | Proves one example each of MCP server, skill, hook, command, and rule works under both harnesses |
-| `.devcontainer/devcontainer.json`               | Multi-Harness — Devcontainer      | Shared `ufawkesai-devcontainer` image: OpenCode, Claude Code, Codex, Gemini CLI (version-pinned), Superpowers + Flux skills, non-root `remoteUser` |
+| `.devcontainer/devcontainer.json`               | Multi-Harness — Devcontainer      | Shared `fawkes-space-devcontainer` image: OpenCode, Claude Code, Codex, Gemini CLI (version-pinned), Superpowers + Flux skills, non-root `remoteUser` |
 | `.github/workflows/ci-quality.yml` (`multi-harness-smoke` job) | Multi-Harness — CI Gate | Runs `scripts/multi-harness-smoke.sh` inside the built devcontainer on every push/PR |
 
 ---

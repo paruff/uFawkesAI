@@ -34,7 +34,7 @@ skills:
   # Core Pipeline Skills
   # ============================================
 
-  # Retired 2026-09-29: Superpowers (baked into the ufawkes-devsecops-ai
+  # Retired 2026-09-29: Superpowers (baked into the fawkes-space-ai
   # image, /opt/agent-skills) is the development methodology. uFawkesAI keeps
   # the report contracts in .agents/assertions/minimal-report.yaml.
 

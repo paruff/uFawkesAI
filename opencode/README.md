@@ -5,7 +5,7 @@ machine it runs on.
 
 ## Where it gets installed
 
-- **Devcontainer: nothing to do.** The `ufawkes-devsecops-ai` image bakes this
+- **Devcontainer: nothing to do.** The `fawkes-space-ai` image bakes this
   config, its pinned plugins, the four uFawkesAI agents (planner, builder,
   verifier, operator; also in `~/.claude/agents`) and the tier subagents in at
   build time. Rebuild or pull the image to pick up a change.

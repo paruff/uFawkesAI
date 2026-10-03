@@ -14,7 +14,7 @@ mode: all
 ## Why this is an agent and the stages are not
 
 The *how* of building is Superpowers' methodology, shipped in the shared
-`ufawkes-devsecops-ai` image. This agent is the boundary that owns *writing
+`fawkes-space-ai` image. This agent is the boundary that owns *writing
 files* and is accountable for the resulting diff and its `build` report
 (`.agents/assertions/minimal-report.yaml`).
 
