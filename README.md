@@ -190,9 +190,9 @@ Built and signed by [`build-devsecops-images.yml`](.github/workflows/build-devse
 
 | Image | Use |
 | --- | --- |
-| [`ghcr.io/paruff/fawkes-space-devcontainer`](https://github.com/paruff/uFawkesAI/pkgs/container/fawkes-space-devcontainer) | Shared devcontainer for the uFawkes suite and fawkes: Claude Code, OpenCode, Codex, Gemini CLI, LSP (TS/JS, Python, Bash, YAML), qmd. Tag `polyglot` adds Java |
+| [`ghcr.io/paruff/fawkes-space`](https://github.com/paruff/uFawkesAI/pkgs/container/fawkes-space) | Shared devcontainer for the uFawkes suite and fawkes: Claude Code, OpenCode, Codex, Gemini CLI, LSP (TS/JS, Python, Bash, YAML), qmd. Tag `polyglot` adds Java |
 | [`ghcr.io/paruff/fawkes-space-ai`](https://github.com/paruff/uFawkesAI/pkgs/container/fawkes-space-ai) | Base of the devcontainer: core + agent harnesses and skills |
-| [`ghcr.io/paruff/fawkes-space-core`](https://github.com/paruff/uFawkesAI/pkgs/container/fawkes-space-core) | Linters, secret/vuln/SAST scanners, pre-commit |
+| [`ghcr.io/paruff/fawkes-core`](https://github.com/paruff/uFawkesAI/pkgs/container/fawkes-core) | Linters, secret/vuln/SAST scanners, pre-commit |
 
 Tags: `X.Y.Z`, `X.Y`, `X`, `latest`. Pin by digest in consumers; verify with `cosign verify` (see the workflow header).
 

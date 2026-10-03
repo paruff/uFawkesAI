@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 # uFawkesAI devcontainer image — the shared image for the uFawkes suite and fawkes.
-# Published to ghcr.io/paruff/fawkes-space-devcontainer by build-devsecops-images.yml.
+# Published to ghcr.io/paruff/fawkes-space by build-devsecops-images.yml.
 #
 # The ai base already includes: OpenCode, qmd, the language servers (TS/JS,
 # Python, Bash, YAML; the polyglot base adds Java), Superpowers + qmd agent skills

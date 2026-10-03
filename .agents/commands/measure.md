@@ -96,16 +96,16 @@ Pass improvement items to `@planner` (label: `capability-improvement`).
         "trend": "down",
         "dora_tier": "High",
         "target": 24.0
-      },
+      }
+    },
+    "instability": {
       "failed_deployment_recovery_time_hours": {
         "value": 1.2,
         "unit": "hours",
         "trend": "down",
         "dora_tier": "Elite",
         "target": 1.0
-      }
-    },
-    "instability": {
+      },
       "change_fail_rate": {
         "value": 0.08,
         "unit": "ratio",
