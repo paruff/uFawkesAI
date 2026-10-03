@@ -6,6 +6,8 @@ This directory is the feature audit trail:
 
 Each artifact is versioned and should be committed in a PR (or attached to the feature branch) as it is produced.
 
+> **Upstream references:** [The AI-Native SDLC Playbook](https://claude.com/blog/the-ai-native-sdlc-playbook) (Claxton, Anthropic, 2026-08-21); DORA, _State of AI-assisted Software Development_ (2025) — AI Capabilities Model companion report (Dec 2025). The artifact chain and four-agent pipeline (planner, builder, verifier, operator) implement the playbook's six stages; the seven DORA AI capabilities are the canonical vocabulary (`.agents/registry/dora-capabilities.yaml`).
+
 - `intent.md`: originator idea and discovery context
 - `spec.md`: requirements, design, policy constraints, and concerns
 - `plan.md`: executable implementation sequence and verification strategy
