@@ -203,6 +203,32 @@ fails the build. A companion `scripts/image-lock-refresh.sh <tool> <version>`
 fetches the release checksum (or computes it) and rewrites the entry — this
 is what `scripts/image-lock-bump.sh` runs for each bumped tool.
 
+## Verification Strategy (pre-bake hook environments)
+
+This PR adds pre-baking of hook environments at image build time (R4 of spec.md).
+The change modifies `images/devsecops/Dockerfile` to:
+
+1. Set `PRE_COMMIT_HOME=/opt/ufawkes/pre-commit/cache`
+2. Create a temporary git repo during build and run `pre-commit run --all-files`
+   against the baseline config to populate the hook environment cache.
+
+### Acceptance Criteria
+
+| AC    | How it is proven                                          | test_type   | Command / CI job                          |
+| ----- | -------------------------------------------------------- | ----------- | ----------------------------------------- |
+| AC-01 | Image builds successfully on amd64 and arm64             | integration | `image-build.yml` › `verify core`         |
+| AC-02 | `pre-commit run --all-files` works offline in built image| integration | `verify-tools.sh core` (network disabled) |
+| AC-03 | Hook environments are cached in `PRE_COMMIT_HOME`        | unit        | inspect image layer `/opt/ufawkes/pre-commit/cache` |
+
+### Verification Commands
+
+```bash
+# Build and verify core image
+docker buildx build --target core -t ufawkes-devsecops-core:test images/devsecops
+docker run --rm --network none -v "$PWD/images/devsecops/tests:/tests:ro" \
+  ufawkes-devsecops-core:test /tests/verify-tools.sh core
+```
+
 ## PR sequence
 
 ### PR 1 — `feat(image): core variant build and verification`

@@ -74,6 +74,26 @@ COPY tools.lock.json /etc/ufawkes/tools.lock.json
 COPY python/requirements.in /etc/ufawkes/requirements.in
 COPY pre-commit/baseline.yaml /opt/ufawkes/pre-commit/baseline.yaml
 
+# Pre-bake hook environments: create a temp git repo and run pre-commit
+# to populate the cache so pre-commit uses cached environments at runtime
+# (no network needed). This mimics the verify-tools.sh offline test.
+ENV PRE_COMMIT_HOME=/opt/ufawkes/pre-commit/cache
+RUN mkdir -p "${PRE_COMMIT_HOME}" \
+  && cd /tmp \
+  && git init -q precommit-cache \
+  && cd precommit-cache \
+  && git config user.email "build@ufawkes" \
+  && git config user.name "ufawkes-build" \
+  && cp /opt/ufawkes/pre-commit/baseline.yaml .pre-commit-config.yaml \
+  && mkdir -p .github/workflows \
+  && printf '# Title\n\nSome text.\n' > README.md \
+  && printf '{"key": "value"}\n' > data.json \
+  && printf '#!/usr/bin/env bash\nset -euo pipefail\necho "ok"\n' > run.sh \
+  && chmod +x run.sh \
+  && printf -- '---\nname: ci\non: push\npermissions: {}\njobs:\n  build:\n    runs-on: ubuntu-latest\n    steps:\n      - run: echo "ok"\n' > .github/workflows/ci.yml \
+  && git add -A \
+  && pre-commit run --all-files
+
 LABEL org.opencontainers.image.source="https://github.com/paruff/uFawkesAI" \
       org.opencontainers.image.description="uFawkes DevSecOps toolchain (core): pre-commit, linters, secret/vuln/SAST scanners" \
       org.opencontainers.image.licenses="MIT"
