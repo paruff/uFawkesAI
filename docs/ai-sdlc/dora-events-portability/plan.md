@@ -95,6 +95,14 @@ Test-first throughout: each behaviour change starts with a failing test.
 AC-04 cannot run in required CI by design; its evidence is the recorded
 output from plan step 0 and from a final run in the PR description.
 
+**Evidence (2026-10-03, uFawkesObs `main` dfd4fc9, `make up-dora`):** the
+event carries labels `service_name="uFawkesAI"`, `job="uFawkesAI"`,
+`exporter="OTLP"`; the line is the OTLP record with the event JSON in `body`.
+`scripts/verify-dora-event-in-loki.sh` exited 0 with the event found by
+`{service_name="uFawkesAI", exporter="OTLP"} | json | line_format "{{.body}}" | json | event="job-finish" | step="<marker>"`;
+exited 2 (SKIP) with `LOKI_URL` pointing at a closed port; exited 1 after the
+timeout with the OTLP endpoint pointing at a closed port.
+
 ## Risks
 
 - **Label mapping differs from the docs' `service_name` convention.** Mitigated

@@ -12,8 +12,8 @@ The Dojo lab ran on 2026-09-27. Each gap was re-checked against the code on
 | Gap    | Lab evidence                                                 | State on `main` today                                                                                                   | Remaining work     |
 | ------ | ------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------- | ------------------ |
 | GAP-01 | Test needed `jsonschema`, which could not be pip-installed   | **Fixed in code:** `test-emit-dora-event.sh` validates with a stdlib draft-07 subset and needs only `python3` and `jq`  | Documentation only |
-| GAP-02 | `repo` silently became `unknown` outside CI                  | **Open:** no `--repo` flag; `repo="${GITHUB_REPOSITORY:-${CI_REPO:-unknown}}"` with no warning                          | Code + tests       |
-| GAP-03 | Nothing proved an event reaches Loki                         | **Open:** AC-04 only proves a local listener; `docs/UFAWKES_INTEGRATION.md` says the label mapping "depends on settings" | Script + docs      |
+| GAP-02 | `repo` silently became `unknown` outside CI                  | **Fixed (#161):** `--repo` flag and remote-based resolution, warning when unknown                                      | Done               |
+| GAP-03 | Nothing proved an event reaches Loki                         | **Fixed (#157):** `verify-dora-event-in-loki.sh` found a live event in uFawkesObs `main` (dfd4fc9) with the documented LogQL | Done               |
 
 ## Functional Requirements
 
@@ -71,8 +71,8 @@ uFawkesDojo Lab 02 (a cross-repo follow-up, handed off through
 - [ ] AC-01: `test-emit-dora-event.sh` passes in a stock `python3` + `jq` environment with no pip, and its missing-tool message does not mention pip — `test_type: integration`
 - [ ] AC-02: repo resolution follows the documented order for `--repo`, env vars, https remote and ssh remote, and `--repo` beats the remote — `test_type: unit`
 - [ ] AC-03: with no flag, env var or remote, the emitter warns on stderr, still emits valid JSON with `repo: "unknown"`, and exits 0 — `test_type: unit`
-- [ ] AC-04: against a running uFawkesObs, an event emitted over OTLP is found in Loki by the documented LogQL query within the timeout; with the stack down the script exits 2 with a SKIP — `test_type: live-system`
-- [ ] AC-05: the prerequisites and the LogQL query appear in `docs/UFAWKES_INTEGRATION.md`, and the stale "jsonschema" row in the dora-events plan is corrected — `test_type: unit` (checked by `grep` in the unit suite)
+- [x] AC-04: against a running uFawkesObs, an event emitted over OTLP is found in Loki by the documented LogQL query within the timeout; with the stack down the script exits 2 with a SKIP — `test_type: live-system`
+- [x] AC-05: the prerequisites and the LogQL query appear in `docs/UFAWKES_INTEGRATION.md`, and the stale "jsonschema" row in the dora-events plan is corrected — `test_type: unit` (checked by `grep` in the unit suite)
 
 ## Decisions
 
