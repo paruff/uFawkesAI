@@ -24,7 +24,6 @@ LOCK="${ETC}/tools.lock.json"
 case "$VARIANT" in
   core) VARIANTS='["core"]' ;;
   ai) VARIANTS='["core","ai"]' ;;
-  polyglot) VARIANTS='["core","ai","polyglot"]' ;;
   *)
     echo "unknown variant: $VARIANT" >&2
     exit 2
@@ -92,7 +91,7 @@ while IFS=$'\t' read -r pkg version; do
   if [ "$installed" = "$version" ]; then ok "npm $pkg $version"; else bad "npm $pkg: expected $version, got ${installed:-none}"; fi
 done < <(jq -r '.dependencies | to_entries[] | [.key, .value] | @tsv' "${OPT}/node/package.json")
 
-if [ "$VARIANT" = ai ] || [ "$VARIANT" = polyglot ]; then
+if [ "$VARIANT" = ai ]; then
   while IFS=$'\t' read -r pkg version; do
     installed="$(jq -r .version "${OPT}/node-ai/node_modules/${pkg}/package.json" 2> /dev/null)"
     if [ "$installed" = "$version" ]; then ok "npm $pkg $version"; else bad "npm $pkg: expected $version, got ${installed:-none}"; fi
@@ -179,7 +178,7 @@ git -C "$repo" add -A
 expect_reject "pre-commit baseline: planted token" \
   env PRE_COMMIT_HOME="$t/pc-home" bash -c "cd '$repo' && pre-commit run --all-files"
 
-if [ "$VARIANT" = ai ] || [ "$VARIANT" = polyglot ]; then
+if [ "$VARIANT" = ai ]; then
   echo "== 4. Devcontainer user =="
   if [ "$(id -un)" = dev ] && [ "$(id -u)" = 1000 ]; then ok "runs as dev (1000)"; else bad "expected user dev/1000, got $(id -un)/$(id -u)"; fi
   expect_pass "passwordless sudo" sudo -n true
@@ -209,7 +208,7 @@ if [ "$VARIANT" = ai ] || [ "$VARIANT" = polyglot ]; then
     ok "opencode config: tier agents, __HOME__ rendered, fallback off, no router"
   else bad "opencode config not the deterministic baked version"; fi
 
-  echo "== 6. Language servers (TS/JS, Python, Bash, YAML; + Java in polyglot) =="
+  echo "== 6. Language servers (TS/JS, Python, Bash, YAML) =="
   # Each must start and answer, not merely exist on PATH.
   check_lsp() {
     local label="$1" out
@@ -225,14 +224,13 @@ if [ "$VARIANT" = ai ] || [ "$VARIANT" = polyglot ]; then
   for gone in go gopls clangd semgrep; do
     if command -v "$gone" > /dev/null; then bad "$gone should not be in the image"; else ok "absent (by design): $gone"; fi
   done
-  if [ "$VARIANT" = polyglot ]; then
-    check_lsp java java -version
-    check_lsp jdtls cat /opt/jdtls/VERSION
-  elif command -v jdtls > /dev/null || command -v java > /dev/null; then
-    bad "java/jdtls belong only in the polyglot variant"
-  else ok "absent (by design, polyglot only): java, jdtls"; fi
-  if [ "${OPENCODE_DISABLE_LSP_DOWNLOAD:-}" = true ] && grep -q '"jdtls": {' "$oc/opencode.jsonc"; then
-    ok "opencode: lsp on (TS + Java pinned to baked servers), runtime downloads off"
+  # Java isn't in the image (no polyglot variant since 2026-10-03): a Java
+  # repo adds a JDK and lets OpenCode's built-in LSP fetch jdtls.
+  if command -v jdtls > /dev/null || command -v java > /dev/null; then
+    bad "java/jdtls should not be in the image"
+  else ok "absent (by design): java, jdtls"; fi
+  if [ "${OPENCODE_DISABLE_LSP_DOWNLOAD:-}" = true ] && grep -q '"typescript": {' "$oc/opencode.jsonc"; then
+    ok "opencode: lsp on (TS pinned to the baked server), runtime downloads off"
   else bad "opencode: expected pinned lsp servers and OPENCODE_DISABLE_LSP_DOWNLOAD=true"; fi
 
   echo "== 7. qmd: search works end to end, skill + MCP wired =="

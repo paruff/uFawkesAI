@@ -39,11 +39,6 @@ RUN mkdir -p /out/ai/etc \
  && cp -a /out/core/etc/ufawkes /out/ai/etc/ \
  && /build/install-tools.sh /build/tools.lock.json ai /out/ai
 
-FROM fetch-ai AS fetch-polyglot
-RUN mkdir -p /out/polyglot/etc \
- && cp -a /out/ai/etc/ufawkes /out/polyglot/etc/ \
- && /build/install-tools.sh /build/tools.lock.json polyglot /out/polyglot
-
 # ── core: pre-commit, linters, secret/vuln/SAST scanners ───────────────────
 FROM base AS core
 ENV LANG=C.UTF-8 \
@@ -169,18 +164,3 @@ RUN qmd skill install --global --force \
       ln -sfn "${s%/}" ".config/opencode/skills/$(basename "${s}")"; \
     done
 CMD ["zsh"]
-
-# ── polyglot: ai + Java code intelligence ─────────────────────────────────
-# Opt-in variant for repos with Java: jdtls (tools.lock.json, variant
-# polyglot) on a Java 21 runtime. jdtls compiles with its own ECJ, so a JRE,
-# not a JDK. Published as fawkes-space-ai:<v>-polyglot and
-# fawkes-space:<v>-polyglot / :polyglot.
-FROM ai AS polyglot
-USER root
-COPY --from=fetch-polyglot /out/polyglot/ /
-# hadolint ignore=DL3008
-RUN apt-get update \
- && apt-get install -y --no-install-recommends openjdk-21-jre-headless \
- && rm -rf /var/lib/apt/lists/*
-LABEL org.opencontainers.image.description="uFawkes DevSecOps toolchain (polyglot): ai + Java LSP (jdtls on OpenJDK 21), devcontainer user"
-USER ${DEV_USER}

@@ -64,7 +64,7 @@ while IFS= read -r entry; do
     cp -a "${work}/${name}/${subdir}/." "$tree/"
     echo "$version" > "${tree}/VERSION"
   elif [ "$install_mode" = "opt" ]; then
-    # Self-contained application tree (e.g. jdtls: jars + launcher): unpack
+    # Self-contained application tree (e.g. agent skills): unpack
     # whole to /opt/<name>, stamp VERSION for version_cmd, and symlink its
     # launchers onto PATH.
     mkdir -p "${DEST}/opt/${name}"

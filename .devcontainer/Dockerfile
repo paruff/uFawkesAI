@@ -3,7 +3,7 @@
 # Published to ghcr.io/paruff/fawkes-space by build-devsecops-images.yml.
 #
 # The ai base already includes: OpenCode, qmd, the language servers (TS/JS,
-# Python, Bash, YAML; the polyglot base adds Java), Superpowers + qmd agent skills
+# Python, Bash, YAML), Superpowers + qmd agent skills
 # (linked into ~/.claude/skills and ~/.config/opencode/skills), pre-commit,
 # gh, the core scanners, zsh, sudo, and the dev user.
 
@@ -20,8 +20,7 @@ RUN npm install -g @anthropic-ai/claude-code@${CLAUDE_CODE_VERSION} \
 # the ai base; the local ufawkes-lsp plugin (.devcontainer/claude-plugins) tells
 # Claude Code how to start them, and qmd is a user-scope MCP server so every
 # repo opened in this container gets it.
-# LSP_PLUGINS: "ufawkes-lsp" by default; the polyglot build adds
-# "ufawkes-lsp-java" (its base image is the only one with jdtls).
+# LSP_PLUGINS: the plugins to install (default "ufawkes-lsp").
 ARG LSP_PLUGINS="ufawkes-lsp"
 COPY --chown=dev:dev .devcontainer/claude-plugins /home/dev/.local/share/ufawkes-claude-plugins
 RUN claude plugin marketplace add /home/dev/.local/share/ufawkes-claude-plugins \
