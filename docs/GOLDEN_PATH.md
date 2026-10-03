@@ -29,6 +29,12 @@
 
 ## Step-by-Step with Commands
 
+### Step 0 — Activate the real gates (once, in a new repo)
+
+Run `scripts/setup.sh`. Among other things it deletes `.template`, which turns
+the placeholder audit (`scripts/check-placeholders.sh`) from a warning into a
+gate: preflight fails until every `[PLACEHOLDER]` marker is filled in.
+
 ### Step 1 — Spec (PM)
 
 Create a GitHub issue using the **Feature** issue template.

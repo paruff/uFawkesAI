@@ -106,7 +106,20 @@ else
 fi
 echo ""
 
-# ── 3. Summary ────────────────────────────────────────────────────────────
+# ── 3. Activate the placeholder gate ──────────────────────────────────────
+# .template marks the template repo itself; a repo created from it drops the
+# marker so unfilled [PLACEHOLDER] markers fail preflight (#28).
+if [ -f .template ]; then
+  if $DRY_RUN; then
+    dry "delete .template (activates the placeholder audit gate)"
+  else
+    rm -f .template
+    ok "Deleted .template — the placeholder audit now fails on unfilled markers"
+  fi
+fi
+echo ""
+
+# ── 4. Summary ────────────────────────────────────────────────────────────
 echo "════════════════════════════════════════"
 if $DRY_RUN; then
   echo -e "${YELLOW}${BOLD}Dry-run complete — no changes were made.${NC}"

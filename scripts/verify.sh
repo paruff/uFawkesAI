@@ -95,15 +95,10 @@ fi
 
 # Placeholder audit
 section "  Placeholder Audit"
-placeholder_count=$(grep -rn "\[PLACEHOLDER" --include="*.md" . \
-  2> /dev/null | grep -cv "node_modules\|\.git" || true)
-if [[ "$placeholder_count" -eq 0 ]]; then
-  pass "No unfilled [PLACEHOLDER] strings found"
+if bash scripts/check-placeholders.sh; then
+  pass "Placeholder audit passed"
 else
-  fail "$placeholder_count unfilled [PLACEHOLDER] strings remain:"
-  grep -rn "\[PLACEHOLDER" --include="*.md" . \
-    2> /dev/null | grep -v node_modules | grep -v ".git" \
-    | sed -n "1,10p" | while read -r line; do info "  $line"; done
+  fail "Unfilled [PLACEHOLDER] markers remain (listed above)"
 fi
 
 # AGENTS.md line count

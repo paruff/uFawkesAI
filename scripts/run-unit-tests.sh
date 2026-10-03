@@ -24,6 +24,7 @@ SUITES=(
   scripts/test-run-evals.sh
   scripts/test-image-lock-bump.sh
   scripts/test-main-ci-guard.sh
+  scripts/test-check-placeholders.sh
 )
 
 failed=0
