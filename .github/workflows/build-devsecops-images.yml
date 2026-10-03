@@ -334,23 +334,32 @@ jobs:
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
-      options: --user dev
+    # The container runs as root: actions/checkout writes the runner's
+    # root-owned file-command files, which `--user dev` can't (EACCES on
+    # v2.0.0-rc.1). The tests themselves run as `dev`, the devcontainer user.
+    defaults:
+      run:
+        shell: bash
     steps:
       - name: job-start
         run: echo "job-start $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           persist-credentials: false
+      - name: Hand the checkout to dev
+        run: |
+          chown -R dev:dev "$GITHUB_WORKSPACE"
+          sudo -u dev -H git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - name: Verify all four harnesses
-        run: scripts/multi-harness-smoke.sh
+        run: sudo -u dev -H env "PATH=$PATH" scripts/multi-harness-smoke.sh
       - name: Verify agent dispatch
-        run: scripts/check-agents.sh
+        run: sudo -u dev -H env "PATH=$PATH" scripts/check-agents.sh
       - name: Verify AI stance
-        run: scripts/check-ai-stance.sh
+        run: sudo -u dev -H env "PATH=$PATH" scripts/check-ai-stance.sh
       - name: Run unit test suites
-        run: scripts/run-unit-tests.sh
-      - name: Verify pre-commit hooks
-        run: pre-commit run --all-files
+        run: sudo -u dev -H env "PATH=$PATH" scripts/run-unit-tests.sh
+      - name: Verify pre-commit hooks (one-time hook download, as dev)
+        run: sudo -u dev -H env "PATH=$PATH" pre-commit run --all-files
       - name: job-finish
         if: always()
         run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
