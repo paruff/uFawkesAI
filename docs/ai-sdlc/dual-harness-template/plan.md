@@ -174,7 +174,7 @@ All 11 items are implemented (2026-09-26).
   validate; the smoke test below only proves the skill loads when asked
   for by name, not that it would be found unprompted.
 
-## Tests That Prove It
+## Verification Strategy (tests that prove it)
 
 Per your instruction, "tests" for a template repository means an
 end-to-end smoke test against a fresh clone, run automatically in CI —
