@@ -346,3 +346,16 @@ polyglot tags.
 Verify: `verify-tools.sh ai` reports java/jdtls absent and the OpenCode LSP
 config pinned (TS) with downloads off; `actionlint` on
 `build-devsecops-images.yml`; `git grep -i polyglot` finds only this history.
+
+## Fix: curl in the runtime image (2026-10-03)
+
+`curl` was installed only in the `fetch` build stage, so the published image
+had none. `scripts/emit-dora-event.sh` exports delivery events with curl, and
+in-image runs of `test-emit-dora-event.sh` hung on an OTLP listener with no
+timeout (found running the acceptance suite in `fawkes-space:2.0.0-rc.1`).
+`core` now installs curl, and the listener times out after 20 s so a missing
+POST fails the checks instead of hanging.
+
+Verify: `verify-tools.sh` reports `curl`; in the image as `dev`,
+`scripts/run-unit-tests.sh` completes; on the host,
+`bash scripts/test-emit-dora-event.sh` passes.

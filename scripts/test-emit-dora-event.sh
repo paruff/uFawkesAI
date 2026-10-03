@@ -211,7 +211,9 @@ class H(http.server.BaseHTTPRequestHandler):
                                 "payload": json.loads(body)}))
         self.send_response(200); self.end_headers(); self.wfile.write(b"{}")
     def log_message(self, *a): pass
-http.server.HTTPServer(("127.0.0.1", port), H).handle_request()
+srv = http.server.HTTPServer(("127.0.0.1", port), H)
+srv.timeout = 20  # no POST (e.g. curl missing) must fail the checks below, not hang
+srv.handle_request()
 PY
 listener_pid=$!
 sleep 1

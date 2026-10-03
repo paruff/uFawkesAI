@@ -49,7 +49,7 @@ ENV LANG=C.UTF-8 \
 # hadolint ignore=DL3008
 RUN apt-get update \
  && apt-get install -y --no-install-recommends \
-      bash ca-certificates git make openssh-client python3 xz-utils \
+      bash ca-certificates curl git make openssh-client python3 xz-utils \
  && rm -rf /var/lib/apt/lists/* \
  && git config --system --add safe.directory '*'
 
