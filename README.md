@@ -194,6 +194,8 @@ Built and signed by [`build-devsecops-images.yml`](.github/workflows/build-devse
 | [`ghcr.io/paruff/fawkes-space-ai`](https://github.com/paruff/uFawkesAI/pkgs/container/fawkes-space-ai) | Base of the devcontainer: core + agent harnesses and skills |
 | [`ghcr.io/paruff/fawkes-core`](https://github.com/paruff/uFawkesAI/pkgs/container/fawkes-core) | Linters, secret/vuln/SAST scanners, pre-commit |
 
+**Host requirements:** at least 2 CPUs and 4 GB of memory for the container (declared as `hostRequirements` in `devcontainer.json`). An agent session in a smaller VM, such as Colima's or Docker Desktop's 2 GB default, is killed for running out of memory with no error. Colima: `colima stop && colima start --cpu 4 --memory 8`.
+
 Tags: `X.Y.Z`, `X.Y`, `X`, `latest`. Pin by digest in consumers; verify with `cosign verify`, **cosign v3 or later** (the command is in each release's notes and the workflow header; cosign v2 reports "no signatures found").
 
 ## Works with
