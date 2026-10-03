@@ -226,7 +226,6 @@ jobs:
           persist-credentials: false
       - name: Self-test the emitter
         run: |
-          pip install --quiet 'jsonschema==4.25.1'
           bash scripts/test-emit-dora-event.sh
       - name: Emit delivery events
         env:
