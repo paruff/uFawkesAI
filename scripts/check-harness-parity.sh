@@ -4,7 +4,7 @@
 # canonical .agents/ tree and stays in sync: no shadowing, no broken symlinks,
 # no drifted MCP server sets, no reserved-name collisions. This is the
 # automated version of the `doctor`/`oc-health` collision this repo found and
-# fixed by hand — see docs/ai-sdlc/spec.md R5.
+# fixed by hand — see docs/ai-sdlc/dual-harness-template/spec.md R5.
 #
 # Wiring contract: .agents/ is canonical. Everything a harness dispatches to
 # is a symlink into it:

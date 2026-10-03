@@ -125,7 +125,7 @@ passwordless sudo and sets it as the default user, for devcontainer use.
 | Area                  | Tools                                                           |
 | --------------------- | --------------------------------------------------------------- |
 | Agent harnesses       | Claude Code, OpenCode (versions moved from `postCreateCommand`) |
-| MCP runtime deps      | `uv`/`uvx` (unblocks `serena`, see `docs/ai-sdlc/spec.md` R3)   |
+| MCP runtime deps      | `uv`/`uvx` (unblocks `serena`, see `docs/ai-sdlc/dual-harness-template/spec.md` R3)   |
 | Devcontainer comfort  | zsh, sudo, less, vim-tiny                                       |
 
 Playwright browsers are **not** baked in (≈400 MB+ per arch); the
