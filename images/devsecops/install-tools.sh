@@ -46,7 +46,9 @@ while IFS= read -r entry; do
   format="$(jq -r .format <<< "$entry")"
 
   file="${work}/${name}.download"
-  curl -fsSL --retry 3 -o "$file" "$url"
+  # --retry-all-errors: plain --retry skips connection resets (exit 35/56),
+  # which failed main CI on a single dropped connection.
+  curl -fsSL --retry 5 --retry-all-errors --retry-delay 2 -o "$file" "$url"
   echo "${sha}  ${file}" | sha256sum -c --quiet - || fail "${name}: checksum mismatch for ${url}"
 
   install_mode="$(jq -r '.install // "bin"' <<< "$entry")"

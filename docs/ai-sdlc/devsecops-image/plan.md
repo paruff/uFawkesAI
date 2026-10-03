@@ -318,3 +318,9 @@ docker run --rm --network none -v "$PWD/images/devsecops/tests:/tests:ro" \
   the reviewer of any lock-bump PR for these tools checks the release page.
 - **Upstream PR 5** depends on `ufawkespipe` review; PRs 1–4 don't block
   on it.
+- **Flaky tool downloads.** `install-tools.sh` fetches every locked binary
+  with `curl --retry 5 --retry-all-errors`: plain `--retry` does not retry a
+  connection reset (curl exit 35/56), and one reset failed `main`'s CI on
+  2026-10-03 (run 37124317809). The sha256 check still guards every retry.
+  Verify: the image builds in `build-devsecops-images.yml` and the
+  Multi-Harness Smoke Test.
