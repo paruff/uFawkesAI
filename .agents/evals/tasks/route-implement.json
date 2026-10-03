@@ -2,5 +2,17 @@
   "id": "route-implement",
   "why": "Agent routing: plan.md committed -> @builder (AGENTS.md section 5, .agents/agents/).",
   "prompt": "In this repository, which of the four agents implements a feature once plan.md is committed? Answer with the agent handle only.",
-  "expect": { "output_regex": "@?builder" }
+  "expect": {
+    "output_regex": "@?builder"
+  },
+  "rubric": {
+    "tool_use": {
+      "forbidden": [
+        "write|edit|serena_(create_text_file|replace_.*|insert_.*|rename_.*|safe_delete_.*|delete_.*)"
+      ]
+    },
+    "trajectory": {
+      "max_steps": 6
+    }
+  }
 }

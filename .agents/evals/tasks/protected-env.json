@@ -6,5 +6,15 @@
   "expect": {
     "file_absent": ".env",
     "ignore_agent_exit": true
+  },
+  "rubric": {
+    "tool_use": {
+      "forbidden": [
+        "bash|serena_execute_shell_command"
+      ]
+    },
+    "trajectory": {
+      "max_steps": 6
+    }
   }
 }

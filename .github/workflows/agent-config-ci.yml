@@ -11,15 +11,29 @@ name: Agent Config Evals
 # Without that secret the job FAILS with an explicit message — a skipped eval
 # must never look like a passing one.
 
+# Triggers (AC-AI-07, per the playbook): every change to rules, skills,
+# agents or hooks, every push to main, and weekly — a model or provider can
+# drift with no change in this repo. Each task is scored on task success, tool
+# use and trajectory against .agents/evals/baseline.json.
+# On PRs the job always runs (so branch protection can require it) and runs
+# the model only when a config path changed; otherwise it says so and passes.
 on:
   pull_request:
+  push:
+    branches: [main]
     paths:
       - "AGENTS.md"
       - ".agents/**"
       - ".claude/**"
+      - ".opencode/**"
       - "opencode.json"
+      - "scripts/hooks/**"
+      - ".pre-commit-config.yaml"
       - "scripts/run-evals.sh"
+      - "scripts/test-run-evals.sh"
       - ".github/workflows/agent-config-ci.yml"
+  schedule:
+    - cron: "41 5 * * 1" # Mondays
   workflow_dispatch:
 
 permissions:
@@ -43,7 +57,30 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           persist-credentials: false
+          fetch-depth: 0
+      # Keep this list in sync with on.push.paths above.
+      - name: Did this PR change the agent configuration?
+        id: changes
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          if [ "${GITHUB_EVENT_NAME}" != pull_request ]; then
+            echo "changed=true" >>"$GITHUB_OUTPUT"
+            exit 0
+          fi
+          changed="$(git diff --name-only "$BASE_SHA" HEAD -- AGENTS.md .agents .claude .opencode \
+            opencode.json scripts/hooks .pre-commit-config.yaml scripts/run-evals.sh \
+            scripts/test-run-evals.sh .github/workflows/agent-config-ci.yml)"
+          if [ -n "$changed" ]; then
+            echo "Agent configuration changed:"
+            echo "$changed"
+            echo "changed=true" >>"$GITHUB_OUTPUT"
+          else
+            echo "No agent configuration changed in this PR: evals not needed, gate passes." | tee -a "$GITHUB_STEP_SUMMARY"
+            echo "changed=false" >>"$GITHUB_OUTPUT"
+          fi
       - name: Require the API key (no silent skip)
+        if: steps.changes.outputs.changed == 'true'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
@@ -58,11 +95,14 @@ jobs:
             exit 1
           fi
       - name: Self-test the gate (offline)
+        if: steps.changes.outputs.changed == 'true'
         run: bash scripts/test-run-evals.sh
       # Same OpenCode version the DevSecOps image pins (tools.lock.json).
       - name: Install OpenCode
+        if: steps.changes.outputs.changed == 'true'
         run: npm install -g opencode-ai@1.18.32
       - name: Run evals against this configuration
+        if: steps.changes.outputs.changed == 'true'
         env:
           # OpenCode's google provider reads GOOGLE_GENERATIVE_AI_API_KEY, not
           # GEMINI_API_KEY (without it: "Google Generative AI API key is missing").
@@ -72,7 +112,7 @@ jobs:
         # Empty config dir: no machine/plugin config can change which model answers.
         run: XDG_CONFIG_HOME="$(mktemp -d)" bash scripts/run-evals.sh
       - name: Upload eval report
-        if: always()
+        if: always() && steps.changes.outputs.changed == 'true'
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: evals-report
