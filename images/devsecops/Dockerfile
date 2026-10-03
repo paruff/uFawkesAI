@@ -90,17 +90,7 @@ RUN mkdir -p "${PRE_COMMIT_HOME}" \
   && printf '{"key": "value"}\n' > data.json \
   && printf '#!/usr/bin/env bash\nset -euo pipefail\necho "ok"\n' > run.sh \
   && chmod +x run.sh \
-  && cat > .github/workflows/ci.yml << 'EOF'
----
-name: ci
-on: push
-permissions: {}
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "ok"
-EOF
+  && printf -- '---\nname: ci\non: push\npermissions: {}\njobs:\n  build:\n    runs-on: ubuntu-latest\n    steps:\n      - run: echo "ok"\n' > .github/workflows/ci.yml \
   && git add -A \
   && pre-commit run --all-files
 
