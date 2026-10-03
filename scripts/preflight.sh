@@ -54,22 +54,15 @@ else
   fi
 fi
 
-# ── 2) AGENTS.md must have no unfilled placeholders ─────────────────────────
+# ── 2) No unfilled placeholders (scripts/check-placeholders.sh, #28) ────────
 
 if [ ! -f AGENTS.md ]; then
   fail "AGENTS.md is missing."
+elif PLACEHOLDER_ENFORCE="${PREFLIGHT_ENFORCE_PLACEHOLDERS:-${PLACEHOLDER_ENFORCE:-0}}" \
+  bash scripts/check-placeholders.sh; then
+  pass "Placeholder audit passed."
 else
-  placeholder_lines="$(grep -nE '\[PLACEHOLDER[^]]*\]' AGENTS.md || true)"
-  if [ -n "${placeholder_lines}" ]; then
-    echo "${placeholder_lines}"
-    if [ "${PREFLIGHT_ENFORCE_PLACEHOLDERS:-0}" = "1" ]; then
-      fail "AGENTS.md contains unfilled [PLACEHOLDER] markers."
-    else
-      warn "AGENTS.md contains [PLACEHOLDER] markers (template mode). Set PREFLIGHT_ENFORCE_PLACEHOLDERS=1 to enforce."
-    fi
-  else
-    pass "AGENTS.md contains no [PLACEHOLDER] markers."
-  fi
+  fail "Unfilled [PLACEHOLDER] markers (listed above)."
 fi
 
 # ── 3) Required symlinks must exist and resolve ──────────────────────────────

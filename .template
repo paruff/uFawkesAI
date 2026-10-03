@@ -1,0 +1,3 @@
+# Template marker (scripts/check-placeholders.sh): while this file exists,
+# unfilled [PLACEHOLDER] markers only warn. scripts/setup.sh deletes it in a
+# repo created from the template, which turns the placeholder audit into a gate.

@@ -61,7 +61,7 @@ cd my-project
 # 2. Run setup (creates symlinks, installs hooks)
 ./scripts/setup.sh
 
-# 3. Customise for your project (replace all [PLACEHOLDER] sections)
+# 3. Customise for your project (replace all `[PLACEHOLDER]` sections)
 # Start with AGENTS.md — everything else derives from it
 code AGENTS.md
 
