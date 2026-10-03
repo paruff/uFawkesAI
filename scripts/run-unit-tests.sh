@@ -25,6 +25,7 @@ SUITES=(
   scripts/test-image-lock-bump.sh
   scripts/test-main-ci-guard.sh
   scripts/test-check-placeholders.sh
+  scripts/test-check-readme-claims.sh
 )
 
 failed=0

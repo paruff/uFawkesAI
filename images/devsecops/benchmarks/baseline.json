@@ -1,1 +1,20 @@
-{}
+{
+  "core-amd64": {
+    "warm_ms": 137
+  },
+  "ai-amd64": {
+    "warm_ms": 134
+  },
+  "devcontainer-amd64": {
+    "warm_ms": 132
+  },
+  "core-arm64": {
+    "warm_ms": 121
+  },
+  "ai-arm64": {
+    "warm_ms": 115
+  },
+  "devcontainer-arm64": {
+    "warm_ms": 118
+  }
+}

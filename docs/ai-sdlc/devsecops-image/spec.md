@@ -30,7 +30,7 @@ tool set at the same versions:
 - The image records its own manifest (`/etc/ufawkes/tools.json`: tool,
   version, sha256) so any environment can print exactly what it runs.
 
-**R4 — Offline pre-commit.** Hooks run with no network access:
+**R4 — Pre-commit in the image.** The baseline's hooks run with no network access:
 
 - The image ships a baseline config (`/opt/ufawkes/pre-commit/baseline.yaml`)
   whose hooks are `language: system` and call the preinstalled binaries —
@@ -97,6 +97,22 @@ packages, so any repo or fork can pull them without a token.
 GitHub Actions `container:` jobs expect root (`actions/checkout` writes to
 the workspace as root). `ai` adds user `dev` (UID/GID 1000) with
 passwordless sudo and sets it as the default user, for devcontainer use.
+
+**R10 — Developer experience is measured, not asserted (AC-AI-08).** The
+CDE is designed against the DevEx evidence in the suite's research library
+(uFawkes.dev `docs/research-foundation.md`, "Developer Experience"). No
+peer-reviewed study of devcontainers exists, so each DevEx dimension maps to
+a requirement here and a check that runs:
+
+| Dimension (source) | Requirement | Check | Status (rc.3) |
+|---|---|---|---|
+| Feedback loops (Noda et al. 2023; Jaspan & Green 2023: every latency gain helps, no magic threshold) | Cold start (pull + first run) and warm start (median re-run) per variant and arch, every release; >10% regression fails it; no fixed target | `benchmark` job in `build-devsecops-images.yml`; table in the release | Warm baseline recorded from rc.3. Cold baseline pending: rc.3's cold numbers reused layers between variants; `BENCH_PRUNE=1` fixes that from the next tag |
+| Cognitive load: one entry point (Noda et al. 2023) | "Reopen in Container" is the only setup step; `devcontainer.json` names one pinned image | the six suite repos pin `fawkes-space` by digest (AC-AI-05 check) | Met |
+| Cognitive load: one config source (playbook) | One instruction source for all four harnesses | `scripts/check-harness-parity.sh` (pre-commit) | Met |
+| Cognitive load: a static rule file of one page or less (playbook) | `AGENTS.md`, the always-loaded file, fits one page | `wc -l AGENTS.md` | **Not met:** 170 lines. `AGENTS.md` is owner-edited (Hard Rule 3); trimming it is an owner decision |
+| Flow: no interactive setup (Meyer et al. 2021) | `postCreateCommand` never prompts; every failure prints its fix | the live acceptance tests open the image non-interactively; `install-tools.sh` and preflight print the fix on each failure | Met for the template and uFawkesObs; not checked mechanically elsewhere |
+| Outcomes, not just speed (Forsgren et al. 2021, 2024; Green, Jaspan et al. 2023) | Time from "Use this template" to first merged PR, plus a three-question survey (ease, confidence, would-recommend) | uFawkesDojo "Start here" lab, recorded in `dojo-feedback.md` | Planned: Dojo 0.2 (suite Phase 2) |
+| No unmeasured productivity claims (METR 2025; Paradis et al. 2024) | The README states no speedup percentage | `grep` the README for speedup claims | Met (none) |
 
 ## Tool set (versions resolved in `plan.md` / lock file, not here)
 
