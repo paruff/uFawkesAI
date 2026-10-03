@@ -334,9 +334,10 @@ jobs:
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
-    # The container runs as root: actions/checkout writes the runner's
-    # root-owned file-command files, which `--user dev` can't (EACCES on
-    # v2.0.0-rc.1). The tests themselves run as `dev`, the devcontainer user.
+      # Explicit: the image's default USER is dev, and actions/checkout must
+      # write the runner's root-owned file-command files (EACCES on rc.1 and
+      # rc.2). The tests themselves run as `dev`, the devcontainer user.
+      options: --user root
     defaults:
       run:
         shell: bash
