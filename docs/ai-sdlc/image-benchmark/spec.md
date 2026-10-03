@@ -32,7 +32,10 @@ version `V`:
 and prints its numbers; a human records them (first: `v2.0.0-rc.1`).
 
 **R6 — Gate.** The job fails if any key's cold or warm time regresses more
-than `REGRESSION_THRESHOLD` (default 10%) over its baseline.
+than `REGRESSION_THRESHOLD` (default 10%) **and** more than `REGRESSION_MIN_MS`
+(default 50 ms) over its baseline. Revision 3 (2026-10-03): warm starts are
+~100 ms and two runs of identical images differed by up to 22%, so a
+percentage alone failed on runner noise.
 
 **R7 — Publication.** A markdown table per arch in the job summary (copied
 into the release notes) and a `benchmark-<arch>.jsonl` artifact.
