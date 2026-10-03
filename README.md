@@ -185,6 +185,12 @@ Quick integration hooks:
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md) (planned in AI-006).
 
+## Design and brand
+
+This repo follows the shared Fawkes and uFawkes design reference:
+[DESIGN.md](https://github.com/paruff/uFawkes.dev/blob/main/DESIGN.md), with tokens at <https://ufawkes.dev/design/tokens.json>. It is owned by
+[uFawkes.dev](https://github.com/paruff/uFawkes.dev).
+
 ## License
 
 MIT
