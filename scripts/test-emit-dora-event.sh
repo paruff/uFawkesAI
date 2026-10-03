@@ -238,6 +238,18 @@ else
   echo "  ❌ unreachable endpoint: ${err}"
 fi
 
+# AC-05 (dora-events-portability): the docs carry the prerequisites and the
+# verified LogQL; the stale jsonschema row is gone.
+doc=docs/UFAWKES_INTEGRATION.md
+if grep -q 'no pip' "$doc" && grep -qF 'line_format "{{.body}}" | json' "$doc" \
+  && ! grep -q 'jsonschema' docs/ai-sdlc/dora-events/plan.md; then
+  pass=$((pass + 1))
+  echo "  ✅ docs: prerequisites and LogQL documented"
+else
+  failures+=("docs: prerequisites/LogQL in ${doc}, no jsonschema row")
+  echo "  ❌ docs: prerequisites/LogQL missing or stale jsonschema row"
+fi
+
 echo
 if [ "${#failures[@]}" -gt 0 ]; then
   echo "FAILED ${#failures[@]} check(s), passed ${pass}:"
