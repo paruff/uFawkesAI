@@ -99,6 +99,8 @@ if [ "$VARIANT" = ai ]; then
   expect_pass "codex runs" codex --version
   expect_pass "gemini runs" gemini --version
 fi
+# The template's own scripts need curl at runtime (emit-dora-event.sh OTLP export).
+expect_pass "curl runs" curl --version
 
 echo "== 2. Gates accept clean input and reject planted-bad input =="
 t="$(mktemp -d)"
