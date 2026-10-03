@@ -3,7 +3,7 @@
 # scripts/multi-harness-smoke.sh — proves the multi-harness template actually
 # works. Claude Code and OpenCode are first-class: CLI present, and one example
 # each of MCP server, skill, hook, command, and rule verified functioning, per
-# docs/ai-sdlc/spec.md's success criteria. Codex and Gemini CLI are
+# docs/ai-sdlc/dual-harness-template/spec.md's success criteria. Codex and Gemini CLI are
 # compatibility harnesses: CLI present, instruction file resolves to AGENTS.md,
 # and the shared .agents/skills tree is in place. Run inside the devcontainer —
 # see .github/workflows/ci-quality.yml's `multi-harness-smoke` job.

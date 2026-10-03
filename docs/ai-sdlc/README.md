@@ -24,9 +24,10 @@ the diff against those artifacts (`verification-before-completion`,
 
 A feature need not have its own `plan.md`: the checker only requires an
 `intent.md` beside every `spec.md`, and a `plan.md` when a PR changes the repo's code paths (`src/` by default).
-`opencode-alignment/` is implemented by the repo-level [`plan.md`](plan.md),
-which cites that spec's requirements (R1–R8). `dora-events-portability/` has an
-intent, spec and plan; its code is not built yet.
+`opencode-alignment/` is implemented by the v1
+[`dual-harness-template/plan.md`](dual-harness-template/plan.md), which cites
+that spec's requirements (R1–R8). `dora-events-portability/` has an intent,
+spec and plan; GAP-01 and GAP-02 are built, GAP-03 is open (#157).
 
 ## Closing the loop — Dojo
 
