@@ -1,0 +1,100 @@
+name: pre-commit autoupdate
+
+# Monthly (AC-AI-09): bumps every hook repo's `rev:` in .pre-commit-config.yaml
+# with `pre-commit autoupdate` and opens or updates one PR from
+# `chore/pre-commit-autoupdate`. This replaces pre-commit.ci's autoupdate;
+# .pre-commit-config.yaml stays the only hook definition. Nothing is merged
+# automatically.
+#
+# PRs opened with GITHUB_TOKEN don't trigger pull_request workflows, so this
+# dispatches the CI Quality Gate (Pre-flight runs the new hooks) on the branch.
+# Needs "Allow GitHub Actions to create and approve pull requests"
+# (Settings → Actions → General), as image-lock-bump.yml does.
+
+on:
+  schedule:
+    - cron: "37 4 1 * *" # 1st of the month
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: pre-commit-autoupdate
+  cancel-in-progress: false
+
+env:
+  BRANCH: chore/pre-commit-autoupdate
+
+jobs:
+  autoupdate:
+    name: "⬆️ pre-commit autoupdate"
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write # push the update branch
+      pull-requests: write # open/update the PR
+      actions: write # dispatch CI on the branch
+    steps:
+      - name: job-start
+        run: echo "job-start $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+
+      # Same pre-commit version Pre-flight uses (reusable-preflight.yml).
+      - name: Install pre-commit
+        run: pip install 'pre-commit==4.6.0'
+
+      - name: Bump hook revisions
+        run: |
+          pre-commit autoupdate 2>&1 | tee "${RUNNER_TEMP}/autoupdate.txt"
+          {
+            echo "## pre-commit autoupdate"
+            echo
+            echo '```text'
+            grep -E 'updating|already up to date' "${RUNNER_TEMP}/autoupdate.txt" || true
+            echo '```'
+            # autoupdate follows tag order, not version order: it has proposed
+            # downgrades (gitleaks v8.30.1 -> v8.30.0). Call them out for review.
+            sed -nE 's/^\[(.*)\] updating (.*) -> (.*)$/\1 \2 \3/p' "${RUNNER_TEMP}/autoupdate.txt" \
+              | while read -r repo from to; do
+                if [ "$(printf '%s\n%s\n' "$from" "$to" | sort -V | tail -1)" = "$from" ]; then
+                  echo
+                  echo "> ⚠️ **Downgrade:** ${repo} ${from} -> ${to}. Revert this rev unless it is intended."
+                fi
+              done
+          } >"${RUNNER_TEMP}/pr-body.md"
+          cat "${RUNNER_TEMP}/pr-body.md" >>"$GITHUB_STEP_SUMMARY"
+
+      - name: Open or update the PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if git diff --quiet; then
+            echo "All hook revisions already current — nothing to propose." | tee -a "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "$BRANCH"
+          git commit -qam "chore(pre-commit): autoupdate hook revisions ($(date -u +%Y-%m-%d))"
+          gh auth setup-git
+          git push --force origin "HEAD:refs/heads/${BRANCH}"
+
+          {
+            echo
+            echo "Opened by \`pre-commit-autoupdate.yml\`. CI was dispatched on this branch"
+            echo "(bot PRs don't trigger pull_request workflows). After merge, cut an image"
+            echo "release so the devcontainer's pre-baked hook cache matches the new revs."
+          } >>"${RUNNER_TEMP}/pr-body.md"
+          if [ -n "$(gh pr list --head "$BRANCH" --state open --json number --jq '.[].number')" ]; then
+            gh pr edit "$BRANCH" --body-file "${RUNNER_TEMP}/pr-body.md"
+          else
+            gh pr create --base main --head "$BRANCH" \
+              --title "chore(pre-commit): autoupdate hook revisions" \
+              --body-file "${RUNNER_TEMP}/pr-body.md"
+          fi
+          gh workflow run ci-quality.yml --ref "$BRANCH"
+      - name: job-finish
+        if: always()
+        run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
