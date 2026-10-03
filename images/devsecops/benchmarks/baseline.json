@@ -1,0 +1,10 @@
+{
+  "core-amd64": { "cold_ms": 1200, "warm_ms": 350 },
+  "core-arm64": { "cold_ms": 1800, "warm_ms": 500 },
+  "ai-amd64": { "cold_ms": 2200, "warm_ms": 550 },
+  "ai-arm64": { "cold_ms": 3200, "warm_ms": 800 },
+  "devcontainer-amd64": { "cold_ms": 2800, "warm_ms": 650 },
+  "devcontainer-arm64": { "cold_ms": 3800, "warm_ms": 950 },
+  "devcontainer-polyglot-amd64": { "cold_ms": 3500, "warm_ms": 800 },
+  "devcontainer-polyglot-arm64": { "cold_ms": 4800, "warm_ms": 1200 }
+}
