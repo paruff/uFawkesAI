@@ -19,7 +19,7 @@ env:
 jobs:
   preflight:
     name: "✈️ Pre-flight"
-    uses: ./.github/workflows/reusable-preflight.yml
+    uses: paruff/uFawkesPipe/.github/workflows/reusable-preflight.yml@56226a057899ec3407c7a5c6bd5182d88783d2d2 # v1.11.0-beta.1
     with:
       pr-size-limit: 400
       commit-format: conventional
