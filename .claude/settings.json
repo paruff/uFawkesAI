@@ -40,6 +40,25 @@
             "command": "echo \"Use the project's package manager. Run /verify before claiming completion. Never edit protected files.\""
           }
         ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/shift-left.sh\" doctor --quiet || true"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/shift-left.sh\" agent-gate",
+            "timeout": 120
+          }
+        ]
       }
     ]
   }
