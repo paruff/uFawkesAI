@@ -1,4 +1,4 @@
-.PHONY: pre-commit-setup pre-commit-run validate help clean
+.PHONY: pre-commit-setup pre-commit-run validate help clean doctor
 
 help: ## Show this help message
 	@grep -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2}'
@@ -17,3 +17,6 @@ clean: ## Remove node_modules and agent tooling node_modules (both gitignored)
 	rm -rf node_modules/
 	rm -rf .opencode/node_modules/
 	@echo "Cleaned node_modules"
+
+doctor: ## Are this clone's checks actually running? (hooks installed, tools, stamps, CI parity)
+	@bash scripts/shift-left.sh doctor
