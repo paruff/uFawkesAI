@@ -11,7 +11,7 @@ exclude: |
 
 # One `pre-commit install` sets up every stage below (commit-msg and pre-push
 # hooks are defined but only run if they are installed).
-default_install_hook_types: [pre-commit, commit-msg, pre-push]
+default_install_hook_types: [pre-commit, commit-msg, pre-push, post-checkout, post-merge]
 default_stages: [pre-commit]
 
 repos:
@@ -346,10 +346,11 @@ repos:
   # every hook above ran). Tools that aren't hooks run through scripts/shift-left.sh.
   # ============================================================================
   - repo: https://github.com/paruff/uFawkesPipe
-    rev: v1.11.0-beta.1
+    rev: v1.12.0-beta.1
     hooks:
       - id: shift-left-parity
       - id: semgrep
       - id: trivy
+      - id: shift-left-reinstall
       - id: shift-left-stamp
       - id: shift-left-stamp-pre-push
