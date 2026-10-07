@@ -24,6 +24,8 @@
 # uFawkesPipe's parity check (shift-left-parity) fails when a hook is neither
 # run by CI nor listed here; Pre-flight passes local-only ids to pre-commit as SKIP.
 local-only:
+  - id: shift-left-reinstall
+    reason: repairs this clone's installed git hooks after a checkout or merge; CI has no clone to repair
   - id: shift-left-stamp
     reason: records that hooks ran in this clone, for the doctor; CI's own run is the record there
   - id: shift-left-stamp-pre-push
