@@ -326,6 +326,22 @@ repos:
         name: Validate dependabot.yml schema
 
   # ============================================================================
+  # Type-check the repo's JavaScript (shift-left spec R2, decided 2026-10-06).
+  # tsc runs from pre-commit's own node environment, so this repo's package.json
+  # trees are untouched. The .opencode plugin has its own tsconfig and CI job.
+  # ============================================================================
+  - repo: local
+    hooks:
+      - id: tsc
+        name: Type-check JavaScript (tsc)
+        # --ignoreConfig: the repo's tsconfig.json is for the .opencode plugin. The
+        # node types are in pre-commit's environment, found through NODE_PATH.
+        entry: bash -c 'exec tsc --ignoreConfig --noEmit --allowJs --checkJs --target es2022 --module esnext --typeRoots "$NODE_PATH/@types" --types node "$@"' --
+        language: node
+        additional_dependencies: ["typescript@7.0.2", "@types/node"]
+        files: ^scripts/hooks/.*\.js$
+
+  # ============================================================================
   # Shared shift-left hooks from uFawkesPipe (keep last: the stamps record that
   # every hook above ran). Tools that aren't hooks run through scripts/shift-left.sh.
   # ============================================================================
