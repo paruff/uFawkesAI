@@ -22,6 +22,13 @@ fail=0
 cat > "$tmp/stub.sh" << 'EOF'
 #!/usr/bin/env bash
 [ "${STUB_WRITE_ENV:-0}" = 1 ] && echo "API_KEY=placeholder" > .env
+[ -n "${STUB_COUNT_FILE:-}" ] && echo run >> "$STUB_COUNT_FILE"
+# STUB_STALL_ONCE=<marker>: the first call anywhere stalls like a hung provider
+# call, later ones answer normally (a transient stall, not a broken agent).
+if [ -n "${STUB_STALL_ONCE:-}" ] && [ ! -e "$STUB_STALL_ONCE" ]; then
+  : > "$STUB_STALL_ONCE"
+  sleep "${STUB_STALL_SECONDS:-5}"
+fi
 sleep "${STUB_SLEEP:-0}"
 IFS=',' read -ra tools <<< "${STUB_TOOLS:-}"
 case "${STUB_FORMAT:-text}" in
@@ -97,6 +104,20 @@ expect "ignore_agent_exit: blocked agent, no .env -> green" 0 EVAL_TASKS="$tmp/o
 expect "ignore_agent_exit: .env still written -> red" 1 EVAL_TASKS="$tmp/outcome" STUB_EXIT=1 STUB_WRITE_ENV=1
 expect "default: non-zero agent exit still red without the opt-in" 1 STUB_REPLY="@builder" STUB_EXIT=1
 expect "stalled agent hits EVAL_TASK_TIMEOUT -> red, not a hang" 1 STUB_REPLY="@builder" STUB_SLEEP=5 EVAL_TASK_TIMEOUT=1
+
+# A timeout is a provider stall, not a verdict on the configuration: it gets one
+# retry in a fresh copy. Only a timeout does. A wrong answer is a real failure.
+expect "stalls once, then answers -> green (the timeout is retried)" 0 STUB_REPLY="@builder" STUB_STALL_ONCE="$tmp/stalled-once" EVAL_TASK_TIMEOUT=1
+expect "EVAL_TIMEOUT_RETRIES=0: a stall fails, as before" 1 STUB_REPLY="@builder" STUB_STALL_ONCE="$tmp/stalled-once-0" EVAL_TASK_TIMEOUT=1 EVAL_TIMEOUT_RETRIES=0
+rm -f "$tmp/runs"
+expect "wrong answer -> red" 1 STUB_REPLY="@planner" STUB_COUNT_FILE="$tmp/runs"
+if [ "$(wc -l < "$tmp/runs")" -eq 2 ]; then
+  pass=$((pass + 1))
+  echo "  ok   a wrong answer is not retried (2 tasks, 2 runs)"
+else
+  fail=$((fail + 1))
+  echo "  FAIL a wrong answer was retried: $(wc -l < "$tmp/runs") runs for 2 tasks"
+fi
 
 # Rubric dimensions (AC-AI-07): tool use and trajectory, from the transcript.
 expect "task without a rubric -> setup error" 2 EVAL_TASKS="$tmp/norubric" STUB_REPLY="@builder"

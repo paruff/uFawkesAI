@@ -34,7 +34,9 @@
 #   EVAL_TASKS      task dir (default .agents/evals/tasks)
 #   EVAL_BASELINE   baseline file (default .agents/evals/baseline.json)
 #   EVAL_REPORT     report path (default .agents/logs/evals-report.json)
-#   EVAL_TASK_TIMEOUT seconds per task (default 300); a timed-out task fails
+#   EVAL_TIMEOUT_RETRIES extra tries for a task that times out (default 1), each in a
+#                     fresh copy; a wrong answer is never retried
+#   EVAL_TASK_TIMEOUT seconds per task (default 300); a task that times out on every try fails
 #
 # Exit: 0 pass rate >= baseline, 1 below baseline or no tasks, 2 setup error.
 
@@ -86,6 +88,13 @@ case "$HARNESS" in
 esac
 AGENT="${EVAL_AGENT_CMD:-${HARNESS}_agent}"
 TASK_TIMEOUT="${EVAL_TASK_TIMEOUT:-300}"
+TIMEOUT_RETRIES="${EVAL_TIMEOUT_RETRIES:-1}"
+case "$TIMEOUT_RETRIES" in
+  '' | *[!0-9]*)
+    echo "FAIL: EVAL_TIMEOUT_RETRIES must be a number, got '$TIMEOUT_RETRIES'" >&2
+    exit 2
+    ;;
+esac
 # GNU timeout (gtimeout on macOS); exit 124 on timeout. Shell functions can't
 # be exec'd by timeout, so they run through a child bash with the same env.
 TIMEOUT_BIN="$(command -v timeout || command -v gtimeout || true)"
@@ -149,14 +158,23 @@ for f in "${files[@]}"; do
   fi
   mode="$(jq -r '.permission_mode // "default"' "$f")"
 
-  copy="${work}/${id}"
-  mkdir -p "$copy"
-  git ls-files -co --exclude-standard -z | tar --null -T - -cf - | tar -xf - -C "$copy"
-
-  # A stalled provider call must fail its task, not hang the whole gate.
-  raw="$(cd "$copy" && run_bounded "$AGENT" "$prompt" "$mode" 2> "${copy}.stderr")"
-  rc=$?
-  [ "$rc" -eq 124 ] && echo "agent timed out after ${TASK_TIMEOUT}s" >> "${copy}.stderr"
+  # A stalled provider call must fail its task, not hang the whole gate. A timeout
+  # is not a verdict on the configuration either: the same task takes seconds when
+  # the provider answers, so it gets EVAL_TIMEOUT_RETRIES more tries, each in a
+  # fresh copy so a half-finished attempt can't leak into the next. A task that
+  # stalls every time still fails, and a wrong answer is never retried.
+  attempt=0
+  while :; do
+    copy="${work}/${id}.${attempt}"
+    mkdir -p "$copy"
+    git ls-files -co --exclude-standard -z | tar --null -T - -cf - | tar -xf - -C "$copy"
+    raw="$(cd "$copy" && run_bounded "$AGENT" "$prompt" "$mode" 2> "${copy}.stderr")"
+    rc=$?
+    [ "$rc" -eq 124 ] && echo "agent timed out after ${TASK_TIMEOUT}s" >> "${copy}.stderr"
+    if [ "$rc" -ne 124 ] || [ "$attempt" -ge "$TIMEOUT_RETRIES" ]; then break; fi
+    attempt=$((attempt + 1))
+    echo "  retry ${id}: agent timed out after ${TASK_TIMEOUT}s, attempt ${attempt} of ${TIMEOUT_RETRIES} retries" >&2
+  done
   t="$(parse_transcript <<< "$raw")"
   out="$(jq -r .text <<< "$t")"
   [ -n "$out" ] || out="$(cat "${copy}.stderr")"
