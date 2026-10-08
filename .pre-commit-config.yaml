@@ -340,6 +340,26 @@ repos:
         language: node
         additional_dependencies: ["typescript@7.0.2", "@types/node"]
         files: ^scripts/hooks/.*\.js$
+      # The .opencode plugin, under the repo's strict tsconfig.json (#192), with
+      # no npm install (scripts/hooks/tsc-plugin.sh). Keep @opencode-ai/plugin
+      # in step with .opencode/package.json.
+      - id: tsc-plugin
+        name: Type-check the OpenCode plugin (tsc --noEmit)
+        entry: scripts/hooks/tsc-plugin.sh
+        language: node
+        additional_dependencies: ["typescript@7.0.2", "@types/node@26.6.3", "@opencode-ai/plugin@1.18.30"]
+        files: ^(\.opencode/plugins/.*\.ts|tsconfig\.json)$
+        pass_filenames: false
+
+  # ============================================================================
+  # Type-check the Python templates (#192): mypy at its default strictness,
+  # tightened once the templates grow. Stubs for the libraries they import.
+  # ============================================================================
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v2.4.0
+    hooks:
+      - id: mypy
+        additional_dependencies: ["pytest==9.1.1", "types-PyYAML==6.0.12.20260906"]
 
   # ============================================================================
   # Shared shift-left hooks from uFawkesPipe (keep last: the stamps record that

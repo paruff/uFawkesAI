@@ -1,8 +1,8 @@
 {
   "$comment": [
-    "Minimal, strict-by-default config for the repo's one TypeScript file:",
-    ".opencode/plugins/ai-sdlc-hooks.ts. There is no application source and",
-    "no build output — this repo is instructions, skills, hooks, and config.",
+    "Minimal, strict-by-default config for the repo's TypeScript files.",
+    "The .opencode plugin is type-checked by the pre-commit hook (tsc-plugin)",
+    "which generates a config with proper @opencode-ai/plugin type mapping.",
     "noEmit: true because nothing is compiled or published; this type checks,",
     "it does not build."
   ],
@@ -21,5 +21,6 @@
     "skipLibCheck": true,
     "allowJs": false
   },
-  "include": [".opencode/plugins/**/*.ts"]
+  "include": [],
+  "exclude": ["node_modules", ".opencode"]
 }
