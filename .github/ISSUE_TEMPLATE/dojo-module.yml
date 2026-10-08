@@ -2,7 +2,6 @@ name: "Dojo Module — Learning Path Contribution"
 description: "Propose or contribute a DevOps/AI Dojo learning module that bridges hands-on practice back to this repository's workflows."
 title: "[DOJO] "
 labels:
-  - docs
   - enhancement
 body:
   - type: markdown

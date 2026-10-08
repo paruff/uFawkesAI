@@ -1,8 +1,6 @@
 name: New prompt
 description: Propose a new Prompt Library entry
 title: "[PROMPT] "
-labels:
-  - docs
 body:
   - type: input
     id: task_type
