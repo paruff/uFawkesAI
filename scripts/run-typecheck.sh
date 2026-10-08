@@ -25,7 +25,7 @@ echo "== Type check =="
 # 1. TypeScript (root config — excludes .opencode which is checked by pre-commit)
 if [[ -x node_modules/.bin/tsc ]]; then
   # Only run root tsc if there are .ts files outside .opencode
-  root_ts_files=$(find . -name '*.ts' -not -path './.git/*' -not -path './.opencode/*' -not -path '*/node_modules/*' 2>/dev/null | head -1)
+  root_ts_files=$(find . -name '*.ts' -not -path './.git/*' -not -path './.opencode/*' -not -path '*/node_modules/*' 2> /dev/null | head -1)
   if [[ -n "$root_ts_files" ]]; then
     if node_modules/.bin/tsc --noEmit -p tsconfig.json > /tmp/tc.$$.out 2>&1; then
       echo "  PASS  tsc --noEmit"
