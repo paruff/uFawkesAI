@@ -370,3 +370,34 @@ points at `AGENTS.md §5` (the pragma line) instead of a stale line number.
 Verify: `wc -l AGENTS.md` ≤ 60; `bash scripts/check-harness-parity.sh` (the
 symlinks still mirror it); `bash scripts/test-check-secret-detection.sh`; the
 required evals on the PR show no regression in agent behaviour.
+
+## Implementation notes (#193 — GitOps hook tools in core)
+
+fawkes's tool-backed hooks (`kustomize-validate`, `helm-lint`,
+`kubeval`/kubeconform, `mkdocs-validate`) fail when their tool is missing, so
+`core` now carries them and `verify-tools.sh` proves each one:
+
+- **`tools.lock.json`:** `kubeconform` 0.8.0, `kustomize` 5.8.2 and `helm`
+  3.22.0 as `core` entries, release checksums pinned per arch.
+- **helm stays on major 3** while consumers' CI runs helm 3: a `github`
+  source may carry an optional `"major"`, and `image-lock-bump.sh` skips
+  tags outside it (the stub in `test-image-lock-bump.sh` proves
+  `3.1.0 → 3.2.0`, not `4.0.0`).
+- **Python pins** match fawkes's `requirements.txt`: `mkdocs==1.6.1`,
+  `mkdocs-material==9.7.7`, `pymdown-extensions==12.1`.
+- **kubeconform** gets a version check only (like kubectl/kind): validating
+  needs schema downloads, which the offline verify can't do.
+
+### Verification Strategy — #193 tools
+
+| AC | How it is proven | test_type | Where |
+| --- | --- | --- | --- |
+| kustomize builds a kustomization; rejects a missing resource | `expect_pass` / `expect_reject` in `verify-tools.sh core` | integration | `image-build.yml`, both arches, `--network none` |
+| helm lints a fresh chart; rejects a `Chart.yaml` without apiVersion/version | same | integration | same |
+| mkdocs builds a material site `--strict`; rejects a nav to a missing page | same | integration | same |
+| kubeconform present at the locked version | version check, section 1 | unit | `verify-tools.sh core` |
+| lock-bump keeps helm on 3 | stubbed `gh` releases API | unit | `bash scripts/test-image-lock-bump.sh` |
+| fresh `fawkes-space` runs fawkes's `pre-commit run --all-files` with no missing-tool failures (#193 Done-when) | live acceptance run in fawkes | integration | `build-devsecops-images.yml` live acceptance |
+
+Verify: `bash scripts/check-artifact-chain.sh origin/main` locally, then the
+`DevSecOps Images` workflow green on both arches and `✅ CI Complete` on the PR.
