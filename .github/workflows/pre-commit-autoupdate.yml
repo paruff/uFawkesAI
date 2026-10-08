@@ -41,7 +41,7 @@ jobs:
         with:
           persist-credentials: false
 
-      # Same pre-commit version Pre-flight uses (reusable-preflight.yml).
+      # Same pre-commit version Pre-flight uses (uFawkesPipe's reusable-preflight.yml).
       - name: Install pre-commit
         run: pip install 'pre-commit==4.6.0'
 

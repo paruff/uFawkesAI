@@ -14,7 +14,7 @@ This is the living AI stance for the `paruff/uFawkesAI` template repository. It 
 the authoritative policy document. `docs/AI_POLICY.md` is an unfilled starting
 template for new repositories and is not policy for this one.
 
-**Last reviewed:** 2026-09-30
+**Last reviewed:** 2026-10-08
 **Next review due:** 2026-12-27 (quarterly)
 
 ---
@@ -72,7 +72,9 @@ finding in a report does not enforce anything on its own.
 | Tool             | Version / status                                                | Purpose                                     |
 | ---------------- | --------------------------------------------------------------- | ------------------------------------------- |
 | opencode         | 1.18.32 (pinned by the multi-harness smoke test)                 | Primary agentic development tool           |
-| Claude Code      | 2.1.283 (pinned by the multi-harness smoke test)                 | Skill authoring, code review, content      |
+| Claude Code      | 2.1.293 (pinned in `.devcontainer/Dockerfile`)                   | Skill authoring, code review, content      |
+| Claude Code for VS Code | current (`anthropic.claude-code`, devcontainer extension)  | Claude Code in the editor; same CLI and settings |
+| OpenCode for VS Code | current (`sst-dev.opencode`, devcontainer extension)          | Opens the baked-in OpenCode from the editor |
 | Codex CLI        | 0.159.0 (pinned in `images/devsecops/node-ai`)                  | Compatibility harness (reads `AGENTS.md`)   |
 | Gemini CLI       | 0.61.0 (pinned in `images/devsecops/node-ai`)                   | Compatibility harness (reads `GEMINI.md`)   |
 | qmd              | 2.8.3 (pinned in `images/devsecops/node-ai`)                    | Local markdown search + MCP server; small local models only (no data leaves the machine) |

@@ -2,6 +2,9 @@
 # Self-test for scripts/check-placeholders.sh in a scratch git repo.
 # Run: bash scripts/test-check-placeholders.sh
 set -euo pipefail
+# Run from a git hook, git exports GIT_INDEX_FILE (and friends): `git add -A` below
+# would then rewrite the OUTER repository's index (see test-git-isolation.sh).
+unset GIT_INDEX_FILE GIT_DIR GIT_WORK_TREE GIT_PREFIX GIT_COMMON_DIR
 script="$(cd "$(dirname "$0")" && pwd)/check-placeholders.sh"
 tmp="$(mktemp -d)"
 trap 'rm -rf "$tmp"' EXIT

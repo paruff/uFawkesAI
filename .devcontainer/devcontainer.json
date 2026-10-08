@@ -4,13 +4,13 @@
   "customizations": {
     "vscode": {
       "extensions": [
-        "GitHub.copilot",
+        "anthropic.claude-code",
+        "sst-dev.opencode",
         "GitHub.copilot-chat",
         "GitHub.vscode-pull-request-github",
         "dbaeumer.vscode-eslint",
         "esbenp.prettier-vscode",
-        "streetsidesoftware.code-spell-checker",
-        "yzhao062.agent-style"
+        "streetsidesoftware.code-spell-checker"
       ],
       "settings": {
         "editor.formatOnSave": true,
@@ -23,7 +23,7 @@
   },
   "forwardPorts": [],
   "remoteUser": "dev",
-  "postCreateCommand": "echo 'uFawkesAI devcontainer ready — all tools pre-installed'",
+  "postCreateCommand": "pre-commit install && pre-commit install-hooks && bash scripts/shift-left.sh doctor",
   "hostRequirements": {
     "cpus": 2,
     "memory": "4gb"
