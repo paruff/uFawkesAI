@@ -150,6 +150,27 @@ if trivy fs --quiet --offline-scan --skip-db-update --scanners license --format 
   ok "trivy: SPDX SBOM from a directory"
 else bad "trivy: no SPDX output"; fi
 
+# fawkes's platform hooks (#193). kubeconform needs schema downloads to
+# validate anything, so it gets section 1's version check only.
+mkdir -p "$t/kust" "$t/kust-bad" "$t/site/docs"
+printf 'apiVersion: v1\nkind: ConfigMap\nmetadata:\n  name: demo\n' > "$t/kust/cm.yaml"
+printf 'resources:\n  - cm.yaml\n' > "$t/kust/kustomization.yaml"
+printf 'resources:\n  - missing.yaml\n' > "$t/kust-bad/kustomization.yaml"
+expect_pass "kustomize: builds a kustomization" kustomize build "$t/kust"
+expect_reject "kustomize: missing resource" kustomize build "$t/kust-bad"
+helm create "$t/chart" > /dev/null
+expect_pass "helm: lints a fresh chart" helm lint "$t/chart"
+printf 'name: broken\n' > "$t/chart/Chart.yaml"
+expect_reject "helm: Chart.yaml without apiVersion/version" helm lint "$t/chart"
+# No -q: it hides the warnings --strict counts.
+printf '# Home\n' > "$t/site/docs/index.md"
+printf 'site_name: demo\ntheme:\n  name: material\n' > "$t/site/mkdocs.yml"
+expect_pass "mkdocs: material site builds (strict)" \
+  mkdocs build --strict -f "$t/site/mkdocs.yml" -d "$t/site/out"
+printf 'nav:\n  - missing.md\n' >> "$t/site/mkdocs.yml"
+expect_reject "mkdocs: nav to a missing page (strict)" \
+  mkdocs build --strict -f "$t/site/mkdocs.yml" -d "$t/site/out"
+
 echo "== 3. Offline pre-commit baseline =="
 repo="$t/repo"
 mkdir -p "$repo/.github/workflows"

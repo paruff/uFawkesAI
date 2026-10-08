@@ -25,6 +25,7 @@ cat > "$repo/images/devsecops/tools.lock.json" << 'EOF'
   {"name": "good", "version": "1.0.0", "source": {"github": "acme/good", "tag": "v{version}"}},
   {"name": "gone", "version": "1.0.0", "source": {"github": "acme/gone", "tag": "v{version}"}},
   {"name": "junk", "version": "1.0.0", "source": {"url": "https://example.invalid/stable.txt", "tag": "v{version}"}},
+  {"name": "held", "version": "3.1.0", "source": {"github": "acme/held", "tag": "v{version}", "major": "3"}},
   {"name": "last", "version": "3.0.0", "source": {"github": "acme/last", "tag": "v{version}"}}
 ]}
 EOF
@@ -33,6 +34,7 @@ cat > "$work/bin/gh" << 'EOF'
 # stub: newest-first tag lists, like the releases API
 case "$*" in
   *acme/good/releases*) printf 'v2.0.0\nv1.5.0\nv1.0.0-foo\n' ;;   # last tag non-numeric
+  *acme/held/releases*) printf 'v4.0.0\nv3.2.0\nv3.1.0\n' ;;   # newer major exists
   *acme/last/releases*) printf 'v3.1.0\nv3.0.0\n' ;;
   *acme/gone/releases*) echo "HTTP 404: Not Found" >&2; exit 1 ;;  # repo moved/deleted
   *) echo "unexpected gh call: $*" >&2; exit 1 ;;
@@ -70,6 +72,7 @@ expect_line() { # expect_line <label> <fixed string in summary>
 expect_line "bumps a tool whose oldest tag is non-numeric" "- good: 1.0.0 → **2.0.0**"
 expect_line "warns (not aborts) on a failed repo lookup" "- ⚠️ gone: could not determine the latest upstream version (kept 1.0.0)"
 expect_line "warns on a non-numeric URL version" "- ⚠️ junk: could not determine the latest upstream version (kept 1.0.0)"
+expect_line "stays on a source's pinned major" "- held: 3.1.0 → **3.2.0**"
 expect_line "still processes tools after the failures" "- last: 3.0.0 → **3.1.0**"
 expect_line "reaches the apt snapshot section" "not reachable; kept 20200101T000000Z"
 
