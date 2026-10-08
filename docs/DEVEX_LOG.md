@@ -21,7 +21,6 @@
 
 | Month         | Flow | Feedback Speed | Cognitive Load\* | AI Trust | Tooling Friction\* | Notes       |
 | ------------- | ---- | -------------- | ---------------- | -------- | ------------------ | ----------- |
-| [PLACEHOLDER] |      |                |                  |          |                    | First entry |
 
 \*Lower is better for Cognitive Load and Tooling Friction. Target ≤ 3.
 
@@ -73,4 +72,3 @@
 
 | Month         | Dimension Triggered | Issue Filed | Outcome |
 | ------------- | ------------------- | ----------- | ------- |
-| [PLACEHOLDER] |                     |             |         |
