@@ -25,7 +25,7 @@
     {
       "name": "uv",
       "variant": "core",
-      "version": "0.12.19",
+      "version": "0.12.23",
       "source": {
         "github": "astral-sh/uv",
         "tag": "{version}"
@@ -43,14 +43,14 @@
       ],
       "version_cmd": "uv --version",
       "sha256": {
-        "amd64": "23bf5552d220e0842b65c862097b2ebaeba0064b74eda5e565e77fd25969d8c8",
-        "arm64": "0804e9b164c64b6914182d5920c08551958a095986f10a3731056df701126436"
+        "amd64": "9167d72b3319674b6303c4cbe071854bba13ebdf3d76b1a7cbdc175471fb66d6",
+        "arm64": "6524bd338177ed50d035d39354e12545e993bbeba2ecbddf0480c5b3a81d313f"
       }
     },
     {
       "name": "gh",
       "variant": "core",
-      "version": "2.101.0",
+      "version": "2.102.0",
       "source": {
         "github": "cli/cli",
         "tag": "v{version}"
@@ -67,8 +67,8 @@
       ],
       "version_cmd": "gh --version",
       "sha256": {
-        "amd64": "9bca2d1c16825f109907a23307628a2f0698fbf99662b73a5cf0b020293072b8",
-        "arm64": "b57e8063f18862647c9d22727c32e9da1b963f8bf9db648fe123a6975695640f"
+        "amd64": "bb766f710eef8ede859c18578c72c327597cd4c8a85b06001b1f3843c6019386",
+        "arm64": "7862c86c72f43df3a2d93ddde6f473285b4e2af61b494849846827e513ef6484"
       }
     },
     {
@@ -95,7 +95,7 @@
     {
       "name": "yq",
       "variant": "core",
-      "version": "4.53.6",
+      "version": "4.54.1",
       "source": {
         "github": "mikefarah/yq",
         "tag": "v{version}"
@@ -109,8 +109,8 @@
       "format": "binary",
       "version_cmd": "yq --version",
       "sha256": {
-        "amd64": "c5f056448f973ae7d39b5401949648a78f2dc1947d6a8eb65be60d5c504b9385",
-        "arm64": "88a1016bc1d657375a35864e4f44b6f333df8ff97b559f51bba0adcb2169df09"
+        "amd64": "8e34fc298390875de416e6a4afcb8cabeceb25d9aa8506c1a2f9353cf702ea5f",
+        "arm64": "189088da0c6429ec5178dfaab1a114805f6cab0b61b165ab236efedf1d57a71b"
       }
     },
     {
@@ -206,7 +206,7 @@
     {
       "name": "ruff",
       "variant": "core",
-      "version": "0.16.9",
+      "version": "0.16.10",
       "source": {
         "github": "astral-sh/ruff",
         "tag": "{version}"
@@ -223,8 +223,8 @@
       ],
       "version_cmd": "ruff --version",
       "sha256": {
-        "amd64": "1bfbb819b5d4f9af501748862276b60e412d336034d99387691a4d4bce7a6f13",
-        "arm64": "a13061e8f471b49c9d2aa284c32dd54a0e5534d702d1a44e1d7f4c875569586d"
+        "amd64": "9567ff1201e2fb3da31ff04c35587d768c66d6cb42dfa84de474e2bfe360b608",
+        "arm64": "dc0d74de837ef0a7bcc62ce98c48a622b075d057161f13b958be2934becd55a6"
       }
     },
     {
@@ -278,7 +278,7 @@
     {
       "name": "trivy",
       "variant": "core",
-      "version": "0.74.0",
+      "version": "0.75.0",
       "source": {
         "github": "aquasecurity/trivy",
         "tag": "v{version}"
@@ -295,8 +295,8 @@
       ],
       "version_cmd": "trivy --version",
       "sha256": {
-        "amd64": "2ae6fe3ee734b7fdf11335663e18c75ea12dccc76062f09f164a3b0f8be4371a",
-        "arm64": "b94ce1976bbf3c15b514b605ee88be7c6d94a29be2302847ff01cb794d47aad5"
+        "amd64": "c6e65abddb348e25f10549df887045629cf28cc72453cd1c63acb717316b3f3f",
+        "arm64": "a1ee9f6ffb7d112b64ff726a2a0717c21175c1114361391f4a132956751a13b3"
       }
     },
     {
@@ -420,7 +420,7 @@
     {
       "name": "opencode",
       "variant": "ai",
-      "version": "1.18.32",
+      "version": "1.18.34",
       "source": {
         "github": "sst/opencode",
         "tag": "v{version}"
@@ -438,8 +438,8 @@
       ],
       "version_cmd": "opencode --version",
       "sha256": {
-        "amd64": "763af386ef88a8cab18df00fcf055690e5a55e31a7088beabe02307142a6adce",
-        "arm64": "568461b7d4d8c19865c97e9a1102e613049c6039d01fe772154de873c1865840"
+        "amd64": "24b0d458d21ef548b2752166303defcf7f4945b049fb4876ab78dfaf86d81b27",
+        "arm64": "bbdb3f00c2c51e42e315525233151309724226a8776da8e9145e3b0fa3d5310f"
       }
     },
     {

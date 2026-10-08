@@ -7,7 +7,7 @@
 # downloaded tool pinned by SHA-256 in tools.lock.json, Python deps
 # hash-locked, Node deps from package-lock.json.
 
-ARG APT_SNAPSHOT=20260926T000000Z
+ARG APT_SNAPSHOT=20261004T000000Z
 
 # ── base: Debian pinned to an apt snapshot ─────────────────────────────────
 # Digest pinned in FROM itself so Dependabot's docker updater can bump it.

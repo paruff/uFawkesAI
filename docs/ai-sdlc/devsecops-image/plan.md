@@ -1,6 +1,6 @@
 # Plan (v1) — uFawkes DevSecOps Toolchain Image
 
-Status: DRAFT — for human review. Implements `spec.md` (approved
+Status: SHIPPED in v2.0.0; audited 2026-10-08 (see the end). Implements `spec.md` (approved
 2026-09-26). CI blocks PRs over 400 lines, so the work ships as five PRs,
 each independently reviewable and green.
 
@@ -401,3 +401,17 @@ fawkes's tool-backed hooks (`kustomize-validate`, `helm-lint`,
 
 Verify: `bash scripts/check-artifact-chain.sh origin/main` locally, then the
 `DevSecOps Images` workflow green on both arches and `✅ CI Complete` on the PR.
+
+## Audit (2026-10-08)
+
+The plan against what shipped, and what changes:
+
+| # | Finding | Resolution |
+| --- | --- | --- |
+| A1 | The 2026-10-03 revert dropped pre-baked hooks, so every new container ran `pre-commit install-hooks` for ≈ 5 min and downloaded 1.3 GB. Both reasons for the revert (baseline config only, root-owned cache) are fixable. | `.devcontainer/Dockerfile` bakes this repo's hook environments as `dev` into `~/.cache/pre-commit`; `install-hooks` now takes ≈ 1 s offline. CI builds that layer on PRs and checks it with `--network none`. |
+| A2 | ≈ 670 MB of that was Go toolchains for building gitleaks and actionlint from source, though both binaries ship in `core`. | Covered by A1's bake. Switching these hooks to `language: system` would shrink the image further, once uFawkesPipe's Pre-flight has the binaries. |
+| A3 | The `gitops` variant (14 tools above) was never built: `docker-bake.hcl` has only `core` and `ai`, and nothing records the decision. | The tools fawkes's hooks need (#193) go into `core`; the rest of the gitops table stays unbuilt until a repo needs it. |
+| A4 | grype, syft, semgrep and cosign appear above but are in neither the lock nor the image (SBOMs come from buildx `sbom: true`, cosign from `cosign-installer`). | Tables kept for the record; `tools.lock.json` is the source of truth. |
+| A5 | helm 4.3.0 above; fawkes's CI uses helm 3.21.3. | Owner decision 2026-10-08: helm 3 (#193). |
+| A6 | The start benchmark (R10) times `docker run`, not time-to-ready: the pull, extension installs and hook downloads were unmeasured. | CI reports hook readiness time per arch; a full `devcontainer up` timing remains open. |
+| A7 | Stale notes: OpenCode 1.18.30 / Claude Code 2.1.283 pins, `docs/DEVCONTAINER.md` described `javascript-node:22`, `.devcontainer/devcontainer-lock.json` pinned unused features. | Claude Code 2.1.293; `DEVCONTAINER.md` rewritten; the lock file removed. |
