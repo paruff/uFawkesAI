@@ -30,6 +30,7 @@ on:
       - "opencode/**"
       - ".agents/agents/**"
       - ".devcontainer/**"
+      - ".pre-commit-config.yaml"
       - "scripts/image-lock-refresh.sh"
       - "scripts/image-lock-bump.sh"
       - "scripts/test-image-lock-bump.sh"
@@ -43,6 +44,7 @@ on:
       - "opencode/**"
       - ".agents/agents/**"
       - ".devcontainer/**"
+      - ".pre-commit-config.yaml"
       - "scripts/image-lock-refresh.sh"
       - "scripts/image-lock-bump.sh"
       - "scripts/test-image-lock-bump.sh"
@@ -106,6 +108,24 @@ jobs:
             -v "$PWD/images/devsecops/benchmarks:/devsecops/benchmarks:ro" \
             fawkes-space-ai:ci /tests/verify-tools.sh ai
 
+      # The devcontainer layer (Claude Code, the baked hook environments) on the
+      # ai image just built. Proves a new container's install-hooks, as in
+      # postCreateCommand, finds every hook and downloads nothing.
+      - name: Build devcontainer; hooks ready offline
+        env:
+          ARCH: ${{ matrix.arch }}
+        run: |
+          docker buildx build --load -f .devcontainer/Dockerfile \
+            --build-arg BASE_IMAGE=fawkes-space-ai:ci -t fawkes-space:ci \
+            --cache-from "type=gha,scope=devcontainer-${ARCH}" \
+            --cache-to "type=gha,mode=max,scope=devcontainer-${ARCH}" .
+          docker run --rm --network none -e ARCH \
+            -v "$PWD/.pre-commit-config.yaml:/tmp/pcc.yaml:ro" fawkes-space:ci bash -euo pipefail -c '
+              d="$(mktemp -d)"; cp /tmp/pcc.yaml "$d/.pre-commit-config.yaml"; git init -q "$d"; cd "$d"
+              start=$(date +%s%N); pre-commit install-hooks
+              echo "- ${ARCH}: hook environments ready offline in $(( ($(date +%s%N) - start) / 1000000 )) ms"' \
+            | tee -a "$GITHUB_STEP_SUMMARY"
+
       # Report-only on PRs/pushes (a newly published CVE must not block
       # unrelated work); the gate fails on weekly and manual runs so fixable
       # CVEs in repo-controlled packages surface.
@@ -143,7 +163,7 @@ jobs:
       - name: Image size
         if: always()
         run: |
-          docker image ls --filter 'reference=fawkes-space-ai:ci*' \
+          docker image ls --filter 'reference=fawkes-space-ai:ci*' --filter 'reference=fawkes-space:ci' \
             --format '{{.Repository}}:{{.Tag}} {{.Size}}' | tee -a "$GITHUB_STEP_SUMMARY"
 
       - name: job-finish
@@ -360,7 +380,7 @@ jobs:
         run: sudo -u dev -H env "PATH=$PATH" scripts/check-ai-stance.sh
       - name: Run unit test suites
         run: sudo -u dev -H env "PATH=$PATH" scripts/run-unit-tests.sh
-      - name: Verify pre-commit hooks (one-time hook download, as dev)
+      - name: Verify pre-commit hooks (environments baked in the image, as dev)
         run: sudo -u dev -H env "PATH=$PATH" pre-commit run --all-files
       - name: job-finish
         if: always()
