@@ -39,7 +39,7 @@ COPY --chown=dev:dev .pre-commit-config.yaml /tmp/pre-commit-config.yaml
 RUN d="$(mktemp -d)" \
   && mv /tmp/pre-commit-config.yaml "$d/.pre-commit-config.yaml" \
   && git init -q "$d" \
-  && (cd "$d" && pre-commit install-hooks) \
+  && (cd "$d" && for i in 1 2 3; do pre-commit install-hooks && break || { echo "Retry $i/3..."; sleep $((i * 10)); }; done) \
   && rm -rf "$d" "$HOME/.cache/go-build" "$HOME/.cache/pip" "$HOME/.npm/_cacache"
 
 # Declares the editor setup with the image, so any repo using fawkes-space gets
