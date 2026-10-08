@@ -415,3 +415,17 @@ The plan against what shipped, and what changes:
 | A5 | helm 4.3.0 above; fawkes's CI uses helm 3.21.3. | Owner decision 2026-10-08: helm 3 (#193). |
 | A6 | The start benchmark (R10) times `docker run`, not time-to-ready: the pull, extension installs and hook downloads were unmeasured. | CI reports hook readiness time per arch; a full `devcontainer up` timing remains open. |
 | A7 | Stale notes: OpenCode 1.18.30 / Claude Code 2.1.283 pins, `docs/DEVCONTAINER.md` described `javascript-node:22`, `.devcontainer/devcontainer-lock.json` pinned unused features. | Claude Code 2.1.293; `DEVCONTAINER.md` rewritten; the lock file removed. |
+
+## npm security overrides (2026-10-08)
+
+Dependabot's security updates failed for transitive deps it can't bump, so
+`overrides` in the two `package.json` files pin the patched versions until
+upstream ships them: smol-toml 1.9.0 and katex 0.18.2 (`node/`), simple-git
+4.0.1 and @simple-git/argv-parser 2.0.1 (`node-ai/`, via qmd's
+node-llama-cpp, which uses it only to build llama.cpp from source). Drop an
+override once its parent depends on a patched version. braces has no patched
+release.
+
+Verify: `npm ci` of both lockfiles; markdownlint-cli2 lints a file with math,
+rejects a bad file and loads a `--config` TOML; `qmd --version`; node-llama-cpp
+imports; `verify-tools.sh ai` in the image build.
