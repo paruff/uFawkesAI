@@ -36,18 +36,22 @@ newer() { # newer <current> <candidate>: candidate sorts strictly after current
 }
 
 # latest_version <source-json>: newest stable upstream version, or empty.
+# A github source's optional "major" keeps the tool on that major version
+# (e.g. helm 3 while consumers' CI still runs helm 3).
 latest_version() {
   local src="$1" repo tag prefix suffix t v url major
   if repo="$(jq -er '.github // empty' <<< "$src")"; then
     tag="$(jq -r .tag <<< "$src")"
     prefix="${tag%%\{version\}*}"
     suffix="${tag#*\{version\}}"
+    major="$(jq -r '.major // empty' <<< "$src")"
     gh api "repos/${repo}/releases?per_page=50" \
       --jq '.[] | select((.draft or .prerelease) | not) | .tag_name' \
       | while IFS= read -r t; do
         [[ "$t" == "$prefix"* && "$t" == *"$suffix" ]] || continue
         v="${t#"$prefix"}"
         v="${v%"$suffix"}"
+        [[ -z "$major" || "$v" == "$major".* ]] || continue
         if [[ "$v" =~ ^[0-9]+(\.[0-9]+)+$ ]]; then echo "$v"; fi
       done | sort -V | tail -1
   elif url="$(jq -er '.url // empty' <<< "$src")"; then

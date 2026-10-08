@@ -300,6 +300,79 @@
       }
     },
     {
+      "name": "kubeconform",
+      "variant": "core",
+      "version": "0.8.0",
+      "source": {
+        "github": "yannh/kubeconform",
+        "tag": "v{version}"
+      },
+      "url": "https://github.com/yannh/kubeconform/releases/download/v{version}/kubeconform-linux-{arch}.tar.gz",
+      "arch": {
+        "amd64": "amd64",
+        "arm64": "arm64"
+      },
+      "checksum_url": "https://github.com/yannh/kubeconform/releases/download/v{version}/CHECKSUMS",
+      "format": "tar.gz",
+      "bins": [
+        "kubeconform"
+      ],
+      "version_cmd": "kubeconform -v",
+      "sha256": {
+        "amd64": "9bc2bffbf71f261128533edaf912153948b7ff238f9a531ae6d34466ec287883",
+        "arm64": "1f53fc8e81258197a35e8603054162a5af1de8c5af13746c71ab680d9534ed87"
+      }
+    },
+    {
+      "name": "kustomize",
+      "variant": "core",
+      "version": "5.8.2",
+      "source": {
+        "github": "kubernetes-sigs/kustomize",
+        "tag": "kustomize/v{version}"
+      },
+      "url": "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv{version}/kustomize_v{version}_linux_{arch}.tar.gz",
+      "arch": {
+        "amd64": "amd64",
+        "arm64": "arm64"
+      },
+      "checksum_url": "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv{version}/checksums.txt",
+      "format": "tar.gz",
+      "bins": [
+        "kustomize"
+      ],
+      "version_cmd": "kustomize version",
+      "sha256": {
+        "amd64": "06af0a202c2b831207d0173f9c9cdb1b30abceca0747cb3fbb72792d26055c95",
+        "arm64": "0991957191951cb7dddd142403b5bb98a1fcd6378ba0079dddc1e2c309080a7f"
+      }
+    },
+    {
+      "name": "helm",
+      "variant": "core",
+      "version": "3.22.0",
+      "source": {
+        "github": "helm/helm",
+        "tag": "v{version}",
+        "major": "3"
+      },
+      "url": "https://get.helm.sh/helm-v{version}-linux-{arch}.tar.gz",
+      "arch": {
+        "amd64": "amd64",
+        "arm64": "arm64"
+      },
+      "checksum_url": "{url}.sha256sum",
+      "format": "tar.gz",
+      "bins": [
+        "linux-{arch}/helm"
+      ],
+      "version_cmd": "helm version --short",
+      "sha256": {
+        "amd64": "1e4ab49e429626cf6c6958d914248b78c9730803c2751b87627e171dc800e7bb",
+        "arm64": "f14e804dfee240f55525b667488fe9adca349e63e00c9af634c0beb1421ac310"
+      }
+    },
+    {
       "name": "osv-scanner",
       "variant": "core",
       "version": "2.6.0",
