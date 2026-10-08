@@ -1,0 +1,47 @@
+name: Release Please
+
+# Proposes the next release; it does not cut one. release-please scans
+# Conventional Commits on main and maintains a standing "release PR" with the
+# next version bump plus a CHANGELOG entry. Nothing ships until a human merges
+# that PR, so this batches accumulated commits rather than releasing per merge.
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    name: Release Please
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: job-start
+        run: echo "job-start workflow=release-please job=release-please sha=${{ github.sha }} time=$(date -u +%FT%TZ)"
+
+      - name: Check for RELEASE_PLEASE_TOKEN
+        id: check-token
+        run: |
+          if [ -z "${{ secrets.RELEASE_PLEASE_TOKEN }}" ]; then
+            echo "⚠️  RELEASE_PLEASE_TOKEN secret not configured"
+            echo "   Release Please will use GITHUB_TOKEN, which may not have permission to create PRs"
+            echo "   See: https://docs.github.com/en/actions/security-for-github-actions/security-guides/automatic-token-authentication#granting-additional-permissions"
+            echo "has_token=false" >> $GITHUB_OUTPUT
+          else
+            echo "✅ RELEASE_PLEASE_TOKEN is configured"
+            echo "has_token=true" >> $GITHUB_OUTPUT
+          fi
+
+      - uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
+        with:
+          target-branch: main
+          token: ${{ secrets.RELEASE_PLEASE_TOKEN || secrets.GITHUB_TOKEN }}
+
+      - name: job-finish
+        if: always()
+        run: echo "job-finish workflow=release-please job=release-please sha=${{ github.sha }} time=$(date -u +%FT%TZ)"
