@@ -1,0 +1,73 @@
+# Live acceptance for the "Use this template" flow (AC-AI-02, issue #160).
+#
+# Takes a fresh copy of the template (no history, as GitHub's "Use this
+# template" produces), opens it in the published devcontainer image and runs
+# the same checks a new adopter would: each documented harness starts, agent
+# dispatch resolves, the AI stance is valid, unit tests and hooks pass.
+# Listed in uFawkes.dev's docs/ai-sdlc/suite-release/live-checks.yml as
+# "Live acceptance (template)".
+#
+# ponytail: the copy is `git archive` into a fresh `git init`, not a real repo
+# created through the API (that needs a write token). Add a real
+# `gh repo create --template` run when the copy and GitHub's can diverge.
+
+name: Live acceptance (template)
+
+on:
+  schedule:
+    - cron: "17 5 * * *"
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  template-flow:
+    name: Use this template → devcontainer → harnesses
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      packages: read
+    container:
+      # Must equal the image in .devcontainer/devcontainer.json (checked below).
+      image: ghcr.io/paruff/fawkes-space:2.0.0
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+      # As in build-devsecops-images.yml: checkout needs root, the checks run as dev.
+      options: --user root
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: job-start
+        run: echo "job-start $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: The devcontainer pins the image this job runs in
+        run: |
+          pinned=$(jq -r '.image' .devcontainer/devcontainer.json)
+          [ "$pinned" = "ghcr.io/paruff/fawkes-space:2.0.0" ] \
+            || { echo "devcontainer.json pins $pinned; update this workflow's container image" >&2; exit 1; }
+      - name: Make a fresh copy of the template
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          mkdir -p /home/dev/new-repo
+          git archive HEAD | tar -x -C /home/dev/new-repo
+          chown -R dev:dev /home/dev/new-repo
+          sudo -u dev -H bash -c 'cd ~/new-repo && git init -q -b main && git add -A && git -c user.name=adopter -c user.email=adopter@example.com commit -q -m "chore: initial commit from template"'
+      - name: Each documented harness starts
+        run: sudo -u dev -H env "PATH=$PATH" bash -c 'cd ~/new-repo && scripts/multi-harness-smoke.sh'
+      - name: Agent dispatch and AI stance
+        run: sudo -u dev -H env "PATH=$PATH" bash -c 'cd ~/new-repo && scripts/check-agents.sh && scripts/check-ai-stance.sh'
+      - name: Unit tests and hooks
+        run: sudo -u dev -H env "PATH=$PATH" bash -c 'cd ~/new-repo && scripts/run-unit-tests.sh && pre-commit run --all-files'
+      - name: job-finish
+        if: always()
+        env:
+          JOB_STATUS: ${{ job.status }}
+        run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ') status=${JOB_STATUS}"
