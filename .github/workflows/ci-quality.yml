@@ -109,10 +109,8 @@ jobs:
         with:
           node-version: 22.23.2
           cache: npm
-      # The plugin's own deps (.opencode) give tsc its @opencode-ai/plugin types.
-      - run: |
-          npm ci
-          npm ci --prefix .opencode --ignore-scripts
+      # Root deps give tsc its types; .opencode plugin type-checked by pre-commit hook.
+      - run: npm ci
       # tsc must have run: run-typecheck.sh only skips it when typescript is absent.
       - name: Type check (tsc --noEmit, node --check, py_compile)
         run: |
