@@ -320,10 +320,14 @@ docker run --rm --network none -v "$PWD/images/devsecops/tests:/tests:ro" \
 
 - **QEMU arm64 builds are slow** (semgrep/checkov wheels). Mitigation:
   native `ubuntu-24.04-arm` runners for the arm64 leg.
-- **"Computed" checksums** (shellcheck, shfmt, zizmor, age) trust the
+- **"Computed" checksums** (shellcheck, shfmt, zizmor, opencode) trust the
   asset at lock time (trust-on-first-use). Mitigation: use a project's
   signature/attestation when one exists (e.g. `gh attestation verify`), and
   the reviewer of any lock-bump PR for these tools checks the release page.
+  **Since 2026-10-08** `image-lock-refresh.sh` checks a GitHub release asset
+  with no checksum file against the SHA-256 digest GitHub records for it
+  (fails on a mismatch), so only superpowers (a source archive) is still TOFU.
+  Verify: `bash scripts/test-image-lock-refresh.sh`.
 - **Upstream PR 5** depends on `ufawkespipe` review; PRs 1–4 don't block
   on it.
 - **Flaky tool downloads.** `install-tools.sh` fetches every locked binary

@@ -34,6 +34,7 @@ on:
       - "scripts/image-lock-refresh.sh"
       - "scripts/image-lock-bump.sh"
       - "scripts/test-image-lock-bump.sh"
+      - "scripts/test-image-lock-refresh.sh"
       - ".github/workflows/build-devsecops-images.yml"
   push:
     branches: [main]
@@ -48,6 +49,7 @@ on:
       - "scripts/image-lock-refresh.sh"
       - "scripts/image-lock-bump.sh"
       - "scripts/test-image-lock-bump.sh"
+      - "scripts/test-image-lock-refresh.sh"
       - ".github/workflows/build-devsecops-images.yml"
   schedule:
     - cron: "17 6 * * 1" # Mondays: re-verify the locked toolchain, rescan for new CVEs
@@ -88,8 +90,10 @@ jobs:
         with:
           driver: docker
 
-      - name: Self-test the lock bump script
-        run: bash scripts/test-image-lock-bump.sh
+      - name: Self-test the lock bump and refresh scripts
+        run: |
+          bash scripts/test-image-lock-bump.sh
+          bash scripts/test-image-lock-refresh.sh
 
       # Per-arch GHA cache: later runs and the publish job reuse these layers.
       - name: Build ai (core is its build stage)

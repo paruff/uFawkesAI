@@ -5,8 +5,9 @@
 # For every tool and arch it streams the release asset, hashes it, and —
 # when the project publishes a checksum file — requires that exact hash to
 # appear in it (format-agnostic: works for sha256sum, goreleaser, and
-# multi-hash files alike). Tools with no checksum file are pinned
-# trust-on-first-use and reported as such.
+# multi-hash files alike). A GitHub release asset with no checksum file is
+# checked against the SHA-256 digest GitHub records for it; anything else
+# without one is pinned trust-on-first-use and reported as such.
 #
 # Idempotent: re-running with unchanged versions rewrites identical hashes.
 # The base image digest lives in the Dockerfile's FROM line (Dependabot's
@@ -47,8 +48,19 @@ write_lock() {
   mv "$tmp" "$LOCK"
 }
 
+# github_digest <asset-url>: the SHA-256 GitHub records for a release asset,
+# or empty (not a GitHub release URL, no gh, or an asset older than digests).
+github_digest() {
+  local re='^https://github\.com/([^/]+/[^/]+)/releases/download/([^/]+)/([^/]+)$' tag
+  [[ "$1" =~ $re ]] && command -v gh > /dev/null || return 0
+  tag="${BASH_REMATCH[2]//%2F//}"
+  gh api "repos/${BASH_REMATCH[1]}/releases/tags/${tag}" \
+    --jq ".assets[] | select(.name == \"${BASH_REMATCH[3]}\") | .digest // \"\"" \
+    | sed 's/^sha256://'
+}
+
 refresh_tool() {
-  local name="$1" entry version url_t cs_t arch token url hash cs
+  local name="$1" entry version url_t cs_t arch token url hash cs digest
   entry="$(jq -c --arg n "$name" '.tools[] | select(.name == $n)' "$LOCK")"
   [ -n "$entry" ] || fail "no tool named '${name}' in ${LOCK}"
   version="$(jq -r .version <<< "$entry")"
@@ -62,6 +74,9 @@ refresh_tool() {
       cs="$(curl -fsSL "$(render "$cs_t" "$version" "$token" "$url")")"
       grep -qi "$hash" <<< "$cs" || fail "${name} ${arch}: ${hash} not in upstream checksums"
       echo "  ${name} ${version} ${arch} verified against upstream checksums"
+    elif digest="$(github_digest "$url")" && [ -n "$digest" ]; then
+      [ "$digest" = "$hash" ] || fail "${name} ${arch}: ${hash} does not match GitHub's release asset digest ${digest}"
+      echo "  ${name} ${version} ${arch} verified against GitHub's release asset digest"
     else
       echo "  ${name} ${version} ${arch} TOFU (no upstream checksum file) — review release page"
     fi
