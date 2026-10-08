@@ -27,12 +27,14 @@
 
 **Architecture check:**
 
-<!-- Ask Copilot: "Does this diff violate any rules in .github/copilot-instructions.md?" -->
+<!-- Ask Copilot: "Does this diff violate any rules in AGENTS.md or .github/copilot-instructions.md?" -->
 
-- [ ] No Firebase SDK calls in `screens/` or `components/`
-- [ ] No business logic in screen files
-- [ ] No inline type definitions (all types in `src/types/index.ts`)
-- [ ] No `any` in catch blocks
+- [ ] No secrets or credentials in any changed file
+- [ ] No modifications to AGENTS.md (edit source, not symlinks)
+- [ ] No `--no-verify` or hook bypasses
+- [ ] Changes to `docs/ai-sdlc/**/` include intent → spec → plan chain
+- [ ] `npm run verify` passes locally before requesting review
+- [ ] Symlinks (CLAUDE.md, .cursorrules, .github/copilot-instructions.md) still point to AGENTS.md
 
 **What I was NOT sure about (flag for human review):**
 
@@ -42,7 +44,7 @@
 
 ## Checklist
 
-- [ ] `npm run preflight` passes (lint + typecheck + tests)
+- [ ] `npm run verify` passes (lint + typecheck + tests)
 - [ ] PR is < 400 changed lines, OR `large-pr-approved` label has been applied by a human
 - [ ] No secrets or credentials in any changed file
 - [ ] New features are behind a feature flag (if applicable)
