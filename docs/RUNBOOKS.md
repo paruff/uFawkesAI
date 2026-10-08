@@ -22,10 +22,13 @@ git log --oneline main | head -5
 git revert -m 1 <merge-commit-sha>
 git push origin main
 
-# [PLACEHOLDER — add your deploy step, e.g.:]
-# 3. For Expo OTA: Roll back the update channel
-expo publish:history --channel production
-expo publish:rollback --channel production --sdk-version <version>
+# 3. uFawkesAI: roll the shared devcontainer back to the previous release.
+#    .github/workflows/build-devsecops-images.yml publishes
+#    ghcr.io/paruff/fawkes-space* on every v<semver> tag, so a rollback
+#    re-points the moving tags (X.Y.Z / X.Y / X / latest) to the previous
+#    digest. Consumers pinned by digest are unaffected — tell them which
+#    digest to move back to. Verify with cosign v3 or later:
+cosign verify ghcr.io/paruff/fawkes-space@sha256:<previous-digest>
 
 # 4. Verify error rate normalising in error monitoring (Sentry / etc.)
 ```
@@ -44,7 +47,13 @@ expo publish:rollback --channel production --sdk-version <version>
 
 **Trigger:** A newly shipped feature is causing user issues but a full rollback would affect other features.
 
-[PLACEHOLDER — replace with your feature flag mechanism. Example for Firestore remote flags:]
+uFawkesAI ships no runtime feature flags, so there is nothing to toggle from
+outside. The equivalent lever is the shared devcontainer image: roll it back to
+the previous release (Runbook 1) and every suite repo that builds on it loses
+the behaviour on its next rebuild.
+
+**Downstream projects:** name your own flag service and the file that declares
+the flags. The Firestore remote-flag pattern the golden path assumes:
 
 ```
 1. Go to [Firebase Console / feature flag service]
@@ -54,7 +63,8 @@ expo publish:rollback --channel production --sdk-version <version>
 5. File a bug issue to track the root cause and re-enable timeline
 ```
 
-**Feature flag registry:** See `src/config/featureFlags.ts`
+**Feature flag registry:** _Your team fills this in — point at the file that
+declares your flags (the golden path assumes `src/config/featureFlags.ts`)._
 
 ---
 
@@ -68,7 +78,8 @@ expo publish:rollback --channel production --sdk-version <version>
    - P2 (feature broken): Disable via feature flag (Runbook 2) if possible
    - P3 (cosmetic/minor): File issue, fix in next sprint
 
-2. Communicate: [PLACEHOLDER — how you notify users/stakeholders]
+2. Communicate: open a GitHub issue and link it here. If a published image is
+   affected, name the tags and digests so suite consumers know what to pin back to
 
 3. Root cause analysis:
    □ Was it AI-generated code that wasn't adequately reviewed? → Update AGENTS.md

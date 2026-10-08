@@ -24,7 +24,7 @@
 
 ## Self-Assessment
 
-**Date:** [PLACEHOLDER]
+**Date:** _Your team fills this in._
 
 ### Evidence from the last 30 days
 
@@ -39,14 +39,14 @@
 
 ### Archetype selection
 
-**Our closest archetype:** [PLACEHOLDER — e.g. "5 — Stable and Methodical"]
+**Our closest archetype:** _Your team fills this in — pick the closest of the seven above (for example, "5 — Stable and Methodical")._
 
-**Reasoning:** [PLACEHOLDER — 2–3 sentences explaining why this fits]
+**Reasoning:** _Your team fills this in — 2–3 sentences explaining why this fits._
 
 **The two or three weakest DORA AI capabilities for our archetype:**
 
-1. [PLACEHOLDER]
-2. [PLACEHOLDER]
+1. _Your team fills this in._
+2. _Your team fills this in._
 
 ---
 
@@ -84,7 +84,7 @@
 
 ## Priority Adjustments Made (Based on This Assessment)
 
-[PLACEHOLDER — list any issues elevated or deferred from the master implementation index]
+_Your team fills this in — list any issues elevated or deferred from the master implementation index._
 
 | Issue ID | Original Phase | New Priority | Reason |
 | -------- | -------------- | ------------ | ------ |
@@ -103,4 +103,4 @@ Questions to ask:
 - Has the rework rate or DevEx score shifted by more than 1 point?
 - If yes to any: re-run this assessment and update the priority adjustments
 
-**Next review date:** [PLACEHOLDER]
+**Next review date:** _Your team fills this in._

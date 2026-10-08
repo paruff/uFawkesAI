@@ -8,6 +8,9 @@
 > Instructions: For each step, record average wait time, active time, and primary failure reason
 > from your last 10 PRs.
 
+**Note:** unfilled cells ship as `—` (not measured yet) or `TBD by team`.
+Replace both with your own numbers as you fill this in.
+
 ---
 
 ## Current Flow Map
@@ -31,25 +34,25 @@ flowchart LR
 | Step             | Avg Wait Time      | Avg Active Time   | Primary Failure Reason      | AI Insertion Point           |
 | ---------------- | ------------------ | ----------------- | --------------------------- | ---------------------------- |
 | Issue Created    | —                  | 15 min            | Vague spec                  | PM uses Copilot to draft AC  |
-| Spec Written     | [PLACEHOLDER]      | [PLACEHOLDER]     | Missing acceptance criteria | —                            |
-| Agent Implements | 0 (async)          | [PLACEHOLDER]     | Architecture violation      | Copilot implements from spec |
-| Human Review     | **[MEASURE THIS]** | [PLACEHOLDER]     | Unclear diff                | @verifier pre-screens        |
+| Spec Written     | —                  | —                 | Missing acceptance criteria | —                            |
+| Agent Implements | 0 (async)          | —                 | Architecture violation      | Copilot implements from spec |
+| Human Review     | **[MEASURE THIS]** | —                 | Unclear diff                | @verifier pre-screens        |
 | CI Gates         | 0                  | [target: < 4 min] | Test failure                | Automated                    |
-| Merge            | [PLACEHOLDER]      | 5 min             | Merge conflict              | —                            |
-| Deploy           | [PLACEHOLDER]      | [PLACEHOLDER]     | Build error                 | Automated                    |
-| User Feedback    | [PLACEHOLDER]      | ongoing           | No analytics                | —                            |
+| Merge            | —                  | 5 min             | Merge conflict              | —                            |
+| Deploy           | —                  | —                 | Build error                 | Automated                    |
+| User Feedback    | —                  | ongoing           | No analytics                | —                            |
 
 ---
 
 ## Bottleneck Identification
 
-**Current bottleneck:** [PLACEHOLDER — the step with highest wait-to-active ratio]
+**Current bottleneck:** _TBD by team — the step with the highest wait-to-active ratio._
 
-**Evidence:** [PLACEHOLDER — data from last 10 PRs]
+**Evidence:** _TBD by team — data from the last 10 PRs._
 
-**Root cause:** [PLACEHOLDER]
+**Root cause:** _TBD by team._
 
-**Follow-up issue filed:** #[PLACEHOLDER]
+**Follow-up issue filed:** _TBD by team — link the issue once it exists._
 
 ---
 
@@ -57,11 +60,11 @@ flowchart LR
 
 Where Copilot currently adds value:
 
-- [PLACEHOLDER]
+- _TBD by team._
 
 Where Copilot currently creates friction:
 
-- [PLACEHOLDER]
+- _TBD by team._
 
 ---
 
@@ -69,4 +72,4 @@ Where Copilot currently creates friction:
 
 | Date          | Who  | What Changed        |
 | ------------- | ---- | ------------------- |
-| [PLACEHOLDER] | [PM] | Initial map created |
+| —             | [PM] | Initial map created |

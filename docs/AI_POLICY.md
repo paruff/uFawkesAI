@@ -1,5 +1,8 @@
 # AI Policy — starter template for downstream repositories
 
+> **This file is a template.** When adopting uFawkesAI, replace all
+> `[PLACEHOLDER]` markers with your project's actual policy.
+>
 > **Status in this repository:** this is a **template, not policy**.
 >
 > The authoritative AI stance for `paruff/uFawkesAI` is **[`AI_STANCE.md`](../AI_STANCE.md)**
@@ -7,10 +10,9 @@
 > quarterly. This file exists so that repositories copied from this template
 > have a starting point to fill in for themselves.
 >
-> Do not treat the placeholders below as resolved for this repository. Copy
-> this file into a new project and replace every `[PLACEHOLDER]` and
-> `[PROJECT NAME]` with that project's own answers, or adopt `AI_STANCE.md`
-> as the policy format directly — it carries the same content in the
+> Do not treat the placeholders below as resolved for this repository, and
+> replace `[PROJECT NAME]` wherever it appears. Or adopt `AI_STANCE.md` as
+> the policy format directly — it carries the same content in the
 > three-bucket structure that the `ai-stance` audit checks.
 
 > DORA AI Capability 1 finding: "A clear AI stance provides psychological safety for

@@ -15,6 +15,7 @@
 | ---------- | --------------------------------------------------------------------------------------- | ------- |
 | 2026-05-10 | Added "Using Agent Skills" section                                                      | @paruff |
 | 2026-05-10 | Added DORA AI Capabilities, Multi-agent orchestration, Agent Skills invocation sections | @paruff |
+| 2026-10-08 | Removed the untested duplicate "Using Agent Skills" section; fixed skill paths after the move to `.agents/skills/`; documented `{{TOKEN}}` syntax and the testing record | @paruff |
 
 ---
 
@@ -22,9 +23,27 @@
 
 1. Find the task category
 2. Copy the prompt template
-3. Replace `{{PLACEHOLDERS}}`
+3. Replace every `{{TOKEN}}` — `{{UPPER_CASE}}` marks a value only you know.
+   Leave the rest of the template exactly as written. An unfilled token means
+   the prompt is not ready to run.
+
+   | Token                                                                   | Replace with                                         |
+   | ----------------------------------------------------------------------- | ---------------------------------------------------- |
+   | `{{FUNCTION_NAME}}`, `{{METHOD_NAME}}`                                  | The function or method the prompt is about           |
+   | `{{FUNCTION_FILE_PATH}}`, `{{FUNCTION_FILE_NAME}}`, `{{SERVICE_FILE}}`  | Where that code lives                                |
+   | `{{PASTE_TEST}}`, `{{PASTE_FUNCTION}}`, `{{PASTE_CODE}}`                | The test, function or code block under review        |
+   | `{{SERVICE_OR_FILE}}`, `{{CAPABILITY}}`                                 | The service, file or DORA capability in scope        |
+   | `{{PROJECT_NAME}}`, `{{SDK_VERSION}}`                                   | Your project's name and the SDK version in use       |
+   | `{{branch}}`, `{{N}}`, `{{LIST_BRANCH_NAMES}}`, `{{PASTE_BRANCH_LIST}}` | A branch name, a count, or a pasted list of branches |
+   | `{{PASTE_ISSUE}}`, `{{PASTE_ISSUE_URL}}`                                | The issue text or URL                                |
+
 4. Paste into Copilot Chat with the specified context files open
 5. If output is wrong: see "Red flags" and re-prompt or escalate
+
+**Testing record.** Prompts carrying `**Tested with:**` and `**Test date:**`
+have been run at least once and produced usable output. Prompts without them
+are unrecorded — treat them as a starting point, and add the record when one
+works for you.
 
 ---
 
@@ -216,76 +235,6 @@ Function:
 
 ---
 
-## Category: Using Agent Skills
-
-Reference a skill's file path in your prompt to load it on demand.
-See `.github/skills/README.md` for invocation syntax per agent.
-
-### Invoke the DORA Metrics skill
-
-**Context to open:** `scripts/weekly-metrics.sh`, `docs/METRICS.md`
-
-```
-Read .github/skills/dora-metrics/SKILL.md.
-
-Run `npm run metrics` to get the current rework rate. Using the metric definitions
-in the skill, interpret the result and update the rework rate row in the Monthly
-Metrics Log in docs/METRICS.md with today's date and value, plus a trend note.
-```
-
-**Expected output:** Updated `docs/METRICS.md` with rework rate and trend.
-
----
-
-### Invoke the Security Review skill
-
-**Context to open:** The service file or PR diff
-
-```
-Read .github/skills/security-review/SKILL.md.
-
-Apply the pre-commit security checklist and OWASP Top 10 quick-check to this
-service function. Report each finding with: severity, file, line number, risk
-description, and corrected code.
-
-Function:
-{{PASTE_FUNCTION}}
-```
-
-**Expected output:** Structured findings list with severity levels and corrected code.
-
-**Red flags:**
-
-- Agent reports "no issues" on a function with unscoped DB operations → re-prompt, explicitly ask it to check the "All database operations are scoped to the authenticated `userId`" bullet in the Pre-commit security checklist section of the skill
-
----
-
-### Invoke the Test Generation skill
-
-**Context to open:** The function file, `src/types/index.ts`
-
-```
-Read .github/skills/test-generation/SKILL.md.
-
-Generate unit tests for this function following the TDD pattern and naming
-conventions described in that skill. The tests should go in
-tests/unit/utils/{{FUNCTION_FILE_NAME}}.test.ts.
-
-Function:
-{{PASTE_FUNCTION}}
-```
-
-**Expected output:** A complete test file with describe/it blocks following the
-`when [condition], should [result]` naming convention, covering happy path,
-invalid input, and edge cases.
-
-**Red flags:**
-
-- Tests only assert mock calls → reject, ask for behaviour assertions
-- `describe` / `it` names don't follow convention → reject, ask for rename
-
----
-
 ## Category: DORA AI Capabilities
 
 Prompts for measuring and improving DORA metrics using AI assistance.
@@ -313,10 +262,10 @@ Capability: {{CAPABILITY}}
 
 ### Run DORA Archetype Self-Assessment
 
-**Context to open:** `docs/TEAM_ARCHETYPE.md`, `docs/METRICS.md`, `.github/skills/dora-metrics/SKILL.md`
+**Context to open:** `docs/TEAM_ARCHETYPE.md`, `docs/METRICS.md`, `.agents/skills/dora-measurement/SKILL.md`
 
 ```
-Read docs/TEAM_ARCHETYPE.md and .github/skills/dora-metrics/SKILL.md.
+Read docs/TEAM_ARCHETYPE.md and .agents/skills/dora-measurement/SKILL.md.
 
 Conduct a DORA archetype self-assessment for this team based on the metrics in
 docs/METRICS.md and the archetype definitions in docs/TEAM_ARCHETYPE.md.
@@ -574,16 +523,15 @@ Detects file-level overlaps only — does not detect import-level or semantic co
 
 ## Category: Agent Skills invocation
 
-Short, canonical prompts to invoke each built-in skill. Use these when you want a
-quick skill invocation without the full detail of the "Using Agent Skills" prompts above.
-See `.github/skills/README.md` for the full skill reference.
+Short, canonical prompts to invoke each built-in skill. Skills live in
+`.agents/skills/<name>/SKILL.md`.
 
 ### Invoke the DORA Metrics skill to add rework rate tracking
 
 ```
-Use the dora-metrics skill to add rework rate tracking for {{SERVICE_OR_FILE}}.
+Use the dora-measurement skill to add rework rate tracking for {{SERVICE_OR_FILE}}.
 
-Read .github/skills/dora-metrics/SKILL.md, then update docs/METRICS.md to add a
+Read .agents/skills/dora-measurement/SKILL.md, then update docs/METRICS.md to add a
 tracking note for {{SERVICE_OR_FILE}} — noting it as a file to watch for churn in
 the next `npm run metrics` report. No code changes are needed; rework rate is
 derived automatically from git history.
@@ -605,7 +553,7 @@ instrumentation. This prompt adds a documentation tracking note, not code hooks.
 ```
 Use the security-review skill to review this PR before I approve it.
 
-Read .github/skills/security-review/SKILL.md, apply the pre-commit security
+Read .agents/skills/security-review/SKILL.md, apply the pre-commit security
 checklist and OWASP Top 10 quick-check to every changed file in this PR, and
 report findings with: severity (CRITICAL/HIGH/MEDIUM/LOW), file, line, risk
 description, and corrected code.
@@ -624,8 +572,10 @@ recommendation.
 **Version:** 1.0
 **Tested with:** Claude Code, GitHub Copilot
 **Test date:** 2026-05-10
-**Known limitations:** Does not replace a human security review for auth flows or
-cryptographic changes. Always escalate CRITICAL findings to a human.
+**Known limitations:** Requires a `security-review` skill, which this repo does not
+ship — it was dropped when skills moved to `.agents/skills/`. Add your own, or replace
+the first line with your own checklist. Does not replace a human security review for
+auth flows or cryptographic changes; always escalate CRITICAL findings to a human.
 
 ---
 
@@ -634,7 +584,7 @@ cryptographic changes. Always escalate CRITICAL findings to a human.
 ```
 Use the test-generation skill to write tests for {{FUNCTION_NAME}}.
 
-Read .github/skills/test-generation/SKILL.md, then generate a complete test file
+Read .agents/skills/test-generation/SKILL.md, then generate a complete test file
 for {{FUNCTION_NAME}} in {{FUNCTION_FILE_PATH}}, following the TDD patterns and
 naming conventions in that skill.
 
@@ -657,7 +607,9 @@ implementation is written and passes after.
 **Version:** 1.0
 **Tested with:** Claude Code, GitHub Copilot
 **Test date:** 2026-05-10
-**Known limitations:** Generated tests assume Jest + ts-jest. Adjust import paths if
-using a different test runner.
+**Known limitations:** Requires a `test-generation` skill, which this repo does not
+ship — it was dropped when skills moved to `.agents/skills/`. Add your own, or replace
+the first line with your own test conventions. Generated tests assume Jest + ts-jest;
+adjust import paths if using a different test runner.
 
 ---
