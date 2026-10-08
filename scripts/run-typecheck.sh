@@ -22,20 +22,26 @@ FAILED=0
 
 echo "== Type check =="
 
-# 1. TypeScript
+# 1. TypeScript (root config — excludes .opencode which is checked by pre-commit)
 if [[ -x node_modules/.bin/tsc ]]; then
-  if node_modules/.bin/tsc --noEmit -p tsconfig.json > /tmp/tc.$$.out 2>&1; then
-    echo "  PASS  tsc --noEmit"
-    CHECKED=$((CHECKED + 1))
+  # Only run root tsc if there are .ts files outside .opencode
+  root_ts_files=$(find . -name '*.ts' -not -path './.git/*' -not -path './.opencode/*' -not -path '*/node_modules/*' 2>/dev/null | head -1)
+  if [[ -n "$root_ts_files" ]]; then
+    if node_modules/.bin/tsc --noEmit -p tsconfig.json > /tmp/tc.$$.out 2>&1; then
+      echo "  PASS  tsc --noEmit"
+      CHECKED=$((CHECKED + 1))
+    else
+      echo "  FAIL  tsc --noEmit"
+      sed 's/^/        /' /tmp/tc.$$.out | head -40
+      FAILED=$((FAILED + 1))
+    fi
+    rm -f /tmp/tc.$$.out
   else
-    echo "  FAIL  tsc --noEmit"
-    sed 's/^/        /' /tmp/tc.$$.out | head -40
-    FAILED=$((FAILED + 1))
+    echo "  SKIP  tsc --noEmit              no .ts files at root level (excludes .opencode)"
+    SKIPPED=$((SKIPPED + 1))
   fi
-  rm -f /tmp/tc.$$.out
 else
-  echo "  SKIP  tsc --noEmit              typescript not installed (npm install) —"
-  echo "                                    the one .ts file is NOT type checked"
+  echo "  SKIP  tsc --noEmit              typescript not installed (npm install)"
   SKIPPED=$((SKIPPED + 1))
 fi
 
