@@ -1,0 +1,14 @@
+# .github/ISSUE_TEMPLATE/security.yml
+name: 🔒 Security Vulnerability
+description: Report a security vulnerability in uFawkesAI
+title: "[Security]: "
+labels: ["security"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ⚠️ **STOP!** If this is a security vulnerability, please DO NOT create a public issue.
+
+        Instead, please use GitHub's [Private Vulnerability Reporting](https://github.com/paruff/uFawkesAI/security/advisories/new) — this keeps the report confidential until a fix is published.
+
+        If you cannot use private reporting, contact the maintainer via the email on the [paruff GitHub profile](https://github.com/paruff) with subject `[uFawkesAI] Security report`.
