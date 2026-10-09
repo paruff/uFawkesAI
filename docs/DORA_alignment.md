@@ -26,8 +26,8 @@ verification phase, are direct countermeasures. Important nuance: DORA's
 framing of the verification tax is about _reviewing generated code_, not
 specifically about _testing against a live running system_ — the live-system
 gap is an adjacent problem you identified independently, not something DORA's
-report calls out by name. I don't have a verified DORA citation for "test
-against live systems specifically" — treat that as sound engineering
+report calls out by name. There is no verified DORA citation for "test
+against live systems specifically"; treat that as sound engineering
 judgment, not a research-backed capability.
 
 **Working in small batches**: DORA found this improves product performance

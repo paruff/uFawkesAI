@@ -11,3 +11,12 @@ body:
         Instead, please use GitHub's [Private Vulnerability Reporting](https://github.com/paruff/uFawkesAI/security/advisories/new) — this keeps the report confidential until a fix is published.
 
         If you cannot use private reporting, contact the maintainer via the email on the [paruff GitHub profile](https://github.com/paruff) with subject `[uFawkesAI] Security report`.
+
+  - type: checkboxes
+    id: acknowledgment
+    attributes:
+      label: Acknowledgment
+      description: Please confirm you understand the security reporting process
+      options:
+        - label: I understand this template is for non-sensitive security discussions only. I will use private reporting for actual vulnerabilities.
+          required: true
