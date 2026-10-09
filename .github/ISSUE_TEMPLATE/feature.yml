@@ -3,7 +3,6 @@ description: "Product feature to be implemented by a Copilot or Claude Code agen
 title: "[FEAT] "
 labels:
   - enhancement
-  - effort-medium
 body:
   - type: markdown
     attributes:

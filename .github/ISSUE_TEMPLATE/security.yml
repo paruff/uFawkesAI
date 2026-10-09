@@ -2,7 +2,6 @@
 name: 🔒 Security Vulnerability
 description: Report a security vulnerability in uFawkesAI
 title: "[Security]: "
-labels: ["security"]
 body:
   - type: markdown
     attributes:
