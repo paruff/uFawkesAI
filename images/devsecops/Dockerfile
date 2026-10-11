@@ -102,9 +102,11 @@ RUN --mount=type=bind,from=fetch-ai,source=/out/aidlc-release,target=/release \
  && ver="$(jq -r '.tools[] | select(.name == "aidlc") | .version' /etc/ufawkes/tools.lock.json)" \
  && setpriv --reuid="${USER_UID}" --regid="${USER_UID}" --clear-groups \
       env HOME="/home/${DEV_USER}" AIDLC_INSTALL_ROOT=/opt/aidlc AIDLC_BIN_DIR=/opt/aidlc/bin \
-      sh /release/install.sh --version "$ver" --from /release --offline --yes --quiet \
- && chmod -R go+rX /opt/aidlc \
+      sh -c 'umask 022 && exec sh /release/install.sh "$@"' install.sh \
+      --version "$ver" --from /release --offline --yes --quiet \
  && ln -s /opt/aidlc/bin/aidlc /usr/local/bin/aidlc
+# `aidlc doctor` finds the install through these (its defaults are ~/.local).
+ENV AIDLC_INSTALL_ROOT=/opt/aidlc AIDLC_BIN_DIR=/opt/aidlc/bin
 # From one hash-locked package-lock.json: Codex and Gemini CLI (so all four
 # harnesses the smoke test checks ship), qmd (local markdown search + MCP
 # server), and the TypeScript/JavaScript, Python, Bash and YAML language
