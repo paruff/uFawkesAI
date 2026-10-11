@@ -11,4 +11,4 @@ detect-secrets==1.5.0
 # fawkes's mkdocs-validate hook (#193): the pins in fawkes's requirements.txt.
 mkdocs==1.6.1
 mkdocs-material==9.7.7
-pymdown-extensions==12.1
+pymdown-extensions==12.2

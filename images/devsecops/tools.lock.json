@@ -25,7 +25,7 @@
     {
       "name": "uv",
       "variant": "core",
-      "version": "0.12.23",
+      "version": "0.13.0",
       "source": {
         "github": "astral-sh/uv",
         "tag": "{version}"
@@ -43,8 +43,8 @@
       ],
       "version_cmd": "uv --version",
       "sha256": {
-        "amd64": "9167d72b3319674b6303c4cbe071854bba13ebdf3d76b1a7cbdc175471fb66d6",
-        "arm64": "6524bd338177ed50d035d39354e12545e993bbeba2ecbddf0480c5b3a81d313f"
+        "amd64": "1468ebd5a5541121837c5a2817b9972ba6090fa6caa3d142620850a47fb75154",
+        "arm64": "3ccfb6af6e242433eb552f7d9676abd5412c6595c497e990d9c8cb7b5bd4d2c3"
       }
     },
     {
@@ -206,7 +206,7 @@
     {
       "name": "ruff",
       "variant": "core",
-      "version": "0.16.10",
+      "version": "0.17.0",
       "source": {
         "github": "astral-sh/ruff",
         "tag": "{version}"
@@ -223,8 +223,8 @@
       ],
       "version_cmd": "ruff --version",
       "sha256": {
-        "amd64": "9567ff1201e2fb3da31ff04c35587d768c66d6cb42dfa84de474e2bfe360b608",
-        "arm64": "dc0d74de837ef0a7bcc62ce98c48a622b075d057161f13b958be2934becd55a6"
+        "amd64": "c94fc1dc71f054d06d9f1149442dcb471516aa2b7d4b7e8124e05d082d4c91d3",
+        "arm64": "294e181ba6ccb0c2ffd778580e3c42b19f038bdbcb844f39fd9a6a26e8148804"
       }
     },
     {
@@ -326,7 +326,7 @@
     {
       "name": "kustomize",
       "variant": "core",
-      "version": "5.8.2",
+      "version": "5.8.3",
       "source": {
         "github": "kubernetes-sigs/kustomize",
         "tag": "kustomize/v{version}"
@@ -343,8 +343,8 @@
       ],
       "version_cmd": "kustomize version",
       "sha256": {
-        "amd64": "06af0a202c2b831207d0173f9c9cdb1b30abceca0747cb3fbb72792d26055c95",
-        "arm64": "0991957191951cb7dddd142403b5bb98a1fcd6378ba0079dddc1e2c309080a7f"
+        "amd64": "cb9e31198d3f63b44848bd0afc4c8efc56e6cfef9c93a4a39a211940e6decd61",
+        "arm64": "9867b76482cfc6d25b546abc1d2b5a32bd137505aba640649b4b378f64f6d68f"
       }
     },
     {
@@ -420,7 +420,7 @@
     {
       "name": "opencode",
       "variant": "ai",
-      "version": "1.18.34",
+      "version": "1.19.0",
       "source": {
         "github": "sst/opencode",
         "tag": "v{version}"
@@ -438,14 +438,14 @@
       ],
       "version_cmd": "opencode --version",
       "sha256": {
-        "amd64": "24b0d458d21ef548b2752166303defcf7f4945b049fb4876ab78dfaf86d81b27",
-        "arm64": "bbdb3f00c2c51e42e315525233151309724226a8776da8e9145e3b0fa3d5310f"
+        "amd64": "6334d70db3990721ea454357e9cf2573c8685524ad7769af9d52cbffb7008438",
+        "arm64": "e9841d43d3e1a8f36ed2691592d3b8b4fb097e606c8b559a277a1b845840e26b"
       }
     },
     {
       "name": "superpowers",
       "variant": "ai",
-      "version": "6.4.2",
+      "version": "7.0.0",
       "source": {
         "github": "obra/superpowers",
         "tag": "v{version}"
@@ -460,8 +460,8 @@
       "subdir": "skills",
       "version_cmd": "cat /opt/agent-skills/superpowers/VERSION",
       "sha256": {
-        "amd64": "66eae02bb1549ae289a14bb23a14c119d2e7ccdaf3b5fb8b95f17db581ef0249",
-        "arm64": "66eae02bb1549ae289a14bb23a14c119d2e7ccdaf3b5fb8b95f17db581ef0249"
+        "amd64": "b1fa757963ba9817035e77b3039518bca95fd250684d49299616fa2676f5baee",
+        "arm64": "b1fa757963ba9817035e77b3039518bca95fd250684d49299616fa2676f5baee"
       }
     }
   ]
