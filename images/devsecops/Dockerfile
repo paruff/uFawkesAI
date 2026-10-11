@@ -94,6 +94,19 @@ RUN apt-get update \
  && useradd --uid "${USER_UID}" --gid "${USER_UID}" --create-home --shell /usr/bin/zsh "${DEV_USER}" \
  && echo "${DEV_USER} ALL=(ALL) NOPASSWD:ALL" >"/etc/sudoers.d/${DEV_USER}" \
  && chmod 0440 "/etc/sudoers.d/${DEV_USER}"
+# AI-DLC (opt-in, spec D1): upstream's own offline installer over the pinned
+# release staged by install-tools.sh. It refuses root, so run it as the dev
+# user; nothing is configured until a user runs `aidlc config` in a repo.
+RUN --mount=type=bind,from=fetch-ai,source=/out/aidlc-release,target=/release \
+    install -d -o "${DEV_USER}" -g "${DEV_USER}" /opt/aidlc \
+ && ver="$(jq -r '.tools[] | select(.name == "aidlc") | .version' /etc/ufawkes/tools.lock.json)" \
+ && setpriv --reuid="${USER_UID}" --regid="${USER_UID}" --clear-groups \
+      env HOME="/home/${DEV_USER}" AIDLC_INSTALL_ROOT=/opt/aidlc AIDLC_BIN_DIR=/opt/aidlc/bin \
+      sh -c 'umask 022 && exec sh /release/install.sh "$@"' install.sh \
+      --version "$ver" --from /release --offline --yes --quiet \
+ && ln -s /opt/aidlc/bin/aidlc /usr/local/bin/aidlc
+# `aidlc doctor` finds the install through these (its defaults are ~/.local).
+ENV AIDLC_INSTALL_ROOT=/opt/aidlc AIDLC_BIN_DIR=/opt/aidlc/bin
 # From one hash-locked package-lock.json: Codex and Gemini CLI (so all four
 # harnesses the smoke test checks ship), qmd (local markdown search + MCP
 # server), and the TypeScript/JavaScript, Python, Bash and YAML language

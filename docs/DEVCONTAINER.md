@@ -77,6 +77,29 @@ Keep changes minimal and reproducible so every contributor gets the same behavio
 
 ---
 
+## Optional: AWS AI-DLC
+
+The `ai` image ships [AI-DLC](https://github.com/awslabs/aidlc-workflows)
+(`aidlc`, MIT-0) at a pinned, checksum-verified version. It is **off by
+default**: the image and this template contain no AI-DLC files until you
+opt in, per repo.
+
+AI-DLC is a second lifecycle (its own agents, stages and `aidlc/` artifact
+folder) beside this template's `intent → spec → plan` chain, which stays the
+default and the gate. Whether the two should merge is undecided; try it on a
+branch first.
+
+```bash
+aidlc config --harness claude --dry-run   # or --harness opencode: lists every file it would write
+aidlc config --harness claude             # writes them
+aidlc doctor                              # checks the result
+```
+
+A run writes `aidlc/`, a harness tree under `.claude/` (or `.opencode/`),
+hooks in `.claude/settings.json`, and lines in `AGENTS.md`. `AI_STANCE.md`
+requires human sign-off for changes to those governed paths, so opting in is
+a person's decision, never an agent's.
+
 ## DORA capability mapping
 
 This implements **AI Capability 7: Quality internal platforms** by providing a
