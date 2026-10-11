@@ -63,6 +63,21 @@ while IFS= read -r entry; do
     [ -d "${work}/${name}/${subdir}" ] || fail "${name}: archive has no ${subdir}/"
     cp -a "${work}/${name}/${subdir}/." "$tree/"
     echo "$version" > "${tree}/VERSION"
+  elif [ "$install_mode" = "release-dir" ]; then
+    # Stage a whole release for the Dockerfile to feed upstream's offline
+    # installer (it refuses root and writes absolute paths, so it must run at
+    # the final location). Outside <dest> so the staging never ships in a layer.
+    # The binary is pinned above; checksums.txt is pinned here, and the
+    # installer checks every other asset against it.
+    stage="$(dirname "$DEST")/${name}-release"
+    mkdir -p "$stage"
+    install -m 0755 "$file" "${stage}/$(basename "$url")"
+    while IFS= read -r asset; do
+      asset="$(render "$asset" "$version" "$token")"
+      curl -fsSL --retry 5 --retry-all-errors --retry-delay 2 -o "${stage}/${asset}" "${url%/*}/${asset}"
+    done < <(jq -r '.companions[]' <<< "$entry")
+    echo "$(jq -r .checksums_sha256 <<< "$entry")  ${stage}/checksums.txt" | sha256sum -c --quiet - \
+      || fail "${name}: checksums.txt differs from the lock"
   elif [ "$install_mode" = "opt" ]; then
     # Self-contained application tree (e.g. agent skills): unpack
     # whole to /opt/<name>, stamp VERSION for version_cmd, and symlink its

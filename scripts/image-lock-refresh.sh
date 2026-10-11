@@ -83,6 +83,12 @@ refresh_tool() {
     write_lock --arg n "$name" --arg a "$arch" --arg h "$hash" \
       '(.tools[] | select(.name == $n) | .sha256[$a]) = $h'
   done
+  # Entries that stage a whole release (install: release-dir) also pin the
+  # checksum file itself; the installer verifies every other asset against it.
+  if jq -e 'has("checksums_sha256")' <<< "$entry" > /dev/null; then
+    hash="$(curl -fsSL "$(render "$cs_t" "$version" "")" | sha256sum | cut -d' ' -f1)"
+    write_lock --arg n "$name" --arg h "$hash" '(.tools[] | select(.name == $n) | .checksums_sha256) = $h'
+  fi
 }
 
 if [ "$#" -eq 0 ]; then
