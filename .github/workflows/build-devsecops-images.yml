@@ -145,7 +145,11 @@ jobs:
             /devsecops/scan.sh fawkes-space-ai:ci "$GATE_EXIT"
       - name: Trivy report to summary
         if: always()
-        run: cat scan-out/trivy-report.md >>"$GITHUB_STEP_SUMMARY" 2>/dev/null || true
+        # No report when the scan itself did not run; that failure is the scan step's.
+        run: |
+          if [ -f scan-out/trivy-report.md ]; then
+            cat scan-out/trivy-report.md >>"$GITHUB_STEP_SUMMARY"
+          fi
 
       # Doubles the build time, so weekly/manual only.
       - name: Determinism — rebuild without cache and compare
