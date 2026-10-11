@@ -11,6 +11,8 @@ Ships in v2.1.0, after v2.0.0 is tagged. Each step is one PR under the
    run the R2 commands under `--network none`. If they fail, switch to the
    offline `install.sh --from` shape. Record the result in spec D1. No PR if
    the binary alone works; the finding goes on the build issue.
+   **Done 2026-10-11:** the binary alone fails; the offline installer shape
+   is used (spec D1).
 2. **Pin it (R1, R2, R4).** Add an `ai` entry to
    `images/devsecops/tools.lock.json`, modelled on `hadolint` (`format:
    binary`, `checksum_url` → the release's `checksums.txt`,

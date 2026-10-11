@@ -46,7 +46,7 @@ provider's, wall time and token cost, and whether
 
 ## Decisions
 
-**D1 — Install shape (settled in plan step 1).** Use a single `format:
+**D1 — Install shape (settled 2026-10-11: offline `install.sh --from`).** Use a single `format:
 binary` lock entry if R2 passes with the binary alone. Otherwise run the
 upstream `install.sh --version <v> --from <dir> --offline --yes` against
 assets downloaded and hash-checked from the lock, with `AIDLC_INSTALL_ROOT`
@@ -59,6 +59,13 @@ runs. Use the first that passes R1 and R2; record which one in this spec.
 (c) AI-DLC becomes the template's lifecycle. Default (a). Choosing (b) or
 (c) needs its own intent, because it changes `AGENTS.md`, the agents and
 the gate.
+
+**D1 result.** The bare binary fails R2: offline, `aidlc config --harness
+claude --dry-run` reports `harness claude is not installed`. Upstream's
+`install.sh --version <v> --from <dir> --offline --yes` over the pinned
+binary, runtime archive, `checksums.txt`, `version.json`, `install.sh` and
+`aidlc-release.intoto.jsonl` passes R1 and R2. The installer refuses root,
+so the Dockerfile runs it as the dev user at `/opt/aidlc`.
 
 ## Acceptance criteria
 
