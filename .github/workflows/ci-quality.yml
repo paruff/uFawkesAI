@@ -19,7 +19,7 @@ env:
 jobs:
   preflight:
     name: "✈️ Pre-flight"
-    uses: paruff/uFawkesPipe/.github/workflows/reusable-preflight.yml@41f3e92d6fb63b3779595bed3e44333c67d37028 # v1.15.0-beta.1
+    uses: paruff/uFawkesPipe/.github/workflows/reusable-preflight.yml@271154e53badbd96f3ef173f92ecb06545fc1cfb # v1.16.0-beta.1
     with:
       # The hook stages run in the suite's CI image (ci-pipeline spec R4).
       ci-image: ghcr.io/paruff/ufawkes-ci@sha256:e85db8b3554da7c3362303d0e1e9681997d78093269b641e3535989f9c66f4da
@@ -28,7 +28,7 @@ jobs:
       emergency-bypass: true
   lint:
     name: "🔍 Lint"
-    uses: paruff/uFawkesPipe/.github/workflows/reusable-lint.yml@41f3e92d6fb63b3779595bed3e44333c67d37028 # v1.15.0-beta.1
+    uses: paruff/uFawkesPipe/.github/workflows/reusable-lint.yml@271154e53badbd96f3ef173f92ecb06545fc1cfb # v1.16.0-beta.1
     with:
       auto-detect: true
       emergency-bypass: true
