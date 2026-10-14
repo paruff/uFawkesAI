@@ -61,6 +61,7 @@ jobs:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           # Use the job's token (pull-requests: write) instead of an OIDC-minted app token.
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          show_full_output: true # temporary: surface the API error behind is_error
           prompt: |
             Review PR #${{ github.event.pull_request.number }} in ${{ github.repository }}.
             Read REVIEW.md first and follow it exactly: its Flag and Skip lists,
