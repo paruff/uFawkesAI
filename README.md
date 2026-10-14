@@ -178,7 +178,7 @@ The AI-Native SDLC Playbook defines six stages. This template's coverage:
 | 2. Connect AI to context     | ✅ Provided | `AGENTS.md` context index, `.github/copilot-instructions.md`, `docs/API_SURFACE.md`, `docs/KNOWN_LIMITATIONS.md`, `.vscode/settings.json` |
 | 3. Prioritise foundations    | ✅ Provided | `ci-quality.yml` (PR size, lint, test), `main-ci-guard.yml`, `docs/ARCHITECTURE.md`, conventional commits |
 | 4. Fortify safety nets       | ✅ Provided | `docs/RUNBOOKS.md` (rollback, disable), `scripts/weekly-metrics.sh` (rework rate), feature flags in golden path |
-| 5. Invest in platform        | ✅ Provided | `docs/GOLDEN_PATH.md`, `.agents/agents/` (4 agents), `docs/PROMPT_LIBRARY.md`, `.devcontainer/` |
+| 5. Invest in platform        | ✅ Provided | `docs/GOLDEN_PATH.md`, `.agents/agents/` (4 agents), `docs/PROMPT_LIBRARY.md`, `.devcontainer/`, `REVIEW.md` + `agent-review.yml` (agent PR review; comments only, a human merges) |
 | 6. Focus on end-users        | 🟡 Partial  | `discovery` skill (JTBD), `docs/VALUE_STREAM_MAP.md`, `docs/DEVEX_LOG.md`; Dojo labs for learning are in uFawkesDojo (separate repo) |
 
 > **Upstream references:** [The AI-Native SDLC Playbook](https://claude.com/blog/the-ai-native-sdlc-playbook) (Claxton, Anthropic, 2026-08-21); DORA, _State of AI-assisted Software Development_ (2025).
