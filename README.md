@@ -239,6 +239,16 @@ Quick integration hooks:
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md) (planned in AI-006).
 
+## Research basis
+
+- DORA, [_AI Capabilities Model_](https://dora.dev/ai/capabilities-model/report/) (2025-11-25): the seven capabilities mapped above.
+- DORA, [_2025 State of AI-assisted Software Development_](https://dora.dev/research/2025/dora-report/): AI amplifies what is already there.
+- Anthropic, [_The AI-Native SDLC Playbook_](https://claude.com/blog/the-ai-native-sdlc-playbook) (2026-08-21): the six-stage artifact chain.
+- Noda et al., [_DevEx: What Actually Drives Productivity_](https://dl.acm.org/doi/10.1145/3610285) (ACM Queue, 2023), and Forsgren et al., [_The SPACE of Developer Productivity_](https://queue.acm.org/detail.cfm?id=3454124) (2021): how the CDE and DEVEX_LOG measure.
+- Paradis et al., [arXiv 2410.12944](https://arxiv.org/abs/2410.12944) (2024), and [METR](https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/) (2025): AI speedup is context-dependent, so no unmeasured speedup claims.
+
+Full findings and sources: [research foundation](https://github.com/paruff/uFawkes.dev/blob/main/docs/research-foundation.md), reviewed quarterly.
+
 ## Design and brand
 
 This repo follows the shared Fawkes and uFawkes design reference:
