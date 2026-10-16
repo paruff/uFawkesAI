@@ -433,3 +433,22 @@ release.
 Verify: `npm ci` of both lockfiles; markdownlint-cli2 lints a file with math,
 rejects a bad file and loads a `--config` TOML; `qmd --version`; node-llama-cpp
 imports; `verify-tools.sh ai` in the image build.
+
+## Reproducibility report (2026-10-16, R3; ci-pipeline R8, #222)
+
+Layers carry no build time: the publish job sets `SOURCE_DATE_EPOCH` to the
+commit time and `rewrite-timestamp=true`. `image-reproducibility.yml`
+rebuilds the latest release tag weekly (core, ai, devcontainer; amd64,
+arm64), compares layer digests with the published images and runs diffoci
+(v0.1.8, pinned by SHA-256) on a mismatch. It measures; it does not gate.
+
+### Verification Strategy
+
+| Check                          | How it is proven                                                                                  | Command / CI job                                        |
+| ------------------------------ | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
+| Bake passes the epoch          | `args` has `SOURCE_DATE_EPOCH` when the variable is set and none when it is unset                 | `SOURCE_DATE_EPOCH=1 docker buildx bake --print ai`     |
+| Workflows lint                 | actionlint and the schema hooks pass                                                              | `pre-commit run --all-files`                            |
+| Report runs on a release       | The first dispatch lists every variant and arch as match or mismatch, with diffoci for mismatches | `gh workflow run image-reproducibility.yml`             |
+| Published tags are unaffected  | The next tag build still publishes and signs; `verify ai` stays green on this PR                  | `build-devsecops-images.yml`                            |
+
+v2.0.0 is expected to mismatch: it was published before the epoch was set.
