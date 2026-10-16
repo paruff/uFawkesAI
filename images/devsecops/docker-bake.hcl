@@ -15,6 +15,11 @@ variable "REVISION" {
   default = ""
 }
 
+# Commit time; pair with `--set *.output=type=docker,rewrite-timestamp=true`.
+variable "SOURCE_DATE_EPOCH" {
+  default = ""
+}
+
 group "default" {
   targets = ["core", "ai"]
 }
@@ -27,6 +32,7 @@ target "_common" {
     opencode-src = "../../opencode"
     agents-src   = "../../.agents/agents"
   }
+  args = SOURCE_DATE_EPOCH != "" ? { SOURCE_DATE_EPOCH = SOURCE_DATE_EPOCH } : {}
   labels = {
     "org.opencontainers.image.version"  = VERSION
     "org.opencontainers.image.revision" = REVISION

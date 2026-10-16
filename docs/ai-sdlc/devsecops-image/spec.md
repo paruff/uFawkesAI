@@ -29,6 +29,11 @@ tool set at the same versions:
   an isolated venv; Node tools from a committed `package-lock.json`.
 - The image records its own manifest (`/etc/ufawkes/tools.json`: tool,
   version, sha256) so any environment can print exactly what it runs.
+- Layers carry no build time: the publish job sets `SOURCE_DATE_EPOCH` to the
+  commit time and rewrites timestamps. `image-reproducibility.yml` rebuilds the
+  latest release weekly and reports, per variant and arch, whether the layer
+  digests match the published ones (measure, not a gate; diffoci lists what
+  differs).
 
 **R4 — Pre-commit in the image.** The baseline's hooks run with no network access:
 

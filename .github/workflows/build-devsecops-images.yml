@@ -230,6 +230,12 @@ jobs:
           echo "prerelease=$prerelease" >>"$GITHUB_OUTPUT"
           echo "Publishing $v (prerelease=$prerelease)" | tee -a "$GITHUB_STEP_SUMMARY"
 
+      # Reproducible builds: every file and layer timestamp is the commit time
+      # (R8; .github/workflows/image-reproducibility.yml measures the result).
+      - name: SOURCE_DATE_EPOCH from the commit time
+        id: sde
+        run: echo "epoch=$(git log -1 --format=%ct)" >>"$GITHUB_OUTPUT"
+
       - name: Tags for core
         id: meta-core
         # Index-level annotations carry org.opencontainers.image.source, which is
@@ -288,7 +294,7 @@ jobs:
           tags: ${{ steps.meta-core.outputs.tags }}
           labels: ${{ steps.meta-core.outputs.labels }}
           annotations: ${{ steps.meta-core.outputs.annotations }}
-          outputs: type=image,push=true,compression=zstd,force-compression=true,oci-mediatypes=true
+          outputs: type=image,push=true,compression=zstd,force-compression=true,oci-mediatypes=true,rewrite-timestamp=true
           cache-from: |
             type=gha,scope=devsecops-amd64
             type=gha,scope=devsecops-arm64
@@ -297,6 +303,7 @@ jobs:
           build-args: |
             VERSION=${{ steps.meta-core.outputs.version }}
             REVISION=${{ github.sha }}
+            SOURCE_DATE_EPOCH=${{ steps.sde.outputs.epoch }}
       - name: Build + push ai
         id: ai
         uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
@@ -310,7 +317,7 @@ jobs:
           tags: ${{ steps.meta-ai.outputs.tags }}
           labels: ${{ steps.meta-ai.outputs.labels }}
           annotations: ${{ steps.meta-ai.outputs.annotations }}
-          outputs: type=image,push=true,compression=zstd,force-compression=true,oci-mediatypes=true
+          outputs: type=image,push=true,compression=zstd,force-compression=true,oci-mediatypes=true,rewrite-timestamp=true
           cache-from: |
             type=gha,scope=devsecops-amd64
             type=gha,scope=devsecops-arm64
@@ -319,6 +326,7 @@ jobs:
           build-args: |
             VERSION=${{ steps.meta-ai.outputs.version }}
             REVISION=${{ github.sha }}
+            SOURCE_DATE_EPOCH=${{ steps.sde.outputs.epoch }}
       - name: Build + push devcontainer (on the ai digest just pushed)
         id: devcontainer
         uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
@@ -329,11 +337,12 @@ jobs:
           tags: ${{ steps.meta-devcontainer.outputs.tags }}
           labels: ${{ steps.meta-devcontainer.outputs.labels }}
           annotations: ${{ steps.meta-devcontainer.outputs.annotations }}
-          outputs: type=image,push=true,compression=zstd,force-compression=true,oci-mediatypes=true
+          outputs: type=image,push=true,compression=zstd,force-compression=true,oci-mediatypes=true,rewrite-timestamp=true
           provenance: mode=max
           sbom: true
           build-args: |
             BASE_IMAGE=${{ env.REGISTRY }}/fawkes-space-ai@${{ steps.ai.outputs.digest }}
+            SOURCE_DATE_EPOCH=${{ steps.sde.outputs.epoch }}
 
       - name: Sign every digest (keyless, GitHub OIDC)
         env:

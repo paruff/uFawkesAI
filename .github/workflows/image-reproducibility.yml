@@ -1,0 +1,197 @@
+# Rebuilds the latest release's images from its tag and compares them with the
+# published ones (ci-pipeline R8, AC-6; paruff/uFawkesAI#222). Measures only:
+# a mismatch is reported in the summary, never a failure, until the report is
+# clean or the remaining differences are accepted.
+#
+# What "match" means: the same layer digests, per variant and per arch. The
+# config digest is left out on purpose: the published config carries labels
+# and a creation time that metadata-action sets, not the build. For a
+# mismatch the job runs diffoci (pinned below) and lists the layers and files
+# that differ.
+
+name: Image reproducibility
+
+on:
+  schedule:
+    - cron: "43 6 * * 2" # Tuesdays, after Monday's image verify
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag to rebuild (default: the latest release)"
+        required: false
+
+permissions:
+  contents: read
+  packages: read
+
+env:
+  REGISTRY: ghcr.io/paruff
+  DIFFOCI_VERSION: v0.1.8
+  DIFFOCI_SHA256_AMD64: 01e6b50c1568c9d61c758ef6da81869f2c26c852698d73dca961b3617effe949
+  DIFFOCI_SHA256_ARM64: a14c868a59c988b5f19715563f10576589c82d37a08c0d3c39f4c1ac2b1fec4c
+
+jobs:
+  tag:
+    name: "latest release tag"
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      tag: ${{ steps.tag.outputs.tag }}
+    steps:
+      - name: job-start
+        run: echo "job-start $(date -u +'%Y-%m-%dT%H:%M:%SZ') sha=${GITHUB_SHA} workflow=${GITHUB_WORKFLOW} job=${GITHUB_JOB}"
+      - id: tag
+        env:
+          GH_TOKEN: ${{ github.token }}
+          INPUT_TAG: ${{ inputs.tag }}
+        run: |
+          tag="${INPUT_TAG:-$(gh release list -R "$GITHUB_REPOSITORY" --exclude-drafts --exclude-pre-releases --limit 1 --json tagName -q '.[0].tagName')}"
+          [ -n "$tag" ] || { echo "::error::no release found"; exit 1; }
+          echo "tag=$tag" >>"$GITHUB_OUTPUT"
+      - name: job-finish
+        if: always()
+        run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ') sha=${GITHUB_SHA} workflow=${GITHUB_WORKFLOW} job=${GITHUB_JOB}"
+
+  rebuild:
+    name: "rebuild ${{ matrix.variant }} (${{ matrix.arch }})"
+    needs: tag
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: [amd64, arm64]
+        variant: [core, ai, devcontainer]
+        include:
+          - arch: amd64
+            runner: ubuntu-24.04
+          - arch: arm64
+            runner: ubuntu-24.04-arm
+          - variant: core
+            image: fawkes-core
+          - variant: ai
+            image: fawkes-space-ai
+          - variant: devcontainer
+            image: fawkes-space
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 60
+    env:
+      TAG: ${{ needs.tag.outputs.tag }}
+      ARCH: ${{ matrix.arch }}
+      VARIANT: ${{ matrix.variant }}
+      IMAGE: ${{ matrix.image }}
+    steps:
+      - name: job-start
+        run: echo "job-start $(date -u +'%Y-%m-%dT%H:%M:%SZ') sha=${GITHUB_SHA} workflow=${GITHUB_WORKFLOW} job=${GITHUB_JOB}"
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ needs.tag.outputs.tag }}
+          persist-credentials: false
+      - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
+      - uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Published image for this arch
+        id: published
+        run: |
+          version="${TAG#image-}"; version="${version#v}"
+          ref="${REGISTRY}/${IMAGE}:${version}"
+          digest="$(docker buildx imagetools inspect "$ref" --raw \
+            | jq -r --arg a "$ARCH" '.manifests[] | select(.platform.architecture == $a and .platform.os == "linux") | .digest')"
+          [ -n "$digest" ] || { echo "::error::no linux/${ARCH} manifest in ${ref}"; exit 1; }
+          docker buildx imagetools inspect "${REGISTRY}/${IMAGE}@${digest}" --raw | jq -r '.layers[].digest' >published.layers
+          echo "version=$version" >>"$GITHUB_OUTPUT"
+          echo "ref=${REGISTRY}/${IMAGE}@${digest}" >>"$GITHUB_OUTPUT"
+          echo "base=${REGISTRY}/fawkes-space-ai:${version}" >>"$GITHUB_OUTPUT"
+
+      # The same inputs as the publish job: target, build contexts, build args,
+      # zstd layers. SOURCE_DATE_EPOCH is the tagged commit's time, so a tag
+      # published before the publish job set it is expected to mismatch.
+      - name: Rebuild from the tag
+        env:
+          VERSION: ${{ steps.published.outputs.version }}
+          BASE: ${{ steps.published.outputs.base }}
+        run: |
+          sde="$(git log -1 --format=%ct)"
+          if [ "$VARIANT" = devcontainer ]; then
+            args=(-f .devcontainer/Dockerfile --build-arg "BASE_IMAGE=${BASE}" .)
+          else
+            args=(--target "$VARIANT" --build-arg "VERSION=${VERSION}" \
+              --build-context opencode-src=./opencode \
+              --build-context agents-src=./.agents/agents images/devsecops)
+          fi
+          docker buildx build --platform "linux/${ARCH}" --provenance=false --sbom=false \
+            --build-arg "REVISION=${GITHUB_SHA}" --build-arg "SOURCE_DATE_EPOCH=${sde}" \
+            --output "type=oci,dest=rebuild.tar,compression=zstd,force-compression=true,oci-mediatypes=true,rewrite-timestamp=true" \
+            "${args[@]}"
+          mkdir rebuild && tar -xf rebuild.tar -C rebuild
+          manifest="$(jq -r '.manifests[0].digest' rebuild/index.json)"
+          jq -r '.layers[].digest' "rebuild/blobs/${manifest/://}" >rebuilt.layers
+
+      - name: Compare layers
+        id: compare
+        run: |
+          if diff -u published.layers rebuilt.layers >layers.diff; then
+            echo "result=match" >>"$GITHUB_OUTPUT"
+          else
+            echo "result=mismatch" >>"$GITHUB_OUTPUT"
+          fi
+
+      - name: diffoci — what differs
+        if: steps.compare.outputs.result == 'mismatch'
+        env:
+          REF: ${{ steps.published.outputs.ref }}
+          BASE: ${{ steps.published.outputs.base }}
+          VERSION: ${{ steps.published.outputs.version }}
+        run: |
+          sha_var="DIFFOCI_SHA256_${ARCH^^}"
+          curl -fsSL -o diffoci "https://github.com/reproducible-containers/diffoci/releases/download/${DIFFOCI_VERSION}/diffoci-${DIFFOCI_VERSION}.linux-${ARCH}"
+          echo "${!sha_var}  diffoci" | sha256sum -c -
+          chmod +x diffoci
+          # Load the rebuild into the Docker image store for diffoci's local backend.
+          if [ "$VARIANT" = devcontainer ]; then
+            args=(-f .devcontainer/Dockerfile --build-arg "BASE_IMAGE=${BASE}" .)
+          else
+            args=(--target "$VARIANT" --build-arg "VERSION=${VERSION}" \
+              --build-context opencode-src=./opencode \
+              --build-context agents-src=./.agents/agents images/devsecops)
+          fi
+          docker buildx build --platform "linux/${ARCH}" --provenance=false --sbom=false --load -t repro:local \
+            --build-arg "REVISION=${GITHUB_SHA}" --build-arg "SOURCE_DATE_EPOCH=$(git log -1 --format=%ct)" \
+            "${args[@]}"
+          rc=0
+          ./diffoci diff --semantic --platform "linux/${ARCH}" --report-dir=diffoci-report "$REF" docker://repro:local >diffoci.txt 2>&1 || rc=$?
+          echo "diffoci exit ${rc} (1 = differences found)"
+          [ "$rc" -le 1 ] || { cat diffoci.txt; echo "::error::diffoci failed to run"; exit "$rc"; }
+
+      - name: Summary
+        if: always()
+        env:
+          RESULT: ${{ steps.compare.outputs.result }}
+        run: |
+          {
+            echo "### ${IMAGE} ${TAG} linux/${ARCH}: **${RESULT:-not compared}**"
+            if [ "$RESULT" = mismatch ]; then
+              echo '<details><summary>Layer digests (published vs rebuilt)</summary>'; echo; echo '```diff'
+              cat layers.diff; echo '```'; echo '</details>'
+              if [ -f diffoci.txt ]; then
+                echo; echo '<details><summary>diffoci --semantic (first 100 lines)</summary>'; echo; echo '```'
+                head -100 diffoci.txt; echo '```'; echo '</details>'
+              fi
+            fi
+          } >>"$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        if: always() && steps.compare.outputs.result == 'mismatch'
+        with:
+          name: diffoci-${{ matrix.variant }}-${{ matrix.arch }}
+          path: |
+            diffoci.txt
+            diffoci-report
+            layers.diff
+          if-no-files-found: ignore
+
+      - name: job-finish
+        if: always()
+        run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ') sha=${GITHUB_SHA} workflow=${GITHUB_WORKFLOW} job=${GITHUB_JOB}"
