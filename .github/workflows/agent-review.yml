@@ -1,0 +1,71 @@
+name: Agent PR Review
+
+# Stage 5 (#158): a review agent reads REVIEW.md and comments on the PR.
+# It never approves, requests changes or merges; a human does (hard rule 2).
+# Without ANTHROPIC_API_KEY the job FAILS with a message — a skipped review
+# must never look like a passing one. Fork PRs have no secrets, so they are
+# reported as not reviewed and pass.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: agent-review-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  review-files:
+    name: "📋 REVIEW.md checks"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - run: bash scripts/test-check-review-md.sh
+      - run: bash scripts/check-review-md.sh
+
+  agent-review:
+    name: "🔎 Agent PR review"
+    needs: review-files
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    env:
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      IS_FORK: ${{ github.event.pull_request.head.repo.full_name != github.repository }}
+    steps:
+      - name: Check prerequisites
+        id: gate
+        shell: bash
+        run: |
+          if [ "$IS_FORK" = "true" ]; then
+            echo "::notice::Fork PR: no secrets available, NOT reviewed by the agent."
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          elif [ -z "$ANTHROPIC_API_KEY" ]; then
+            echo "::error::ANTHROPIC_API_KEY is not set; the agent review cannot run."
+            exit 1
+          else
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - if: steps.gate.outputs.run == 'true'
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - if: steps.gate.outputs.run == 'true'
+        uses: anthropics/claude-code-action@34968b5981d5d170904281aa3df6f3c0d4a28855 # v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          # Use the job's token (pull-requests: write) instead of an OIDC-minted app token.
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          prompt: |
+            Review PR #${{ github.event.pull_request.number }} in ${{ github.repository }}.
+            Read REVIEW.md first and follow it exactly: its Flag and Skip lists,
+            severity levels and output format. Post one comment with your findings.
+            You may read files and run read-only git/gh commands. Do not approve,
+            request changes, push, or merge.
+          claude_args: |
+            --allowedTools "Read,Grep,Glob,Bash(git diff:*),Bash(git log:*),Bash(gh pr view:*),Bash(gh pr diff:*),Bash(gh pr comment:*)"
