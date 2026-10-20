@@ -6,6 +6,10 @@ each independently reviewable and green.
 
 ## Resolved tool versions
 
+> Historical snapshot (resolved 2026-09-26 for this plan). Exact current pins live
+> in `images/devsecops/tools.lock.json` and `images/devsecops/node-ai/package.json`;
+> the bump workflow updates them, not this table.
+
 Resolved 2026-09-26 from each project's latest GitHub release (npm / dl.k8s.io
 where noted). These seed `tools.lock.json`; update automation owns them afterwards (see PR 3 notes).
 All listed tools publish `linux/amd64` and `linux/arm64` builds.
