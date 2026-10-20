@@ -242,7 +242,7 @@ if [ "$VARIANT" = ai ]; then
   check_lsp tsserver ls -L /usr/local/bin/tsserver
   check_lsp python pyright --version
   check_lsp bash bash-language-server --version
-  check_lsp yaml ls -L /usr/local/bin/yaml-language-server
+  check_lsp yaml yaml-language-server --version
   # Dropped from the image on purpose; a stray one means the slim-down regressed.
   for gone in go gopls clangd semgrep; do
     if command -v "$gone" > /dev/null; then bad "$gone should not be in the image"; else ok "absent (by design): $gone"; fi

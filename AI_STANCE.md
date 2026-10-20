@@ -75,10 +75,10 @@ finding in a report does not enforce anything on its own.
 | Claude Code      | 2.1.293 (pinned in `.devcontainer/Dockerfile`)                   | Skill authoring, code review, content      |
 | Claude Code for VS Code | current (`anthropic.claude-code`, devcontainer extension)  | Claude Code in the editor; same CLI and settings |
 | OpenCode for VS Code | current (`sst-dev.opencode`, devcontainer extension)          | Opens the baked-in OpenCode from the editor |
-| Codex CLI        | 0.161.0 (pinned in `images/devsecops/node-ai`)                  | Compatibility harness (reads `AGENTS.md`)   |
+| Codex CLI        | 0.162.1 (pinned in `images/devsecops/node-ai`)                  | Compatibility harness (reads `AGENTS.md`)   |
 | Gemini CLI       | 0.63.0 (pinned in `images/devsecops/node-ai`)                   | Compatibility harness (reads `GEMINI.md`)   |
 | qmd              | 2.8.3 (pinned in `images/devsecops/node-ai`)                    | Local markdown search + MCP server; small local models only (no data leaves the machine) |
-| Superpowers      | 6.4.2 skills (pinned in `images/devsecops/tools.lock.json`)     | Development methodology for all harnesses   |
+| Superpowers      | 7.0.0 skills (pinned in `images/devsecops/tools.lock.json`)     | Development methodology for all harnesses   |
 | Flux agent skills | 0.3.0 (pinned in `images/devsecops/tools.lock.json`)           | GitOps knowledge, repo audit, cluster debug |
 | Claude model     | not pinned in this repository; selected per session             | Reasoning backend                           |
 | GitHub Copilot   | current                                                          | IDE code completion                         |
