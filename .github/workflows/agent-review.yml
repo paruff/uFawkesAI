@@ -61,6 +61,10 @@ jobs:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           # Use the job's token (pull-requests: write) instead of an OIDC-minted app token.
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          # Release-please opens its PRs as github-actions[bot]; without this the
+          # action refuses to run ("Workflow initiated by non-human actor").
+          # Explicit list, not '*': only the repository's own automation may trigger it.
+          allowed_bots: "github-actions"
           prompt: |
             Review PR #${{ github.event.pull_request.number }} in ${{ github.repository }}.
             Read REVIEW.md first and follow it exactly: its Flag and Skip lists,
