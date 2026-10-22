@@ -135,12 +135,12 @@ USER ${DEV_USER}
 WORKDIR /home/${DEV_USER}
 # The versioned OpenCode config (opencode/: fixed model per agent, no model
 # router, fallback off, pinned plugins from package-lock.json) and the four
-# uFawkesAI agents are baked in, so no container ever runs sync.sh by hand.
+# uFawkesAI agents are baked in, so no container needs a manual install.
 # Claude Code gets the same four agents in ~/.claude/agents.
 COPY --from=opencode-src --chown=${DEV_USER}:${DEV_USER} . /tmp/oc/opencode/
 COPY --from=agents-src --chown=${DEV_USER}:${DEV_USER} . /tmp/oc/.agents/agents/
 RUN git config --global url."https://github.com/".insteadOf "ssh://git@github.com/" \
- && bash /tmp/oc/opencode/sync.sh --apply \
+ && UFAWKES_IMAGE_BUILD=1 bash /tmp/oc/opencode/bake.sh \
  && mkdir -p .claude/agents && cp .config/opencode/agents/*.md .claude/agents/ \
  && rm -rf /tmp/oc .npm/_cacache
 # Locked agent skills (/opt/agent-skills, from tools.lock.json), so every repo

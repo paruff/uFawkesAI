@@ -33,7 +33,7 @@ The four execution boundaries. Invoke by `@name` in OpenCode or any compatible a
 ### Pipeline
 
 ```
-plan(@planner) → build(@builder) → verify(@verifier) → ship(@operator) → human merges
+plan(@planner) → build(@builder) → verify(@verifier) → **review (`/review-local`, before commit)** → ship(@operator) → CI agent review → human merges
 ```
 
 The plan/build/verify steps load **Superpowers** skills (`brainstorming`,
@@ -49,6 +49,7 @@ The plan/build/verify steps load **Superpowers** skills (`brainstorming`,
 | "Implement feature X"                       | `@builder`               |
 | "Implement / TDD / ship the planned work"   | `/implement`, `/tdd`, `/ship` |
 | "Prove it works; run tests and review"      | `@verifier`              |
+| "Review my change before I commit"         | `/review-local` (rubric: `REVIEW.md`) |
 | "Review this PR" / "Check coverage"         | `/review-agents`, `/verify` |
 | "Is uFawkesAI healthy?"                     | `/oc-health`             |
 | "Ship the release" / "Monthly DORA snapshot" | `/release`, `/measure`   |

@@ -1,6 +1,6 @@
 # Global agent stance (all repos) — DORA AI Capability 1: Clear and communicated AI stance
 
-Installed to `~/.config/opencode/AGENTS.md` by `opencode/sync.sh` from
+Baked into the image's `~/.config/opencode/AGENTS.md` by `opencode/bake.sh` from
 paruff/uFawkesAI. Loaded into every OpenCode session in every repo, so it holds
 only what is true everywhere; each repo's own `AGENTS.md` wins on specifics.
 

@@ -37,6 +37,11 @@ If pre-commit failed, analyze the output:
 
 Only proceed once pre-commit passes cleanly (or Step 2 found no hook gate).
 
+## Step 3b: Review against REVIEW.md
+
+Run `/review-local` on the staged diff. A HIGH finding stops the ship: fix it,
+re-stage, re-run Step 2. MEDIUM findings: fix or justify in the PR body.
+
 ## Step 4: Sanity check
 
 - `git status` and `git diff --staged`

@@ -5,24 +5,14 @@ machine it runs on.
 
 ## Where it gets installed
 
-- **Devcontainer: nothing to do.** The `fawkes-space-ai` image bakes this
+- **Devcontainer: nothing to do.** The `fawkes-space` image bakes this
   config, its pinned plugins, the four uFawkesAI agents (planner, builder,
   verifier, operator; also in `~/.claude/agents`) and the tier subagents in at
   build time. Rebuild or pull the image to pick up a change.
-- **Host machine: `sync.sh`, preview first.**
-
-```bash
-bash opencode/sync.sh          # preview: lists every file that would change, writes nothing
-bash opencode/sync.sh --apply  # backs up ~/.config/opencode to ~/opencode-config-backup-*.tgz, then installs
-```
-
-`--apply` renders `__HOME__`, copies `opencode.jsonc`, `fallback.json`,
-`package.json`, `package-lock.json`, the global `AGENTS.md`, `commands/*.md`
-and `../.agents/agents/*.md` into `$OPENCODE_CONFIG_DIR` (default
-`~/.config/opencode`), removes stale files from earlier layouts (`tiers.json`,
-the retired superpowers bridge, a duplicate `skills/superpowers` link), runs
-`npm ci` for the exact-pinned plugins, then `validate.sh`. It never touches
-`~/.claude`. Restart OpenCode afterwards — config loads once at boot.
+- **Host machine: not installed.** Nothing here writes to your
+  `~/.config/opencode`; keep and experiment with your own config there.
+  `bake.sh` runs only during the image build and refuses to run otherwise.
+  To try this config on a host, copy the files by hand.
 
 ## Files
 
@@ -33,7 +23,7 @@ the retired superpowers bridge, a duplicate `skills/superpowers` link), runs
 | `AGENTS.md`           | Global stance loaded into every OpenCode session in every repo (repo `AGENTS.md` wins on specifics)        |
 | `package.json`(+lock) | Exact-pinned plugin dependencies (git deps SHA-pinned)                                                      |
 | `commands/doctor.md`  | Global `/doctor` command: config/tier/fallback health check (installed to `~/.config/opencode/commands/`)   |
-| `sync.sh`             | Install script (above)                                                                                      |
+| `bake.sh`             | Image-build install script (above); refuses to run outside the build                                        |
 | `validate.sh`         | Determinism invariants (below)                                                                              |
 
 ## Determinism
@@ -127,9 +117,9 @@ Fails the sync (and should gate CI if wired in) when any of these regress:
 
 ## Devcontainer parity
 
-The image (`.devcontainer/Dockerfile`) bakes the pinned `opencode-ai@1.18.30`
-(keep in sync with host Homebrew), uv/uvx + the serena cache, Playwright
-browsers, and `~/.config/opencode` (via `sync.sh`). At container create,
+The image (`.devcontainer/Dockerfile`) bakes the pinned OpenCode release
+(`images/devsecops/tools.lock.json`), uv/uvx + the serena cache, Playwright
+browsers, and `~/.config/opencode` (via `bake.sh`). At container create,
 `.devcontainer/post-create.sh` runs only `npm ci` (blocking), then detaches
 `.devcontainer/setup-bg.sh` — config re-sync, browser top-up, missing-tool
 guards — logged to `~/.devcontainer-setup.log` with a

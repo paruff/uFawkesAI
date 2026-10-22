@@ -5,8 +5,8 @@ agent: operator
 
 You are a configuration diagnostician for OpenCode. Perform a comprehensive
 health check on this setup. The canonical config lives in this repo's
-`opencode/` directory and is installed to `~/.config/opencode/` by
-`opencode/sync.sh` — check the **installed** files (that is what opencode
+`opencode/` directory and is baked into the image's `~/.config/opencode/` by
+`opencode/bake.sh` (on a host, your own config is yours) — check the **installed** files (that is what opencode
 boots from). Never print a full API key — first 8 characters only.
 
 ## 1. Check Core Configuration Files

@@ -2,7 +2,7 @@
   "$schema": "https://opencode.ai/config.json",
 
   // SINGLE SOURCE OF TRUTH — the canonical copy lives in paruff/uFawkesAI
-  // opencode/ and is installed to ~/.config/opencode by opencode/sync.sh.
+  // opencode/ and is baked into the fawkes-space image by opencode/bake.sh.
   // Edit there, not here.
   //
   // DETERMINISM: one explicit model per agent, no LLM-classified tier routing
@@ -156,7 +156,7 @@
   // Re-add only against a fixed upstream build.
   //
   // Plugin list is npm-managed: exact-pinned in opencode/package.json +
-  // package-lock.json, installed by opencode/sync.sh (npm ci). Bare names
+  // package-lock.json, installed by opencode/bake.sh (npm ci). Bare names
   // resolve from ~/.config/opencode/node_modules.
   //
   // superpowers loads via a SHA-pinned git-spec entry (obra/superpowers, the
@@ -177,8 +177,7 @@
   // works even with a cold plugin cache, and the loader dedupes the two
   // registrations (no duplicate-name warnings). Single registration path ONLY
   // — a companion skills/superpowers symlink caused "duplicate skill name"
-  // warnings and is removed by sync.sh. __HOME__ is substituted by
-  // opencode/sync.sh so the same file works on host and in the devcontainer.
+  // warnings. __HOME__ is substituted by opencode/bake.sh.
   "skills": {
     "paths": ["__HOME__/.config/opencode/node_modules/superpowers/skills"]
   }

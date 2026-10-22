@@ -33,12 +33,11 @@ echo "== 2. Harness parity (no shadowing, MCP sets match) =="
 bash scripts/check-harness-parity.sh || fail "harness parity check failed"
 
 echo "== 3. OpenCode commands: /plan /verify /ship /oc-health discoverable =="
-OC_COMMANDS=$(opencode debug config | jq -r '.command | keys | join(",")')
+# OpenCode 2.x has no merged `command` map: `debug config` lists config sources,
+# and commands are the markdown files OpenCode loads from .opencode/commands.
+opencode debug config > /dev/null || fail "opencode debug config does not load"
 for cmd in plan verify ship oc-health; do
-  case ",$OC_COMMANDS," in
-    *",$cmd,"*) ;;
-    *) fail "OpenCode command '$cmd' not discovered (found: $OC_COMMANDS)" ;;
-  esac
+  test -f ".opencode/commands/$cmd.md" || fail "OpenCode command '$cmd' not found at .opencode/commands/$cmd.md"
 done
 
 echo "== 4. Claude Code commands: /plan /verify /ship discoverable, doctor NOT shadowed =="
