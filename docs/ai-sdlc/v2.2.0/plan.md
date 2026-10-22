@@ -74,6 +74,13 @@ Order matters: land the image-plumbing PRs first, then content bumps, then the r
 - v2 binaries come from `opencode.ai`, not GitHub: no upstream checksum file, so we pin the formula's sha256 and
   record where it came from. Reproducibility check may need an allowance until verified.
 
+## Finding: bot-created tags do not publish (2026-10-22)
+
+`v2.1.0` was created by release-please as `github-actions[bot]`, and `build-devsecops-images.yml` never ran for it: GitHub does
+not start workflows for events made with `GITHUB_TOKEN`. Result: GitHub Release 2.1.0 exists but `ghcr.io/paruff/fawkes-space:2.1.0`
+does not (published tags are `2.0.0`/`latest` and `2.1.0-rc.1`). Cut `v2.2.0-rc.1` and `v2.2.0` by hand (the workflow header already
+says tags are cut by a human), and either stop release-please creating tags or give it a PAT/GitHub App token.
+
 ## Verification Strategy
 
 | Criterion | How it is verified |

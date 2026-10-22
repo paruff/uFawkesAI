@@ -88,11 +88,11 @@ CI gate set; pinned, signed, reproducibly-built image.
 | --- | --- |
 | 1 README | Done: 104 lines, claims check extended (agent count) |
 | 2 Leakage | Done: private IP removed; `check-no-leakage.sh` is a pre-commit hook and a unit suite |
-| 3 Sibling coupling | Partly: `learn`, `dojo-navigator`, four Dojo docs to uFawkesDojo#110; `integration-testing` to uFawkesObs#681; Dojo feedback pipeline removed. **Kept here:** `dora-measurement` and `/measure`, because `@operator` and `/release` use them; move later with the operator change and an eval run |
+| 3 Sibling coupling | Done: `learn`, `dojo-navigator`, four Dojo docs to uFawkesDojo#110; `integration-testing` and `dora-measurement` to uFawkesObs#681; `/measure` removed here (Obs has its own); Dojo feedback pipeline removed; operator agent and `/release` now only file the follow-up issue |
 | 4 Orphans | Done: nine docs removed, six finished feature chains archived under the `pre-cleanup` tag |
 | 5 Skills | Done: no skill file over 200 lines (discovery 916 to 79, dora-measurement 985 to 74, ai-stance 757 to 59) |
 | 6 Workflows | Partly: one workflow removed; the rest are documented in CONTRIBUTING. No more removed: each is a required check or a release gate |
 | 7 Polish | Done: `docs/README.md`, CONTRIBUTING workflow table, Node 22 fix |
 
-Tracked files: 298 to 270. The target of 180 was not reached; the remaining mass is the image build, the CI scripts and
+Tracked files: 298 to 266. The target of 180 was not reached and is revised to "under 270, and nothing a user does not need" after the audit; the remaining mass is the image build, the CI scripts and
 their tests, and the guardrail docs, which current users depend on. Revisit after the Dojo and Obs PRs merge.
