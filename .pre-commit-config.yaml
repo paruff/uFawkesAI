@@ -149,6 +149,15 @@ repos:
   # ============================================================================
   - repo: local
     hooks:
+      # Keep private LAN IPs and developer home paths out of a public repo
+      - id: no-leakage
+        name: No private IPs or home paths
+        entry: scripts/check-no-leakage.sh
+        language: script
+        stages: [pre-commit]
+        pass_filenames: false
+        always_run: true
+
       # Validate staged *-report.md files against their output contracts
       - id: agent-report-contracts
         name: Agent report contracts

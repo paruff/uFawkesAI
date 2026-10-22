@@ -5,7 +5,7 @@ Thanks for helping improve this repository. We are building an AI-ready project 
 ## Before you start
 
 - Use Git and a clean branch for every change.
-- Install Node.js 20 or newer and a recent Bash environment.
+- Install Node.js 22 or newer (see `.nvmrc`) and a recent Bash environment.
 - Run `pre-commit run --all-files` before pushing.
 - Keep secrets and credentials out of the repository. Do not commit `.env` files or tokens.
 - Read `AGENTS.md`, `README.md`, and the relevant docs for the area you are editing before making a change.
@@ -73,18 +73,24 @@ pre-commit run --all-files
 
 If the change is documentation-only, keep the scope to the relevant docs and confirm the content stays accurate.
 
-## Dojo learning path
+## CI workflows
 
-Use these modules to understand the intent behind the repository and the practices it promotes:
+Every pull request runs the gates below. Required checks are Pre-flight, Artifact Chain and CI Complete.
 
-- `AGENTS.md` and AI workflow design: https://paruff.github.io/fawkes/dojo/modules/white-belt/module-01-what-is-idp/
-- DORA metrics and delivery health: https://paruff.github.io/fawkes/dojo/modules/white-belt/module-02-dora-metrics/
-- CI fundamentals: https://paruff.github.io/fawkes/dojo/modules/yellow-belt/module-05-ci-fundamentals/
-- Security and quality gates: https://paruff.github.io/fawkes/dojo/modules/yellow-belt/module-07-security-quality-gates/
-- Metrics, logs, and traces: https://paruff.github.io/fawkes/dojo/modules/brown-belt/module-13-metrics-logs-traces/
-- Platform-as-product thinking: https://paruff.github.io/fawkes/dojo/modules/black-belt/module-17-platform-as-product/
-
-You do not need to complete a module before contributing; use them as a guide to the surrounding context.
+| Workflow | What it checks |
+| --- | --- |
+| `ci-quality.yml` | Pre-flight (pre-commit hooks), tests, PR size, multi-harness smoke test; reports **CI Complete** |
+| `artifact-chain.yml` | `intent.md` → `spec.md` → `plan.md` chain and a Verification Strategy for code changes |
+| `agent-config-ci.yml` | Replays recorded tasks against the agent configuration; blocks if behaviour regresses |
+| `agent-ci.yml` | Agent skill and agent-file validity |
+| `agent-review.yml` | Applies `REVIEW.md` with a model when `ANTHROPIC_API_KEY` is set; otherwise warns and passes |
+| `doc-freshness.yml` | Documentation freshness |
+| `secret-scan.yml`, `dependency-review.yml` | Secrets and dependency changes |
+| `main-ci-guard.yml` | Main's CI must be green before a PR can merge |
+| `build-devsecops-images.yml` | Builds, verifies, signs and publishes the images on a `v*` tag |
+| `image-lock-bump.yml`, `pre-commit-autoupdate.yml` | Weekly bumps of pinned tools and hook versions |
+| `image-reproducibility.yml`, `live-acceptance.yml` | Weekly rebuild comparison; acceptance tests inside the published image |
+| `release-please.yml` | Release PRs and changelog |
 
 ## Review and maintenance
 

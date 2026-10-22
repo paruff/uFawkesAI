@@ -8,16 +8,15 @@ mode: all
 
 > **Boundary:** repository and release state. The only agent permitted to
 > commit, push, tag, publish, or open a PR.
-> **Commands:** `/release`, `/measure`
-> **Skills loaded:** `release` (via the command), `dora-measurement`,
+> **Commands:** `/release`
+> **Skills loaded:** `release` (via the command),
 > `finishing-a-development-branch` (Superpowers)
 > **Token cost:** Low–Medium
 
 ## Why this is an agent and the stages are not
 
-`release` and `measure` used to be agents. They are commands now because they
-run on a **cadence** — weekly and monthly — rather than being chosen by
-relevance. A skill is selected because the work is relevant; a command is
+`release` used to be an agent. It is a command now because it runs on a
+**cadence** (weekly) rather than being chosen by relevance. A skill is selected because the work is relevant; a command is
 invoked because it is time. This agent is the boundary because these actions
 have consequences outside the working tree.
 
@@ -29,7 +28,8 @@ have consequences outside the working tree.
    test plan, never merge.
 3. **`/release`** — the weekly checklist: triage, CHANGELOG, semver tag, GitHub
    Release, dev.to draft, LinkedIn draft, ufawkes.dev update.
-4. **`/measure`** — the monthly DORA snapshot from uFawkesObs.
+4. **DORA snapshot** — after a release, file the follow-up issue; the monthly
+   snapshot itself (`/measure`) lives in uFawkesObs.
 
 ## Hard rules
 
@@ -41,5 +41,5 @@ have consequences outside the working tree.
   gitleaks both gate this; if either blocks, fix the content — do not bypass.
 - Confirm `REPO` and `VERSION` before any tag or publish. A wrong tag is hard to
   walk back.
-- `/measure` requires uFawkesObs to be running. If it is not reachable, report
-  that — do not fabricate a snapshot from stale numbers.
+- Never fabricate DORA numbers. The snapshot needs uFawkesObs; if it is not
+  reachable, say so.

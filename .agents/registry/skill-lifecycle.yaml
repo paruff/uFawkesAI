@@ -153,17 +153,6 @@ skills:
   # Testing Skills
   # ============================================
 
-  integration-testing:
-    status: active
-    version: 1.0.0
-    dependencies: []
-    load_trigger: "load integration-testing skill"
-    sub_skills:
-      - integration-testing/full-stack
-      - integration-testing/gitops-to-controller
-      - integration-testing/obs-to-gitops
-      - integration-testing/pipe-to-obs
-
   e2e-testing:
     status: active
     version: 1.0.0
@@ -287,23 +276,9 @@ skills:
       - agent-observability/finding-quality
       - agent-observability/decision-logging
 
-  dojo-feedback:
-    status: beta
-    version: 0.1.0
-    dependencies: []
-    load_trigger: "load dojo-feedback skill"
-    sub_skills: []
-
   ufawkes-knowledge:
     status: active
     version: 1.0.0
     dependencies: []
     load_trigger: "searching this repo's knowledge via qmd"
-    sub_skills: []
-
-  dojo-navigator:
-    status: beta
-    version: 0.1.0
-    dependencies: []
-    load_trigger: "load dojo-navigator skill"
     sub_skills: []

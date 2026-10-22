@@ -47,7 +47,7 @@ tool use and trajectory against `baseline.json`.
 
 **REQ-006 — Delivery events reach uFawkesObs, or the claim goes (AC-AI-06).**
 A real event emitted from a checkout is queryable in uFawkesObs's Loki with
-documented LogQL ([`dora-events-portability`](../dora-events-portability/spec.md)
+documented LogQL (`dora-events-portability` spec, `git show pre-cleanup:docs/ai-sdlc/dora-events-portability/spec.md`,
 GAP-03, #157). If not verified by the tag, the README and
 `docs/UFAWKES_INTEGRATION.md` stop claiming it.
 

@@ -39,8 +39,8 @@
 #
 # Before the canonicalisation, "Cap 6" meant User-centric focus in some files
 # and Reliability / Operational Visibility / Fast Feedback Loops in others.
-# TEMPLATE-DESIGN.md additionally defined an eight-capability scheme that
-# included two invented capabilities. Do not reintroduce that.
+# An older design doc defined an eight-capability scheme that included two
+# invented capabilities. Do not reintroduce that.
 
 schema_version: 1
 source: "DORA AI Capabilities Model (2025) — https://dora.dev/ai/capabilities-model/report/"

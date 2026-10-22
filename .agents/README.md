@@ -52,7 +52,7 @@ The plan/build/verify steps load **Superpowers** skills (`brainstorming`,
 | "Review my change before I commit"         | `/review-local` (rubric: `REVIEW.md`) |
 | "Review this PR" / "Check coverage"         | `/review-agents`, `/verify` |
 | "Is uFawkesAI healthy?"                     | `/oc-health`             |
-| "Ship the release" / "Monthly DORA snapshot" | `/release`, `/measure`   |
+| "Ship the release"                          | `/release`               |
 
 ---
 
@@ -128,13 +128,11 @@ The former stage skills (`spec`, `design`, `plan`, `build`, `test`,
 | Folder       | Loaded by             | Purpose                                                            |
 | ------------ | --------------------- | ------------------------------------------------------------------ |
 | `discovery/` | `@planner`, workflows | JTBD + acceptance-criteria discovery brief (AI Capability 6)       |
-| `learn/`     | after release         | Retrospective; maps findings to DORA AI capabilities, feeds `plan` |
 
 ### Testing Skills
 
 | Folder                 | Load Trigger              | Purpose                                         |
 | ------------------------ | --------------------------- | -------------------------------------------------- |
-| `integration-testing/` | integration test patterns | PIPE→OBS, OBS→GitOps, controller, full-stack    |
 | `e2e-testing/`         | end-to-end test patterns  | Happy path, failure paths, deployment, rollback |
 
 ### Security Skills
@@ -164,13 +162,11 @@ The former stage skills (`spec`, `design`, `plan`, `build`, `test`,
 | `documentation/`        | pre-release audit, repo onboarding    | Enforce minimum documentation standard across uFawkes* repos (AI Capability 3) |
 | `context-engineering/`  | session startup                       | Verify internal context is complete and placeholder-free before each agent session (AI Capability 3) |
 | `ufawkes-knowledge/`    | answering from repo knowledge via qmd | QMD collections + query patterns for this repo's indexed docs (`.agents/`, `docs/`) |
-| `dojo-navigator/`       | capability-focused task               | Surface the matching Fawkes Dojo module for the task's DORA capability (`docs/DOJO_MAP.md`) |
 
 ### DORA Measurement & Reporting Skills
 
 | Folder                    | Load Trigger                            | Purpose                                                              |
 | ---------------------------- | ------------------------------------------ | --------------------------------------------------------------------------- |
-| `dora-measurement/`       | monthly DORA snapshot                   | Compute the five DORA software delivery metrics from uFawkesObs (AI Capability 7) |
 | `ROI-reporting/`          | board/quarterly ROI evidence            | Monthly DORA ROI snapshot using the 2026 DORA ROI five-dimension framework |
 | `value-stream-mapping/`   | metrics plateau, high lead time         | Map the value stream to find bottlenecks consuming AI productivity gains |
 | `platform-feedback/`      | quarterly                                | Developer feedback collection — measures IDP cognitive-load reduction (AI Capability 7) |
@@ -180,7 +176,6 @@ The former stage skills (`spec`, `design`, `plan`, `build`, `test`,
 | Folder          | Load Trigger              | Purpose                                                  |
 | ------------------ | ---------------------------- | --------------------------------------------------------------- |
 | `DOJO-content/` | platform engineering training | Create/manage DOJO content for platform engineering education |
-| `dojo-feedback/` | after a Dojo lab built from a feature completes | Turn lab results into `dojo-feedback.md` (gaps in guardrails/prompts/spec/plan) that CI converts into an `intent` issue — see `docs/ai-sdlc/dojo-handoff.md` |
 
 ### Cross-Cutting Skills
 

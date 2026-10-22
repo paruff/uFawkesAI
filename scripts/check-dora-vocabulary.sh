@@ -10,7 +10,7 @@
 #      Left on Quality", "Prompt Engineering as Core Skill", ...).
 #   3. A non-DORA practice is numbered as if it were an AI capability.
 #
-# The bug this exists to prevent: TEMPLATE-DESIGN.md used to define its own
+# The bug this exists to prevent: an older design doc used to define its own
 # eight-capability scheme in which Cap 6 was "Fast Feedback Loops", while
 # DORA's Cap 6 is "User-centric focus" and several skills used "Cap 6" to mean
 # Reliability or Operational Visibility. One number, three meanings.

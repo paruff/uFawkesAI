@@ -20,13 +20,13 @@ SUITES=(
   scripts/test-emit-dora-event.sh
   scripts/test-dora-vocabulary-locale.sh
   scripts/test-artifact-chain.sh
-  scripts/test-dojo-feedback-intent.sh
   scripts/test-run-evals.sh
   scripts/test-image-lock-bump.sh
   scripts/test-image-lock-refresh.sh
   scripts/test-main-ci-guard.sh
   scripts/test-check-placeholders.sh
   scripts/test-check-readme-claims.sh
+  scripts/test-no-leakage.sh
   scripts/test-git-isolation.sh
 )
 

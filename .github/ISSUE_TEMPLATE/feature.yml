@@ -44,7 +44,7 @@ body:
     id: dora_capability
     attributes:
       label: DORA AI Capability Addressed
-      description: Which DORA AI capability does this feature advance? See AGENTS.md §1 and docs/TEAM_ARCHETYPE.md.
+      description: Which DORA AI capability does this feature advance? See AGENTS.md §1.
       options:
         - "Clear and communicated AI stance"
         - "Healthy data ecosystems"

@@ -152,7 +152,7 @@ All other findings are warnings — document them in the session log and proceed
   "placeholders_found": 0,
   "ai_stance_current": true,
   "ai_stance_days_old": 12,
-  "pending_skills": ["j-curve-navigation", "dora-measurement"],
+  "pending_skills": ["j-curve-navigation"],
   "session_status": "ready | ready-with-warnings | blocked",
   "warnings": [],
   "block_reason": null

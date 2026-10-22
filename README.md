@@ -1,258 +1,103 @@
 # uFawkesAI
 
-> Configure your AI agent to work the way DORA research proves high-performing teams work. One template. Every agent. DORA AI Capabilities built in from line one.
-> [![DORA AI Capabilities](https://img.shields.io/badge/DORA%20AI%20Capabilities-Built%20In-0A66C2?style=flat-square)](https://github.com/paruff/uFawkesAI) [![MIT License](https://img.shields.io/badge/License-MIT-2EA44F?style=flat-square)](./LICENSE) [![uFawkes Family](https://img.shields.io/badge/uFawkes-Family-6F42C1?style=flat-square)](https://github.com/paruff/uFawkesAI) [![Works with Copilot](https://img.shields.io/badge/Works%20with-Copilot-24292F?style=flat-square)](https://docs.github.com/en/copilot/how-tos/custom-instructions/adding-custom-instructions-for-github-copilot) [![Works with Claude Code](https://img.shields.io/badge/Works%20with-Claude%20Code-D97706?style=flat-square)](https://docs.anthropic.com/en/docs/claude-code) [![Works with Cursor](https://img.shields.io/badge/Works%20with-Cursor-1F6FEB?style=flat-square)](https://docs.cursor.com/context/rules-for-ai)
+A template for working with AI coding agents the way the DORA research describes
+high-performing teams: one instruction file every agent reads, four agents with
+clear boundaries, a documented intent → spec → plan chain, a review before commit,
+and a signed devcontainer image with the tools installed.
 
-## The problem
-
-AI agents start every session blank: they know none of your conventions, architecture, or the research-backed practices that improve delivery performance. This template fixes that.
+[![MIT License](https://img.shields.io/badge/License-MIT-2EA44F?style=flat-square)](./LICENSE)
 
 ## What you get
 
-- `AGENTS.md` — universal agent instruction file, auto-loaded by Copilot, Claude Code, Cursor, Codex, Gemini CLI, Windsurf, and Devin
-- `CLAUDE.md` symlink — so Claude Code gets the same instructions without a separate file
-- `.github/copilot-instructions.md` symlink — Copilot's preferred path
-- `.agents/agents/` — 14 agent profiles: 7 core pipeline agents (spec, design, build, test, test-execution, review, cross-validation) + 7 flow/meta agents
-- `.github/instructions/` — scoped instruction files for feature and test work
-- `docs/PROMPT_LIBRARY.md` — tested prompts for every repeating task, versioned
-- `docs/GOLDEN_PATH.md` — 10-step idea→deploy workflow
-- `docs/TEAM_ARCHETYPE.md` — DORA 2025 seven team archetype self-assessment
-- CI workflow with PR size blocking (400 lines), doc freshness monitoring
-- `scripts/weekly-metrics.sh` — rework rate, PR revision rate, CI cycle time in one view
+- `AGENTS.md` — one page of instructions. `CLAUDE.md`, `GEMINI.md`, `.cursorrules` and
+  `.github/copilot-instructions.md` are symlinks to it, so Claude Code, Gemini CLI, Cursor,
+  Copilot and Codex all load the same file.
+- `.agents/agents/` — four agents, each a boundary that can block, write or change repo state:
+  `planner`, `builder`, `verifier`, `operator`.
+- `.agents/commands/` and `.agents/skills/` — slash commands and on-demand skills, shared by
+  Claude Code and OpenCode through symlinks.
+- `REVIEW.md` — the review rubric. `/review-local` applies it before you commit; CI applies it again on the PR.
+- `.devcontainer/` — uses the `fawkes-space` image (below): Claude Code, OpenCode, Codex, Gemini CLI,
+  language servers, pre-commit and scanners.
+- CI guardrails: PR size limit, artifact-chain check, agent evals, secret scan, documentation freshness.
 
-## GitHub Copilot users: built for the token billing model
-
-GitHub Copilot moved to token-based billing on June 1, 2026.
-This template is pre-optimized for that cost model — the pieces below are
-GitHub Copilot-specific; every other agent (Claude Code, Cursor, Codex, etc.)
-gets its cost/mode guidance from `docs/MODEL_ROUTING_GUIDE.md` instead.
-
-| File                          | What it saves                                        |
-| ----------------------------- | ---------------------------------------------------- |
-| `AGENTS.md` (135 lines)       | Lean, always-on context vs. typical 226-line files   |
-| `.agents/skills/`              | On-demand only — zero cost until referenced          |
-| `.copilotignore`              | Excludes lock files, build artifacts, generated code |
-| `scripts/token-audit.sh`      | Shows your token footprint before the bill arrives   |
-| `docs/MODEL_ROUTING_GUIDE.md` | Which mode and model saves the most                  |
-
-Run `npm run token-audit` after setup to see your baseline.
-
-## Learn → Build
-
-The Fawkes Dojo is the learning layer behind this repo. Use it before implementing a feature or workflow change so the agent can connect the task to the right DORA capability and module.
+## Lifecycle
 
 ```text
-Dojo module → repo template → production workflow
+plan (@planner) → build (@builder) → verify (@verifier) → /review-local → ship (@operator) → CI agent review → human merges
 ```
 
-- Learn the relevant practice in the Dojo
-- Apply the pattern in the repo’s agent guidance and templates
-- Ship the change through the same workflow the team already uses
+A feature starts with `docs/ai-sdlc/<feature>/{intent,spec,plan}.md` (`/plan`); CI checks the chain.
+Agents never merge their own PRs.
 
-The Dojo map lives in [`docs/DOJO_MAP.md`](./docs/DOJO_MAP.md), and the agent skill for this flow is `.agents/skills/dojo-navigator/SKILL.md`.
+## Quick start
 
-## 5-minute quick start
-
-```bash
-# 1. Use this template (click "Use this template" on GitHub) or clone
-git clone https://github.com/paruff/uFawkesAI.git my-project
-cd my-project
-
-# 2. Run setup (creates symlinks, installs hooks)
-./scripts/setup.sh
-
-# 3. Customise for your project (replace all `[PLACEHOLDER]` sections)
-# Start with AGENTS.md — everything else derives from it
-code AGENTS.md
-
-# 4. Assign your first issue to Copilot or Claude Code
-# Your agent now knows your project from session one
-```
-
-Or invest 8 hours and go deep → [docs/DOJO_LEARNING_PATH.md](./docs/DOJO_LEARNING_PATH.md)
-
-## Writing your first agent-ready issue
-
-Use the **Feature — Assign to Agent** issue template (`.github/ISSUE_TEMPLATE/feature.yml`). Example of a well-formed feature issue that Copilot can implement immediately:
-
----
-
-**Title:** `[FEAT] Add weekly rework rate summary to docs/METRICS.md`
-
-**User Story:**
-
-> As a team lead, I want to run `npm run metrics` and see my rework rate for the past 14 days, so that I know immediately whether AI output quality is improving or degrading.
-
-**Acceptance Criteria:**
-
-- [ ] AC1: `npm run metrics` outputs a rework rate percentage calculated from the last 14 days of git history
-- [ ] AC2: The output is appended as a dated snapshot block in `docs/METRICS.md`
-- [ ] AC3: If rework rate exceeds 20%, the script prints a warning: `⚠ Rework rate > 20% — stop features, fix AGENTS.md first`
-
-**DORA AI Capability:** Rework rate / DORA metrics
-
-**Context Files to Read:**
-
-- `scripts/weekly-metrics.sh` — existing metrics script to extend
-- `docs/METRICS.md` — target file for snapshot output
-- `AGENTS.md` §9 — rework rate definition and target thresholds
-
-**Constraints and Out of Scope:**
-
-- Do not modify existing `scripts/setup.sh`
-- Do not add new npm dependencies
-
-**Definition of Done:**
-
-- [ ] All acceptance criteria met
-- [ ] Failing tests written before implementation
-- [ ] `npm run preflight` passes
-- [ ] AI-Assisted Review Block completed in PR
-
-**Assign to:** Copilot ✓
-
----
-
-> **What makes this issue agent-ready?**
->
-> - Acceptance criteria are testable (each maps to a specific assertion)
-> - Context files are listed so the agent reads the right code first
-> - Out-of-scope constraints are explicit (preventing unwanted changes)
-> - The Definition of Done gives the agent a self-check before opening the PR
+1. Click **Use this template** on GitHub, or clone the repo.
+2. Run `./scripts/setup.sh` (creates symlinks, installs git hooks).
+3. Replace the `[PLACEHOLDER]` sections in `AGENTS.md` with your project's facts.
+4. Open the folder in VS Code and choose **Reopen in Container**.
 
 ## DORA AI Capabilities implemented
 
-| DORA AI Capability               | File(s) in this template                              |
+| DORA AI capability               | Where                                                 |
 | -------------------------------- | ----------------------------------------------------- |
-| Clear and communicated AI stance | [`AI_STANCE.md`](AI_STANCE.md), `AGENTS.md` §1          |
+| Clear and communicated AI stance | `AI_STANCE.md`, `AGENTS.md`                           |
 | Healthy data ecosystems          | `docs/CHANGE_IMPACT_MAP.md`, `docs/API_SURFACE.md`    |
-| AI-accessible internal data      | `AGENTS.md` §3 context index, `.vscode/settings.json` |
-| Strong version control practices | CI PR size block, conventional commits standard       |
-| Working in small batches         | 400-line PR limit, TDD requirement, feature flags     |
-| User-centric focus               | `docs/GOLDEN_PATH.md`, `docs/VALUE_STREAM_MAP.md`     |
-| Quality internal platforms       | `docs/GOLDEN_PATH.md`, agent specialist profiles      |
+| AI-accessible internal data      | `AGENTS.md` context index, `.vscode/settings.json`    |
+| Strong version control practices | `ci-quality.yml` PR size check, `docs/COMMIT_CONVENTIONS.md` |
+| Working in small batches         | 400-line PR limit, `docs/GOLDEN_PATH.md`              |
+| User-centric focus               | `.agents/skills/discovery/SKILL.md`                   |
+| Quality internal platforms       | `.devcontainer/devcontainer.json`, `.agents/agents/`  |
 
-## Harness anatomy (AI-Native SDLC Playbook)
+## Harness anatomy
 
-The [AI-Native SDLC Playbook](https://claude.com/blog/the-ai-native-sdlc-playbook) (Claxton, Anthropic, 2026-08-21) defines six components of an agent harness. This template provides:
+The [AI-Native SDLC Playbook](https://claude.com/blog/the-ai-native-sdlc-playbook) (Claxton, Anthropic, 2026-08-21)
+names six parts of an agent harness. Here is where each lives:
 
-| Harness component         | Provided by in template / image                              | Status       |
-| ------------------------- | ------------------------------------------------------------ | ------------ |
-| Instructions              | `AGENTS.md`, `.github/copilot-instructions.md`, `CLAUDE.md`, `.cursorrules` | ✅ Provided |
-| Tools / MCP               | `.mcp.json`, `opencode.json`, `scripts/hooks/protected-paths.json`, `fawkes-space` image (pre-installed CLIs) | ✅ Provided |
-| Sandbox                   | `.devcontainer/devcontainer.json` → `ghcr.io/paruff/fawkes-space` (non-root, pin a version or digest) | ✅ Provided |
-| Orchestration & model routing | `docs/MODEL_ROUTING_GUIDE.md`, `.agents/agents/` (4 execution-boundary agents: planner, builder, verifier, operator) | ✅ Provided |
-| Hooks                     | `.pre-commit-config.yaml` (pre-commit in the image; hook envs install once on first run), `.github/workflows/ci-quality.yml` (Pre-flight job), `scripts/hooks/` | ✅ Provided |
-| Observability             | `scripts/emit-dora-event.sh` (JSON events; OTLP export to uFawkesObs Loki, verified by `scripts/verify-dora-event-in-loki.sh`), `.github/workflows/ci-quality.yml` (`job-start`/`job-finish` timestamps) | ✅ Provided |
-
-> **Upstream references:** [The AI-Native SDLC Playbook](https://claude.com/blog/the-ai-native-sdlc-playbook) (Claxton, Anthropic, 2026-08-21); DORA, _State of AI-assisted Software Development_ (2025) — AI Capabilities Model companion report (Dec 2025).
-> **Claim scope:** Only the items above ship in the template or the `fawkes-space` image. No external services, paid tiers, or unreleased features are claimed.
-
-## DORA AI Capability → Feature map
-
-| Template feature                    | DORA AI Capability (1–7) | Evidence in template                                                                 |
-| ----------------------------------- | ------------------------ | ------------------------------------------------------------------------------------ |
-| `AI_STANCE.md` + `AGENTS.md` §1     | 1 — Clear AI stance      | Explicit stance file; required in every repo                                          |
-| `docs/CHANGE_IMPACT_MAP.md`         | 2 — Healthy data ecosystems | Cross-file impact map; prevents AI omissions                                        |
-| `docs/API_SURFACE.md`               | 2 — Healthy data ecosystems | All public functions; AI reads before generating                                    |
-| `AGENTS.md` context index           | 3 — AI-accessible data   | Context index loads in every session; `.vscode/settings.json` auto-loads            |
-| `docs/KNOWN_LIMITATIONS.md`         | 3 — AI-accessible data   | What agents must not make worse                                                     |
-| `docs/PROMPT_LIBRARY.md`            | Core: Prompt engineering | Versioned task-specific prompts (not a DORA capability)                              |
-| CI PR size block (400 lines)        | 4 — Strong version control | `ci-quality.yml` gate; conventional commits enforced                                 |
-| `main-ci-guard.yml`                 | 4 — Strong version control | Blocks merge until CI green                                                          |
-| TDD requirement (golden path)       | 5 — Small batches        | `docs/GOLDEN_PATH.md` step 4: failing test first                                     |
-| Feature flags (golden path)         | 5 — Small batches        | Every feature behind a flag; remote disable                                          |
-| `discovery` skill + workflow        | 6 — User-centric focus   | JTBD + acceptance criteria before any `spec`                                         |
-| `docs/GOLDEN_PATH.md`               | 7 — Quality platforms    | One route idea→deploy; `npm run preflight`                              |
-| `.devcontainer` + shared image      | 7 — Quality platforms    | Same image local/CI; pre-commit pre-installed; harness parity                                 |
-| `scripts/weekly-metrics.sh`         | 7 — Quality platforms    | Rework rate, PR revision rate, CI cycle time; platform feedback loop                 |
-| `docs/DEVEX_LOG.md`                 | 7 — Quality platforms    | Monthly 5-dimension self-assessment (SPACE)                                          |
-
-## Playbook six-stage map
-
-The AI-Native SDLC Playbook defines six stages. This template's coverage:
-
-| Playbook stage               | Status      | Provided by in template / image                                                                 |
-| ---------------------------- | ----------- | ----------------------------------------------------------------------------------------------- |
-| 1. Clarify AI policies       | ✅ Provided | `AI_STANCE.md`, `AGENTS.md` §1, `docs/AI_POLICY.md`, `docs/TEAM_ARCHETYPE.md`                  |
-| 2. Connect AI to context     | ✅ Provided | `AGENTS.md` context index, `.github/copilot-instructions.md`, `docs/API_SURFACE.md`, `docs/KNOWN_LIMITATIONS.md`, `.vscode/settings.json` |
-| 3. Prioritise foundations    | ✅ Provided | `ci-quality.yml` (PR size, lint, test), `main-ci-guard.yml`, `docs/ARCHITECTURE.md`, conventional commits |
-| 4. Fortify safety nets       | ✅ Provided | `docs/RUNBOOKS.md` (rollback, disable), `scripts/weekly-metrics.sh` (rework rate), feature flags in golden path |
-| 5. Invest in platform        | ✅ Provided | `docs/GOLDEN_PATH.md`, `.agents/agents/` (4 agents), `docs/PROMPT_LIBRARY.md`, `.devcontainer/`, `REVIEW.md` + `agent-review.yml` (agent PR review; comments only, a human merges) |
-| 6. Focus on end-users        | 🟡 Partial  | `discovery` skill (JTBD), `docs/VALUE_STREAM_MAP.md`, `docs/DEVEX_LOG.md`; Dojo labs for learning are in uFawkesDojo (separate repo) |
-
-> **Upstream references:** [The AI-Native SDLC Playbook](https://claude.com/blog/the-ai-native-sdlc-playbook) (Claxton, Anthropic, 2026-08-21); DORA, _State of AI-assisted Software Development_ (2025).
-> **Claim scope:** Stages 1–5 are fully provided by this template and its devcontainer image. Stage 6 is partial — the template provides the discovery/JTBD tooling and value-stream mapping; end-user learning labs live in uFawkesDojo. No claims are made for features not in the template or image.
+| Component     | Provided by                                                                      |
+| ------------- | -------------------------------------------------------------------------------- |
+| Instructions  | `AGENTS.md` and its symlinks                                                     |
+| Tools / MCP   | `.mcp.json`, `opencode.json`, `scripts/hooks/protected-paths.json`               |
+| Sandbox       | `.devcontainer/devcontainer.json` using `ghcr.io/paruff/fawkes-space` (non-root) |
+| Orchestration | `.agents/agents/`, `docs/MODEL_ROUTING_GUIDE.md`                                 |
+| Hooks         | `.pre-commit-config.yaml`, `ci-quality.yml`                                      |
+| Review        | `REVIEW.md`, `agent-review.yml`, and the `review-local` command                  |
 
 ## Container images
 
-Built and signed by [`build-devsecops-images.yml`](.github/workflows/build-devsecops-images.yml) on every `v<semver>` release tag (also shown under **Packages** in the repo sidebar):
+Built, signed (cosign, keyless) and published by `build-devsecops-images.yml` on every `v<semver>` tag.
 
-| Image | Use |
-| --- | --- |
-| [`ghcr.io/paruff/fawkes-space`](https://github.com/paruff/uFawkesAI/pkgs/container/fawkes-space) | Shared devcontainer for the uFawkes suite and fawkes: Claude Code, OpenCode, Codex, Gemini CLI, LSP (TS/JS, Python, Bash, YAML), qmd. Java repos add a JDK; OpenCode then fetches jdtls itself |
-| [`ghcr.io/paruff/fawkes-core`](https://github.com/paruff/uFawkesAI/pkgs/container/fawkes-core) | Linters, secret/vuln/SAST scanners, pre-commit |
+| Image                      | Use                                                                          |
+| -------------------------- | ---------------------------------------------------------------------------- |
+| `ghcr.io/paruff/fawkes-space` | The devcontainer: core + Claude Code, OpenCode, Codex, Gemini CLI, language servers, qmd |
+| `ghcr.io/paruff/fawkes-core`  | Linters, secret/vuln/SAST scanners and pre-commit only                       |
 
-**Host requirements:** at least 2 CPUs and 4 GB of memory for the container (declared as `hostRequirements` in `devcontainer.json`). An agent session in a smaller VM, such as Colima's or Docker Desktop's 2 GB default, is killed for running out of memory with no error. Colima: `colima stop && colima start --cpu 4 --memory 8`.
+The devcontainer's base layer is the same package under the tag `base-X.Y.Z`.
+Tags: `X.Y.Z`, `X.Y`, `X`, `latest`. Pin a version or digest from the Releases page and verify with
+`cosign verify` (cosign v3 or later; the command is in each release's notes).
 
-Tags: `X.Y.Z`, `X.Y`, `X`, `latest`. The devcontainer's base layer (core + agent harnesses and skills) is the same package under `base-X.Y.Z` / `base-latest`. Pin by digest in consumers; verify with `cosign verify`, **cosign v3 or later** (the command is in each release's notes and the workflow header; cosign v2 reports "no signatures found").
+Host requirements: 2 CPUs and 4 GB of memory for the container. A smaller VM kills agent
+sessions with no error. Colima: `colima start --cpu 4 --memory 8`.
 
 ## Works with
 
-- GitHub Copilot (native AGENTS.md support since Aug 2025 — server-side auto-load)
-- Claude Code (reads AGENTS.md as fallback; CLAUDE.md symlink for direct load)
-- Cursor (root AGENTS.md auto-detected; .cursor/rules/ for scoped instructions)
-- OpenAI Codex (AGENTS.md is the native format)
-- Gemini CLI (configure via .gemini/settings.json)
-- Windsurf, Devin, Aider — via AGENTS.md
+Claude Code, OpenCode, Codex, Gemini CLI, GitHub Copilot, Cursor, and anything else that reads `AGENTS.md`.
 
-## Part of the uFawkes family
+## Related repositories
 
-uFawkesAI is the AI plane in the uFawkes stack family: it sets policy, context, guardrails, and workflows so every other stack can move faster with less rework.
-
-Integration entry point: [`docs/UFAWKES_INTEGRATION.md`](./docs/UFAWKES_INTEGRATION.md)
-
-| Stack                    | Role                                                      | Link                                                                 |
-| ------------------------- | ----------------------------------------------------------- | ----------------------------------------------------------------------- |
-| uFawkesAI                | AI plane (agent policy, context, controls)                 | [paruff/uFawkesAI](https://github.com/paruff/uFawkesAI)             |
-| uFawkesPipe              | CI/CD and delivery pipeline plane                           | [paruff/uFawkesPipe](https://github.com/paruff/uFawkesPipe)         |
-| uFawkesObs               | Observability and reliability plane                         | [paruff/uFawkesObs](https://github.com/paruff/uFawkesObs)           |
-| uFawkesDORA              | Merged into uFawkesObs (DORA dashboards and collectors)     | [paruff/uFawkesObs](https://github.com/paruff/uFawkesObs)           |
-| uFawkesApp / uFawkesData | Product and data plane pair (implementation + analytics)   | [planned](https://github.com/paruff/uFawkesAI/issues)               |
-
-**Product Suite Roadmap**: [fawkes/ROADMAP.md](https://github.com/paruff/fawkes/blob/main/ROADMAP.md)
-
-Quick integration hooks:
-
-- **uFawkesObs:** set `OTEL_EXPORTER_OTLP_ENDPOINT` and `OTEL_SERVICE_NAME` in the instrumented runtime/service that uses this template; this repository does not emit OTEL spans by itself.
-- **DORA metrics (now part of uFawkesObs):** `npm run metrics` currently summarizes local git/coverage signals; `GITHUB_TOKEN`, `GITHUB_OWNER`, and `GITHUB_REPO` are for external/future GitHub API-backed DORA collectors.
-- **uFawkesPipe:** run the Golden Path (`docs/GOLDEN_PATH.md`) so AI-authored PRs flow through the `deliveryd` CI contract (uFawkesPipe pipeline contract: [paruff/uFawkesPipe](https://github.com/paruff/uFawkesPipe)).
-
-## Rework rate
-
-> DORA 2025 added rework rate as a new core metric. It is the earliest signal that
-> AI output quality is degrading. This template's `scripts/weekly-metrics.sh` calculates
-> it from your git history. Target: < 10%. Above 20%: stop features, fix AGENTS.md first.
+[uFawkesPipe](https://github.com/paruff/uFawkesPipe) (CI/CD pipeline) and
+[uFawkesObs](https://github.com/paruff/uFawkesObs) (observability and DORA dashboards).
+See `docs/UFAWKES_INTEGRATION.md`.
 
 ## Contributing
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md) (planned in AI-006).
+See [CONTRIBUTING.md](./CONTRIBUTING.md). Security issues: [SECURITY.md](./SECURITY.md).
 
 ## Research basis
 
-- DORA, [_AI Capabilities Model_](https://dora.dev/ai/capabilities-model/report/) (2025-11-25): the seven capabilities mapped above.
+- DORA, [_AI Capabilities Model_](https://dora.dev/ai/capabilities-model/report/) (2025): the seven capabilities above.
 - DORA, [_2025 State of AI-assisted Software Development_](https://dora.dev/research/2025/dora-report/): AI amplifies what is already there.
-- Anthropic, [_The AI-Native SDLC Playbook_](https://claude.com/blog/the-ai-native-sdlc-playbook) (2026-08-21): the six-stage artifact chain.
-- Noda et al., [_DevEx: What Actually Drives Productivity_](https://dl.acm.org/doi/10.1145/3610285) (ACM Queue, 2023), and Forsgren et al., [_The SPACE of Developer Productivity_](https://queue.acm.org/detail.cfm?id=3454124) (2021): how the CDE and DEVEX_LOG measure.
-- Paradis et al., [arXiv 2410.12944](https://arxiv.org/abs/2410.12944) (2024), and [METR](https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/) (2025): AI speedup is context-dependent, so no unmeasured speedup claims.
-
-Full findings and sources: [research foundation](https://github.com/paruff/uFawkes.dev/blob/main/docs/research-foundation.md), reviewed quarterly.
-
-## Design and brand
-
-This repo follows the shared Fawkes and uFawkes design reference:
-[DESIGN.md](https://github.com/paruff/uFawkes.dev/blob/main/DESIGN.md), with tokens at <https://ufawkes.dev/design/tokens.json>. It is owned by
-[uFawkes.dev](https://github.com/paruff/uFawkes.dev).
+- Anthropic, [_The AI-Native SDLC Playbook_](https://claude.com/blog/the-ai-native-sdlc-playbook) (2026): the artifact chain.
 
 ## License
 

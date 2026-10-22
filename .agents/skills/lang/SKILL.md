@@ -121,15 +121,6 @@ pip install opentelemetry-sdk opentelemetry-exporter-otlp-proto-http
 Init pattern: call `configure_otel()` at application entry point before importing
 service modules. Read `OTEL_SERVICE_NAME` and `OTEL_EXPORTER_OTLP_ENDPOINT` from env.
 
-## fawkes Repo Context
-
-paruff/fawkes uses Python extensively (43.5% of codebase). Primary patterns:
-
-- FastAPI for HTTP services
-- Pydantic v2 for models
-- pytest with conftest fixtures
-- `.flake8` and `.coveragerc` exist in root (legacy — ruff supersedes flake8)
-
 ### TYPESCRIPT
 
 # Skill: Language — TypeScript
@@ -202,18 +193,3 @@ Init pattern: `src/instrumentation.ts` — imported before all other imports in 
 
 Node 22 LTS. Pin in `.nvmrc` and `engines` field in `package.json`.
 GitHub Actions: `uses: actions/setup-node@v4` with `node-version: '22'`.
-
-## Usage
-
-```bash
-# Python toolchain
-load lang/python skill
-
-# TypeScript toolchain
-load lang/typescript skill
-```
-
-## Enforcement
-
-- **DORA vocabulary** validates AI Capabilities 3, 4 references
-- **AI stance audit** validates relevant clarity dimensions

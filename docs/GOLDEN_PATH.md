@@ -91,7 +91,7 @@ The failing test is:
 [paste test]
 
 Read src/types/index.ts and docs/API_SURFACE.md before writing code.
-Use the prompt template from docs/PROMPT_LIBRARY.md → [relevant category].
+Write the prompt from the issue's acceptance criteria and context files.
 ```
 
 Commit when tests go green:

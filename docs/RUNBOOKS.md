@@ -150,5 +150,5 @@ Score each dimension 1–5 in `docs/DEVEX_LOG.md`:
 **Triggers:**
 
 - Any dimension < 3 for two consecutive months → file an improvement issue
-- AI Trust < 3 → review AGENTS.md and PROMPT_LIBRARY.md
+- AI Trust < 3 → review AGENTS.md
 - Cognitive Load ≥ 4 → run a Value Stream Mapping exercise
