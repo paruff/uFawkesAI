@@ -23,7 +23,7 @@ git revert -m 1 <merge-commit-sha>
 git push origin main
 
 # 3. uFawkesAI: roll the shared devcontainer back to the previous release.
-#    .github/workflows/build-devsecops-images.yml publishes
+#    .github/workflows/build-cde-space-image.yml publishes
 #    ghcr.io/paruff/fawkes-space* on every v<semver> tag, so a rollback
 #    re-points the moving tags (X.Y.Z / X.Y / X / latest) to the previous
 #    digest. Consumers pinned by digest are unaffected — tell them which

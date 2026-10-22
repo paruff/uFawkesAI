@@ -1,4 +1,4 @@
-# The one workflow for the uFawkes DevSecOps images (fawkes-core, and the ai
+# The one workflow for the uFawkes CDE Space images (fawkes-core, and the ai
 # base published as fawkes-space:base-<version>) and the shared devcontainer
 # (ghcr.io/paruff/fawkes-space,
 # the image the v2 contract covers: docs/ai-sdlc/v2.0.0/spec.md) used by the
@@ -22,7 +22,7 @@
 #     --certificate-identity-regexp '^https://github.com/paruff/uFawkesAI/' \
 #     --certificate-oidc-issuer https://token.actions.githubusercontent.com
 
-name: DevSecOps Images — Build, Verify & Publish
+name: CDE Space image — Build, Verify & Publish
 
 on:
   pull_request:
@@ -36,7 +36,7 @@ on:
       - "scripts/image-lock-bump.sh"
       - "scripts/test-image-lock-bump.sh"
       - "scripts/test-image-lock-refresh.sh"
-      - ".github/workflows/build-devsecops-images.yml"
+      - ".github/workflows/build-cde-space-image.yml"
   push:
     branches: [main]
     # Path filters are not evaluated for tag pushes, so every v* tag publishes.
@@ -51,7 +51,7 @@ on:
       - "scripts/image-lock-bump.sh"
       - "scripts/test-image-lock-bump.sh"
       - "scripts/test-image-lock-refresh.sh"
-      - ".github/workflows/build-devsecops-images.yml"
+      - ".github/workflows/build-cde-space-image.yml"
   schedule:
     - cron: "17 6 * * 1" # Mondays: re-verify the locked toolchain, rescan for new CVEs
   workflow_dispatch:
@@ -60,7 +60,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: devsecops-images-${{ github.ref }}
+  group: cde-space-image-${{ github.ref }}
   cancel-in-progress: ${{ !startsWith(github.ref, 'refs/tags/') }}
 
 env:

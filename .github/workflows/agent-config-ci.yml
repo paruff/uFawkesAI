@@ -97,7 +97,7 @@ jobs:
       - name: Self-test the gate (offline)
         if: steps.changes.outputs.changed == 'true'
         run: bash scripts/test-run-evals.sh
-      # Same OpenCode version the DevSecOps image pins (tools.lock.json).
+      # Same OpenCode version the CDE Space image pins (tools.lock.json).
       - name: Install OpenCode
         if: steps.changes.outputs.changed == 'true'
         run: npm install -g opencode-ai@1.18.32

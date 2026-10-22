@@ -38,7 +38,7 @@ jobs:
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
-      # As in build-devsecops-images.yml: checkout needs root, the checks run as dev.
+      # As in build-cde-space-image.yml: checkout needs root, the checks run as dev.
       options: --user root
     defaults:
       run:

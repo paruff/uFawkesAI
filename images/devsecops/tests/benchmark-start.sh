@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # images/devsecops/tests/benchmark-start.sh — cold/warm start benchmark for a
-# published DevSecOps image (docs/ai-sdlc/image-benchmark/spec.md).
+# published CDE Space image (docs/ai-sdlc/image-benchmark/spec.md).
 #
 # Cold start = docker pull + first run (the image is removed first, so the
 #   pull is real). Warm start = median of RUNS further runs.

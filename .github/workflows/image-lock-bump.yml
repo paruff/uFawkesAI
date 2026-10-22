@@ -1,4 +1,4 @@
-name: DevSecOps Image — Lock Bump
+name: CDE Space image — Lock Bump
 
 # Weekly: moves the image toolchain to the newest upstream releases with
 # scripts/image-lock-bump.sh (tools.lock.json with re-verified checksums,
@@ -85,7 +85,7 @@ jobs:
           fi
 
           gh workflow run ci-quality.yml --ref "$BRANCH"
-          gh workflow run build-devsecops-images.yml --ref "$BRANCH"
+          gh workflow run build-cde-space-image.yml --ref "$BRANCH"
       - name: job-finish
         if: always()
         run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ')"

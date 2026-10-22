@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# Offline pre-commit baseline for repos that use the uFawkes DevSecOps image.
+# Offline pre-commit baseline for repos that use the uFawkes CDE Space image.
 #
 # Every hook calls a tool preinstalled in the image (`language: system`), so
 # pre-commit never downloads a hook environment: runs are fast, work with no

@@ -67,7 +67,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           persist-credentials: false
-      # semgrep runs only here (removed from the DevSecOps image: its 245 MB
+      # semgrep runs only here (removed from the CDE Space image: its 245 MB
       # engine served no local hook). Bump the pin deliberately. p/ci covers workflow
       # injection, unpinned actions and Dependabot cooldown; exit 1 blocks.
       - name: Semgrep p/ci — blocking

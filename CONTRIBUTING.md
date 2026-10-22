@@ -87,7 +87,7 @@ Every pull request runs the gates below. Required checks are Pre-flight, Artifac
 | `doc-freshness.yml` | Documentation freshness |
 | `secret-scan.yml`, `dependency-review.yml` | Secrets and dependency changes |
 | `main-ci-guard.yml` | Main's CI must be green before a PR can merge |
-| `build-devsecops-images.yml` | Builds, verifies, signs and publishes the images on a `v*` tag |
+| `build-cde-space-image.yml` | Builds, verifies, signs and publishes the images on a `v*` tag |
 | `image-lock-bump.yml`, `pre-commit-autoupdate.yml` | Weekly bumps of pinned tools and hook versions |
 | `image-reproducibility.yml`, `live-acceptance.yml` | Weekly rebuild comparison; acceptance tests inside the published image |
 | `release-please.yml` | Release PRs and changelog |
