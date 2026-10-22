@@ -20,7 +20,6 @@ SUITES=(
   scripts/test-emit-dora-event.sh
   scripts/test-dora-vocabulary-locale.sh
   scripts/test-artifact-chain.sh
-  scripts/test-dojo-feedback-intent.sh
   scripts/test-run-evals.sh
   scripts/test-image-lock-bump.sh
   scripts/test-image-lock-refresh.sh

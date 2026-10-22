@@ -27,12 +27,6 @@ A feature need not have its own `plan.md`: the checker only requires an
 Earlier feature chains (`opencode-alignment`, `dora-events-portability`, `review-passes`, `placeholder-audit`,
 `evals-gate`, `shift-left-adoption`) live in git history: `git show pre-cleanup:docs/ai-sdlc/<feature>/spec.md`.
 
-## Closing the loop — Dojo
-
-A completed chain becomes a uFawkesDojo lab, and the lab's findings become
-the next `intent.md` within one sprint: see [`dojo-handoff.md`](dojo-handoff.md)
-(`dojo-feedback` skill → `dojo-feedback.md` → `intent` issue).
-
 ## Enforced in CI
 
 `.github/workflows/artifact-chain.yml` runs `scripts/check-artifact-chain.sh`

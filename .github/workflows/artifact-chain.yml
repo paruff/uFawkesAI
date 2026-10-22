@@ -32,10 +32,6 @@ jobs:
       - name: Self-test the checker
         run: bash scripts/test-artifact-chain.sh
 
-      # The Dojo loop's feedback → intent converter (docs/ai-sdlc/dojo-handoff.md)
-      - name: Self-test the Dojo feedback converter
-        run: bash scripts/test-dojo-feedback-intent.sh
-
       # Dependabot and image-lock-bump.yml bump lockfiles, requirements and base
       # images under the code paths, and a bot can't write a plan.md. Everything
       # else is checked (#189 failed here before the lock bump was listed). Keyed

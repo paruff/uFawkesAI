@@ -276,13 +276,6 @@ skills:
       - agent-observability/finding-quality
       - agent-observability/decision-logging
 
-  dojo-feedback:
-    status: beta
-    version: 0.1.0
-    dependencies: []
-    load_trigger: "load dojo-feedback skill"
-    sub_skills: []
-
   ufawkes-knowledge:
     status: active
     version: 1.0.0

@@ -117,7 +117,7 @@ a requirement here and a check that runs:
 | Cognitive load: a static rule file of one page or less (playbook) | `AGENTS.md`, the always-loaded file, fits one page | `wc -l AGENTS.md` | Met on approval of this change: 50 lines; the detail moved verbatim to `docs/AGENT_REFERENCE.md` |
 | Flow: the session isn't killed under the developer (Meyer et al. 2021) | `devcontainer.json` declares `hostRequirements` (2 CPUs, 4 GB); the README states it | AC-AI-02 run: an OpenCode planning session was OOM-killed at 1.9 GB (Colima default) | Declared 2026-10-03; peak to be measured on an 8 GB VM |
 | Flow: no interactive setup (Meyer et al. 2021) | `postCreateCommand` never prompts; every failure prints its fix | the live acceptance tests open the image non-interactively; `install-tools.sh` and preflight print the fix on each failure | Met for the template and uFawkesObs; not checked mechanically elsewhere |
-| Outcomes, not just speed (Forsgren et al. 2021, 2024; Green, Jaspan et al. 2023) | Time from "Use this template" to first merged PR, plus a three-question survey (ease, confidence, would-recommend) | uFawkesDojo "Start here" lab, recorded in `dojo-feedback.md` | Planned: Dojo 0.2 (suite Phase 2) |
+| Outcomes, not just speed (Forsgren et al. 2021, 2024; Green, Jaspan et al. 2023) | Time from "Use this template" to first merged PR, plus a three-question survey (ease, confidence, would-recommend) | uFawkesDojo "Start here" lab | Planned: Dojo 0.2 (suite Phase 2) |
 | No unmeasured productivity claims (METR 2025; Paradis et al. 2024) | The README states no speedup percentage | `grep` the README for speedup claims | Met (none) |
 
 ## Tool set (versions resolved in `plan.md` / lock file, not here)

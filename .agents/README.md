@@ -177,7 +177,6 @@ The former stage skills (`spec`, `design`, `plan`, `build`, `test`,
 | Folder          | Load Trigger              | Purpose                                                  |
 | ------------------ | ---------------------------- | --------------------------------------------------------------- |
 | `DOJO-content/` | platform engineering training | Create/manage DOJO content for platform engineering education |
-| `dojo-feedback/` | after a Dojo lab built from a feature completes | Turn lab results into `dojo-feedback.md` (gaps in guardrails/prompts/spec/plan) that CI converts into an `intent` issue — see `docs/ai-sdlc/dojo-handoff.md` |
 
 ### Cross-Cutting Skills
 
