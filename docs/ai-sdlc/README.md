@@ -20,14 +20,12 @@ and `plan.md`; `@builder` reads `plan.md`, loads `executing-plans` and
 `test-driven-development`, and writes the code diff. `@verifier` then checks
 the diff against those artifacts (`verification-before-completion`,
 `requesting-code-review`), and `@operator` ships it. The repo skills
-`discovery` (before `intent.md`) and `learn` (after release) bracket the chain.
+`discovery` (before `intent.md`) brackets the chain.
 
 A feature need not have its own `plan.md`: the checker only requires an
 `intent.md` beside every `spec.md`, and a `plan.md` when a PR changes the repo's code paths (`src/` by default).
-`opencode-alignment/` is implemented by the v1
-[`dual-harness-template/plan.md`](dual-harness-template/plan.md), which cites
-that spec's requirements (R1–R8). `dora-events-portability/` has an intent,
-spec and plan; GAP-01 and GAP-02 are built, GAP-03 is open (#157).
+Earlier feature chains (`opencode-alignment`, `dora-events-portability`, `review-passes`, `placeholder-audit`,
+`evals-gate`, `shift-left-adoption`) live in git history: `git show pre-cleanup:docs/ai-sdlc/<feature>/spec.md`.
 
 ## Closing the loop — Dojo
 
