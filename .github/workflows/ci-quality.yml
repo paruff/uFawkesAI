@@ -22,7 +22,7 @@ jobs:
     uses: paruff/uFawkesPipe/.github/workflows/reusable-preflight.yml@271154e53badbd96f3ef173f92ecb06545fc1cfb # v1.16.0-beta.1
     with:
       # The hook stages run in the suite's CI image (ci-pipeline spec R4).
-      ci-image: ghcr.io/paruff/ufawkes-ci@sha256:e85db8b3554da7c3362303d0e1e9681997d78093269b641e3535989f9c66f4da
+      ci-image: ghcr.io/paruff/ufawkes-ci@sha256:732dcc96757bf2679800e91e2f67556d631b1b966d07758b4f78a20e11882d46
       pr-size-limit: 400
       commit-format: conventional
       emergency-bypass: true

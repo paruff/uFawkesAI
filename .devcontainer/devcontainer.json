@@ -1,6 +1,6 @@
 {
   "name": "uFawkesAI Development",
-  "image": "ghcr.io/paruff/fawkes-space:2.0.0",
+  "image": "ghcr.io/paruff/fawkes-space:2.2.0@sha256:f5d07e71c3d471e46d1825bd7dcfabec640dfa31801dbf94c48465bd5d4caf70",
   "customizations": {
     "vscode": {
       "extensions": [
