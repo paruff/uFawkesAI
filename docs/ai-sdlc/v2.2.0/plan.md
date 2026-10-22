@@ -73,3 +73,13 @@ Order matters: land the image-plumbing PRs first, then content bumps, then the r
 - The #247 publish path has never run; the rc is its first test (mitigated by rc-first).
 - v2 binaries come from `opencode.ai`, not GitHub: no upstream checksum file, so we pin the formula's sha256 and
   record where it came from. Reproducibility check may need an allowance until verified.
+
+## Verification Strategy
+
+| Criterion | How it is verified |
+| --- | --- |
+| Pins are the ones in the lock file | `images/devsecops/tests/verify-tools.sh ai` in the built image (101 checks) |
+| OpenCode 2.x loads the baked config and agents | same script, plus `opencode debug config` in `scripts/multi-harness-smoke.sh` |
+| `/review-local` is wired into `/verify` and `/ship` | `scripts/multi-harness-smoke.sh` (command files present under both harnesses) and `scripts/check-review-md.sh` |
+| `sync.sh` is gone, `bake.sh` refuses outside the build | `git grep sync.sh` is empty outside history docs; `bash opencode/bake.sh` exits 1 without `UFAWKES_IMAGE_BUILD` |
+| Release works end to end | `v2.2.0-rc.1` run: publish, sign, live acceptance, benchmark, reproducibility |

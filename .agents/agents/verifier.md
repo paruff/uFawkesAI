@@ -30,8 +30,8 @@ stops the pipeline. Its reports must satisfy the `test-execution`, `review`, and
 3. **Code review** (`requesting-code-review`) — the diff against architecture, tests, security surface,
    secrets, and dependencies, using the `REVIEW.md` rubric: run `/review-local` (the same
    rubric CI's agent review applies) on every verification, before the change is committed.
-   File its verdict under *Review Agent Assessment* and list *Architecture Violations* and
-   *Test Gaps* ("none" if none), as the `review` contract requires. Any HIGH finding is
+   File its verdict under _Review Agent Assessment_ and list _Architecture Violations_ and
+   _Test Gaps_ ("none" if none), as the `review` contract requires. Any HIGH finding is
    REQUEST CHANGES.
 4. **Cross-validation** (`cross-validation-runner.sh`) — pairwise consistency between the spec,
    design, build, and test reports and their sources.
