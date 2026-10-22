@@ -41,7 +41,6 @@ Missing files are flagged as corpus gaps, not silently ignored.
 | `tests/README.md` or equivalent             | ✅ Mandatory                     | How to run tests, what they cover             |
 | `CHANGELOG.md`                              | ✅ Mandatory                     | Release history                               |
 | `DORA-event-format.md`                      | ⚠ Required when uFawkesObs wired | Deployment event schema for DORA metrics      |
-| `docs/PROMPT_LIBRARY.md`                    | Optional                         | Tested prompt templates (see uFawkesObs)      |
 
 ## Per-Repo Corpus Extensions
 
@@ -50,7 +49,7 @@ Beyond the minimum, each repo has domain-specific files that should be in the co
 | Repo          | Additional corpus files                                                                                    |
 | ------------- | ---------------------------------------------------------------------------------------------------------- |
 | `fawkes`      | `.agents/` directory tree, `ROADMAP.md`, `.opencode/plans/roadmap.md`, `.gitops-templates/`                |
-| `uFawkesObs`  | `docs/ARCHITECTURE.md`, `PROMPT_LIBRARY.md`, `tests/acceptance/` structure, `docs/production-hardening.md` |
+| `uFawkesObs`  | `docs/ARCHITECTURE.md`, `tests/acceptance/` structure, `docs/production-hardening.md` |
 | `uFawkesAI`   | Full `.agents/skills/` directory tree, all agent `.md` files                                               |
 | `uFawkesPipe` | Pipeline definition files (`.woodpecker.yml`), `docker-compose.yml`                                         |
 | `uFawkesDevX` | `devcontainer.json`, golden path templates                                                                 |

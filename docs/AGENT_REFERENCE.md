@@ -77,7 +77,6 @@ your agent's read-only/question mode (60–90% cheaper than agentic mode).
 
 | File | Why |
 |---|---|
-| `docs/PR_STANDARD.md` | PR naming rules, CI requirements, branch discipline |
 
 ---
 

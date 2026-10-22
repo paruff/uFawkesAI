@@ -160,4 +160,3 @@ Learning the right habits before you code prevents expensive retries:
 ## Related Files
 
 - `scripts/token-audit.sh` — measure your own token footprint before committing to a mode
-- `docs/PROMPT_LIBRARY.md` — every prompt has a `Recommended model:` field

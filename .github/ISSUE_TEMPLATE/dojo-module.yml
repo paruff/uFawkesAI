@@ -109,7 +109,7 @@ body:
       description: What concrete file or change does the learner commit to the repo as proof of completion?
       placeholder: |
         Example: An updated docs/METRICS.md with a new weekly snapshot block.
-        Example: A new entry in docs/PROMPT_LIBRARY.md.
+        Example: A new section in docs/GOLDEN_PATH.md.
         Example: A passing test in tests/ that covers [feature].
     validations:
       required: true

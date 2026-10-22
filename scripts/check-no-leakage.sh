@@ -19,5 +19,8 @@ for f in "${files[@]}"; do
     hits=$((hits + 1))
   fi
 done
-[ "$hits" -eq 0 ] || { echo "Private address or home path found in ${hits} file(s)."; exit 1; }
+[ "$hits" -eq 0 ] || {
+  echo "Private address or home path found in ${hits} file(s)."
+  exit 1
+}
 echo "✅ no private IPs or home paths in tracked files"

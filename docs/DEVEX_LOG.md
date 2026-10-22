@@ -33,7 +33,7 @@
 | Any dimension < 3 for 1 month                  | Note and monitor                                                      |
 | Any dimension < 3 for **2 consecutive months** | **File an improvement issue immediately**                             |
 | Cognitive Load ≥ 4 for 1 month                 | Run Value Stream Mapping — codebase may have accumulated complexity   |
-| AI Trust < 3 for 1 month                       | Review `AGENTS.md` and `docs/PROMPT_LIBRARY.md` — update instructions |
+| AI Trust < 3 for 1 month                       | Review `AGENTS.md` — update instructions |
 | Tooling Friction ≥ 4 for 1 month               | File a developer platform improvement issue                           |
 | Flow < 3 for 2 months                          | Review sprint batch size — tasks may be too large or poorly scoped    |
 
