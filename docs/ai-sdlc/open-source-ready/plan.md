@@ -96,3 +96,16 @@ CI gate set; pinned, signed, reproducibly-built image.
 
 Tracked files: 298 to 266. The target of 180 was not reached and is revised to "under 270, and nothing a user does not need" after the audit; the remaining mass is the image build, the CI scripts and
 their tests, and the guardrail docs, which current users depend on. Revisit after the Dojo and Obs PRs merge.
+
+## Codespaces onboarding result (2026-10-22, reported by the owner)
+
+Branch `test/devcontainer-2.2.0-rc.1` (image `fawkes-space:2.2.0-rc.1` pinned by digest), first launch in a fresh Codespace:
+
+| Measure | Result |
+| --- | --- |
+| Creating the Codespace and getting a working container (first launch) | a little over 1 minute |
+| `pre-commit run --all-files` in the new image | 18 s, with no hook downloads |
+| Earlier run on the `fawkes-space:2.0.0` pin | minutes spent installing hook environments in `postCreateCommand` |
+
+Against the five-minute target this is a pass for the launch and the first pre-commit run. Not reported: the version checks
+(`claude`, `opencode`, Superpowers) and `shift-left.sh doctor`; run them once to close this out.
