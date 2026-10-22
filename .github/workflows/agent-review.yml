@@ -2,9 +2,9 @@ name: Agent PR Review
 
 # Stage 5 (#158): a review agent reads REVIEW.md and comments on the PR.
 # It never approves, requests changes or merges; a human does (hard rule 2).
-# Without ANTHROPIC_API_KEY the job FAILS with a message — a skipped review
-# must never look like a passing one. Fork PRs have no secrets, so they are
-# reported as not reviewed and pass.
+# Without ANTHROPIC_API_KEY (forks, Dependabot, or a repo that chooses not to
+# hold the key) the job passes with a visible warning annotation and a step
+# summary line saying the PR was NOT reviewed by the agent.
 
 on:
   pull_request:
@@ -46,8 +46,8 @@ jobs:
             echo "::notice::Fork PR: no secrets available, NOT reviewed by the agent."
             echo "run=false" >> "$GITHUB_OUTPUT"
           elif [ -z "$ANTHROPIC_API_KEY" ]; then
-            echo "::error::ANTHROPIC_API_KEY is not set; the agent review cannot run."
-            exit 1
+            echo "::warning::ANTHROPIC_API_KEY is not set: NOT reviewed by the agent."
+            echo "run=false" >> "$GITHUB_OUTPUT"
           else
             echo "run=true" >> "$GITHUB_OUTPUT"
           fi
