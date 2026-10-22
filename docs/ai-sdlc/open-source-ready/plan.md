@@ -96,3 +96,10 @@ CI gate set; pinned, signed, reproducibly-built image.
 
 Tracked files: 298 to 266. The target of 180 was not reached and is revised to "under 270, and nothing a user does not need" after the audit; the remaining mass is the image build, the CI scripts and
 their tests, and the guardrail docs, which current users depend on. Revisit after the Dojo and Obs PRs merge.
+
+## Stranger-onboarding measurement (2026-10-22)
+
+`docker pull ghcr.io/paruff/fawkes-space:latest` then `docker run`: pull 100 s, start 6 s, 106 s total, on a Mac with Colima and a
+warm network. It is not a clean-machine run (Colima and Docker were already installed). `:2.1.0` does not exist because the
+release-please tag did not publish (#252), so the README tells readers to pin a version from the Releases page; fix #252 first.
+A true clean-machine timing (install Docker, open the repo, Reopen in Container) still needs a person on a fresh machine.
