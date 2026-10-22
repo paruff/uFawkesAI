@@ -7,7 +7,7 @@
 # (linked into ~/.claude/skills and ~/.config/opencode/skills), pre-commit,
 # gh, the core scanners, zsh, sudo, and the dev user.
 
-ARG BASE_IMAGE=ghcr.io/paruff/fawkes-space-ai:latest
+ARG BASE_IMAGE=ghcr.io/paruff/fawkes-space:base-latest
 FROM ${BASE_IMAGE}
 
 # Claude Code from npm (licence reserves all rights — not baked in the base image).

@@ -68,7 +68,8 @@ jobs:
           - variant: core
             image: fawkes-core
           - variant: ai
-            image: fawkes-space-ai
+            image: fawkes-space
+            tagprefix: base-
           - variant: devcontainer
             image: fawkes-space
     runs-on: ${{ matrix.runner }}
@@ -78,6 +79,7 @@ jobs:
       ARCH: ${{ matrix.arch }}
       VARIANT: ${{ matrix.variant }}
       IMAGE: ${{ matrix.image }}
+      TAGPREFIX: ${{ matrix.tagprefix }}
     steps:
       - name: job-start
         run: echo "job-start $(date -u +'%Y-%m-%dT%H:%M:%SZ') sha=${GITHUB_SHA} workflow=${GITHUB_WORKFLOW} job=${GITHUB_JOB}"
@@ -96,14 +98,14 @@ jobs:
         id: published
         run: |
           version="${TAG#image-}"; version="${version#v}"
-          ref="${REGISTRY}/${IMAGE}:${version}"
+          ref="${REGISTRY}/${IMAGE}:${TAGPREFIX}${version}"
           digest="$(docker buildx imagetools inspect "$ref" --raw \
             | jq -r --arg a "$ARCH" '.manifests[] | select(.platform.architecture == $a and .platform.os == "linux") | .digest')"
           [ -n "$digest" ] || { echo "::error::no linux/${ARCH} manifest in ${ref}"; exit 1; }
           docker buildx imagetools inspect "${REGISTRY}/${IMAGE}@${digest}" --raw | jq -r '.layers[].digest' >published.layers
           echo "version=$version" >>"$GITHUB_OUTPUT"
           echo "ref=${REGISTRY}/${IMAGE}@${digest}" >>"$GITHUB_OUTPUT"
-          echo "base=${REGISTRY}/fawkes-space-ai:${version}" >>"$GITHUB_OUTPUT"
+          echo "base=${REGISTRY}/fawkes-space:base-${version}" >>"$GITHUB_OUTPUT"
 
       # The same inputs as the publish job: target, build contexts, build args,
       # zstd layers. SOURCE_DATE_EPOCH is the tagged commit's time, so a tag

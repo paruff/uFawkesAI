@@ -49,6 +49,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- The ai base image is no longer a separate `fawkes-space-ai` package: it is published as `ghcr.io/paruff/fawkes-space:base-<version>`. Consumers of `fawkes-space` and `fawkes-core` are unaffected.
+
 ### Added
 
 - Governance baseline (CODE_OF_CONDUCT)

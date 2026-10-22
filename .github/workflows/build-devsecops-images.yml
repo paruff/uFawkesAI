@@ -1,5 +1,6 @@
-# The one workflow for the uFawkes DevSecOps images (fawkes-core,
-# fawkes-space-ai) and the shared devcontainer (ghcr.io/paruff/fawkes-space,
+# The one workflow for the uFawkes DevSecOps images (fawkes-core, and the ai
+# base published as fawkes-space:base-<version>) and the shared devcontainer
+# (ghcr.io/paruff/fawkes-space,
 # the image the v2 contract covers: docs/ai-sdlc/v2.0.0/spec.md) used by the
 # uFawkes suite and fawkes. Replaces image-build.yml + image-release.yml.
 #
@@ -257,12 +258,11 @@ jobs:
           DOCKER_METADATA_ANNOTATIONS_LEVELS: manifest,index
         uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
         with:
-          images: ${{ env.REGISTRY }}/fawkes-space-ai
+          # The ai base is a tag of the fawkes-space package, not a package of its own.
+          images: ${{ env.REGISTRY }}/fawkes-space
           tags: |
-            type=semver,pattern={{version}},value=${{ steps.semver.outputs.version }}
-            type=semver,pattern={{major}}.{{minor}},value=${{ steps.semver.outputs.version }}
-            type=semver,pattern={{major}},value=${{ steps.semver.outputs.version }}
-            type=raw,value=latest,enable=${{ steps.semver.outputs.prerelease == 'false' }}
+            type=raw,value=base-${{ steps.semver.outputs.version }}
+            type=raw,value=base-latest,enable=${{ steps.semver.outputs.prerelease == 'false' }}
           flavor: latest=false
       - name: Tags for devcontainer
         id: meta-devcontainer
@@ -341,7 +341,7 @@ jobs:
           provenance: mode=max
           sbom: true
           build-args: |
-            BASE_IMAGE=${{ env.REGISTRY }}/fawkes-space-ai@${{ steps.ai.outputs.digest }}
+            BASE_IMAGE=${{ env.REGISTRY }}/fawkes-space@${{ steps.ai.outputs.digest }}
             SOURCE_DATE_EPOCH=${{ steps.sde.outputs.epoch }}
 
       - name: Sign every digest (keyless, GitHub OIDC)
@@ -351,7 +351,7 @@ jobs:
           DEVCONTAINER: ${{ steps.devcontainer.outputs.digest }}
         run: |
           for ref in "fawkes-core@${CORE}" \
-            "fawkes-space-ai@${AI}" "fawkes-space@${DEVCONTAINER}"; do
+            "fawkes-space@${AI}" "fawkes-space@${DEVCONTAINER}"; do
             cosign sign --yes "${REGISTRY}/${ref}"
             echo "- signed \`${REGISTRY}/${ref}\`" >>"$GITHUB_STEP_SUMMARY"
           done
@@ -451,7 +451,7 @@ jobs:
             echo "|---|---|---|---|---|---|"
           } >>"$GITHUB_STEP_SUMMARY"
           status=0
-          for pair in "core=fawkes-core:${V}" "ai=fawkes-space-ai:${V}" \
+          for pair in "core=fawkes-core:${V}" "ai=fawkes-space:base-${V}" \
             "devcontainer=fawkes-space:${V}"; do
             key="${pair%%=*}-${ARCH}"
             if ! out=$(bash images/devsecops/tests/benchmark-start.sh "${REGISTRY}/${pair#*=}" "$key"); then
