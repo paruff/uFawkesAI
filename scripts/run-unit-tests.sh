@@ -27,6 +27,7 @@ SUITES=(
   scripts/test-main-ci-guard.sh
   scripts/test-check-placeholders.sh
   scripts/test-check-readme-claims.sh
+  scripts/test-no-leakage.sh
   scripts/test-git-isolation.sh
 )
 

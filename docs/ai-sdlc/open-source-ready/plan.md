@@ -17,7 +17,7 @@ CI gate set; pinned, signed, reproducibly-built image.
 | F3 | **Oversized, emoji-heavy skills that read as generated.** | `dora-measurement` 985 lines, `discovery` 916, `learn` 835, `ai-stance` 757, `documentation` 956 across 6 files; 35 emoji in `learn`, 20 in `ai-stance`. Only `continuous-evals`, `dev-experience`, `ufawkes-knowledge` are short. |
 | F4 | **Orphan or near-orphan docs** (referenced by 0–1 other files). | `DATA_MODEL.md` (0), `README-mcp.md` (0), `AGENT_METRICS.md`, `AGENT_TELEMETRY.md`, `DORA_alignment.md`, `PR_STANDARD.md`, `DOJO_LEARNING_PATH.md` (1 each). |
 | F5 | **Maintainer process files at the root and in docs.** | `INTENT.md`, `TEMPLATE-DESIGN.md`, `README-ai-sdlc.md`, `README-mcp.md`, `.artifact-chain-paths`, `.pipeline.yml`; `docs/ai-sdlc/` holds 11 internal feature folders (~30 files) of project history. |
-| F6 | **Personal / environment leakage.** | Private LAN IP `192.168.1.194` in `opencode/opencode.jsonc` and `opencode/README.md`; a Copilot-bot-authored history (79 of 454 commits). |
+| F6 | **Personal / environment leakage.** | A private LAN IP in `opencode/opencode.jsonc` and `opencode/README.md`; a Copilot-bot-authored history (79 of 454 commits). |
 | F7 | **Many agent-harness config copies.** | `CLAUDE.md`, `GEMINI.md`, `.cursorrules`, `.cursor/`, `.github/copilot-instructions.md`, `.copilotignore`, `opencode.json` + `.opencode/opencode.json`: 8 pointers to one file. The `AGENTS.md` symlinks are the product, so keep them, but audit the rest. |
 | F8 | **16 workflows**, some only serve the maintainer's sibling repos. | `dojo-feedback-intent.yml`, `pre-commit-autoupdate.yml` overlap with Dependabot, `doc-freshness.yml`. |
 

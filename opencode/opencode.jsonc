@@ -49,7 +49,7 @@
         }
       }
     },
-    // ollama removed 2026-09-25: 192.168.1.194 unreachable (connection refused).
+    // ollama removed 2026-09-25: the LAN host was unreachable (connection refused).
     // Re-add when the LAN box is back.
     // nvidia-proxy removed 2026-09-25: local launchd SPOF whose upstream NIM
     // timed out on ~58% of requests; see opencode/README.md.
