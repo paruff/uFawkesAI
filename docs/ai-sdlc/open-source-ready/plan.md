@@ -76,7 +76,7 @@ CI gate set; pinned, signed, reproducibly-built image.
 
 | Criterion | How it is verified |
 | --- | --- |
-| Tracked files under 180; no skill over 200 lines | `git ls-files \| wc -l`; `wc -l .agents/skills/*/SKILL.md` |
+| Tracked files: 266 accepted by the owner on 2026-10-22 (the original under-180 target is withdrawn); no skill over 200 lines | `git ls-files \| wc -l`; `wc -l .agents/skills/*/SKILL.md` |
 | No leakage | `git grep -E "Dojo\|uFawkesObs\|192\.168\.\|/Users/"` is empty outside `CHANGELOG.md` |
 | README is true | `scripts/check-readme-claims.sh` extended with agent count, `AGENTS.md` length, linked-file existence |
 | Nothing a sibling repo needs was removed | `gh search code --owner paruff` for each removed path before deletion |
@@ -103,3 +103,9 @@ their tests, and the guardrail docs, which current users depend on. Revisit afte
 warm network. It is not a clean-machine run (Colima and Docker were already installed). `:2.1.0` does not exist because the
 release-please tag did not publish (#252), so the README tells readers to pin a version from the Releases page; fix #252 first.
 A true clean-machine timing (install Docker, open the repo, Reopen in Container) still needs a person on a fresh machine.
+
+## Owner acceptance (2026-10-22)
+
+The owner accepted 266 tracked files as the end state of this cleanup. The clean-machine onboarding test is to be run in a
+GitHub Codespace created from a throwaway repo made with **Use this template**, which is a clean machine with no local
+Docker, Colima or checkout. Record the time from "Create codespace" to a working `claude --version` here when it is done.
