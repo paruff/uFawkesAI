@@ -28,7 +28,11 @@ stops the pipeline. Its reports must satisfy the `test-execution`, `review`, and
    `test_type: live-system`, stand up a real running instance and make real
    calls. A mock is not evidence for a live-system criterion.
 3. **Code review** (`requesting-code-review`) — the diff against architecture, tests, security surface,
-   secrets, and dependencies.
+   secrets, and dependencies, using the `REVIEW.md` rubric: run `/review-local` (the same
+   rubric CI's agent review applies) on every verification, before the change is committed.
+   File its verdict under *Review Agent Assessment* and list *Architecture Violations* and
+   *Test Gaps* ("none" if none), as the `review` contract requires. Any HIGH finding is
+   REQUEST CHANGES.
 4. **Cross-validation** (`cross-validation-runner.sh`) — pairwise consistency between the spec,
    design, build, and test reports and their sources.
 
