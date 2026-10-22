@@ -195,28 +195,6 @@ echo "✅ Committed docs-lint CI"
 
 ## First-Run Triage
 
-The first time docs-lint runs on a repo with existing docs, it will likely fail.
-Triage strategy:
-
-1. Run locally first: `npx markdownlint-cli2 "**/*.md"`
-2. Fix any line-level errors (usually heading syntax, list formatting)
-3. For structural gaps (missing sections) — file as tier-1 issues, don't fix in the same PR
-4. Merge the CI workflow PR even if the first run shows warnings — address them in follow-up issues
-
-## Output Format
-
-```json
-{
-  "sub-skill": "documentation/ci-integration",
-  "repo": "paruff/REPO_NAME",
-  "workflow_created": true,
-  "markdownlint_config_created": true,
-  "pre_commit_updated": true,
-  "first_run_expected_failures": [
-    "CONTRIBUTING.md placeholder",
-    "missing ARCHITECTURE.md"
-  ],
-  "issues_to_file": 2,
-  "roadmap_items": ["0.10", "0.12"]
-}
-```
+The first docs-lint run on existing docs will likely fail. Run `npx markdownlint-cli2 "**/*.md"` locally first and fix
+line-level errors; file structural gaps (missing sections) as issues instead of fixing them in the same PR; merge the
+workflow PR even if the first run warns.

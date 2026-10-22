@@ -133,7 +133,6 @@ The former stage skills (`spec`, `design`, `plan`, `build`, `test`,
 
 | Folder                 | Load Trigger              | Purpose                                         |
 | ------------------------ | --------------------------- | -------------------------------------------------- |
-| `integration-testing/` | integration test patterns | PIPE→OBS, OBS→GitOps, controller, full-stack    |
 | `e2e-testing/`         | end-to-end test patterns  | Happy path, failure paths, deployment, rollback |
 
 ### Security Skills

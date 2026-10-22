@@ -153,17 +153,6 @@ skills:
   # Testing Skills
   # ============================================
 
-  integration-testing:
-    status: active
-    version: 1.0.0
-    dependencies: []
-    load_trigger: "load integration-testing skill"
-    sub_skills:
-      - integration-testing/full-stack
-      - integration-testing/gitops-to-controller
-      - integration-testing/obs-to-gitops
-      - integration-testing/pipe-to-obs
-
   e2e-testing:
     status: active
     version: 1.0.0

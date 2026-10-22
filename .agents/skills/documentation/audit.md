@@ -166,37 +166,7 @@ for gap in "${GAPS[@]}"; do
 done
 ```
 
-## Output Format
+## Output
 
-```json
-{
-  "sub-skill": "documentation/audit",
-  "repo": "paruff/REPO_NAME",
-  "date": "YYYY-MM-DD",
-  "release_ready": false,
-  "total_gaps": 5,
-  "critical_gaps": 2,
-  "medium_gaps": 2,
-  "low_gaps": 1,
-  "gaps": [
-    { "severity": "critical", "type": "MISSING", "item": "AI_STANCE.md" },
-    {
-      "severity": "critical",
-      "type": "MISSING_SECTION",
-      "item": "Testing section in README.md"
-    },
-    { "severity": "medium", "type": "PLACEHOLDER", "item": "CONTRIBUTING.md" },
-    {
-      "severity": "medium",
-      "type": "MISSING_SECTION",
-      "item": "DORA Capability in README.md"
-    },
-    {
-      "severity": "low",
-      "type": "MISSING_LINK",
-      "item": "Link to ROADMAP.md in README.md"
-    }
-  ],
-  "issues_to_file": 5
-}
-```
+Report `release_ready` (true only with zero critical gaps), the counts of critical, medium and low gaps, and each gap as
+`{severity, type (MISSING | MISSING_SECTION | PLACEHOLDER | MISSING_LINK), item}`; file one issue per gap.
