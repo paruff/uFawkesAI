@@ -1,6 +1,6 @@
 # Plan — open-source ready (audit and cleanup)
 
-Status: DRAFT for owner decisions. Audit of `main` @ 2026-10-22 (298 tracked files).
+Status: APPROVED; decisions below. Starts after #250 (v2.2.0) merges. Audit of `main` @ 2026-10-22 (298 tracked files).
 
 ## What the audit found
 
@@ -43,20 +43,22 @@ CI gate set; pinned, signed, reproducibly-built image.
    (plan → build → verify → review → ship), `fawkes-space` install, `REVIEW.md`. Under 120 lines, no badge wall,
    no emoji. Extend `check-readme-claims.sh` to assert agent count, `AGENTS.md` length and linked files exist.
 2. **Remove leakage.** F6: strip the LAN IP and personal paths; add a `gitleaks` + a "no private IPs / home paths" check.
-3. **Cut sibling-repo coupling.** Move out the Dojo/Obs-dependent skills and docs (F2); fix the links the
-   link-checker then flags.
+3. **Cut sibling-repo coupling.** Open PRs moving the skills to uFawkesObs and uFawkesDojo (O1), then remove them here
+   and fix the links the link-checker flags.
 4. **Delete orphans** (F4) and root process files (F5). Each deletion first needs `git grep` in-degree 0 after step 3.
 5. **Trim the remaining skills** (F3) by hand, not by a model pass: keep the steps a user runs, drop the narration.
 6. **Workflow diet** (F8): drop workflows whose only consumer was removed; document each remaining one in a table in `CONTRIBUTING.md`.
 7. **Public-facing polish:** issue/PR templates trimmed to what maintainers read; `CODEOWNERS` kept single (done);
    repo description and topics reduced to what is true; a `docs/README.md` index of the surviving docs.
 
-## Decisions I need
+## Decisions (owner, 2026-10-22)
 
-- **O1** Where do moved-out skills go: a new repo, or delete? (Recommend a new `uFawkes-extras` repo: no loss, no clutter.)
-- **O2** Archive `docs/ai-sdlc/*` history in-tree under `docs/history/`, or only in git history? (Recommend git history plus the tag `pre-cleanup`.)
-- **O3** Rewrite history to drop the LAN IP and Copilot-bot noise? (Recommend **no**: harmless, and a force-push breaks every pin and signature.)
-- **O4** Keep `GEMINI.md`, `.cursorrules` and `.copilotignore`? They are cheap pointers for supported harnesses; recommend keep unless unsupported.
+- **O1** Move the skills out, into the repos they serve: `dora-measurement` and the `/measure` command into
+  **uFawkesObs**; `learn`, `dojo-navigator`, the `DOJO_*` docs and `dojo-feedback-intent.yml` into **uFawkesDojo**.
+  Moving means a PR in each target repo first (outward-facing: needs the owner's go-ahead per repo), then deletion here.
+- **O2** Feature folders under `docs/ai-sdlc/` stay in git history; tag `pre-cleanup` before the first deletion.
+- **O3** No history rewrite.
+- **O4** Keep `GEMINI.md`, `.cursorrules` and `.copilotignore`.
 
 ## Acceptance
 
@@ -69,3 +71,13 @@ CI gate set; pinned, signed, reproducibly-built image.
 
 - Deleting something a sibling repo (uFawkesPipe, uFawkesObs) links to: run `gh search code --owner paruff` for each removed path first.
 - Over-trimming skills removes real content: trim in a PR separate from deletions so each is reviewable.
+
+## Verification Strategy
+
+| Criterion | How it is verified |
+| --- | --- |
+| Tracked files under 180; no skill over 200 lines | `git ls-files \| wc -l`; `wc -l .agents/skills/*/SKILL.md` |
+| No leakage | `git grep -E "Dojo\|uFawkesObs\|192\.168\.\|/Users/"` is empty outside `CHANGELOG.md` |
+| README is true | `scripts/check-readme-claims.sh` extended with agent count, `AGENTS.md` length, linked-file existence |
+| Nothing a sibling repo needs was removed | `gh search code --owner paruff` for each removed path before deletion |
+| Gates stay green | `pre-commit run --all-files` and CI on every PR |
