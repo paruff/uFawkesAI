@@ -34,7 +34,7 @@ jobs:
     container:
       # Same release as .devcontainer/devcontainer.json (checked below), pinned by
       # digest so the job runs the same bytes every time (ci-pipeline R1).
-      image: ghcr.io/paruff/fawkes-space:2.0.0@sha256:def9302d47d242bc11c244271f19c404f37fe922c902cc1941be41004d59ecee
+      image: ghcr.io/paruff/fawkes-space:2.2.0@sha256:f5d07e71c3d471e46d1825bd7dcfabec640dfa31801dbf94c48465bd5d4caf70
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
@@ -52,7 +52,7 @@ jobs:
       - name: The devcontainer pins the image this job runs in
         run: |
           pinned=$(jq -r '.image' .devcontainer/devcontainer.json)
-          [ "$pinned" = "ghcr.io/paruff/fawkes-space:2.0.0" ] \
+          [ "$pinned" = "ghcr.io/paruff/fawkes-space:2.2.0@sha256:f5d07e71c3d471e46d1825bd7dcfabec640dfa31801dbf94c48465bd5d4caf70" ] \
             || { echo "devcontainer.json pins $pinned; update this workflow's container image (tag and digest)" >&2; exit 1; }
       - name: Make a fresh copy of the template
         run: |
