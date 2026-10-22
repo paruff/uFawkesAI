@@ -12,7 +12,7 @@ FROM ${BASE_IMAGE}
 
 # Claude Code from npm (licence reserves all rights — not baked in the base image).
 # The base sets NPM_CONFIG_PREFIX to a dev-owned dir, so no sudo is needed.
-ARG CLAUDE_CODE_VERSION=2.1.293
+ARG CLAUDE_CODE_VERSION=2.1.308
 RUN npm install -g @anthropic-ai/claude-code@${CLAUDE_CODE_VERSION} \
   && npm cache clean --force
 

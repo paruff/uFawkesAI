@@ -1,7 +1,7 @@
 {
   "name": "opencode-config",
   "private": true,
-  "description": "Pinned opencode plugins. npm ci'd into ~/.config/opencode by sync.sh \u2014 edit pins here, never install ad hoc.",
+  "description": "Pinned opencode plugins. npm ci'd into the image's ~/.config/opencode by bake.sh \u2014 edit pins here, never install ad hoc.",
   "dependencies": {
     "@opencode-ai/plugin": "1.18.30",
     "opencode-antigravity-auth": "1.6.0",

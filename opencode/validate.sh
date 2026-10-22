@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Validate an opencode config set: parseability + determinism invariants.
-# Usage: validate.sh [dir]   (default: this directory; sync.sh passes the
+# Usage: validate.sh [dir]   (default: this directory; bake.sh passes the
 # installed config dir so post-substitution files are checked too)
 set -euo pipefail
 
@@ -131,7 +131,7 @@ if fallback and fallback.get("enabled", True):
 if os.path.isfile(os.path.join(d, "tiers.json")):
     fails.append("tiers.json: stale model-router config present — remove it")
 if not os.path.isfile(os.path.join(d, "AGENTS.md")):
-    fails.append("AGENTS.md: global stance missing — sync.sh must install it")
+    fails.append("AGENTS.md: global stance missing — bake.sh must install it")
 
 if fails:
     for f in fails:

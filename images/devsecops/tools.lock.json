@@ -420,32 +420,33 @@
     {
       "name": "opencode",
       "variant": "ai",
-      "version": "1.19.3",
+      "version": "2.1.2",
       "source": {
-        "github": "sst/opencode",
-        "tag": "v{version}"
+        "github": "anomalyco/opencode",
+        "tag": "v{version}",
+        "major": 2
       },
-      "url": "https://github.com/sst/opencode/releases/download/v{version}/opencode-linux-{arch}.tar.gz",
+      "url": "https://opencode.ai/files/bin/{version}/opencode-linux-{arch}.tar.gz",
       "arch": {
         "amd64": "x64-baseline",
         "arm64": "arm64"
       },
       "checksum_url": "",
-      "note": "No upstream checksum file. amd64 uses the baseline (non-AVX2) build so the binary does not depend on the build host CPU. Pinned 2026-09-27 after confirming the binary is byte-identical to the one in npm opencode-linux-{x64-baseline,arm64}@1.18.32.",
+      "note": "No upstream checksum file. OpenCode 2.x binaries are published at opencode.ai/files/bin/, not as GitHub releases, so the weekly bump cannot see new 2.x versions: re-pin by hand from the anomalyco/tap opencode-v2 formula. amd64 uses the baseline (non-AVX2) build so the binary does not depend on the build host CPU. Pinned 2026-10-22: sha256 from the formula, re-computed from the download.",
       "format": "tar.gz",
       "bins": [
         "opencode"
       ],
       "version_cmd": "opencode --version",
       "sha256": {
-        "amd64": "531cff2441129c30f0edd5878af494108ad07f5feb46d7ee29a2a5b830a5765d",
-        "arm64": "7900818a6a98881edbbadab4b7525940eff3b9750040c200481f9f56cacee405"
+        "amd64": "911e9778fac07559678c5f46d8b130856e237a7f021091509273e81a2dada183",
+        "arm64": "3ddeab155dd75f36d9fd4f5db80e2392181a4b9f59e347a0361a127244686e94"
       }
     },
     {
       "name": "superpowers",
       "variant": "ai",
-      "version": "7.0.0",
+      "version": "7.0.1",
       "source": {
         "github": "obra/superpowers",
         "tag": "v{version}"
@@ -460,8 +461,8 @@
       "subdir": "skills",
       "version_cmd": "cat /opt/agent-skills/superpowers/VERSION",
       "sha256": {
-        "amd64": "b1fa757963ba9817035e77b3039518bca95fd250684d49299616fa2676f5baee",
-        "arm64": "b1fa757963ba9817035e77b3039518bca95fd250684d49299616fa2676f5baee"
+        "amd64": "2295dd270d929ddbe3f82e43ab5cc6e3dfb4afdbfb56225347394491d34d747d",
+        "arm64": "2295dd270d929ddbe3f82e43ab5cc6e3dfb4afdbfb56225347394491d34d747d"
       }
     },
     {
