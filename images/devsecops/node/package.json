@@ -1,7 +1,7 @@
 {
   "name": "fawkes-space-node-tools",
   "private": true,
-  "description": "Node-distributed tools baked into the DevSecOps image; installed with npm ci.",
+  "description": "Node-distributed tools baked into the CDE Space image; installed with npm ci.",
   "dependencies": {
     "markdownlint-cli2": "0.24.0"
   },

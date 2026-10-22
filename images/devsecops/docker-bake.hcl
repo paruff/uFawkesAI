@@ -6,7 +6,7 @@ variable "TAG" {
   default = "local"
 }
 
-# Release metadata, set by build-devsecops-images.yml (v* tags).
+# Release metadata, set by build-cde-space-image.yml (v* tags).
 variable "VERSION" {
   default = "dev"
 }

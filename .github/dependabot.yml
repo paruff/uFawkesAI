@@ -16,7 +16,7 @@ updates:
     # Let a new release age a week before adopting it (supply-chain cooldown).
     cooldown:
       default-days: 7
-  # DevSecOps image: base image digest (Dockerfile FROM) and Node tools.
+  # CDE Space image: base image digest (Dockerfile FROM) and Node tools.
   # Binary tools and Python locks (tools.lock.json, requirements*.lock) are
   # not supported by Dependabot — .github/workflows/image-lock-bump.yml bumps them.
   - package-ecosystem: "docker"

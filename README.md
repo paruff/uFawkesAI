@@ -65,7 +65,7 @@ names six parts of an agent harness. Here is where each lives:
 
 ## Container images
 
-Built, signed (cosign, keyless) and published by `build-devsecops-images.yml` on every `v<semver>` tag.
+Built, signed (cosign, keyless) and published by `build-cde-space-image.yml` on every `v<semver>` tag.
 
 | Image                      | Use                                                                          |
 | -------------------------- | ---------------------------------------------------------------------------- |

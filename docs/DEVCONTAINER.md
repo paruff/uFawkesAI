@@ -37,7 +37,7 @@ with a consistent environment and no manual machine setup.
 pre-commit caches by hook repo + rev. A repo whose `.pre-commit-config.yaml`
 bumps a rev downloads only that hook, once. Every PR that touches
 `.pre-commit-config.yaml` or `.devcontainer/` rebuilds the image layer and
-checks that the hooks are ready offline (`build-devsecops-images.yml`).
+checks that the hooks are ready offline (`build-cde-space-image.yml`).
 
 VS Code extensions are still downloaded when VS Code attaches: VS Code and
 Codespaces keep them in different server directories, so the image can't hold

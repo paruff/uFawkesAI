@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# scripts/image-lock-bump.sh — moves the DevSecOps image toolchain to the
+# scripts/image-lock-bump.sh — moves the CDE Space image toolchain to the
 # newest upstream releases, keeping every pin verifiable:
 #
 #   1. tools.lock.json: for each tool, the newest non-prerelease upstream
