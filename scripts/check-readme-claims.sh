@@ -32,6 +32,19 @@ while read -r s; do
   }
 done < <(grep -oE 'npm run [a-z:-]+' <<< "$maps" | awk '{print $3}' | sort -u)
 
+# Counts the README states in words must match the repo.
+n_agents="$(find .agents/agents -maxdepth 1 -name '*.md' | wc -l | tr -d ' ')"
+words=(zero one two three four five six seven eight nine ten)
+grep -qiE "\b${words[$n_agents]:-$n_agents} agents\b" "$readme" || {
+  echo "❌ README does not say '${words[$n_agents]:-$n_agents} agents' but .agents/agents has ${n_agents}"
+  missing=$((missing + 1))
+}
+agents_lines="$(wc -l < AGENTS.md | tr -d ' ')"
+if [ "$agents_lines" -gt 80 ] && grep -qi "one page" "$readme"; then
+  echo "❌ README says AGENTS.md is one page but it has ${agents_lines} lines"
+  missing=$((missing + 1))
+fi
+
 if [ "$missing" -gt 0 ]; then
   echo "README claims ${missing} thing(s) that don't ship."
   exit 1
