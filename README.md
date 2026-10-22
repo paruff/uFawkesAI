@@ -1,9 +1,9 @@
 # uFawkesAI
 
-A template for working with AI coding agents the way the DORA research describes
-high-performing teams: one instruction file every agent reads, four agents with
-clear boundaries, a documented intent → spec → plan chain, a review before commit,
-and a signed devcontainer image with the tools installed.
+An implementation of Anthropic's [AI-Native SDLC Playbook](https://claude.com/blog/the-ai-native-sdlc-playbook)
+(Claxton, 2026): six stages, each ending in a committed artifact, built on the
+[Superpowers](https://github.com/obra/superpowers) skill suite. It ships as a template and as a signed devcontainer image
+(`fawkes-space`) with Claude Code, OpenCode, Codex and Gemini CLI installed.
 
 [![MIT License](https://img.shields.io/badge/License-MIT-2EA44F?style=flat-square)](./LICENSE)
 
@@ -21,14 +21,21 @@ and a signed devcontainer image with the tools installed.
   language servers, pre-commit and scanners.
 - CI guardrails: PR size limit, artifact-chain check, agent evals, secret scan, documentation freshness.
 
-## Lifecycle
+## The six stages
 
-```text
-plan (@planner) → build (@builder) → verify (@verifier) → /review-local → ship (@operator) → CI agent review → human merges
-```
+Each stage commits an artifact the next stage reads, so the commit history is the audit trail. Agents never approve their
+own work or merge their own PRs; a human code owner does.
 
-A feature starts with `docs/ai-sdlc/<feature>/{intent,spec,plan}.md` (`/plan`); CI checks the chain.
-Agents never merge their own PRs.
+| Stage | Artifact | Superpowers skill | Where it lives here |
+| --- | --- | --- | --- |
+| 1. Plan | `docs/ai-sdlc/<feature>/intent.md` | `brainstorming` | `discovery` skill, `@planner`, `/plan` |
+| 2. Design | `spec.md` | `brainstorming` | `@planner`; CI requires an `intent.md` beside every `spec.md` |
+| 3. Build | `plan.md`, then the diff | `writing-plans`, `test-driven-development`, `subagent-driven-development` | `@builder`, `/implement`, `/tdd` |
+| 4. Test | tests, builds, eval results | `verification-before-completion`, `systematic-debugging` | `@verifier`, `/verify`; `agent-config-ci.yml` replays evals when agent configuration changes |
+| 5. Deploy | PR with review findings | `requesting-code-review`, `finishing-a-development-branch` | `REVIEW.md`, the `review-local` command before commit, `@operator`, `/ship`; a human merges |
+| 6. Maintain | an incident or metric that becomes the next `intent.md` | `systematic-debugging` | `/release` files the follow-up issue; the metrics live in uFawkesObs |
+
+Stage 6 is partial: the loop back into `intent.md` is manual today.
 
 ## Quick start
 
@@ -49,19 +56,17 @@ Agents never merge their own PRs.
 | User-centric focus               | `.agents/skills/discovery/SKILL.md`                   |
 | Quality internal platforms       | `.devcontainer/devcontainer.json`, `.agents/agents/`  |
 
-## Harness anatomy
+## Playbook components
 
-The [AI-Native SDLC Playbook](https://claude.com/blog/the-ai-native-sdlc-playbook) (Claxton, Anthropic, 2026-08-21)
-names six parts of an agent harness. Here is where each lives:
-
-| Component     | Provided by                                                                      |
-| ------------- | -------------------------------------------------------------------------------- |
-| Instructions  | `AGENTS.md` and its symlinks                                                     |
-| Tools / MCP   | `.mcp.json`, `opencode.json`, `scripts/hooks/protected-paths.json`               |
-| Sandbox       | `.devcontainer/devcontainer.json` using `ghcr.io/paruff/fawkes-space` (non-root) |
-| Orchestration | `.agents/agents/`, `docs/MODEL_ROUTING_GUIDE.md`                                 |
-| Hooks         | `.pre-commit-config.yaml`, `ci-quality.yml`                                      |
-| Review        | `REVIEW.md`, `agent-review.yml`, and the `review-local` command                  |
+| Component (from the playbook) | Where it lives |
+| --- | --- |
+| `CLAUDE.md` project knowledge | `AGENTS.md`, with `CLAUDE.md` and other harness files as symlinks |
+| Skills | `.agents/skills/` and the Superpowers suite baked into the image |
+| Hooks | `.pre-commit-config.yaml`, `.claude/settings.json`, `scripts/hooks/protected-paths.json` |
+| Subagents | `.agents/agents/` (four agents: planner, builder, verifier, operator) |
+| Evals | `.agents/evals/`, run by `agent-config-ci.yml` |
+| `REVIEW.md` | `REVIEW.md`; applied locally by the `review-local` command |
+| Sandbox | `.devcontainer/devcontainer.json` using `ghcr.io/paruff/fawkes-space` (non-root) |
 
 ## Container images
 
@@ -82,6 +87,8 @@ sessions with no error. Colima: `colima start --cpu 4 --memory 8`.
 ## Works with
 
 Claude Code, OpenCode, Codex, Gemini CLI, GitHub Copilot, Cursor, and anything else that reads `AGENTS.md`.
+
+AWS's [AI-DLC](https://github.com/awslabs/aidlc-workflows) is installed in the image as an opt-in alternative lifecycle; nothing is configured until you run `aidlc config`.
 
 ## Related repositories
 
