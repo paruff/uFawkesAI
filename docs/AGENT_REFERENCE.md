@@ -22,7 +22,7 @@ your agent's read-only/question mode (60–90% cheaper than agentic mode).
 - `@verifier` returning REQUEST CHANGES is the gate. `@operator` never merges — rule 2.
 - Workflows (fixed order, not model-selected): `.agents/workflows/discovery.md`,
   `feature.md`, `bugfix.md`.
-- Commands (cadence): `/release` weekly, `/measure` monthly, plus
+- Commands (cadence): `/release` weekly, plus
   `/plan`, `/implement`, `/tdd`, `/verify`, `/review-agents`, `/ship`,
   `/oc-health`.
 

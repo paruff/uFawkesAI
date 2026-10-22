@@ -114,7 +114,7 @@ Emit these telemetry spans (integrates with `agent-observability` skill):
   "hours_stale": 2,
   "missing_files": [],
   "corpus_quality_warnings": [],
-  "pending_skills": ["dora-measurement", "j-curve-navigation"],
+  "pending_skills": ["j-curve-navigation"],
   "ready_for_session": true
 }
 ```

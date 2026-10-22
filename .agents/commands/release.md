@@ -260,7 +260,7 @@ Missing three in a row signals a planning problem — file an issue.
 
 After the release skill's checklist completes, file a GitHub issue:
 `"measure: track DORA metrics for vVERSION post-release"`, labeled
-`dora-measurement`, so the `measure` agent picks it up on its next trigger.
+`dora-measurement`, for uFawkesObs's `/measure` to pick up.
 This cross-agent handoff is this agent's own responsibility, not the skill's.
 
 ## Output Format
