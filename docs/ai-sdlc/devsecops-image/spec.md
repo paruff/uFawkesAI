@@ -66,7 +66,7 @@ tool set at the same versions:
 
 - Images: `ghcr.io/paruff/fawkes-space` (the devcontainer, covered by the
   v2 contract in [`../v2.0.0/spec.md`](../v2.0.0/spec.md)), plus its bases
-  `fawkes-space-ai` and `fawkes-core`. Tags `:<semver>`, `:<major>.<minor>`
+  `fawkes-core` and the ai base (the same package, tag `base-<semver>`). Tags `:<semver>`, `:<major>.<minor>`
   and `:<major>`; **consumers pin the version or digest**.
 - Release trigger: the template's own git tag `v<semver>` (since v2.0.0; the
   image and template share one version). `image-v<semver>` is accepted until

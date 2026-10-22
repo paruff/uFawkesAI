@@ -19,7 +19,7 @@ version `V`:
 | Key | Image ref |
 |---|---|
 | `core-<arch>` | `ghcr.io/paruff/fawkes-core:V` |
-| `ai-<arch>` | `ghcr.io/paruff/fawkes-space-ai:V` |
+| `ai-<arch>` | `ghcr.io/paruff/fawkes-space:base-V` |
 | `devcontainer-<arch>` | `ghcr.io/paruff/fawkes-space:V` |
 
 **R3 — Cold start** = `docker pull` + first `docker run --rm --network none
