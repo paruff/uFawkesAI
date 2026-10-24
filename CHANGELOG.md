@@ -5,6 +5,23 @@ All notable changes to uFawkesAI will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.1](https://github.com/paruff/uFawkesAI/compare/v2.2.0...v2.2.1) (2026-10-24)
+
+
+### Docs
+
+* global AGENTS.md follows each repo's AGENTS.md to its intent ([#265](https://github.com/paruff/uFawkesAI/issues/265)) ([f01a45f](https://github.com/paruff/uFawkesAI/commit/f01a45fc22fbc7ad3cac07aa6b7e1482e27aa66b))
+* **plan:** plan v2.3.0 with Anthropic, AWS AI-DLC and Google lifecycles ([#257](https://github.com/paruff/uFawkesAI/issues/257)) ([fbab21e](https://github.com/paruff/uFawkesAI/commit/fbab21e2891d105628399cad351235e1c9e54aa4))
+* **plan:** record the Codespaces onboarding result ([#259](https://github.com/paruff/uFawkesAI/issues/259)) ([946bced](https://github.com/paruff/uFawkesAI/commit/946bced9bbc32cbb4e44a1a088bc59a78c4e9d7b))
+* **readme:** centre on the Anthropic AI-native SDLC with Superpowers ([#258](https://github.com/paruff/uFawkesAI/issues/258)) ([6ff374d](https://github.com/paruff/uFawkesAI/commit/6ff374dbcd30986ab25dc42afde13db916470057))
+* **review:** suite REVIEW.md and the Project 7 workflow ([#266](https://github.com/paruff/uFawkesAI/issues/266)) ([7db9ad5](https://github.com/paruff/uFawkesAI/commit/7db9ad531f0c04a334319303235673ef016b5114))
+
+
+### Chores
+
+* **devcontainer:** pin fawkes-space 2.2.0 by digest ([#260](https://github.com/paruff/uFawkesAI/issues/260)) ([38a1852](https://github.com/paruff/uFawkesAI/commit/38a1852fcf45c22955fa55ad143da730cc85c4e4))
+* **main:** release 2.2.0 ([#245](https://github.com/paruff/uFawkesAI/issues/245)) ([f758041](https://github.com/paruff/uFawkesAI/commit/f758041cefb1a46918685048cc774ef6c734ebe2))
+
 ## [2.2.0](https://github.com/paruff/uFawkesAI/compare/v2.1.0...v2.2.0) (2026-10-22)
 
 
