@@ -6,7 +6,7 @@ only what is true everywhere; each repo's own `AGENTS.md` wins on specifics.
 
 ## Hard rules
 
-- Read the repo's `AGENTS.md` first, then its intent (`docs/ai-sdlc/<feature>/intent.md` for the task) if present.
+- Read the repo's `AGENTS.md` first and follow its pointers to the task's intent, spec and plan. If it names none, find the nearest `intent.md` (any case; uFawkes repos use `docs/ai-sdlc/<feature>/intent.md`) and ask if more than one could apply.
 - Verify against `main` before saying "done": content check + CI green.
 - One PR per change, small batches (< 400 lines).
 - Agents never merge — a human reviews and merges.
