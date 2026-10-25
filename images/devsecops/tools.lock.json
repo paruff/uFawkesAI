@@ -4,7 +4,7 @@
     {
       "name": "node",
       "variant": "core",
-      "version": "24.22.0",
+      "version": "24.22.1",
       "source": {
         "node_lts_major": "24"
       },
@@ -18,14 +18,14 @@
       "install": "prefix",
       "version_cmd": "node --version",
       "sha256": {
-        "amd64": "cc2f601cee82d9a5a233302fe307abc600727035fd7d2c3a3571755989e95008",
-        "arm64": "fef00bb4d36e1c50104a9775a10359beee98f162b4104dd12472c75065c6a143"
+        "amd64": "6c172a9ab6718f7b801fb5a7bd486af2ee5e32758086a04b84fcce2aa77095e6",
+        "arm64": "dbabf7a1cbf947e6059ffad2c27b80041db97dea1e553b62afdee7f13fca336e"
       }
     },
     {
       "name": "uv",
       "variant": "core",
-      "version": "0.13.1",
+      "version": "0.13.5",
       "source": {
         "github": "astral-sh/uv",
         "tag": "{version}"
@@ -43,14 +43,14 @@
       ],
       "version_cmd": "uv --version",
       "sha256": {
-        "amd64": "eadd9d27c134ab5ac1ffd4473b97a741407f3ea238288f03121fc4deddf90220",
-        "arm64": "9041c73c99fdc5892cf128140beb354eca9231d502068cc36e6cb53a8e59ad14"
+        "amd64": "f68d291c75783122dad58ab77def0e13f3233f358731db5d6d7e8715603b928f",
+        "arm64": "4bb69cf95ed13f23713bb7bc09f241896ea0c75b7c557e615a20604b82f9c403"
       }
     },
     {
       "name": "gh",
       "variant": "core",
-      "version": "2.102.0",
+      "version": "2.103.2",
       "source": {
         "github": "cli/cli",
         "tag": "v{version}"
@@ -67,8 +67,8 @@
       ],
       "version_cmd": "gh --version",
       "sha256": {
-        "amd64": "bb766f710eef8ede859c18578c72c327597cd4c8a85b06001b1f3843c6019386",
-        "arm64": "7862c86c72f43df3a2d93ddde6f473285b4e2af61b494849846827e513ef6484"
+        "amd64": "62ccf747115ddc61237efffdde66a3c8f70ba249433dc64f70801089b59c59c8",
+        "arm64": "4c3e99a50bd8b181a3fe9d69b25dd978bac768148d88f01507c6b4d1ef61a443"
       }
     },
     {
@@ -206,7 +206,7 @@
     {
       "name": "ruff",
       "variant": "core",
-      "version": "0.17.1",
+      "version": "0.17.2",
       "source": {
         "github": "astral-sh/ruff",
         "tag": "{version}"
@@ -223,8 +223,8 @@
       ],
       "version_cmd": "ruff --version",
       "sha256": {
-        "amd64": "a293ac937715ae6fb6b64da86761598379e6149f40fbc00fde9ba8a2a562ac65",
-        "arm64": "d3ead1f0ed779e777a034ccd9286be6bd9bd3cdaba732ff9797f8288a283e9e2"
+        "amd64": "7b2e6a6e132ecf7b5fe726163b186d5d209befe93bb25f83767b2d97fbdf14e5",
+        "arm64": "468f29d64949574f0d28442c02f0b4fb680cff7ba8fc26b6287a73b945308e1c"
       }
     },
     {
@@ -278,7 +278,7 @@
     {
       "name": "trivy",
       "variant": "core",
-      "version": "0.76.0",
+      "version": "0.76.1",
       "source": {
         "github": "aquasecurity/trivy",
         "tag": "v{version}"
@@ -295,8 +295,8 @@
       ],
       "version_cmd": "trivy --version",
       "sha256": {
-        "amd64": "e24b1c51293c1b15e4ba8d45bbc7891ba053f90278ec2698f3562c993e145fe7",
-        "arm64": "aab21e677a7b7071fc79f1711480840754c18a1b9d9cefa7ccd06af63a0e8f4c"
+        "amd64": "c7cbe3137fb8a48a17574bede3dd6beb16742d1e9772929940fc90082c39d9c0",
+        "arm64": "e174dff2a6dba5e3ae41f8d0537a6324405bd08132497340304c6b20e0f16a1f"
       }
     },
     {
@@ -468,7 +468,7 @@
     {
       "name": "aidlc",
       "variant": "ai",
-      "version": "2.11.0",
+      "version": "2.11.1",
       "source": {
         "github": "awslabs/aidlc-workflows",
         "tag": "v{version}"
@@ -489,11 +489,11 @@
         "install.sh",
         "aidlc-runtime-{version}.tar.gz"
       ],
-      "checksums_sha256": "c49098da9ce425afbc5c5beeaae395aa8480c6f887107b0b455cc1143cac2ac9",
+      "checksums_sha256": "1ac520313eac451be34e5cfeade94c7f36add94f4c42fc11d4b7409900262140",
       "version_cmd": "aidlc --version",
       "sha256": {
-        "amd64": "2503ce1147e2d5e08bb0306566561231a0f972b4f3b54e46e94e4db707de8cde",
-        "arm64": "18e6fefcd3591aefd66d8a485fba5deaa870c6bbc6fd3e389d4b0b2032ce9f35"
+        "amd64": "25e81caf009dd3b8977f9fbe215b88bdfe14aa66c1298c511a3b15b24f38f9c1",
+        "arm64": "22ce3c19fc18da073b9a044a02e503f59dacdf062eba6207369723aefac388e6"
       }
     }
   ]
