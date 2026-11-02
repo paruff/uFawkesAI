@@ -37,7 +37,7 @@ repos:
   # Python — Ruff (lint + format, replaces flake8/black/isort)
   # ============================================================================
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.17.1
+    rev: v0.17.2
     hooks:
       - id: ruff
         name: Lint Python with Ruff
@@ -60,7 +60,7 @@ repos:
   # Markdown Linting
   # ============================================================================
   - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.49.1
+    rev: v0.50.0
     hooks:
       - id: markdownlint
         name: Lint Markdown files
