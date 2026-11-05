@@ -1,5 +1,7 @@
 # Intent — v2.3.0: one image, three lifecycles
 
+> **Owner decision, 2026-11-05: AWS AI-DLC is dropped** (see `docs/ai-sdlc/remove-aidlc/plan.md`). Read this draft as two lifecycles until it is revised.
+
 **Who:** an engineer who wants to run their team's AI development lifecycle inside the `fawkes-space` image without
 rebuilding tooling: the Anthropic AI-native SDLC, AWS's AI-DLC, or Google's agent workflow.
 
