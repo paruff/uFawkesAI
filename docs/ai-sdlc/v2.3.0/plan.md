@@ -2,6 +2,8 @@
 
 Status: DRAFT for owner decisions. Written 2026-10-22, after v2.2.0-rc.1 was tagged.
 
+> **Owner decision, 2026-11-05: AWS AI-DLC is dropped** (see `docs/ai-sdlc/remove-aidlc/plan.md`). Its rows and item 2 below no longer apply.
+
 ## Where each lifecycle stands
 
 | Lifecycle | In the image today | Upstream (checked 2026-10-22) | Gap |

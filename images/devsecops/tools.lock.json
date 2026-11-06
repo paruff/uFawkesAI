@@ -464,37 +464,6 @@
         "amd64": "2295dd270d929ddbe3f82e43ab5cc6e3dfb4afdbfb56225347394491d34d747d",
         "arm64": "2295dd270d929ddbe3f82e43ab5cc6e3dfb4afdbfb56225347394491d34d747d"
       }
-    },
-    {
-      "name": "aidlc",
-      "variant": "ai",
-      "version": "2.11.2",
-      "source": {
-        "github": "awslabs/aidlc-workflows",
-        "tag": "v{version}"
-      },
-      "url": "https://github.com/awslabs/aidlc-workflows/releases/download/v{version}/aidlc-linux-{arch}",
-      "arch": {
-        "amd64": "x64",
-        "arm64": "arm64"
-      },
-      "checksum_url": "https://github.com/awslabs/aidlc-workflows/releases/download/v{version}/checksums.txt",
-      "note": "Opt-in AWS AI-DLC (docs/ai-sdlc/aidlc-workflows). The bare binary has no harness runtime ('harness claude is not installed'), so the Dockerfile runs upstream's install.sh --offline --from over these pinned assets (spec D1). glibc build, not musl. checksums_sha256 pins checksums.txt, which install.sh uses to verify the runtime archive, version.json and itself.",
-      "format": "binary",
-      "install": "release-dir",
-      "companions": [
-        "checksums.txt",
-        "version.json",
-        "aidlc-release.intoto.jsonl",
-        "install.sh",
-        "aidlc-runtime-{version}.tar.gz"
-      ],
-      "checksums_sha256": "9bf1755ef8fcab628fdec3f3ef850196afc9fadfd889c18960a31a2294a872df",
-      "version_cmd": "aidlc --version",
-      "sha256": {
-        "amd64": "75696ec4e3905db3bf94a3c5bef93e9fd208472325d9314f9935c9663de6545f",
-        "arm64": "946e4f8c9347255b043f0c7c3b4a09e9b9357a71428e7919f1330d057ef4b8bd"
-      }
     }
   ]
 }

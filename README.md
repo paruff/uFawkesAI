@@ -88,8 +88,6 @@ sessions with no error. Colima: `colima start --cpu 4 --memory 8`.
 
 Claude Code, OpenCode, Codex, Gemini CLI, GitHub Copilot, Cursor, and anything else that reads `AGENTS.md`.
 
-AWS's [AI-DLC](https://github.com/awslabs/aidlc-workflows) is installed in the image as an opt-in alternative lifecycle; nothing is configured until you run `aidlc config`.
-
 ## Related repositories
 
 [uFawkesPipe](https://github.com/paruff/uFawkesPipe) (CI/CD pipeline) and
