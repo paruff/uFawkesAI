@@ -7,6 +7,8 @@
   },
   "overrides": {
     "katex": "0.18.2",
-    "smol-toml": "1.9.0"
+    "smol-toml": "1.9.0",
+    "re2js": "2.8.7",
+    "toml": "5.0.1"
   }
 }
