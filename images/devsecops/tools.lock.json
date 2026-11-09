@@ -4,7 +4,7 @@
     {
       "name": "node",
       "variant": "core",
-      "version": "24.22.0",
+      "version": "24.22.2",
       "source": {
         "node_lts_major": "24"
       },
@@ -18,14 +18,14 @@
       "install": "prefix",
       "version_cmd": "node --version",
       "sha256": {
-        "amd64": "cc2f601cee82d9a5a233302fe307abc600727035fd7d2c3a3571755989e95008",
-        "arm64": "fef00bb4d36e1c50104a9775a10359beee98f162b4104dd12472c75065c6a143"
+        "amd64": "48cc0e21e048790e54c0cf5749c2725005313d652651c40b7a21feb9697aaf75",
+        "arm64": "eb187837a2230d4047161ac0be008584e16b46f726e9c9490ee35dc6b17d9ba8"
       }
     },
     {
       "name": "uv",
       "variant": "core",
-      "version": "0.13.1",
+      "version": "0.13.6",
       "source": {
         "github": "astral-sh/uv",
         "tag": "{version}"
@@ -43,14 +43,14 @@
       ],
       "version_cmd": "uv --version",
       "sha256": {
-        "amd64": "eadd9d27c134ab5ac1ffd4473b97a741407f3ea238288f03121fc4deddf90220",
-        "arm64": "9041c73c99fdc5892cf128140beb354eca9231d502068cc36e6cb53a8e59ad14"
+        "amd64": "f29c3e94ffabd7e6f3ba521dba169a9b7ec12100bf3257087f0f24f6123f3645",
+        "arm64": "229e194255c7958d86d56e8790d969a6f74736592133f0dfd0076f754c642c1d"
       }
     },
     {
       "name": "gh",
       "variant": "core",
-      "version": "2.102.0",
+      "version": "2.103.3",
       "source": {
         "github": "cli/cli",
         "tag": "v{version}"
@@ -67,8 +67,8 @@
       ],
       "version_cmd": "gh --version",
       "sha256": {
-        "amd64": "bb766f710eef8ede859c18578c72c327597cd4c8a85b06001b1f3843c6019386",
-        "arm64": "7862c86c72f43df3a2d93ddde6f473285b4e2af61b494849846827e513ef6484"
+        "amd64": "4c806978ffce1cec70853302a56d70ac6da4f19bae7adca4e1a8ab00633dd91d",
+        "arm64": "ee32df2323c8847f5fac6cb6b4b69ca75828e9329a8f22f677021f7b3306ce63"
       }
     },
     {
@@ -206,7 +206,7 @@
     {
       "name": "ruff",
       "variant": "core",
-      "version": "0.17.1",
+      "version": "0.17.3",
       "source": {
         "github": "astral-sh/ruff",
         "tag": "{version}"
@@ -223,8 +223,8 @@
       ],
       "version_cmd": "ruff --version",
       "sha256": {
-        "amd64": "a293ac937715ae6fb6b64da86761598379e6149f40fbc00fde9ba8a2a562ac65",
-        "arm64": "d3ead1f0ed779e777a034ccd9286be6bd9bd3cdaba732ff9797f8288a283e9e2"
+        "amd64": "2b0890f5a55900af741f133918c2656919bbf18c2ab7741b4ca8403a90e647a9",
+        "arm64": "3f4639152c0e42bb5938e6c23d53d527a38f3133e000102934518f90529fa299"
       }
     },
     {
@@ -278,7 +278,7 @@
     {
       "name": "trivy",
       "variant": "core",
-      "version": "0.76.0",
+      "version": "0.76.1",
       "source": {
         "github": "aquasecurity/trivy",
         "tag": "v{version}"
@@ -295,8 +295,8 @@
       ],
       "version_cmd": "trivy --version",
       "sha256": {
-        "amd64": "e24b1c51293c1b15e4ba8d45bbc7891ba053f90278ec2698f3562c993e145fe7",
-        "arm64": "aab21e677a7b7071fc79f1711480840754c18a1b9d9cefa7ccd06af63a0e8f4c"
+        "amd64": "c7cbe3137fb8a48a17574bede3dd6beb16742d1e9772929940fc90082c39d9c0",
+        "arm64": "e174dff2a6dba5e3ae41f8d0537a6324405bd08132497340304c6b20e0f16a1f"
       }
     },
     {
@@ -420,7 +420,7 @@
     {
       "name": "opencode",
       "variant": "ai",
-      "version": "2.1.2",
+      "version": "2.2.5",
       "source": {
         "github": "anomalyco/opencode",
         "tag": "v{version}",
@@ -439,8 +439,8 @@
       ],
       "version_cmd": "opencode --version",
       "sha256": {
-        "amd64": "911e9778fac07559678c5f46d8b130856e237a7f021091509273e81a2dada183",
-        "arm64": "3ddeab155dd75f36d9fd4f5db80e2392181a4b9f59e347a0361a127244686e94"
+        "amd64": "09f44302c10fd036912f59c81fd1aef5df45dd06f649197f9dfc9bbe2a79614e",
+        "arm64": "5a528f42caf576c6cdece6a191eb273d3db54effa5518e0402684d8f8026aeb6"
       }
     },
     {
@@ -463,37 +463,6 @@
       "sha256": {
         "amd64": "2295dd270d929ddbe3f82e43ab5cc6e3dfb4afdbfb56225347394491d34d747d",
         "arm64": "2295dd270d929ddbe3f82e43ab5cc6e3dfb4afdbfb56225347394491d34d747d"
-      }
-    },
-    {
-      "name": "aidlc",
-      "variant": "ai",
-      "version": "2.11.0",
-      "source": {
-        "github": "awslabs/aidlc-workflows",
-        "tag": "v{version}"
-      },
-      "url": "https://github.com/awslabs/aidlc-workflows/releases/download/v{version}/aidlc-linux-{arch}",
-      "arch": {
-        "amd64": "x64",
-        "arm64": "arm64"
-      },
-      "checksum_url": "https://github.com/awslabs/aidlc-workflows/releases/download/v{version}/checksums.txt",
-      "note": "Opt-in AWS AI-DLC (docs/ai-sdlc/aidlc-workflows). The bare binary has no harness runtime ('harness claude is not installed'), so the Dockerfile runs upstream's install.sh --offline --from over these pinned assets (spec D1). glibc build, not musl. checksums_sha256 pins checksums.txt, which install.sh uses to verify the runtime archive, version.json and itself.",
-      "format": "binary",
-      "install": "release-dir",
-      "companions": [
-        "checksums.txt",
-        "version.json",
-        "aidlc-release.intoto.jsonl",
-        "install.sh",
-        "aidlc-runtime-{version}.tar.gz"
-      ],
-      "checksums_sha256": "c49098da9ce425afbc5c5beeaae395aa8480c6f887107b0b455cc1143cac2ac9",
-      "version_cmd": "aidlc --version",
-      "sha256": {
-        "amd64": "2503ce1147e2d5e08bb0306566561231a0f972b4f3b54e46e94e4db707de8cde",
-        "arm64": "18e6fefcd3591aefd66d8a485fba5deaa870c6bbc6fd3e389d4b0b2032ce9f35"
       }
     }
   ]

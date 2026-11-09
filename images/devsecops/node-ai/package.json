@@ -3,14 +3,14 @@
   "private": true,
   "description": "Agent harness CLIs, qmd (local markdown search + MCP) and language servers baked into the ai image (Apache-2.0/MIT); installed with npm ci. Claude Code is not here: its licence reserves all rights, so .devcontainer/Dockerfile installs it.",
   "dependencies": {
-    "@google/gemini-cli": "0.64.0",
-    "@openai/codex": "0.162.1",
+    "@google/gemini-cli": "0.65.0",
+    "@openai/codex": "0.166.0",
     "@tobilu/qmd": "2.8.3",
     "bash-language-server": "5.8.1",
     "pyright": "1.1.414",
     "typescript": "5.9.3",
     "typescript-language-server": "6.0.2",
-    "yaml-language-server": "1.25.0"
+    "yaml-language-server": "2.0.0"
   },
   "overrides": {
     "simple-git": "4.0.1",
