@@ -15,3 +15,6 @@ would add to.
 and the tracked file count goes down, not up.
 
 **Not in scope:** replacing the four agents, or the v2 image contract.
+
+**Scope cut, 2026-11-09:** v2.3.0 ships the releases-publish-themselves fix and the file diet only. The Google
+lifecycle waits for an owner `Decision:` issue (see [`plan.md`](plan.md), "Not in this release").
