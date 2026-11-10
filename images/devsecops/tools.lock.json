@@ -25,7 +25,7 @@
     {
       "name": "uv",
       "variant": "core",
-      "version": "0.13.6",
+      "version": "0.13.7",
       "source": {
         "github": "astral-sh/uv",
         "tag": "{version}"
@@ -43,8 +43,8 @@
       ],
       "version_cmd": "uv --version",
       "sha256": {
-        "amd64": "f29c3e94ffabd7e6f3ba521dba169a9b7ec12100bf3257087f0f24f6123f3645",
-        "arm64": "229e194255c7958d86d56e8790d969a6f74736592133f0dfd0076f754c642c1d"
+        "amd64": "c5221ff41b7892bfc223543883600125f6a47fe845093e0f5bdff4f359196d83",
+        "arm64": "71279f8d3c67241e807b9d8db872d1bf541579fb9f08b7d1eb1682196d1e57dc"
       }
     },
     {
@@ -95,7 +95,7 @@
     {
       "name": "yq",
       "variant": "core",
-      "version": "4.54.1",
+      "version": "4.54.2",
       "source": {
         "github": "mikefarah/yq",
         "tag": "v{version}"
@@ -109,8 +109,8 @@
       "format": "binary",
       "version_cmd": "yq --version",
       "sha256": {
-        "amd64": "8e34fc298390875de416e6a4afcb8cabeceb25d9aa8506c1a2f9353cf702ea5f",
-        "arm64": "189088da0c6429ec5178dfaab1a114805f6cab0b61b165ab236efedf1d57a71b"
+        "amd64": "44c7759059b4910827a0059a2757b22001e59360cdecdb2ef8dedc4b6c7e9f32",
+        "arm64": "bd44211dcd29a5f0eb701d4b7eb5ccd0cfff3bd3966cb4f7f9bd5b13701d997e"
       }
     },
     {
@@ -206,7 +206,7 @@
     {
       "name": "ruff",
       "variant": "core",
-      "version": "0.17.3",
+      "version": "0.17.4",
       "source": {
         "github": "astral-sh/ruff",
         "tag": "{version}"
@@ -223,8 +223,8 @@
       ],
       "version_cmd": "ruff --version",
       "sha256": {
-        "amd64": "2b0890f5a55900af741f133918c2656919bbf18c2ab7741b4ca8403a90e647a9",
-        "arm64": "3f4639152c0e42bb5938e6c23d53d527a38f3133e000102934518f90529fa299"
+        "amd64": "3ab2b34aeacdbc1ea5c529cdbda3e05792633d587228123fd09f3b5a0facb27a",
+        "arm64": "b939676db4532f748dc38c41361a29260f18b3e24a787d46d9278e449c25c2cf"
       }
     },
     {
@@ -278,7 +278,7 @@
     {
       "name": "trivy",
       "variant": "core",
-      "version": "0.76.1",
+      "version": "0.76.2",
       "source": {
         "github": "aquasecurity/trivy",
         "tag": "v{version}"
@@ -295,8 +295,8 @@
       ],
       "version_cmd": "trivy --version",
       "sha256": {
-        "amd64": "c7cbe3137fb8a48a17574bede3dd6beb16742d1e9772929940fc90082c39d9c0",
-        "arm64": "e174dff2a6dba5e3ae41f8d0537a6324405bd08132497340304c6b20e0f16a1f"
+        "amd64": "bc0fc726e017b8927a62b2d3531d7a84ee01769daf5c99ed866dced54089fdbf",
+        "arm64": "ab9d51f86e6a5fb936f605faff6b593ac51bc378fff4d3e8b9d58358b9c367c3"
       }
     },
     {
@@ -396,7 +396,7 @@
     {
       "name": "zizmor",
       "variant": "core",
-      "version": "1.31.1",
+      "version": "1.32.0",
       "source": {
         "github": "zizmorcore/zizmor",
         "tag": "v{version}"
@@ -413,14 +413,14 @@
       ],
       "version_cmd": "zizmor --version",
       "sha256": {
-        "amd64": "d185f726bdaf92df78273217dfdd24ebcd6b0ef48cf3ce776ff5762b6e138c99",
-        "arm64": "37eebbd5762a44f262d94875431b14a6d2402991e90a685113ea97b8b41be833"
+        "amd64": "bb110cc765eca9cd7efb2e284a956be5974c60027b0970f16397d86208a9957b",
+        "arm64": "cb152b207f815116d7fa1c1ee4614f61578803351395052908095e79adfd9fd0"
       }
     },
     {
       "name": "opencode",
       "variant": "ai",
-      "version": "2.2.5",
+      "version": "2.2.6",
       "source": {
         "github": "anomalyco/opencode",
         "tag": "v{version}",
@@ -439,14 +439,14 @@
       ],
       "version_cmd": "opencode --version",
       "sha256": {
-        "amd64": "09f44302c10fd036912f59c81fd1aef5df45dd06f649197f9dfc9bbe2a79614e",
-        "arm64": "5a528f42caf576c6cdece6a191eb273d3db54effa5518e0402684d8f8026aeb6"
+        "amd64": "08bb21d6326ce740d91cce7ebe88a6536933f6e1e30353b91a06b01f25da306c",
+        "arm64": "f2d27600c367e45057d6a16f6a5c2aa8d77b41a9b10d4bc3d849c2f88870e944"
       }
     },
     {
       "name": "superpowers",
       "variant": "ai",
-      "version": "7.0.1",
+      "version": "7.0.2",
       "source": {
         "github": "obra/superpowers",
         "tag": "v{version}"
@@ -461,8 +461,8 @@
       "subdir": "skills",
       "version_cmd": "cat /opt/agent-skills/superpowers/VERSION",
       "sha256": {
-        "amd64": "2295dd270d929ddbe3f82e43ab5cc6e3dfb4afdbfb56225347394491d34d747d",
-        "arm64": "2295dd270d929ddbe3f82e43ab5cc6e3dfb4afdbfb56225347394491d34d747d"
+        "amd64": "a0bd5d862537ae2caa9a7b5546b7e597eeabda1b9ca8aa67abbbc967c9f2005e",
+        "arm64": "a0bd5d862537ae2caa9a7b5546b7e597eeabda1b9ca8aa67abbbc967c9f2005e"
       }
     }
   ]

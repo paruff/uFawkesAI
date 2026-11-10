@@ -13,5 +13,5 @@ filelock==4.2.1
 certifi==2026.10.18
 # fawkes's mkdocs-validate hook (#193): the pins in fawkes's requirements.txt.
 mkdocs==1.6.1
-mkdocs-material==9.8.0
+mkdocs-material==9.8.1
 pymdown-extensions==12.3
