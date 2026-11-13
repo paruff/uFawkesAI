@@ -63,6 +63,17 @@ pins move to `2.3.0@sha256:…` (suite AC-AI-05 accepts that form).
 | AC-230-03 | `git ls-files \| wc -l` in the release PR |
 | Nothing else broke | `scripts/run-unit-tests.sh` and `pre-commit run --all-files` pass on each PR |
 
+### Make commands
+
+Per [the suite's rule for `make` commands](https://github.com/paruff/uFawkes.dev/blob/main/docs/ai-sdlc/suite-release/spec.md#make-verification-commands):
+
+| Command | Proves | Needs |
+| --- | --- | --- |
+| `make validate` | Every pre-commit hook passes on every file | Nothing |
+| `make doctor` | This clone's hooks are installed and its tools are present | Nothing |
+
+`scripts/run-unit-tests.sh` (AC-230-02) has no `make` target yet; run it directly.
+
 ## Not in this release
 
 **A Google lifecycle.** Google has published no AI SDLC framework to adopt.
