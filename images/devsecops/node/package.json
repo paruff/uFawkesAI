@@ -3,7 +3,7 @@
   "private": true,
   "description": "Node-distributed tools baked into the CDE Space image; installed with npm ci.",
   "dependencies": {
-    "markdownlint-cli2": "0.24.0"
+    "markdownlint-cli2": "0.24.1"
   },
   "overrides": {
     "katex": "0.18.2",
