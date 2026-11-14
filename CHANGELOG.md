@@ -5,6 +5,31 @@ All notable changes to uFawkesAI will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.1](https://github.com/paruff/uFawkesAI/compare/v2.2.0...v2.2.1) (2026-11-14)
+
+
+### Docs
+
+* **docs:** dora-events spec names the uFawkesObs schema as the source ([#291](https://github.com/paruff/uFawkesAI/issues/291)) ([#292](https://github.com/paruff/uFawkesAI/issues/292)) ([4f01740](https://github.com/paruff/uFawkesAI/commit/4f01740ec70470cb3248732f77564e66e3e48804))
+* **docs:** interfaces, pipeline invariants and make commands ([#286](https://github.com/paruff/uFawkesAI/issues/286)) ([eee549f](https://github.com/paruff/uFawkesAI/commit/eee549f82571b01fe988e9e0b7cb6e4e2ba640a4))
+* global AGENTS.md follows each repo's AGENTS.md to its intent ([#265](https://github.com/paruff/uFawkesAI/issues/265)) ([f01a45f](https://github.com/paruff/uFawkesAI/commit/f01a45fc22fbc7ad3cac07aa6b7e1482e27aa66b))
+* **plan:** cut v2.3.0 to the [#252](https://github.com/paruff/uFawkesAI/issues/252) fix and the file diet; add its spec ([#283](https://github.com/paruff/uFawkesAI/issues/283)) ([27777ae](https://github.com/paruff/uFawkesAI/commit/27777ae1b4c2d880c8f0418eb39ba39e201a0e8e))
+* **plan:** plan v2.3.0 with Anthropic, AWS AI-DLC and Google lifecycles ([#257](https://github.com/paruff/uFawkesAI/issues/257)) ([fbab21e](https://github.com/paruff/uFawkesAI/commit/fbab21e2891d105628399cad351235e1c9e54aa4))
+* **plan:** record the Codespaces onboarding result ([#259](https://github.com/paruff/uFawkesAI/issues/259)) ([946bced](https://github.com/paruff/uFawkesAI/commit/946bced9bbc32cbb4e44a1a088bc59a78c4e9d7b))
+* **readme:** centre on the Anthropic AI-native SDLC with Superpowers ([#258](https://github.com/paruff/uFawkesAI/issues/258)) ([6ff374d](https://github.com/paruff/uFawkesAI/commit/6ff374dbcd30986ab25dc42afde13db916470057))
+* restore root INTENT.md; drop AI-DLC from the v2.3.0 plan ([#281](https://github.com/paruff/uFawkesAI/issues/281)) ([e1a253d](https://github.com/paruff/uFawkesAI/commit/e1a253d5952e80eba14f9d9cc7b73a3381bf8a85))
+* **review:** suite REVIEW.md and the Project 7 workflow ([#266](https://github.com/paruff/uFawkesAI/issues/266)) ([7db9ad5](https://github.com/paruff/uFawkesAI/commit/7db9ad531f0c04a334319303235673ef016b5114))
+
+
+### Chores
+
+* **devcontainer:** pin fawkes-space 2.2.0 by digest ([#260](https://github.com/paruff/uFawkesAI/issues/260)) ([38a1852](https://github.com/paruff/uFawkesAI/commit/38a1852fcf45c22955fa55ad143da730cc85c4e4))
+* **image:** bump locked toolchain (2026-11-01) ([#267](https://github.com/paruff/uFawkesAI/issues/267)) ([a62f566](https://github.com/paruff/uFawkesAI/commit/a62f5666a70fe08ee790ff41acabd76b78d103e3))
+* **image:** bump locked toolchain (2026-11-08) ([#280](https://github.com/paruff/uFawkesAI/issues/280)) ([fc7a2c0](https://github.com/paruff/uFawkesAI/commit/fc7a2c03b515fdcd9b7caeddce5df40fb5a44335))
+* **image:** remove AWS AI-DLC from the image ([#275](https://github.com/paruff/uFawkesAI/issues/275)) ([f69daf8](https://github.com/paruff/uFawkesAI/commit/f69daf832675a8236cbf423c89e20a05f07b089a))
+* **main:** release 2.2.0 ([#245](https://github.com/paruff/uFawkesAI/issues/245)) ([f758041](https://github.com/paruff/uFawkesAI/commit/f758041cefb1a46918685048cc774ef6c734ebe2))
+* **pre-commit:** autoupdate hook revisions (2026-11-01) ([#272](https://github.com/paruff/uFawkesAI/issues/272)) ([0fe008c](https://github.com/paruff/uFawkesAI/commit/0fe008c72a6c6485eb8a05e1b4bee779312a3401))
+
 ## [2.2.0](https://github.com/paruff/uFawkesAI/compare/v2.1.0...v2.2.0) (2026-10-22)
 
 
