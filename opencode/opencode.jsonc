@@ -167,7 +167,6 @@
   // (below) — the authoritative, file-side registration of the skill files.
   "plugin": [
     "opencode-auto-fallback",
-    "opencode-antigravity-auth",
     "superpowers@git+https://github.com/obra/superpowers.git#8ca22dba9a94f28898bbce59f2537ff4d87c747d"
   ],
 
