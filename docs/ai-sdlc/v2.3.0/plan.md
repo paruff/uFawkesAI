@@ -90,3 +90,7 @@ the pinned Gemini CLI as it is.
   AC-AI-05 fails when a repo can't pin the new version.
 - **A deleted file was still needed.** Mitigation: one PR per row, the checks
   in the table, and the `v2.2.0` tag to recover from.
+
+### Audit follow-up, 2026-11-15
+
+This branch fixes High findings from the suite integration harness (uFawkes.dev `tests/suite-integration/AUDIT_FINDINGS.md`). Verified by running the harness against it: `make suite-integration-test` passes with the fix applied and the finding's reproduction test no longer reproduces.
