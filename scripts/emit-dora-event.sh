@@ -24,14 +24,11 @@
 # Usage:
 #   scripts/emit-dora-event.sh <job-start|job-finish|deploy-marker> \
 #     [--step NAME] [--status success|failure] [--at ISO-8601-UTC] \
-#     [--started-at ISO-8601-UTC] [--environment NAME] [--pr NUMBER] \
-#     [--deployment-intent planned|unplanned_rework] [--repo OWNER/REPO]
+#     [--started-at ISO-8601-UTC] [--environment NAME] [--pr NUMBER]
 #
 # CI context comes from GitHub Actions (GITHUB_*) or Woodpecker (CI_*)
-# variables; PR data from the GitHub API via `gh` (GH_TOKEN).
-# Outside CI, --repo can be supplied or the repo is inferred from
-# `git remote get-url origin`. Missing context yields null fields with
-# a warning, never an error.
+# variables; PR data from the GitHub API via `gh` (GH_TOKEN). Missing
+# context yields null fields, never an error.
 
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -50,9 +47,7 @@ status="success"
 at=""
 started_at=""
 environment="${DORA_ENVIRONMENT:-production}"
-deployment_intent="${DORA_DEPLOYMENT_INTENT:-planned}"
 pr_number=""
-repo_override=""
 while [ $# -gt 0 ]; do
   case "$1" in
     --step)
@@ -79,14 +74,6 @@ while [ $# -gt 0 ]; do
       pr_number="$2"
       shift 2
       ;;
-    --deployment-intent)
-      deployment_intent="$2"
-      shift 2
-      ;;
-    --repo)
-      repo_override="$2"
-      shift 2
-      ;;
     *)
       echo "unknown argument: $1" >&2
       exit 2
@@ -94,41 +81,15 @@ while [ $# -gt 0 ]; do
   esac
 done
 
-case "$deployment_intent" in
-  planned | unplanned_rework) ;;
-  *)
-    echo "invalid --deployment-intent: $deployment_intent (expected planned|unplanned_rework)" >&2
-    exit 2
-    ;;
-esac
-
-# Infer repo from --repo flag, GITHUB_REPOSITORY, CI_REPO, or git remote
-if [ -n "$repo_override" ]; then
-  repo="$repo_override"
-elif [ -n "${GITHUB_REPOSITORY:-}" ]; then
-  repo="$GITHUB_REPOSITORY"
-elif [ -n "${CI_REPO:-}" ]; then
-  repo="$CI_REPO"
-else
-  # Try to infer from git remote (strip .git suffix if present)
-  repo="$(git remote get-url origin 2> /dev/null | sed -E 's#.*[:/]([^/]+/[^.]+)(\.git)?$#\1#' || true)"
-  if [ -z "$repo" ]; then
-    warn "could not determine repository (no GITHUB_REPOSITORY, CI_REPO, or git remote); repo field will be 'unknown'"
-    repo="unknown"
-  fi
-fi
-
 warn() { echo "emit-dora-event: $*" >&2; }
 now_iso() { date -u +%Y-%m-%dT%H:%M:%SZ; }
 to_epoch() { date -u -d "$1" +%s 2> /dev/null || date -u -j -f '%Y-%m-%dT%H:%M:%SZ' "$1" +%s; }
 
 at="${at:-$(now_iso)}"
+repo="${GITHUB_REPOSITORY:-${CI_REPO:-unknown}}"
 pipeline="${GITHUB_RUN_NUMBER:-${CI_PIPELINE_NUMBER:-unknown}}"
-[ "$pipeline" = unknown ] && warn "pipeline number not available (no GITHUB_RUN_NUMBER or CI_PIPELINE_NUMBER); pipeline field will be 'unknown'"
 service="${OTEL_SERVICE_NAME:-${repo##*/}}"
-[ "$service" = unknown ] && warn "service name not available (no OTEL_SERVICE_NAME and repo is unknown); service field will be 'unknown'"
 commit_sha="${GITHUB_SHA:-${CI_COMMIT_SHA:-$(git rev-parse HEAD 2> /dev/null || echo "")}}"
-[ -z "$commit_sha" ] && warn "commit SHA not available; commit_sha field will be null"
 if [ -n "${GITHUB_RUN_ID:-}" ]; then
   pipeline_url="${GITHUB_SERVER_URL:-https://github.com}/${repo}/actions/runs/${GITHUB_RUN_ID}"
 else
@@ -228,12 +189,12 @@ case "$EVENT" in
     deploy_status="$status"
     [ "$status" = failure ] && deploy_status=failed
     line="$(jq -c --arg m "Delivered ${commit_sha:0:12} to ${environment}" --arg env "$environment" \
-      --arg intent "$deployment_intent" --arg status "$deploy_status" --argjson delivery "$delivery" '
+      --arg status "$deploy_status" --argjson delivery "$delivery" '
       . + {message: $m, status: $status, environment: $env} + $delivery
       | .dora_event = ({
           schema_version: "1.0", event_type: "deployment", repo: .repo, service: .service,
           environment: $env, commit_sha: .commit_sha, deployed_at: .["@timestamp"],
-          status: $status, deployment_intent: $intent, pipeline_url: .pipeline_url,
+          status: $status, pipeline_url: .pipeline_url,
           ai_assisted: (((.agent_tokens.output // 0) > 0) or ((.agent_tokens.ai_coauthored_commits // 0) > 0)),
           first_commit_at: .pr.first_commit_at, pr_merged_at: .pr.merged_at
         } | with_entries(select(.value != null)))' <<< "$base")"
@@ -272,5 +233,15 @@ if [ -n "${OTEL_EXPORTER_OTLP_ENDPOINT:-}" ]; then
   done
   if ! curl -fsS --max-time 10 "${headers[@]}" -d "$otlp" "${OTEL_EXPORTER_OTLP_ENDPOINT%/}/v1/logs" > /dev/null; then
     warn "OTLP export to ${OTEL_EXPORTER_OTLP_ENDPOINT%/}/v1/logs failed; event kept on stdout${DORA_EVENTS_FILE:+ and in $DORA_EVENTS_FILE}"
+  fi
+fi
+
+# dora-api's POST /event is what turns a deployment into DORA metrics; the log
+# line above only reaches Loki (AF-15).
+if [ "$EVENT" = deploy-marker ] && [ -n "${DORA_INGESTION_URL:-}" ]; then
+  if ! jq -c .dora_event <<< "$line" | curl -fsS --max-time 10 -X POST \
+    -H "Content-Type: application/json" ${DORA_API_KEY:+-H "Authorization: Bearer ${DORA_API_KEY}"} \
+    --data-binary @- "${DORA_INGESTION_URL%/}/event" > /dev/null; then
+    warn "POST to ${DORA_INGESTION_URL%/}/event failed; the deployment is not counted in DORA metrics"
   fi
 fi
