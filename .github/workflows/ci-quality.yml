@@ -56,6 +56,7 @@ jobs:
           test "$(readlink .cursorrules)" = "AGENTS.md"
           echo "✅ Agent symlinks resolve correctly"
       - name: job-finish
+        if: always()
         run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
   multi-harness-smoke:
     name: "🧩 Multi-Harness Smoke Test"
@@ -79,6 +80,7 @@ jobs:
         run: |
           docker run --rm -v "$PWD:/workspace" -w /workspace fawkes-space:ci bash scripts/multi-harness-smoke.sh
       - name: job-finish
+        if: always()
         run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
   lint-placeholder:
     name: "🔍 Lint (Placeholder)"
@@ -98,6 +100,7 @@ jobs:
           npm run lint
           echo "✅ Lint passed (placeholder)"
       - name: job-finish
+        if: always()
         run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
   typecheck:
     name: "🔷 TypeScript"
@@ -117,6 +120,7 @@ jobs:
       - name: Type check (tsc --noEmit, node --check, py_compile)
         run: npm run typecheck
       - name: job-finish
+        if: always()
         run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
   test:
     name: "🧪 Tests & Coverage"
@@ -134,6 +138,7 @@ jobs:
       - name: Run unit tests
         run: npm test
       - name: job-finish
+        if: always()
         run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
   architecture:
     name: "🏗️ Architecture Boundaries"
@@ -153,6 +158,7 @@ jobs:
           npm run lint:architecture
           echo "✅ Architecture boundaries respected (placeholder)"
       - name: job-finish
+        if: always()
         run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
   ci-summary:
     name: "✅ CI Complete"
@@ -208,6 +214,7 @@ jobs:
           echo "- **Parallel execution**: Yes" >> $GITHUB_STEP_SUMMARY
           echo "- **Estimated time**: ~5 min" >> $GITHUB_STEP_SUMMARY
       - name: job-finish
+        if: always()
         run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
   dora-events:
     name: "📡 Delivery Events"
