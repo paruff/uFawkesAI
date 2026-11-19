@@ -51,13 +51,13 @@ Each of the six repos has an issue for the deletion (listed under AC-08).
 
 ## Acceptance Criteria
 
-AC-01 to AC-04, AC-06 and AC-07 run in `scripts/test-emit-dora-event.sh` (25 checks). AC-05 needs a pipeline run and has not been checked.
+AC-01 to AC-04, AC-06 and AC-07 run in `scripts/test-emit-dora-event.sh` (25 checks).
 
 - [x] AC-01: Events are single-line JSON with dora-log.sh's fields — `test_type: unit`
 - [x] AC-02: `agent_tokens` sums footers; `pr.cycle_time_seconds` = first commit → merge — `test_type: unit`
 - [x] AC-03: `dora_event` validates against uFawkesObs's `deployment-event.schema.json` at the pinned release (checked against it when online) (REQ-005) — `test_type: unit`
 - [x] AC-04: OTLP export POSTs a valid logs payload; an unreachable endpoint never fails the run — `test_type: integration`
-- [ ] AC-05: A real pipeline run produces a `dora-events` artifact whose event has agent token usage and PR cycle time — `test_type: live-system`
+- [x] AC-05: A real pipeline run produces a `dora-events` artifact whose event has agent token usage and PR cycle time — `test_type: live-system` (run 44504782315 on 8a76d7a: agent_tokens present, PR #305 cycle_time_seconds 7815)
 - [x] AC-06: Emitter works outside CI — `test_type: unit`
 - [x] AC-07: With no repo variable, the emitter still emits the event with `repo: unknown` — `test_type: unit`
 - [x] AC-08: The decision in REQ-006 is recorded here, and each of the six repos has an issue for it (fawkes#2344, uFawkes.dev#256, uFawkesDojo#134, uFawkesObs#734, uFawkesPipe#265, uFawkesDevX#166) — `test_type: review`
