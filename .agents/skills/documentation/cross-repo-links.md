@@ -41,8 +41,6 @@ internal developer platform for small engineering teams.
 | [uFawkesObs](https://github.com/paruff/uFawkesObs)   | Observability substrate (OTel, Prometheus, Grafana, Loki, Tempo) |
 | [uFawkesPipe](https://github.com/paruff/uFawkesPipe) | Lightweight CI/CD (Woodpecker CI + Portainer)                    |
 | [uFawkesDevX](https://github.com/paruff/uFawkesDevX) | Developer experience (CDE, golden paths, Backstage-alternative)  |
-| [uFawkesDORA](https://github.com/paruff/uFawkesDORA) | DORA metrics dashboards and delivery benchmarks                  |
-| [uFawkesSec](https://github.com/paruff/uFawkesSec)   | Security posture (policy-as-code, supply chain)                  |
 | [uFawkesAI](https://github.com/paruff/uFawkesAI)     | AI agent and skill suite for the product lifecycle               |
 | [uFawkes.dev](https://ufawkes.dev)                   | Documentation site and Dojo (five-belt learning curriculum)      |
 
@@ -60,8 +58,6 @@ Bold the current repo's row and add a short description specific to it:
 | uFawkesObs  | **This repo** — Observability substrate              |
 | uFawkesPipe | **This repo** — Lightweight CI/CD                    |
 | uFawkesDevX | **This repo** — Developer experience and CDEs        |
-| uFawkesDORA | **This repo** — DORA metrics and delivery benchmarks |
-| uFawkesSec  | **This repo** — Security posture                     |
 | uFawkesAI   | **This repo** — AI agent and skill suite             |
 | ufawkes.dev | **This repo** — Documentation site and Dojo          |
 
@@ -87,8 +83,6 @@ declare -A REPO_DESCRIPTIONS=(
   ["uFawkesObs"]="**This repo** — Observability substrate (OTel, Prometheus, Grafana, Loki, Tempo)"
   ["uFawkesPipe"]="**This repo** — Lightweight CI/CD (Woodpecker CI + Portainer)"
   ["uFawkesDevX"]="**This repo** — Developer experience (CDE, golden paths)"
-  ["uFawkesDORA"]="**This repo** — DORA metrics dashboards and delivery benchmarks"
-  ["uFawkesSec"]="**This repo** — Security posture (policy-as-code, supply chain)"
   ["uFawkesAI"]="**This repo** — AI agent and skill suite for the product lifecycle"
   ["ufawkes.dev"]="**This repo** — Documentation site and Dojo (five-belt learning curriculum)"
 )
@@ -109,8 +103,6 @@ internal developer platform for small engineering teams.
 | [uFawkesObs](https://github.com/paruff/uFawkesObs) | ${REPO_NAME == "uFawkesObs" && echo "$THIS_REPO_DESC" || echo "Observability substrate (OTel, Prometheus, Grafana, Loki, Tempo)"} |
 | [uFawkesPipe](https://github.com/paruff/uFawkesPipe) | ${REPO_NAME == "uFawkesPipe" && echo "$THIS_REPO_DESC" || echo "Lightweight CI/CD (Woodpecker CI + Portainer)"} |
 | [uFawkesDevX](https://github.com/paruff/uFawkesDevX) | ${REPO_NAME == "uFawkesDevX" && echo "$THIS_REPO_DESC" || echo "Developer experience (CDE, golden paths)"} |
-| [uFawkesDORA](https://github.com/paruff/uFawkesDORA) | ${REPO_NAME == "uFawkesDORA" && echo "$THIS_REPO_DESC" || echo "DORA metrics dashboards and delivery benchmarks"} |
-| [uFawkesSec](https://github.com/paruff/uFawkesSec) | ${REPO_NAME == "uFawkesSec" && echo "$THIS_REPO_DESC" || echo "Security posture (policy-as-code, supply chain)"} |
 | [uFawkesAI](https://github.com/paruff/uFawkesAI) | ${REPO_NAME == "uFawkesAI" && echo "$THIS_REPO_DESC" || echo "AI agent and skill suite for the product lifecycle"} |
 | [uFawkes.dev](https://ufawkes.dev) | ${REPO_NAME == "ufawkes.dev" && echo "$THIS_REPO_DESC" || echo "Documentation site and Dojo (five-belt learning curriculum)"} |
 
@@ -128,7 +120,7 @@ echo "   Commit with: git commit -am 'docs(${REPO_NAME}): add suite context link
 #!/usr/bin/env bash
 # Run from parent directory containing all repos
 
-for repo in fawkes uFawkesObs uFawkesPipe uFawkesDevX uFawkesDORA uFawkesSec uFawkesAI; do
+for repo in fawkes uFawkesObs uFawkesPipe uFawkesDevX uFawkesAI; do
   echo "=== ${repo} ==="
   cd "../${repo}" 2>/dev/null || { echo "SKIP: ${repo} not found"; continue; }
   bash .agents/skills/documentation/cross-repo-links/add-suite-context.sh "${repo}"
@@ -157,7 +149,7 @@ done
   "date": "YYYY-MM-DD",
   "repos_updated": ["fawkes", "uFawkesObs", "uFawkesAI"],
   "repos_already_had_links": ["uFawkesObs"],
-  "repos_skipped": ["uFawkesSec"],
+  "repos_skipped": [],
   "prs_created": 2,
   "roadmap_item": "0.6",
   "roadmap_item_complete": false

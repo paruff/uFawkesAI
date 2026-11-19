@@ -1,6 +1,6 @@
 # Specification — uFawkesAI v2.0.0
 
-**Traces to:** [`intent.md`](intent.md) | **Status:** Draft | **Revision:** 1
+**Traces to:** [`intent.md`](intent.md) | **Status:** Released (v2.0.0) | **Revision:** 1
 
 Acceptance criteria IDs are the suite's (`AC-AI-*`, `AC-SITE-01`), defined in
 [uFawkes.dev `suite-release/spec.md`](https://github.com/paruff/uFawkes.dev/blob/main/docs/ai-sdlc/suite-release/spec.md).
@@ -24,7 +24,7 @@ base layers the devcontainer is built from (`*-core`, `*-ai`), and `:latest`.
 **REQ-001 — Pinnable image (AC-AI-01).** Pushing `v2.0.0` publishes
 `fawkes-space:2.0.0` and `:2.0`, signed. `docker manifest inspect` succeeds
 unauthenticated; `cosign verify` passes with the steps in
-`build-devsecops-images.yml`'s header. The digest appears in the Release.
+`build-cde-space-image.yml`'s header. The digest appears in the Release.
 
 **REQ-002 — Template works from "Use this template" (AC-AI-02).** A repo
 created from the template, opened in `fawkes-space:2.0.0`: all four

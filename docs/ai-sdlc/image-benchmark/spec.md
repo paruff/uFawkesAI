@@ -8,7 +8,7 @@ benchmarks the release just published, on every release (AC-AI-08).
 
 ## Requirements
 
-**R1 — When.** A `benchmark` job in `build-devsecops-images.yml` runs after
+**R1 — When.** A `benchmark` job in `build-cde-space-image.yml` runs after
 `publish` on every release tag (`v*`; `image-v*` until v2.1.0). It doesn't run
 on PRs, pushes or the weekly schedule: there is no new published image to
 measure.

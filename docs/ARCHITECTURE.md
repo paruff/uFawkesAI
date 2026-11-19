@@ -78,7 +78,7 @@ scripts.
 ## uFawkes suite boundary
 
 This file describes uFawkesAI's *internal* structure. What crosses into
-the rest of the uFawkes stack family (uFawkesPipe, uFawkesObs, uFawkesDORA)
+the rest of the uFawkes stack family (uFawkesPipe, uFawkesObs)
 is a separate, narrower contract — see
 [`docs/UFAWKES_INTEGRATION.md`](./UFAWKES_INTEGRATION.md).
 

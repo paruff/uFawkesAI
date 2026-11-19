@@ -29,7 +29,7 @@ result in context-blind sessions.
 # Adjust REPOS_DIR if needed
 
 REPOS_DIR=".."
-REPOS=(fawkes uFawkesObs uFawkesPipe uFawkesDevX uFawkesDORA uFawkesSec uFawkesAI "ufawkes.dev")
+REPOS=(fawkes uFawkesObs uFawkesPipe uFawkesDevX uFawkesAI "ufawkes.dev")
 
 REQUIRED_FILES=(
   "README.md"
@@ -171,10 +171,10 @@ DORA capability: AI Capability 3: AI-accessible internal data" \
 {
   "sub-skill": "context-engineering/audit",
   "date": "YYYY-MM-DD",
-  "repos_audited": 8,
+  "repos_audited": 6,
   "fully_accessible": ["fawkes", "uFawkesObs", "uFawkesAI"],
-  "partial_context": ["uFawkesPipe", "uFawkesDevX"],
-  "context_poor": ["uFawkesDORA", "uFawkesSec"],
+  "partial_context": ["uFawkesPipe"],
+  "context_poor": ["uFawkesDevX"],
   "context_blind": [],
   "total_gaps": 14,
   "issues_to_file": 3,

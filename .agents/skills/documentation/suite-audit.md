@@ -27,7 +27,7 @@ portfolio-level view; use `documentation/audit` for per-repo deep dives.
 #!/usr/bin/env bash
 # Run from parent directory containing all uFawkes* repos
 
-REPOS=(fawkes uFawkesObs uFawkesPipe uFawkesDevX uFawkesDORA uFawkesSec uFawkesAI "ufawkes.dev")
+REPOS=(fawkes uFawkesObs uFawkesPipe uFawkesDevX uFawkesAI "ufawkes.dev")
 CHECKS=("README.md" "CHANGELOG.md" "CONTRIBUTING.md" "AI_STANCE.md" "AGENTS.md" "ARCHITECTURE.md")
 
 echo "# Documentation Suite Audit — $(date +%Y-%m-%d)"
@@ -141,7 +141,7 @@ done
 {
   "sub-skill": "documentation/suite-audit",
   "date": "YYYY-MM-DD",
-  "repos_audited": 8,
+  "repos_audited": 6,
   "repo_scores": {
     "fawkes": { "score": 7, "total": 7, "pct": 100, "status": "ai-ready" },
     "uFawkesObs": { "score": 7, "total": 7, "pct": 100, "status": "ai-ready" },
@@ -155,18 +155,6 @@ done
       "score": 3,
       "total": 7,
       "pct": 43,
-      "status": "context-poor"
-    },
-    "uFawkesDORA": {
-      "score": 2,
-      "total": 7,
-      "pct": 29,
-      "status": "context-poor"
-    },
-    "uFawkesSec": {
-      "score": 2,
-      "total": 7,
-      "pct": 29,
       "status": "context-poor"
     },
     "uFawkesAI": { "score": 6, "total": 7, "pct": 86, "status": "partial" },

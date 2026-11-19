@@ -111,7 +111,7 @@ a requirement here and a check that runs:
 
 | Dimension (source) | Requirement | Check | Status (rc.3) |
 |---|---|---|---|
-| Feedback loops (Noda et al. 2023; Jaspan & Green 2023: every latency gain helps, no magic threshold) | Cold start (pull + first run) and warm start (median re-run) per variant and arch, every release; >10% regression fails it; no fixed target | `benchmark` job in `build-devsecops-images.yml`; table in the release | Warm baseline recorded from rc.3. Cold baseline pending: rc.3's cold numbers reused layers between variants; `BENCH_PRUNE=1` fixes that from the next tag |
+| Feedback loops (Noda et al. 2023; Jaspan & Green 2023: every latency gain helps, no magic threshold) | Cold start (pull + first run) and warm start (median re-run) per variant and arch, every release; >10% regression fails it; no fixed target | `benchmark` job in `build-cde-space-image.yml`; table in the release | Warm baseline recorded from rc.3. Cold baseline pending: rc.3's cold numbers reused layers between variants; `BENCH_PRUNE=1` fixes that from the next tag |
 | Cognitive load: one entry point (Noda et al. 2023) | "Reopen in Container" is the only setup step; `devcontainer.json` names one pinned image | the six suite repos pin `fawkes-space` by digest (AC-AI-05 check) | Met |
 | Cognitive load: one config source (playbook) | One instruction source for all four harnesses | `scripts/check-harness-parity.sh` (pre-commit) | Met |
 | Cognitive load: a static rule file of one page or less (playbook) | `AGENTS.md`, the always-loaded file, fits one page | `wc -l AGENTS.md` | Met on approval of this change: 50 lines; the detail moved verbatim to `docs/AGENT_REFERENCE.md` |

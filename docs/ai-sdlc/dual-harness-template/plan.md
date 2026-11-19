@@ -95,7 +95,7 @@ All 11 items are implemented (2026-09-26).
       not been proven inside an actual container build.
 - [x] `.github/workflows/ci-quality.yml` — new `dual-harness-smoke` job
       (builds the devcontainer via `devcontainers/ci`, runs
-      `scripts/dual-harness-smoke.sh` inside it — a new script covering
+      `scripts/multi-harness-smoke.sh` inside it — a new script covering
       every item in "Tests That Prove It" below); wired into
       `ci-summary`'s `needs`, failure check, and table. Existing jobs
       untouched. YAML validated.
@@ -180,7 +180,7 @@ Per your instruction, "tests" for a template repository means an
 end-to-end smoke test against a fresh clone, run automatically in CI —
 not unit tests against application code (there is none).
 
-**Status:** `scripts/dual-harness-smoke.sh`'s logic is written and passes
+**Status:** `scripts/multi-harness-smoke.sh`'s logic is written and passes
 when run directly on the host machine (verified this session — every
 check below currently passes). It has **not** yet been run inside an
 actual freshly built devcontainer via the new `dual-harness-smoke` CI
