@@ -3,7 +3,7 @@
 **Traces to:** [`spec.md`](spec.md) → [`intent.md`](intent.md).
 **Status:** Draft for the plan gate. Revised 2026-11-09: cut to the work that
 needs no owner decision (the suite readiness review, IR-C1). AWS AI-DLC was
-dropped on 2026-11-05 (`docs/ai-sdlc/remove-aidlc/plan.md`).
+dropped on 2026-11-05 (`git show v2.2.0:docs/ai-sdlc/remove-aidlc/plan.md`).
 
 **Board:** paruff/uFawkesAI#252 is on Project #7. Each step below is one PR.
 

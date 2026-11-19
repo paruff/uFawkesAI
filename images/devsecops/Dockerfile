@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-# uFawkes DevSecOps toolchain image — see docs/ai-sdlc/devsecops-image/spec.md.
+# uFawkes DevSecOps toolchain image — see the devsecops-image spec (git show v2.2.0:docs/ai-sdlc/devsecops-image/spec.md).
 #
 #   docker buildx build --target core -t fawkes-core images/devsecops
 #

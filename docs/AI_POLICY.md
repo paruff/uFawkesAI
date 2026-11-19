@@ -10,8 +10,7 @@
 > quarterly. This file exists so that repositories copied from this template
 > have a starting point to fill in for themselves.
 >
-> Do not treat the placeholders below as resolved for this repository, and
-> replace `[PROJECT NAME]` wherever it appears. Or adopt `AI_STANCE.md` as
+> Do not treat the placeholders below as resolved for this repository. Or adopt `AI_STANCE.md` as
 > the policy format directly — it carries the same content in the
 > three-bucket structure that the `ai-stance` audit checks.
 
@@ -72,7 +71,7 @@ _(template: replace with that project's actual usage)_
 1. **Anyone may decline AI assistance on any task.** No justification required.
 2. **AI skepticism is not resistance to change.** Questioning AI output is encouraged — it is the review process working correctly.
 3. **Mistakes with AI-generated code are learning opportunities**, not failures. The review process is designed to catch them.
-4. **Concerns about AI quality or direction** are raised openly — in retrospectives, in the DEVEX_LOG, or directly to the PM.
+4. **Concerns about AI quality or direction** are raised openly — in retrospectives, or directly to the PM.
 5. **Human judgment overrides AI output** in all cases, without friction.
 
 ---
@@ -104,7 +103,6 @@ This document is reviewed quarterly. Trigger a review if:
 - Rework rate exceeds 20% for two consecutive months
 - A new AI capability is being adopted (new agent, new tool)
 - A significant AI-introduced incident occurs in production
-- Team DevEx score for "AI Trust" falls below 3
 
-**Last reviewed:** [PLACEHOLDER — date]
-**Next review:** [PLACEHOLDER — date]
+**Last reviewed:** 2026-11-19
+**Next review:** 2027-02-19

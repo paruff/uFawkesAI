@@ -1,4 +1,4 @@
-# Runbooks — [PROJECT NAME]
+# Runbooks
 
 > Operational procedures for the most critical scenarios.
 > Every procedure has been tested. If a step fails, update the runbook.
@@ -121,34 +121,6 @@ Update `docs/METRICS.md` monthly log.
 
 ```
 For each changed service or utility file:
-□ Does docs/API_SURFACE.md reflect all current public functions?
-  → Ask an agent to update API_SURFACE.md for the files changed, then read the diff
-□ Does docs/CHANGE_IMPACT_MAP.md reflect new cross-file dependencies?
-  → Update the map manually, or with an agent session and a human-checked diff
-□ Does docs/KNOWN_LIMITATIONS.md have any limitations that are now fixed?
-  → Remove them and note in PR
 □ Does docs/ARCHITECTURE.md still accurately describe the layer structure?
   → Update if new patterns were introduced
 ```
-
----
-
-## Runbook 6 — Monthly DevEx Review
-
-**Cadence:** Last Friday of each month (5 minutes)
-
-Score each dimension 1–5 in `docs/DEVEX_LOG.md`:
-
-| Dimension                                             | Score (1–5) |
-| ----------------------------------------------------- | ----------- |
-| Flow — how often do I reach flow state?               |             |
-| Feedback Speed — how fast does the system respond?    |             |
-| Cognitive Load — how hard is it to navigate the code? |             |
-| AI Trust — how often do I accept Copilot output?      |             |
-| Tooling Friction — how often does tooling block me?   |             |
-
-**Triggers:**
-
-- Any dimension < 3 for two consecutive months → file an improvement issue
-- AI Trust < 3 → review AGENTS.md
-- Cognitive Load ≥ 4 → run a Value Stream Mapping exercise

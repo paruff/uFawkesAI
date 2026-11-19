@@ -2,7 +2,7 @@
 
 **Who:** an engineer who wants to run their team's AI development lifecycle inside the `fawkes-space` image without
 rebuilding tooling: the Anthropic AI-native SDLC or Google's agent workflow. (AWS AI-DLC was dropped on 2026-11-05;
-see `docs/ai-sdlc/remove-aidlc/plan.md`.)
+see `git show v2.2.0:docs/ai-sdlc/remove-aidlc/plan.md`.)
 
 **Job:** pick a lifecycle, get its tools, commands and review gates working in a fresh devcontainer, and keep one
 intent → spec → plan artifact chain and one review rubric (`REVIEW.md`) whichever lifecycle runs.

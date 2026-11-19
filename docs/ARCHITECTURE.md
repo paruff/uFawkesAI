@@ -75,6 +75,15 @@ template for a real service with `src/`, wire a real linter's
 import-boundary rules to the layers above and replace the placeholder
 scripts.
 
+## Known limits
+
+- **L-004: hooks are written twice.** Claude Code hooks (JSON in `.claude/settings.json`) and OpenCode hooks (TypeScript in
+  `.opencode/plugins/ai-sdlc-hooks.ts`) cannot be generated from one source. Only the protected-path list is shared
+  (`scripts/hooks/protected-paths.json`). When you change hook logic, change both files in the same commit.
+- **L-005: test coverage is not measured.** The tests are bash suites (`scripts/test-*.sh`, run by
+  `scripts/run-unit-tests.sh`). CI enforces that every suite passes, not a percentage. Add a test for every
+  behavioural change; `kcov` would make coverage measurable.
+
 ## uFawkes suite boundary
 
 This file describes uFawkesAI's *internal* structure. What crosses into

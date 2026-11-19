@@ -180,6 +180,3 @@ When running a documentation audit on a repo, produce:
 | Sub-skill                        | Purpose                                                   |
 | -------------------------------- | --------------------------------------------------------- |
 | `documentation/audit`            | Full documentation audit for one repo                     |
-| `documentation/suite-audit`      | Audit all 8 uFawkes\* repos and produce a parity matrix   |
-| `documentation/cross-repo-links` | Add Suite Context section to all repos (roadmap item 0.6) |
-| `documentation/ci-integration`   | Add docs-lint CI workflow to a repo                       |

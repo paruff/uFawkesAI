@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # images/devsecops/scan.sh — vulnerability scan policy for the DevSecOps
-# images (docs/ai-sdlc/devsecops-image/spec.md R5). Runs inside the core
+# images (devsecops-image spec R5: git show v2.2.0:docs/ai-sdlc/devsecops-image/spec.md). Runs inside the core
 # image with the Docker socket mounted:
 #
 #   docker run --rm --user root -v /var/run/docker.sock:/var/run/docker.sock \

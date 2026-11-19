@@ -28,6 +28,10 @@ SUITES=(
   scripts/test-check-readme-claims.sh
   scripts/test-no-leakage.sh
   scripts/test-git-isolation.sh
+  scripts/test-check-links.sh
+  scripts/test-check-orphans.sh
+  scripts/check-links.sh
+  scripts/check-orphans.sh
 )
 
 failed=0

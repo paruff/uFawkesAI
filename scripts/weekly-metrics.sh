@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# weekly-metrics.sh — [PROJECT NAME]
+# weekly-metrics.sh — uFawkesAI
 # DORA 2025 (METRICS-02): Weekly metrics summary writer
 # Run: npm run metrics
 # Usage: bash scripts/weekly-metrics.sh [--dry-run] [--days=14]
@@ -146,7 +146,7 @@ EOF
 
 echo ""
 echo "═══════════════════════════════════════════"
-echo "  [PROJECT NAME] Weekly Metrics"
+echo "  uFawkesAI Weekly Metrics"
 echo "  Period: last ${DAYS} days"
 echo "═══════════════════════════════════════════"
 echo " Rework rate: ${REWORK_RATE}% (${REWORK_LINES}/${TOTAL_LINES})"

@@ -12,7 +12,7 @@ When implementing a feature from a GitHub issue:
 
 1. **Read the acceptance criteria first.** Every acceptance criterion becomes either a unit test or a BDD scenario.
 2. **Read the user story.** Understand _why_ this feature exists before writing any code.
-3. **Check `docs/KNOWN_LIMITATIONS.md`** for any gotchas in the area you're working.
+3. **Check the known limits in `docs/ARCHITECTURE.md`** for gotchas in the area you're working.
 4. **Write the failing test first.** Commit it before writing implementation code.
 
 ## Feature Development Sequence

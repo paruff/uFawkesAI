@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security vulnerability
+    url: https://github.com/paruff/uFawkesAI/security/advisories/new
+    about: Private reporting only. Never open a public issue for an unpatched vulnerability.

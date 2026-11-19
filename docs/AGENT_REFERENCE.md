@@ -82,14 +82,14 @@ your agent's read-only/question mode (60–90% cheaper than agentic mode).
 
 ## Delivery Metrics
 
-Use these baselines before optimizing delivery flow. The authoritative formulas and worked examples live in [`docs/METRICS.md`](./docs/METRICS.md).
+Use these baselines before optimizing delivery flow. The authoritative formulas and worked examples live in [`docs/METRICS.md`](./METRICS.md).
 
-- [Rework rate](./docs/METRICS.md#1-rework-rate) — target: < 10% green, 10–20% amber, > 20% red
-- [PR revision rate](./docs/METRICS.md#2-pr-revision-rate) — target: < 25% green, 25–40% amber, > 40% red
-- [CI cycle time](./docs/METRICS.md#3-ci-cycle-time) — target: < 4 min green, 4–10 min amber, > 10 min red
-- [Review turnaround](./docs/METRICS.md#4-review-turnaround) — target: < 24h green, 24–72h amber, > 72h red
-- [Failed deployment recovery time](./docs/METRICS.md#5-failed-deployment-recovery-time-fdrt) — target: < 1h green, 1–4h amber, > 4h red
-- [Reliability / change failure rate](./docs/METRICS.md#6-reliability--change-failure-rate) — target: improving trend green, flat amber, rising red
+- [Rework rate](./METRICS.md#1-rework-rate) — target: < 10% green, 10–20% amber, > 20% red
+- [PR revision rate](./METRICS.md#2-pr-revision-rate) — target: < 25% green, 25–40% amber, > 40% red
+- [CI cycle time](./METRICS.md#3-ci-cycle-time) — target: < 4 min green, 4–10 min amber, > 10 min red
+- [Review turnaround](./METRICS.md#4-review-turnaround) — target: < 24h green, 24–72h amber, > 72h red
+- [Failed deployment recovery time](./METRICS.md#5-failed-deployment-recovery-time-fdrt) — target: < 1h green, 1–4h amber, > 4h red
+- [Reliability / change failure rate](./METRICS.md#6-reliability--change-failure-rate) — target: improving trend green, flat amber, rising red
 
 ---
 

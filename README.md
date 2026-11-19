@@ -5,6 +5,8 @@ An implementation of Anthropic's [AI-Native SDLC Playbook](https://claude.com/bl
 [Superpowers](https://github.com/obra/superpowers) skill suite. It ships as a template and as a signed devcontainer image
 (`fawkes-space`) with Claude Code, OpenCode, Codex and Gemini CLI installed.
 
+[![CI](https://github.com/paruff/uFawkesAI/actions/workflows/ci-quality.yml/badge.svg?branch=main)](https://github.com/paruff/uFawkesAI/actions/workflows/ci-quality.yml)
+[![Release](https://img.shields.io/github/v/release/paruff/uFawkesAI?style=flat-square)](https://github.com/paruff/uFawkesAI/releases/latest)
 [![MIT License](https://img.shields.io/badge/License-MIT-2EA44F?style=flat-square)](./LICENSE)
 
 ## What you get
@@ -49,7 +51,6 @@ Stage 6 is partial: the loop back into `intent.md` is manual today.
 | DORA AI capability               | Where                                                 |
 | -------------------------------- | ----------------------------------------------------- |
 | Clear and communicated AI stance | `AI_STANCE.md`, `AGENTS.md`                           |
-| Healthy data ecosystems          | `docs/CHANGE_IMPACT_MAP.md`, `docs/API_SURFACE.md`    |
 | AI-accessible internal data      | `AGENTS.md` context index, `.vscode/settings.json`    |
 | Strong version control practices | `ci-quality.yml` PR size check, `docs/COMMIT_CONVENTIONS.md` |
 | Working in small batches         | 400-line PR limit, `docs/GOLDEN_PATH.md`              |

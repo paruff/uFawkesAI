@@ -68,7 +68,6 @@ body:
       placeholder: |
         - src/types/index.ts — all data shapes
         - docs/ARCHITECTURE.md — layer boundaries
-        - docs/API_SURFACE.md — existing public functions
         - [add any feature-specific files here]
     validations:
       required: false
@@ -112,7 +111,6 @@ body:
         - label: "`npm run preflight` passes (lint + typecheck + tests)"
         - label: AI-Assisted Review Block completed in the draft PR
         - label: No architecture boundary violations (see AGENTS.md §4)
-        - label: "`docs/API_SURFACE.md` updated if new public functions were added"
         - label: New end-user feature is behind a feature flag
 
   - type: textarea

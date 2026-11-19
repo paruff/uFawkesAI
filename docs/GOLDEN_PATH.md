@@ -1,4 +1,4 @@
-# Golden Path — [PROJECT NAME]
+# Golden Path
 
 > DORA 2025 (PLAT-02): "Identify the golden path for the most common workflow and build
 > just enough to make that specific journey demonstrably better. Developer independence
@@ -90,7 +90,7 @@ Constraints from .github/copilot-instructions.md:
 The failing test is:
 [paste test]
 
-Read src/types/index.ts and docs/API_SURFACE.md before writing code.
+Read the files the issue lists under context before writing code.
 Write the prompt from the issue's acceptance criteria and context files.
 ```
 

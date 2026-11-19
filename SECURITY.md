@@ -4,8 +4,8 @@
 
 | Version             | Supported |
 | ------------------- | --------- |
-| `main` (latest)     | ✅        |
-| Older branches/tags | ❌        |
+| Latest release (see [Releases](https://github.com/paruff/uFawkesAI/releases/latest)) and `main` | ✅ |
+| Older releases      | ❌        |
 
 ## Reporting a Vulnerability
 
@@ -29,3 +29,18 @@ Severity targets after triage:
 
 - **Critical/High:** remediation plan or mitigation within **7 days**
 - **Medium/Low:** addressed in the next planned maintenance cycle
+
+## Verify the signed image
+
+Every `ghcr.io/paruff/fawkes-space` digest is signed keyless from this repository's CI (GitHub OIDC) and ships an SBOM
+and provenance. Verify with cosign v3 or later (v2 reports "no signatures found"):
+
+```bash
+cosign verify ghcr.io/paruff/fawkes-space@<digest> \
+  --certificate-identity-regexp '^https://github.com/paruff/uFawkesAI/' \
+  --certificate-oidc-issuer https://token.actions.githubusercontent.com
+```
+
+## Repository protections
+
+Secret scanning, push protection, Dependabot and the dependency-review workflow are on for this repository.
