@@ -10,7 +10,7 @@ with a consistent environment and no manual machine setup.
 
 - Image: `ghcr.io/paruff/fawkes-space` (built from `.devcontainer/Dockerfile` on
   the `fawkes-space-ai` image; see `images/devsecops/` and
-  `docs/ai-sdlc/devsecops-image/spec.md`), user `dev`, zsh
+  `git show v2.2.0:docs/ai-sdlc/devsecops-image/spec.md`), user `dev`, zsh
 - Agent harnesses: Claude Code, OpenCode, Codex and Gemini CLI, with the
   Superpowers and qmd skills, the four uFawkesAI agents and the language servers
 - The pinned linters and scanners the hooks call (gitleaks, actionlint,

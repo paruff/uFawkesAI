@@ -26,6 +26,8 @@ A feature need not have its own `plan.md`: the checker only requires an
 `intent.md` beside every `spec.md`, and a `plan.md` when a PR changes the repo's code paths (`src/` by default).
 Earlier feature chains (`opencode-alignment`, `dora-events-portability`, `review-passes`, `placeholder-audit`,
 `evals-gate`, `shift-left-adoption`) live in git history: `git show pre-cleanup:docs/ai-sdlc/<feature>/spec.md`.
+Shipped chains (`v2.0.0`, `v2.2.0`, `audit-medium-low`, `remove-aidlc`, `cde-space-rename`, `devsecops-image`) are in the
+`v2.2.0` tag: `git show v2.2.0:docs/ai-sdlc/<feature>/spec.md`.
 
 ## Enforced in CI
 

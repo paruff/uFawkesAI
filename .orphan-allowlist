@@ -1,0 +1,21 @@
+# Files that are used without their name appearing elsewhere. One ERE per line.
+# GitHub and tool conventions, found by path or by directory
+^\.gitattributes$
+^\.github/(FUNDING\.yml|actionlint\.yaml)$
+^\.github/ISSUE_TEMPLATE/
+^\.github/instructions/
+# Slash commands, eval tasks and schemas load by directory
+^\.agents/commands/
+^\.agents/evals/tasks/
+^\.agents/registry/
+^\.agents/schema/
+# Copied into the devcontainer image by directory (Dockerfile COPY)
+^\.devcontainer/claude-plugins/
+# Loaded by the harness, not named
+^\.opencode/plugins/
+^\.shift-left\.yml$
+# Fixtures and placeholders
+^scripts/testdata/
+\.gitkeep$
+# buildx discovers it by name
+^images/devsecops/docker-bake\.hcl$

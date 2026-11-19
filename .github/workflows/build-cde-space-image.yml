@@ -1,15 +1,15 @@
 # The one workflow for the uFawkes CDE Space images (fawkes-core, and the ai
 # base published as fawkes-space:base-<version>) and the shared devcontainer
 # (ghcr.io/paruff/fawkes-space,
-# the image the v2 contract covers: docs/ai-sdlc/v2.0.0/spec.md) used by the
+# the image the v2 contract covers; spec in the v2.2.0 tag) used by the
 # uFawkes suite and fawkes. Replaces image-build.yml + image-release.yml.
 #
 #   PR / push to main (image paths): build ai natively on amd64 + arm64, verify
 #     it offline (ai contains every core tool), Trivy report-only.
 #   Weekly schedule / manual run: same, plus the Trivy gate and a no-cache
 #     rebuild that must produce an identical toolchain (determinism).
-#   Tag v<SemVer 2.0> (the template release; docs/ai-sdlc/devsecops-image/
-#     spec.md R6; always cut by a human; image-v* still works for one release):
+#   Tag v<SemVer 2.0> (the template release; devsecops-image spec R6 in the
+#     v2.2.0 tag; always cut by a human; image-v* still works for one release):
 #     verify, then publish multi-arch zstd images tagged X.Y.Z, X.Y, X and
 #     latest (a pre-release gets only its exact version), reusing the verify
 #     jobs' build cache, keyless-sign every digest (GitHub OIDC), BuildKit

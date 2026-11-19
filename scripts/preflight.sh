@@ -65,6 +65,16 @@ else
   fail "Unfilled [PLACEHOLDER] markers (listed above)."
 fi
 
+# ── 2b) Markdown links resolve and no tracked file is orphaned (#312, #313) ──
+
+for check in scripts/check-links.sh scripts/check-orphans.sh; do
+  if bash "${check}" > /dev/null; then
+    pass "${check} passed."
+  else
+    fail "${check} failed. Run: bash ${check}"
+  fi
+done
+
 # ── 3) Required symlinks must exist and resolve ──────────────────────────────
 
 required_symlinks=(

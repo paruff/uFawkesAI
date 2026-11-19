@@ -89,7 +89,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.0.0] — 2026-10-03
 
-The 2.0 contract and the 1.x upgrade path: [`docs/ai-sdlc/v2.0.0/spec.md`](docs/ai-sdlc/v2.0.0/spec.md).
+The 2.0 contract and the 1.x upgrade path: `git show v2.2.0:docs/ai-sdlc/v2.0.0/spec.md`.
 
 ### Breaking
 
