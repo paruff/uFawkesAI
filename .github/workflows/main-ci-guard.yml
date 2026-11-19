@@ -1,6 +1,8 @@
 name: Main CI Guard
 
-# Blocks PR merges to main until the primary CI workflow has a successful run.
+# Blocks PR merges to main while main's CI Quality Gate has not passed.
+# The logic is uFawkesPipe's reusable guard (PI-8); judge-head and the
+# fallback to the `✅ CI Complete` check run are its opt-in inputs.
 
 on:
   pull_request:
@@ -16,82 +18,10 @@ permissions:
 jobs:
   main-ci-guard:
     name: "🛡️ Main CI Guard"
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - name: job-start
-        run: echo "job-start $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
-
-      - name: Check latest CI Quality Gate run on main
-        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
-        with:
-          script: |
-            const { data: mainBranch } = await github.rest.repos.getBranch({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              branch: 'main',
-            });
-            const mainHeadSha = mainBranch.commit.sha;
-
-            const { data: runs } = await github.rest.actions.listWorkflowRuns({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              workflow_id: 'ci-quality.yml',
-              branch: 'main',
-              status: 'completed',
-              per_page: 100,
-            });
-
-            // Primary source: the completed ci-quality run for main's HEAD.
-            // The run listing can lag or omit it right after a merge, so when
-            // it is missing fall back to the HEAD commit's own check run: the
-            // same `✅ CI Complete` context the ruleset requires. Never a pass
-            // by default: no completed result from either source fails.
-            let conclusion;
-            let url;
-            const currentMainRun = runs.workflow_runs.find(
-              (run) => run.head_sha === mainHeadSha,
-            );
-
-            if (currentMainRun) {
-              conclusion = currentMainRun.conclusion;
-              url = currentMainRun.html_url;
-            } else {
-              core.warning(
-                `No completed CI Quality Gate run listed for main HEAD ${mainHeadSha}; ` +
-                  'falling back to the commit check runs.',
-              );
-              const { data: checks } = await github.rest.checks.listForRef({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                ref: mainHeadSha,
-                check_name: '✅ CI Complete',
-                per_page: 100,
-              });
-              const check = checks.check_runs.find((c) => c.status === 'completed');
-              if (!check) {
-                core.setFailed(
-                  `No completed "✅ CI Complete" result for current main HEAD ${mainHeadSha} ` +
-                    'from either the workflow runs or the commit check runs: main CI has not ' +
-                    'finished (or never ran). Re-run this check once it completes.',
-                );
-                return;
-              }
-              conclusion = check.conclusion;
-              url = check.html_url;
-            }
-
-            core.info(`Current main HEAD: ${mainHeadSha}`);
-            core.info(`CI result for main HEAD: ${url}`);
-            core.info(`Conclusion: ${conclusion}`);
-
-            if (conclusion !== 'success') {
-              core.setFailed(
-                `CI Quality Gate for current main HEAD is ${conclusion}. ` +
-                  `Fix main CI before merging PRs. ${url}`,
-              );
-            }
-
-      - name: job-finish
-        if: always()
-        run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+    # shortcut: pinned to Pipe main @ #274 (0e472e2), untagged; move to the tag once Pipe cuts it.
+    uses: paruff/uFawkesPipe/.github/workflows/reusable-main-ci-guard.yml@0e472e20518b397fe73714c6c0e058f5b475803f
+    with:
+      workflow-id: ci-quality.yml
+      workflow-name: "CI Quality Gate"
+      judge-head: true
+      fallback-check-name: "✅ CI Complete"
