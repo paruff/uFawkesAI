@@ -53,8 +53,6 @@ Beyond the minimum, each repo has domain-specific files that should be in the co
 | `uFawkesAI`   | Full `.agents/skills/` directory tree, all agent `.md` files                                               |
 | `uFawkesPipe` | Pipeline definition files (`.woodpecker.yml`), `docker-compose.yml`                                         |
 | `uFawkesDevX` | `devcontainer.json`, golden path templates                                                                 |
-| `uFawkesDORA` | Dashboard JSON, metric query definitions                                                                   |
-| `uFawkesSec`  | Policy definitions (OPA Rego or Kyverno), threat model                                                     |
 | `uFawkes.dev` | `_config.yml`, `_data/`, navigation structure, `SKILL.md` files under `.agents/`                           |
 
 ## Session Startup Checklist

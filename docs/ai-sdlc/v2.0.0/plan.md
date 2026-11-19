@@ -1,6 +1,6 @@
 # Plan — uFawkesAI v2.0.0
 
-**Traces to:** [`spec.md`](spec.md) | **Status:** Draft | **Revision:** 1
+**Traces to:** [`spec.md`](spec.md) | **Status:** Released (v2.0.0) | **Revision:** 1
 
 Tasks are issues under goal #145; this plan holds order and verification, not
 task status.
@@ -19,7 +19,7 @@ task status.
 1. **This artifact chain** (#146). Close #155: its spec and plan are on `main`.
 2. **Publish path** (#111), the critical path:
    - Finish the #165 rename. `.devcontainer/` already says `fawkes-space`,
-     but `build-devsecops-images.yml` still publishes and benchmarks
+     but `build-cde-space-image.yml` still publishes and benchmarks
      `fawkes-space-devcontainer`.
    - Trigger the publish on `v*` tags (keep `image-v*` for one release),
      tagging `X.Y.Z` and `X.Y`; write the digest into the Release.

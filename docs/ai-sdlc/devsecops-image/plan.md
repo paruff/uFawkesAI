@@ -213,7 +213,7 @@ is what `scripts/image-lock-bump.sh` runs for each bumped tool.
 > `PRE_COMMIT_HOME` as root, so `dev` could not write to it. AC-AI-09 now
 > accepts a one-time download into `~/.cache/pre-commit`. Verify: in the
 > published devcontainer, as `dev`, `pre-commit run --all-files` succeeds
-> (the live acceptance tests in `build-devsecops-images.yml` run exactly that).
+> (the live acceptance tests in `build-cde-space-image.yml` run exactly that).
 > The original section follows for the record.
 
 This PR adds pre-baking of hook environments at image build time (R4 of spec.md).
@@ -266,7 +266,7 @@ docker run --rm --network none -v "$PWD/images/devsecops/tests:/tests:ro" \
   redistribution in a public image. If not, drop them from `ai` and keep
   the pinned `npm install -g` in `postCreateCommand` (spec fallback).
 - **Verify:** `verify-tools.sh gitops|ai` green on both arches; `ai`
-  runs as `dev`; `scripts/dual-harness-smoke.sh` passes inside `ai`.
+  runs as `dev`; `scripts/multi-harness-smoke.sh` passes inside `ai`.
 
 ### PR 3 — `ci(image): publish, scan, sign, attest`
 
@@ -338,7 +338,7 @@ docker run --rm --network none -v "$PWD/images/devsecops/tests:/tests:ro" \
   with `curl --retry 5 --retry-all-errors`: plain `--retry` does not retry a
   connection reset (curl exit 35/56), and one reset failed `main`'s CI on
   2026-10-03 (run 37124317809). The sha256 check still guards every retry.
-  Verify: the image builds in `build-devsecops-images.yml` and the
+  Verify: the image builds in `build-cde-space-image.yml` and the
   Multi-Harness Smoke Test.
 
 ## Dropped: the polyglot variant (2026-10-03)
@@ -353,7 +353,7 @@ polyglot tags.
 
 Verify: `verify-tools.sh ai` reports java/jdtls absent and the OpenCode LSP
 config pinned (TS) with downloads off; `actionlint` on
-`build-devsecops-images.yml`; `git grep -i polyglot` finds only this history.
+`build-cde-space-image.yml`; `git grep -i polyglot` finds only this history.
 
 ## Fix: curl in the runtime image (2026-10-03)
 
@@ -405,7 +405,7 @@ fawkes's tool-backed hooks (`kustomize-validate`, `helm-lint`,
 | mkdocs builds a material site `--strict`; rejects a nav to a missing page | same | integration | same |
 | kubeconform present at the locked version | version check, section 1 | unit | `verify-tools.sh core` |
 | lock-bump keeps helm on 3 | stubbed `gh` releases API | unit | `bash scripts/test-image-lock-bump.sh` |
-| fresh `fawkes-space` runs fawkes's `pre-commit run --all-files` with no missing-tool failures (#193 Done-when) | live acceptance run in fawkes | integration | `build-devsecops-images.yml` live acceptance |
+| fresh `fawkes-space` runs fawkes's `pre-commit run --all-files` with no missing-tool failures (#193 Done-when) | live acceptance run in fawkes | integration | `build-cde-space-image.yml` live acceptance |
 
 Verify: `bash scripts/check-artifact-chain.sh origin/main` locally, then the
 `DevSecOps Images` workflow green on both arches and `✅ CI Complete` on the PR.
@@ -453,6 +453,6 @@ arm64), compares layer digests with the published images and runs diffoci
 | Bake passes the epoch          | `args` has `SOURCE_DATE_EPOCH` when the variable is set and none when it is unset                 | `SOURCE_DATE_EPOCH=1 docker buildx bake --print ai`     |
 | Workflows lint                 | actionlint and the schema hooks pass                                                              | `pre-commit run --all-files`                            |
 | Report runs on a release       | The first dispatch lists every variant and arch as match or mismatch, with diffoci for mismatches | `gh workflow run image-reproducibility.yml`             |
-| Published tags are unaffected  | The next tag build still publishes and signs; `verify ai` stays green on this PR                  | `build-devsecops-images.yml`                            |
+| Published tags are unaffected  | The next tag build still publishes and signs; `verify ai` stays green on this PR                  | `build-cde-space-image.yml`                            |
 
 v2.0.0 is expected to mismatch: it was published before the epoch was set.

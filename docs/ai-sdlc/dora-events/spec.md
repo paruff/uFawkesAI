@@ -13,12 +13,10 @@
 `deploy-marker` as single JSON lines with dora-log.sh's fields, to stdout,
 an optional file, and OTLP/HTTP `/v1/logs` when an endpoint is set.
 
-The emitter works both inside CI (using `GITHUB_REPOSITORY`, `GITHUB_RUN_NUMBER`,
-etc.) and outside CI:
-- Repository is inferred from `git remote get-url origin` when `GITHUB_REPOSITORY`
-  and `CI_REPO` are not set
-- A `--repo OWNER/REPO` flag can override the inferred repository
-- Missing context yields warnings on stderr and `null`/`unknown` fields, never an error
+The emitter reads its context from GitHub Actions (`GITHUB_*`) or Woodpecker
+(`CI_*`) variables. Missing context yields `unknown` or `null` fields and a
+warning on stderr, never an error, except that `deploy-marker` exits 1 without
+a commit SHA or pipeline URL, because uFawkesObs would reject the event.
 
 ### REQ-003: Agent token usage and PR cycle time
 
@@ -26,7 +24,7 @@ etc.) and outside CI:
 `Agent-Tokens:` commit trailers across the PR, see `scripts/agent-usage.sh`) and
 `pr` (number, first_commit_at, opened_at, merged_at, cycle_time_seconds,
 cycle_time_measured_to, lines_added, lines_deleted, commits).
-`deploy-marker` embeds a uFawkesObs deployment event (uFawkesDORA merged into
+`deploy-marker` embeds a uFawkesObs deployment event (the former uFawkesDORA merged into
 uFawkesObs).
 
 ### REQ-004: CI on the pipeline-contract path
@@ -36,40 +34,33 @@ The CI Quality Gate emits the events after every successful run.
 ### REQ-005: The schema comes from uFawkesObs
 
 The test validates `dora_event` against uFawkesObs's
-`dora/events/deployment-event.schema.json` at the uFawkesObs release this repo
-names, fetched or vendored byte for byte with the release recorded beside it.
-The emitter sends no field that schema doesn't define.
+`dora/events/deployment-event.schema.json`, vendored byte for byte in
+`scripts/testdata/` at uFawkesObs `v1.0.1` (named in the `.release` file beside
+it). When the network is reachable the test also compares the copy with that
+release. The emitter sends no field that schema doesn't define, so it sends no
+`deployment_intent` (paruff/uFawkesObs#717 closed without adding it). Tracked in #287.
 
-Read on 2026-11-13: the vendored copy
-(`scripts/testdata/ufawkesobs-deployment-event.schema.json`) requires
-`deployment_intent`. uFawkesObs's schema doesn't define it and sets
-`additionalProperties: false`, so the event this emitter builds would be
-rejected with 422. `deployment_intent` stays or goes with uFawkesObs's
-decision (paruff/uFawkesObs#717); tracked in #287.
+### REQ-006: One emitter across the suite
 
-### REQ-006: One emitter across the suite, or none
-
-The emitter writes a log line that reaches Loki. It doesn't post to
-uFawkesObs's `/event`, so it isn't a producer of the DORA ingestion contract
-(the suite spec says so from its revision 6). Six other suite repos carry an
-older copy of the script that no workflow calls. Whether they get this
-version and a CI job, or lose the file, is an open decision (#288).
+Decision (2026-11-19, #288): this repo's script is the only emitter. The
+older, byte-identical copies in fawkes, uFawkes.dev, uFawkesDojo, uFawkesObs,
+uFawkesPipe and uFawkesDevX are deleted; no workflow in them calls the script.
+The emitter posts `dora_event` to uFawkesObs's `/event` when
+`DORA_INGESTION_URL` is set, so it is a producer of the ingestion contract.
+Each of the six repos has an issue for the deletion (listed under AC-08).
 
 ## Acceptance Criteria
 
-AC-01, AC-02, AC-04 and AC-06 were run on 2026-11-13 at `901767c`
-(`scripts/test-emit-dora-event.sh`, 23 checks passed). AC-03 passed as
-first written, against the local copy; as reworded it isn't met. AC-05
-needs a pipeline run and wasn't checked.
+AC-01 to AC-04, AC-06 and AC-07 run in `scripts/test-emit-dora-event.sh` (25 checks). AC-05 needs a pipeline run and has not been checked.
 
 - [x] AC-01: Events are single-line JSON with dora-log.sh's fields — `test_type: unit`
 - [x] AC-02: `agent_tokens` sums footers; `pr.cycle_time_seconds` = first commit → merge — `test_type: unit`
-- [ ] AC-03: `dora_event` validates against uFawkesObs's `deployment-event.schema.json` at the named uFawkesObs release, not a local copy that differs from it (REQ-005) — `test_type: unit`
+- [x] AC-03: `dora_event` validates against uFawkesObs's `deployment-event.schema.json` at the pinned release (checked against it when online) (REQ-005) — `test_type: unit`
 - [x] AC-04: OTLP export POSTs a valid logs payload; an unreachable endpoint never fails the run — `test_type: integration`
 - [ ] AC-05: A real pipeline run produces a `dora-events` artifact whose event has agent token usage and PR cycle time — `test_type: live-system`
-- [x] AC-06: Emitter works outside CI with inferred or explicit `--repo` — `test_type: unit`
-- [ ] AC-07: With no `origin` remote and no `--repo`, the emitter warns and still emits the event (today `warn` is called at line 116, before it is defined at line 121) — `test_type: unit`
-- [ ] AC-08: The decision in REQ-006 is recorded here, and each of the six repos has a PR or an issue for it — `test_type: review`
+- [x] AC-06: Emitter works outside CI — `test_type: unit`
+- [x] AC-07: With no repo variable, the emitter still emits the event with `repo: unknown` — `test_type: unit`
+- [x] AC-08: The decision in REQ-006 is recorded here, and each of the six repos has an issue for it (fawkes#2344, uFawkes.dev#256, uFawkesDojo#134, uFawkesObs#734, uFawkesPipe#265, uFawkesDevX#166) — `test_type: review`
 
 ## Governance Alignment
 

@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 # scripts/emit-dora-event.sh — emits one structured JSON delivery event per
-# call for uFawkesObs (Loki) and uFawkesDORA, mirroring uFawkesPipe's
+# call for uFawkesObs (Loki and its DORA ingestion), mirroring uFawkesPipe's
 # scripts/dora-log.sh line format (docs/UFAWKES_INTEGRATION.md).
 #
 # Events:
 #   job-start      a pipeline/job began (records its start time for job-finish)
 #   job-finish     it ended: status, duration_ms, and delivery metadata
 #   deploy-marker  a change was delivered: delivery metadata plus `dora_event`,
-#                  a uFawkesDORA deployment event (deployment-event.schema.json 1.0)
+#                  a uFawkesObs deployment event (deployment-event.schema.json 1.0)
 #
 # Every event is one JSON line with dora-log.sh's fields (@timestamp, level,
 # logger, message, pipeline, repo, step) plus: event, service, commit_sha,

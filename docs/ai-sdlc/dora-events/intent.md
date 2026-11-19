@@ -1,11 +1,11 @@
-# Intent — Delivery events for uFawkesObs / uFawkesDORA
+# Intent — Delivery events for uFawkesObs
 
 Status: ACCEPTED (owner goal, 2026-09-27)
 
 ## Problem
 
-`docs/UFAWKES_INTEGRATION.md` describes uFawkesAI feeding uFawkesObs and
-uFawkesDORA, but the repo emitted nothing: no delivery events, no record of
+`docs/UFAWKES_INTEGRATION.md` describes uFawkesAI feeding uFawkesObs (DORA
+metrics), but the repo emitted nothing: no delivery events, no record of
 agent token usage, no PR cycle-time signal leaving CI.
 
 ## Desired outcome
@@ -18,5 +18,5 @@ metadata.
 ## Out of scope
 
 - OTEL spans for agent invocations (`docs/AGENT_TELEMETRY.md`).
-- Posting to the uFawkesDORA ingestion API (the event carries a
+- Posting to the uFawkesObs ingestion API (the event carries a
   schema-valid `dora_event` ready for it).

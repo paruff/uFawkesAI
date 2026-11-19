@@ -22,7 +22,7 @@ A benchmark that runs on every scheduled build and release tag to:
 
 ## Decisions Already Made
 
-- Benchmark runs in the `verify` job of `build-devsecops-images.yml`
+- Benchmark runs in the `verify` job of `build-cde-space-image.yml`
 - Runs on every release tag, against the image just published (amended 2026-10-03 in spec revision 2: the scheduled run has no newly published image to measure) — skipped on regular PRs to avoid CI slowdown
 - Threshold: 10% regression limit (configurable via `REGRESSION_THRESHOLD` env var)
 - Baseline stored in `images/devsecops/benchmarks/baseline.json` and updated manually when intentional improvements are made

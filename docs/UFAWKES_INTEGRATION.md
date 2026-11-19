@@ -11,7 +11,6 @@ uFawkes is a stack family. This guide focuses on five integration touchpoints ar
 | uFawkesAI              | AI plane for agent policy, context, guardrails, and operating workflow | Smaller PRs, clearer instructions, lower rework                  |
 | uFawkesPipe            | CI/CD and delivery pipeline plane                                      | Consistent PR gates and automated delivery                       |
 | uFawkesObs             | Observability and reliability plane                                    | Traceability for latency, token usage, errors, and deploy impact |
-| uFawkesDORA            | Delivery metrics and engineering effectiveness plane                   | Rework, cycle time, review speed, and recovery trends            |
 | uFawkesApp/uFawkesData | Product and data plane pair (implementation + analytics)               | Business features and analytics outcomes                         |
 
 ## Connecting to uFawkesObs
@@ -31,9 +30,9 @@ export enabled in your runtime, uFawkesObs/Grafana can correlate:
 - Token usage over time
 - Change/deploy markers and post-deploy reliability signals
 
-## Connecting to uFawkesDORA
+## Connecting to uFawkesObs DORA metrics
 
-uFawkesAI and this template's workflow produce the events uFawkesDORA uses:
+uFawkesAI and this template's workflow produce the events uFawkesObs uses for DORA metrics:
 
 - PR creation and review activity
 - Merge cadence and cycle time signals
@@ -61,7 +60,7 @@ ingests them into Loki alongside uFawkesPipe's own pipeline logs:
   plus the models used and how many commits reported or were AI co-authored.
 - **`pr`**: number, `first_commit_at`, `opened_at`, `merged_at`,
   `cycle_time_seconds` (first commit → merge), lines added/deleted.
-- **`dora_event`**: a uFawkesDORA deployment event valid against
+- **`dora_event`**: a uFawkesObs deployment event valid against
   uFawkesObs `dora/events/deployment-event.schema.json` (1.0), ready to
   forward to the ingestion API.
 
@@ -129,7 +128,7 @@ This keeps AI-authored changes and delivery automation aligned under one contrac
                │ telemetry/events                  │ delivery events
                ▼                                   ▼
 ┌──────────────────────────────────┐    ┌──────────────────────────┐
-│ Observability: uFawkesObs        │    │ Metrics: uFawkesDORA     │
+│ uFawkesObs: observability        │    │ uFawkesObs: DORA metrics │
 │ - OTEL traces, latency, tokens   │    │ - DORA and rework trends │
 │ - Grafana dashboards + alerts    │    │ - Weekly delivery signals│
 └──────────────────────────────────┘    └──────────────────────────┘

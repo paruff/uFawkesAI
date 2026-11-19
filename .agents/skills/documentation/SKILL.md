@@ -57,8 +57,6 @@ This repo is part of the [uFawkes platform suite](https://ufawkes.dev).
 | [uFawkesObs](https://github.com/paruff/uFawkesObs)   | Observability substrate (OTel, Prometheus, Grafana, Loki) |
 | [uFawkesPipe](https://github.com/paruff/uFawkesPipe) | Lightweight CI/CD (Woodpecker + Portainer)                |
 | [uFawkesDevX](https://github.com/paruff/uFawkesDevX) | Developer experience (CDE, golden paths)                  |
-| [uFawkesDORA](https://github.com/paruff/uFawkesDORA) | DORA metrics and dashboards                               |
-| [uFawkesSec](https://github.com/paruff/uFawkesSec)   | Security posture (policy-as-code)                         |
 | [uFawkesAI](https://github.com/paruff/uFawkesAI)     | AI agent and skill suite                                  |
 | [uFawkes.dev](https://ufawkes.dev)                   | Documentation and learning (Dojo)                         |
 

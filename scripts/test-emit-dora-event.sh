@@ -7,8 +7,9 @@
 #   - agent token usage is summed from `Agent-Tokens:` trailers, and PR
 #     cycle time is computed from first commit → merge;
 #   - deploy-marker's `dora_event` validates against uFawkesObs's
-#     deployment-event.schema.json (vendored verbatim in scripts/testdata/,
-#     from paruff/uFawkesObs@1e63ef56 dora/events/);
+#     deployment-event.schema.json (vendored verbatim in scripts/testdata/ at
+#     the uFawkesObs release named in the .release file beside it, and checked
+#     against that release when the network is reachable);
 #   - the OTLP/HTTP export POSTs a valid logs payload to /v1/logs, and an
 #     unreachable endpoint warns without failing.
 # GitHub API calls are served by a stub `gh` with fixture data.
@@ -110,6 +111,20 @@ check "PR cycle time = first commit → merge (4h15m)" \
   '.pr.number == 42 and .pr.first_commit_at == "2026-09-27T08:15:00Z" and .pr.merged_at == "2026-09-27T12:30:00Z" and .pr.cycle_time_seconds == 15300' "$deploy"
 check "PR size" '.pr.lines_added == 120 and .pr.lines_deleted == 8 and .pr.commits == 2' "$deploy"
 
+echo "== Vendored schema is the pinned uFawkesObs release =="
+read -r obs_repo obs_tag obs_path < "${SCHEMA%.json}.release" # `.release` sits beside the schema
+if upstream="$(curl -fsS --max-time 20 "https://raw.githubusercontent.com/${obs_repo}/${obs_tag}/${obs_path}" 2> /dev/null)"; then
+  if [ "$upstream" = "$(cat "$SCHEMA")" ]; then
+    pass=$((pass + 1))
+    echo "  ✅ vendored schema is byte-identical to ${obs_repo}@${obs_tag}"
+  else
+    failures+=("vendored schema differs from ${obs_repo}@${obs_tag}")
+    echo "  ❌ vendored schema differs from ${obs_repo}@${obs_tag}"
+  fi
+else
+  echo "  ⚠️  offline: skipped comparing against ${obs_repo}@${obs_tag}"
+fi
+
 echo "== deploy-marker dora_event vs uFawkesObs deployment-event.schema.json =="
 jq '.dora_event' <<< "$deploy" > "$work/dora_event.json"
 if out="$(
@@ -187,7 +202,7 @@ sys.exit(1 if errors else 0)
 PY
 )"; then
   pass=$((pass + 1))
-  echo "  ✅ dora_event is a valid uFawkesDORA deployment event"
+  echo "  ✅ dora_event is a valid uFawkesObs deployment event"
 else
   failures+=("dora_event schema validation")
   echo "  ❌ dora_event invalid:"
@@ -196,6 +211,14 @@ fi
 check "dora_event carries cycle-time inputs and AI flag" \
   '.first_commit_at == "2026-09-27T08:15:00Z" and .pr_merged_at == "2026-09-27T12:30:00Z" and .ai_assisted == true' \
   "$(cat "$work/dora_event.json")"
+
+echo "== No remote, no repo variable =="
+norepo="$(env -u GITHUB_REPOSITORY -u CI_REPO "$EMIT" job-start --step x 2> "$work/norepo.err")" \
+  && check "emitter still emits with repo unknown" '.repo == "unknown" and .event == "job-start"' "$norepo" \
+  || {
+    failures+=("no-repo run exited non-zero")
+    echo "  ❌ no-repo run failed: $(cat "$work/norepo.err")"
+  }
 
 echo "== OTLP/HTTP export to /v1/logs =="
 port=$(((RANDOM % 20000) + 30000))

@@ -1,6 +1,6 @@
 # Plan: v2.2.0 — fawkes-space for the Anthropic AI-native SDLC
 
-Status: APPROVED (decisions below); implementation in progress. Written 2026-10-22 against v2.1.0 (released 2026-10-20).
+Status: APPROVED (decisions below); released as v2.2.0 on 2026-10-22. Written 2026-10-22 against v2.1.0 (released 2026-10-20).
 
 ## Goal
 
@@ -76,7 +76,7 @@ Order matters: land the image-plumbing PRs first, then content bumps, then the r
 
 ## Finding: bot-created tags do not publish (2026-10-22)
 
-`v2.1.0` was created by release-please as `github-actions[bot]`, and `build-devsecops-images.yml` never ran for it: GitHub does
+`v2.1.0` was created by release-please as `github-actions[bot]`, and `build-cde-space-image.yml` never ran for it: GitHub does
 not start workflows for events made with `GITHUB_TOKEN`. Result: GitHub Release 2.1.0 exists but `ghcr.io/paruff/fawkes-space:2.1.0`
 does not (published tags are `2.0.0`/`latest` and `2.1.0-rc.1`). Cut `v2.2.0-rc.1` and `v2.2.0` by hand (the workflow header already
 says tags are cut by a human), and either stop release-please creating tags or give it a PAT/GitHub App token.

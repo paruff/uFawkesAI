@@ -134,7 +134,7 @@ At the end of startup, produce a one-line session readiness summary:
 ```
 ✅ Session ready: fawkes @ main | 7 required files present | AI_STANCE current | 2 pending skills
 ⚠  Session ready with warnings: uFawkesObs @ main | CONTRIBUTING.md is placeholder | AI_STANCE 95 days old
-❌ Session blocked: uFawkesSec | AI_STANCE.md missing | run ai-stance/template first
+❌ Session blocked: uFawkesDevX | AI_STANCE.md missing | run ai-stance/template first
 ```
 
 **Block rule:** Only block the session (`❌`) if `AI_STANCE.md` is missing entirely.
