@@ -213,12 +213,12 @@ check "dora_event carries cycle-time inputs and AI flag" \
   "$(cat "$work/dora_event.json")"
 
 echo "== No remote, no repo variable =="
-norepo="$(env -u GITHUB_REPOSITORY -u CI_REPO "$EMIT" job-start --step x 2> "$work/norepo.err")" \
-  && check "emitter still emits with repo unknown" '.repo == "unknown" and .event == "job-start"' "$norepo" \
-  || {
-    failures+=("no-repo run exited non-zero")
-    echo "  ❌ no-repo run failed: $(cat "$work/norepo.err")"
-  }
+if norepo="$(env -u GITHUB_REPOSITORY -u CI_REPO "$EMIT" job-start --step x 2> "$work/norepo.err")"; then
+  check "emitter still emits with repo unknown" '.repo == "unknown" and .event == "job-start"' "$norepo"
+else
+  failures+=("no-repo run exited non-zero")
+  echo "  ❌ no-repo run failed: $(cat "$work/norepo.err")"
+fi
 
 echo "== OTLP/HTTP export to /v1/logs =="
 port=$(((RANDOM % 20000) + 30000))
