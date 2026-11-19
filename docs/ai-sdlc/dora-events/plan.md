@@ -47,7 +47,9 @@ Alloy picks up JSON lines from job logs, the same path as dora-log.sh.
 
 Steps 1 to 4 are merged. What the 2026-11-13 suite audit added is the
 sub-issues of #291: the schema source and the `warn` ordering (#287), and
-the six older copies (#288).
+the six older copies (#288). #289 added the suite's CI invariants; PI-8 is
+`main-ci-guard.yml` calling uFawkesPipe's reusable guard (judge-head, with the
+`✅ CI Complete` check-run fallback).
 
 ## Verification Strategy
 
@@ -58,9 +60,10 @@ the six older copies (#288).
 | AC-03 | schema checks in stdlib `python3` + `jq` (no pip)        | unit        | `scripts/test-emit-dora-event.sh`         |
 | AC-04 | local listener captures the POST; port 9 must only warn  | integration | `scripts/test-emit-dora-event.sh`         |
 | AC-05 | download the run's `dora-events` artifact and inspect it | live-system | `ci-quality.yml` › `📡 Delivery Events`   |
-| AC-06 | emitter works outside CI with inferred/explicit `--repo` | unit        | `scripts/test-emit-dora-event.sh`         |
-| AC-07 | run in a repo with no remote and no `--repo`             | unit        | `scripts/test-emit-dora-event.sh`         |
+| AC-06 | emitter works outside CI                                 | unit        | `scripts/test-emit-dora-event.sh`         |
+| AC-07 | run with no repo variable: still emits, `repo: unknown`  | unit        | `scripts/test-emit-dora-event.sh`         |
 | AC-08 | the decision in `spec.md`, and a link per repo           | review      | #288                                      |
+| PI-8  | the workflow calls Pipe's reusable guard in judge-head mode; the decision cases run in Pipe | unit | `scripts/test-main-ci-guard.sh`; uFawkesPipe `tests/unit/test_reusable_main_ci_guard.py` |
 
 AC-03 changes with REQ-005: the schema is uFawkesObs's file at a named
 release, so the test fails when the two differ. The suite checks the same
