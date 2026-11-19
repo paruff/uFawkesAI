@@ -30,6 +30,7 @@ SUITES=(
   scripts/test-git-isolation.sh
   scripts/test-check-links.sh
   scripts/test-check-orphans.sh
+  scripts/test-check-review-md.sh
   scripts/check-links.sh
   scripts/check-orphans.sh
 )
