@@ -5,6 +5,14 @@ All notable changes to uFawkesAI will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.1](https://github.com/paruff/uFawkesAI/compare/v2.3.0...v2.3.1) (2026-11-20)
+
+
+### Fixed
+
+* **image:** clear fixable HIGH CVEs for the release gate ([#252](https://github.com/paruff/uFawkesAI/issues/252)) ([#326](https://github.com/paruff/uFawkesAI/issues/326)) ([cc5ae8e](https://github.com/paruff/uFawkesAI/commit/cc5ae8e3ffed06c0c2457c6a4db3dd1bf23b205e))
+* **release:** pass --repo to the image dispatch step ([#252](https://github.com/paruff/uFawkesAI/issues/252)) ([#325](https://github.com/paruff/uFawkesAI/issues/325)) ([a0342f5](https://github.com/paruff/uFawkesAI/commit/a0342f59bc53eaf88955c323ce43c100d10c9cbc))
+
 ## [2.3.0](https://github.com/paruff/uFawkesAI/compare/v2.2.0...v2.3.0) (2026-11-20)
 
 
