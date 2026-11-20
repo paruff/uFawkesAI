@@ -5,6 +5,20 @@ All notable changes to uFawkesAI will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.2](https://github.com/paruff/uFawkesAI/compare/v2.3.1...v2.3.2) (2026-11-20)
+
+
+### Fixed
+
+* **hooks:** match git -C/-c and subshell commits in the secret scan ([#332](https://github.com/paruff/uFawkesAI/issues/332)) ([49d6b8b](https://github.com/paruff/uFawkesAI/commit/49d6b8baf7857bd2caf883c5a634a36bf82efba7))
+* **release:** one version in package files, synced by release-please ([#328](https://github.com/paruff/uFawkesAI/issues/328)) ([7491a9c](https://github.com/paruff/uFawkesAI/commit/7491a9c4f4a507db0cceba14c27de029d17e35f8))
+
+
+### Chores
+
+* **ci:** one Pipe release, v2.0.1, for every reusable ref ([#309](https://github.com/paruff/uFawkesAI/issues/309)) ([#329](https://github.com/paruff/uFawkesAI/issues/329)) ([dcc3308](https://github.com/paruff/uFawkesAI/commit/dcc3308e55cfbb53243c25c816ac572f527f7be1))
+* drop the shipped open-source-ready chain ([#321](https://github.com/paruff/uFawkesAI/issues/321)) ([#331](https://github.com/paruff/uFawkesAI/issues/331)) ([05b918c](https://github.com/paruff/uFawkesAI/commit/05b918cf923c29496dec7bb53d9cecb4daf0655c))
+
 ## [2.3.1](https://github.com/paruff/uFawkesAI/compare/v2.3.0...v2.3.1) (2026-11-20)
 
 
