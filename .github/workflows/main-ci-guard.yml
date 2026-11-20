@@ -18,8 +18,7 @@ permissions:
 jobs:
   main-ci-guard:
     name: "🛡️ Main CI Guard"
-    # shortcut: pinned to Pipe main @ #274 (0e472e2), untagged; move to the tag once Pipe cuts it.
-    uses: paruff/uFawkesPipe/.github/workflows/reusable-main-ci-guard.yml@0e472e20518b397fe73714c6c0e058f5b475803f
+    uses: paruff/uFawkesPipe/.github/workflows/reusable-main-ci-guard.yml@93650e69ae0fa22d9e1aaff0d4b98236ab52ab14 # v2.0.1
     with:
       workflow-id: ci-quality.yml
       workflow-name: "CI Quality Gate"
