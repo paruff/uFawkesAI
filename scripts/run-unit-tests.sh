@@ -31,6 +31,7 @@ SUITES=(
   scripts/test-check-links.sh
   scripts/test-check-orphans.sh
   scripts/test-check-review-md.sh
+  scripts/test-commit-matcher.sh
   scripts/check-links.sh
   scripts/check-orphans.sh
 )

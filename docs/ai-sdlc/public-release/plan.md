@@ -53,6 +53,22 @@ symlinks (owner approval only), `REVIEW.md`, `INTENT.md`.
 (v2.3.0 Phase 2). 5.3 Verify the image and signature (AC-PR-10) and the cold-start run (AC-PR-08). 5.4 Run the
 `release` skill for the dev.to and LinkedIn drafts. The owner reads and posts them; nothing is posted by an agent.
 
+## Second audit (Phase 4.1), 2026-11-20
+
+A read-only pass over the riskiest paths: the secret-scan hooks, `check-secret-detection.sh`, every workflow's permissions,
+`pull_request_target` and untrusted interpolation, action pinning, and the release and image path.
+
+| Finding | Class | Outcome |
+| --- | --- | --- |
+| The `git commit` matcher in the Claude and OpenCode secret-scan hooks skipped `git -C dir commit`, `git -c k=v commit`, `(git commit)` and a leading space, so those commits bypassed the Claude-side gate | Should fix | Fixed with one regex in both hooks; `scripts/test-commit-matcher.sh` checks 18 cases and that the two copies stay identical |
+| Release dispatch step missing `--repo`; the v2.3.0 image build blocked by the Trivy gate | Must fix | Fixed in #325 and #326; the image ships as v2.3.1 |
+| The Claude-side `npx -y prettier` download after each edit | Should fix | Fixed earlier (`npx --no-install`) |
+| MCP servers started with `npx -y` in `.opencode/opencode.json` and the smoke test | Nice to have | Not changed: an adopter convenience; pin the versions if that stops being acceptable |
+
+Clean: no `pull_request_target`, no untrusted values in `run:` blocks, every workflow declares `permissions`, every action
+is pinned to a SHA, write scopes sit only on the jobs that need them. Not read in depth: skill bodies,
+`emit-dora-event.sh`, `shift-left.sh`.
+
 ## Verification Strategy
 
 | Criterion | Evidence |
