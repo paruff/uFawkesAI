@@ -14,6 +14,7 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  actions: write # dispatch the image build for the tag (#252)
 
 jobs:
   release-please:
@@ -38,9 +39,18 @@ jobs:
           fi
 
       - uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
+        id: release
         with:
           target-branch: main
           token: ${{ secrets.RELEASE_PLEASE_TOKEN || secrets.GITHUB_TOKEN }}
+
+      # A tag made with GITHUB_TOKEN starts no push workflow, but workflow_dispatch is allowed.
+      - name: Publish the image for the new tag
+        if: steps.release.outputs.release_created == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.release.outputs.tag_name }}
+        run: gh workflow run build-cde-space-image.yml --ref "$TAG"
 
       - name: job-finish
         if: always()

@@ -1,7 +1,7 @@
 # Plan — v2.3.0: releases that publish themselves, and a smaller repo
 
 **Traces to:** [`spec.md`](spec.md) → [`intent.md`](intent.md).
-**Status:** Draft for the plan gate. Revised 2026-11-09: cut to the work that
+**Status:** Phases 0 and 1 in review (one PR). Revised 2026-11-09: cut to the work that
 needs no owner decision (the suite readiness review, IR-C1). AWS AI-DLC was
 dropped on 2026-11-05 (`git show v2.2.0:docs/ai-sdlc/remove-aidlc/plan.md`).
 
