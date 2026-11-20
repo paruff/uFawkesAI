@@ -57,9 +57,10 @@ pins move to `2.3.0@sha256:…` (suite AC-AI-05 accepts that form).
 ## Release finding: the Trivy gate blocked the v2.3.0 image
 
 `v2.3.0` was tagged on 2026-11-20 but its image build failed the Trivy gate, which `workflow_dispatch` enforces like the
-weekly scan: Debian `zlib1g` (CVE-2026-85091), `@modelcontextprotocol/server` 2.0.0 and `toml` 4.3.0, all HIGH with a fix.
-The fix is an apt snapshot bump, `@tobilu/qmd` 2.9.0 and a `toml` 5.0.1 override. The image ships as `2.3.1`;
-`2.3.0` is a tag with no image.
+weekly scan: Debian `zlib1g` (CVE-2026-85091), `@modelcontextprotocol/server` 2.0.0, `toml` 4.3.0, and, on the re-run,
+`certifi`, `filelock` and `virtualenv`, all HIGH or CRITICAL with a fix. The fix names `zlib1g` in the core install so apt
+upgrades the base image's copy, bumps `@tobilu/qmd` to 2.9.0, overrides `toml` to 5.0.1, and upgrades the three Python pins
+in `requirements.lock`. The image ships as `2.3.1`; `2.3.0` is a tag with no image.
 
 ## Verification Strategy
 
