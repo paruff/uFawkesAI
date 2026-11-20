@@ -7,5 +7,8 @@
     "opencode-antigravity-auth": "1.6.0",
     "opencode-auto-fallback": "0.4.59",
     "superpowers": "git+https://github.com/obra/superpowers.git#8ca22dba9a94f28898bbce59f2537ff4d87c747d"
+  },
+  "overrides": {
+    "toml": "5.0.1"
   }
 }

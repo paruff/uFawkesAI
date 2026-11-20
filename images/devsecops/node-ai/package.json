@@ -5,7 +5,7 @@
   "dependencies": {
     "@google/gemini-cli": "0.67.0",
     "@openai/codex": "0.167.0",
-    "@tobilu/qmd": "2.8.3",
+    "@tobilu/qmd": "2.9.0",
     "bash-language-server": "5.8.1",
     "pyright": "1.1.414",
     "typescript": "5.9.3",
