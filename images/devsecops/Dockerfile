@@ -46,10 +46,12 @@ ENV LANG=C.UTF-8 \
     UV_NO_CACHE=1 \
     UV_PYTHON_DOWNLOADS=never
 # safe.directory: CI checkouts are owned by a different UID than the container user.
+# zlib1g is named so apt upgrades the base image's copy to the security fix (CVE-2026-85091);
+# drop it once the base digest above already carries 1.3.1-1+deb13u1.
 # hadolint ignore=DL3008
 RUN apt-get update \
  && apt-get install -y --no-install-recommends \
-      bash ca-certificates curl git make openssh-client python3 xz-utils \
+      bash ca-certificates curl git make openssh-client python3 xz-utils zlib1g \
  && rm -rf /var/lib/apt/lists/* \
  && git config --system --add safe.directory '*'
 
