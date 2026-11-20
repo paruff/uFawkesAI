@@ -50,7 +50,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ steps.release.outputs.tag_name }}
-        run: gh workflow run build-cde-space-image.yml --ref "$TAG"
+        run: gh workflow run build-cde-space-image.yml --repo "$GITHUB_REPOSITORY" --ref "$TAG"
 
       - name: job-finish
         if: always()
