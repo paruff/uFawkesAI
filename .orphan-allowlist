@@ -1,6 +1,9 @@
 # Files that are used without their name appearing elsewhere. One ERE per line.
 # GitHub and tool conventions, found by path or by directory
 ^\.gitattributes$
+^CODE_OF_CONDUCT\.md$
+# Read by path by the uFawkesPipe reusable workflows
+^\.pipeline\.yml$
 ^\.github/(FUNDING\.yml|actionlint\.yaml)$
 ^\.github/ISSUE_TEMPLATE/
 ^\.github/instructions/
