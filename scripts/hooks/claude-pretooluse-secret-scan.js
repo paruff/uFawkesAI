@@ -23,7 +23,9 @@ const path = require("node:path");
 //   - `git commit-tree <sha>`   (writes an object; makes no commit)
 //   - prose or a string literal that merely says "git commit"
 //   - `git log --grep "git commit"`
-const GIT_COMMIT = /(^|[;&|]\s*)git\s+(-\S+\s+)*commit(\s|$)/;
+// It must match `git -C dir commit`, `git -c k=v commit`, `(git commit)` and a leading space.
+// scripts/test-commit-matcher.sh checks this table and that the OpenCode plugin's copy is identical.
+const GIT_COMMIT = /(^|[;&|(])\s*git\s+(-\S+(\s+[^-\s]\S*)?\s+)*commit(\s|$)/;
 
 function readStdin() {
   try {

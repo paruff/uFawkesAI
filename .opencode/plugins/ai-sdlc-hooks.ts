@@ -28,7 +28,7 @@ function isProtected(targetPath: string): boolean {
 }
 
 // Gate real commits only: not `git commit-tree`, not prose containing "git commit".
-const GIT_COMMIT = /(^|[;&|]\s*)git\s+(-\S+\s+)*commit(\s|$)/;
+const GIT_COMMIT = /(^|[;&|(])\s*git\s+(-\S+(\s+[^-\s]\S*)?\s+)*commit(\s|$)/;
 
 function runSecretScan(): { exitCode: number; message?: string } {
   const script = path.join(process.cwd(), "scripts/hooks/pre-commit-secret-scan.sh");
