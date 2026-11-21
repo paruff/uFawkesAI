@@ -83,16 +83,16 @@ only; no pip). Install missing tools with your system package manager.
 `dora_event`, and the OTLP payload offline.
 
 **Finding events in Loki.** Through uFawkesObs's collector, each event becomes
-a Loki stream labelled `service_name` and `job` (both the service name: the
-repo name unless `OTEL_SERVICE_NAME` is set) and `exporter="OTLP"`. The log
-line is the OTLP record; the event JSON is its `body`. This LogQL returns the
-events with their fields parsed:
+a Loki stream labelled `service_name` (the repo name unless `OTEL_SERVICE_NAME`
+is set). The Collector sends logs over Loki's native OTLP endpoint, so there is
+no `exporter` label and the log line is the event JSON itself. This LogQL
+returns the events with their fields parsed:
 
 ```logql
-{service_name="uFawkesAI", exporter="OTLP"} | json | line_format "{{.body}}" | json | event="deploy-marker"
+{service_name="uFawkesAI"} | json | event="deploy-marker"
 ```
 
-Verified against uFawkesObs `main` (dfd4fc9, `make up-dora`) on 2026-10-03.
+Verified against uFawkesObs `main` (`make up-dora`) on 2026-11-21.
 `scripts/verify-dora-event-in-loki.sh` repeats that check against a running
 stack: it emits a marked event and polls Loki with this query (exit 0 found,
 1 timed out, 2 stack not running).

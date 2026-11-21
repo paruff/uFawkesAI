@@ -266,7 +266,7 @@ fi
 # AC-05 (dora-events-portability): the docs carry the prerequisites and the
 # verified LogQL; the stale jsonschema row is gone.
 doc=docs/UFAWKES_INTEGRATION.md
-if grep -q 'no pip' "$doc" && grep -qF 'line_format "{{.body}}" | json' "$doc" \
+if grep -q 'no pip' "$doc" && grep -qF '{service_name="uFawkesAI"} | json | event="deploy-marker"' "$doc" \
   && ! grep -q 'jsonschema' docs/ai-sdlc/dora-events/plan.md; then
   pass=$((pass + 1))
   echo "  ✅ docs: prerequisites and LogQL documented"

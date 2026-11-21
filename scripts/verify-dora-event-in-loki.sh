@@ -33,7 +33,7 @@ event="$(OTEL_EXPORTER_OTLP_ENDPOINT="$otlp" bash scripts/emit-dora-event.sh job
 }
 service="$(jq -r .service <<< "$event")"
 
-query="{service_name=\"${service}\", exporter=\"OTLP\"} | json | line_format \"{{.body}}\" | json | event=\"job-finish\" | step=\"${marker}\""
+query="{service_name=\"${service}\"} | json | event=\"job-finish\" | step=\"${marker}\""
 start="$(($(date +%s) - 300))000000000"
 echo "LogQL: ${query}"
 
