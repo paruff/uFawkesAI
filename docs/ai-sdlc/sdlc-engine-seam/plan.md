@@ -67,10 +67,22 @@ export class SeamError extends Error { constructor(msg: string, readonly exitCod
 ### Component: `scripts/seam/adapters/fake.ts`
 
 - **Purpose:** the second engine that proves the seam (R3.2).
-- **How it works:** artifacts live in `.sdlc-fake/<slug>/`, and approvals
-  are empty commits with the trailer `Sdlc-Gate: <slug>/<stage>=approved|rejected`.
+- **How it works:** artifacts live in `.sdlc-fake/<slug>/`, and an approval
+  is a commit of `.sdlc-fake/<slug>/<stage>.gate` (`approved|rejected <email>`),
+  read at `HEAD`. The record's commit is the last one touching that file.
+  **Builder's call (changed from empty trailer commits):** an empty commit
+  vanishes in `git merge --squash`, which Review Focus 2 forbids; a file
+  survives. The approver is read from the file, not the commit author, since
+  a squash rewrites the author.
   It refuses an approver whose email is in `botIdentities`, or who authored
-  the stage's artifact.
+  the stage's artifact. The approver identity is `git var GIT_AUTHOR_IDENT`,
+  so the bot env vars of R6a take effect.
+- **Branch → change:** `scripts/seam/branch.ts` maps `change/<slug>` (or the
+  last segment of `<type>/<slug>`) to a change the engine knows. `gate <stage>`
+  and `next` use it.
+- **Deferred to phase 2/3:** the bot-PR exemption of R6.5 (dependabot, the
+  image-lock bot) stays in the workflow, because the agent bot of D5 must
+  *not* be exempt, and `ci` cannot tell them apart from a PR alone.
 
 ### Component: `scripts/seam/adapters/morsadev.ts`
 

@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/paruff/uFawkesAI/.agents/schema/sdlc-seam.schema.json",
+  "title": "SDLC engine seam output",
+  "oneOf": [{ "$ref": "#/$defs/ChangeStatus" }, { "$ref": "#/$defs/NextAction" }],
+  "$defs": {
+    "Stage": { "enum": ["intent", "spec", "plan", "build", "ship", "incident"] },
+    "GateRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state", "approver", "commit"],
+      "properties": {
+        "state": { "enum": ["approved", "rejected", "pending"] },
+        "approver": { "type": ["string", "null"] },
+        "commit": { "type": ["string", "null"] }
+      }
+    },
+    "ChangeStatus": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema", "change", "stage", "artifactsDir", "gates"],
+      "properties": {
+        "schema": { "const": 1 },
+        "change": { "type": "string" },
+        "stage": { "$ref": "#/$defs/Stage" },
+        "artifactsDir": { "type": "string" },
+        "gates": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["intent", "spec", "plan"],
+          "properties": {
+            "intent": { "$ref": "#/$defs/GateRecord" },
+            "spec": { "$ref": "#/$defs/GateRecord" },
+            "plan": { "$ref": "#/$defs/GateRecord" }
+          }
+        }
+      }
+    },
+    "NextAction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema", "change", "stage", "action"],
+      "properties": {
+        "schema": { "const": 1 },
+        "change": { "type": ["string", "null"] },
+        "stage": { "oneOf": [{ "$ref": "#/$defs/Stage" }, { "type": "null" }] },
+        "action": { "type": "string" }
+      }
+    }
+  }
+}

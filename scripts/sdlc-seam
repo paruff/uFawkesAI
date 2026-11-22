@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# SDLC engine seam CLI: thin wrapper, Node runs the .ts directly (type stripping).
+exec node "$(cd "$(dirname "$0")" && pwd)/seam/cli.ts" "$@"

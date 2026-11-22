@@ -32,6 +32,7 @@ SUITES=(
   scripts/test-check-orphans.sh
   scripts/test-check-review-md.sh
   scripts/test-commit-matcher.sh
+  scripts/test-sdlc-seam.sh
   scripts/check-links.sh
   scripts/check-orphans.sh
 )
