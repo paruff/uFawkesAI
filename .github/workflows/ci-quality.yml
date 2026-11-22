@@ -103,8 +103,11 @@ jobs:
           BASE_REF: ${{ github.base_ref }}
           EVENT: ${{ github.event_name }}
         run: |
+          seam_paths='^(scripts/seam/|scripts/hooks/|\.claude/settings\.json|\.opencode/plugins/'
+          seam_paths="$seam_paths|scripts/(test-sdlc-seam-hooks|test-commit-matcher|test-harness-identity|check-harness-parity)\.sh"
+          seam_paths="$seam_paths|package(-lock)?\.json|scripts/test-sdlc-seam\.sh|\.sdlc-engine\.json|\.agents/schema/sdlc-seam)"
           if [ "$EVENT" = "pull_request" ] && \
-            ! git diff --name-only "origin/$BASE_REF...HEAD" | grep -qE '^(scripts/seam/|package(-lock)?\.json|scripts/test-sdlc-seam\.sh|\.sdlc-engine\.json|\.agents/schema/sdlc-seam)'; then
+            ! git diff --name-only "origin/$BASE_REF...HEAD" | grep -qE "$seam_paths"; then
             echo "run=false" >> "$GITHUB_OUTPUT"
           else
             echo "run=true" >> "$GITHUB_OUTPUT"
@@ -124,6 +127,12 @@ jobs:
       - name: Engine setup is idempotent (R4.1)
         if: steps.seam.outputs.run == 'true' && matrix.adapter == 'morsadev'
         run: bash scripts/test-sdlc-seam-setup.sh
+      - name: Git, Claude Code and OpenCode gates (R6)
+        if: steps.seam.outputs.run == 'true' && matrix.adapter == 'fake'
+        run: |
+          bash scripts/test-sdlc-seam-hooks.sh
+          bash scripts/test-commit-matcher.sh
+          bash scripts/test-harness-identity.sh
       - name: job-finish
         if: always()
         run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
