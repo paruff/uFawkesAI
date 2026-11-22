@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2015 # `cond && expect ok || expect bad` is the intended assertion pattern, expect never fails
 # Self-test for check-sdlc-block-drift.sh: a line edited inside the block fails and is named; one outside passes.
 set -uo pipefail
 here="$(cd "$(dirname "$0")" && pwd)"

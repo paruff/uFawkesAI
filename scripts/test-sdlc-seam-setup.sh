@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2015 # `cond && expect ok || expect bad` is the intended assertion pattern, expect never fails
 # Self-test for scripts/seam/setup.sh in a throwaway copy of the repo (spec R4.1, Review Focus 4).
 set -uo pipefail
 unset GIT_INDEX_FILE GIT_DIR GIT_WORK_TREE
