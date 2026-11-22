@@ -25,7 +25,7 @@
     {
       "name": "uv",
       "variant": "core",
-      "version": "0.13.8",
+      "version": "0.13.9",
       "source": {
         "github": "astral-sh/uv",
         "tag": "{version}"
@@ -43,14 +43,14 @@
       ],
       "version_cmd": "uv --version",
       "sha256": {
-        "amd64": "5acfd9177cfecf0bf87578f059728215ccc884388988f55f7a65041b57387d91",
-        "arm64": "74f2f5c6024d397481db228db8fc25eed420db192243f88438c118e7e013e585"
+        "amd64": "a7fbaff2b9a271d85c1bdb540941090fd1ce011797b4abeb48e4dcd39c2471d5",
+        "arm64": "0797542018e541a9288855df555c8077eed06f7a47d206362030480e8ecc9f3d"
       }
     },
     {
       "name": "gh",
       "variant": "core",
-      "version": "2.104.0",
+      "version": "2.105.0",
       "source": {
         "github": "cli/cli",
         "tag": "v{version}"
@@ -67,8 +67,8 @@
       ],
       "version_cmd": "gh --version",
       "sha256": {
-        "amd64": "98cb101ad87dbbd3f6b2f2bfcbd43197ccd07643140121d8a9cfaa91eadbc24e",
-        "arm64": "cb34cefc6f4e77b90731374a2b737516bb8f3033c6ca46aa949e5344f68069e3"
+        "amd64": "79e7ab5db738c48777b696e374f8b428f0647debfb424f44d2f426370407fe2f",
+        "arm64": "b1278c75107423d818f1937fd92cafc9e5e9b606631568f68d7fb816f5885a02"
       }
     },
     {
@@ -206,7 +206,7 @@
     {
       "name": "ruff",
       "variant": "core",
-      "version": "0.17.5",
+      "version": "0.17.6",
       "source": {
         "github": "astral-sh/ruff",
         "tag": "{version}"
@@ -223,8 +223,8 @@
       ],
       "version_cmd": "ruff --version",
       "sha256": {
-        "amd64": "7d261fc981a784668e19e9fa6ad437bfd95b67f2dc263fc1eab87d54d72fcc90",
-        "arm64": "4d959d4322a8cd3effe11e9fc6743da1dbb41cd0b2476e433b6e6bfd9a69b626"
+        "amd64": "94b33791f48cd54ab35ad673a443a5c001d3e6d87effeaba9899070b700d45f3",
+        "arm64": "d4eea36ee6228f6c6bbcf0aea4ebf66fe0e595eedc6cffe628d7b8ba3623390f"
       }
     },
     {
@@ -420,7 +420,7 @@
     {
       "name": "opencode",
       "variant": "ai",
-      "version": "2.3.0",
+      "version": "2.3.2",
       "source": {
         "github": "anomalyco/opencode",
         "tag": "v{version}",
@@ -439,8 +439,8 @@
       ],
       "version_cmd": "opencode --version",
       "sha256": {
-        "amd64": "fc0f81522aceeabac47693d88389efa2bc517ce74c2c38fd6967819fcc6e4d3b",
-        "arm64": "3207fb5cdec448d479242c0f1a14f4f7bdfcad3a79209b5eb8f9003725e93711"
+        "amd64": "563b5d663637226b6e3bb4bb6803281bc39b0d2cd88db06d674b6420aab009b0",
+        "arm64": "9d10185acdb72336e086e699ca363a6065f410fd3c1caed0dc8046e95ac06ccb"
       }
     },
     {
