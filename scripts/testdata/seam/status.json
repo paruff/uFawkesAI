@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "change": "demo",
+  "stage": "spec",
+  "artifactsDir": "docs/ai-sdlc/demo",
+  "gates": {
+    "intent": { "state": "approved", "approver": "alice", "commit": "abc1234" },
+    "spec": { "state": "pending", "approver": null, "commit": null },
+    "plan": { "state": "pending", "approver": null, "commit": null }
+  }
+}

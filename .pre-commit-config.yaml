@@ -333,6 +333,10 @@ repos:
         name: Validate workflow schemas
       - id: check-dependabot
         name: Validate dependabot.yml schema
+      - id: check-jsonschema
+        name: Seam JSON schema
+        files: ^scripts/testdata/seam/.*\.json$
+        args: [--schemafile, .agents/schema/sdlc-seam.schema.json]
 
   # ============================================================================
   # Type-check the repo's JavaScript (shift-left spec R2, decided 2026-10-06).

@@ -19,8 +19,10 @@
     "noFallthroughCasesInSwitch": true,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
-    "allowJs": false
+    "allowJs": false,
+    "allowImportingTsExtensions": true,
+    "erasableSyntaxOnly": true
   },
-  "include": [],
+  "include": ["scripts/seam/**/*.ts"],
   "exclude": ["node_modules", ".opencode"]
 }

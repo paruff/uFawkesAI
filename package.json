@@ -16,7 +16,7 @@
     "verify": "bash scripts/check-agents.sh && bash scripts/check-ai-stance.sh && bash scripts/check-dora-vocabulary.sh && bash scripts/check-harness-parity.sh && bash scripts/run-unit-tests.sh"
   },
   "engines": {
-    "node": ">=22"
+    "node": ">=22.18"
   },
   "devDependencies": {
     "@types/node": "26.6.6",
