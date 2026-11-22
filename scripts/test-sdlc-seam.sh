@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2015 # `cond && expect ok || expect bad` is the intended assertion pattern, expect never fails
 # Self-test for scripts/sdlc-seam: config errors, usage, and the output schema.
 # Add a case_<name> function and list it in CASES to extend.
 set -uo pipefail
