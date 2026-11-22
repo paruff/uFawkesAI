@@ -16,13 +16,19 @@ ENGINE=node_modules/@morsadev/sdlc/dist/sdlc.mjs
 }
 
 # Our agents win on a name collision: sync keeps an existing file unless forced, and we never force.
+agents_copy="$(mktemp)"
+trap 'rm -f "$agents_copy"' EXIT
 ours_before="$(git hash-object .agents/agents/verifier.md)"
 
 # agents-md only: the claude target would write `sdlc hook` entries into .claude/settings.json (a second gate engine)
 cfg="$(jq -S '.agents = ["agents-md"] | .gates_self_approval = false' .sdlc/config.json)"
 [[ "$cfg" == "$(jq -S . .sdlc/config.json)" ]] || printf '%s\n' "$cfg" > .sdlc/config.json
 
+cp AGENTS.md "$agents_copy"
 node "$ENGINE" sync > /dev/null
+# sync writes the block without the blank lines markdownlint adds; keep the committed copy when only those differ
+block() { sed -n '/<!-- ai-sdlc:start/,/<!-- ai-sdlc:end -->/p' "$1"; }
+if diff -qB <(block "$agents_copy") <(block AGENTS.md) > /dev/null; then cp "$agents_copy" AGENTS.md; fi
 
 # the repo allows four agents (scripts/check-agents.sh); drop the engine's extras, our verifier is untouched
 rm -f .agents/agents/researcher.md .agents/agents/simplifier.md .agents/agents/spec-reviewer.md
