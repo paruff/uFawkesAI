@@ -56,32 +56,32 @@ run push
 
 # Harness shims (R6.2, R6.3): same verdicts, from the same script. Run inside a copy of the tooling.
 git reset -q --hard "$pending" # back to the unapproved plan
-cp -R "$root/scripts/." scripts/ 2> /dev/null || { mkdir -p scripts && cp -R "$root/scripts/." scripts/; }
+mkdir -p scripts && cp -R "$root/scripts/." scripts/
 cp -R "$root/.opencode" .opencode
-ln -s "$root/node_modules" node_modules 2> /dev/null
+ln -s "$root/node_modules" node_modules
 echo y > src/b.ts && git add src/b.ts
-claude() {
+run_claude_hook() {
   out="$(printf '{"tool_input":{"command":"%s"}}' "$1" | CLAUDE_PROJECT_DIR="$t" node scripts/hooks/claude-pretooluse-secret-scan.js 2>&1)"
   rc=$?
 }
-claude "git commit -m x"
+run_claude_hook "git commit -m x"
 [[ $rc -eq 2 && "$out" == *"sdlc-seam gate"* ]] && expect claude_blocks_commit ok || expect claude_blocks_commit bad "rc=$rc out=$out"
-claude "git -C . push"
+run_claude_hook "git -C . push"
 [[ $rc -eq 2 && "$out" == *"sdlc-seam gate"* ]] && expect claude_blocks_push ok || expect claude_blocks_push bad "rc=$rc out=$out"
-claude "git commit-tree abc"
+run_claude_hook "git commit-tree abc"
 [[ $rc -eq 0 ]] && expect claude_ignores_commit_tree ok || expect claude_ignores_commit_tree bad "rc=$rc out=$out"
-oc() {
+run_oc_hook() {
   out="$(node --input-type=module -e '
     const { AiSdlcHooks } = await import(process.cwd() + "/.opencode/plugins/ai-sdlc-hooks.ts");
     const h = await AiSdlcHooks({});
     try { await h["tool.execute.before"]({ tool: "bash" }, { args: { command: process.argv[1] } }); console.log("allowed"); }
     catch (e) { console.log("blocked: " + e.message); }' "$1" 2>&1)"
 }
-oc "git commit -m x"
+run_oc_hook "git commit -m x"
 [[ "$out" == *"blocked"*"sdlc-seam gate"* ]] && expect opencode_blocks_commit ok || expect opencode_blocks_commit bad "out=$out"
-oc "git -C . push"
+run_oc_hook "git -C . push"
 [[ "$out" == *"blocked"*"sdlc-seam gate"* ]] && expect opencode_blocks_push ok || expect opencode_blocks_push bad "out=$out"
-oc "git commit-tree abc"
+run_oc_hook "git commit-tree abc"
 [[ "$out" == *allowed* ]] && expect opencode_ignores_commit_tree ok || expect opencode_ignores_commit_tree bad "out=$out"
 
 [[ $fails -eq 0 ]] && echo "✅ sdlc seam hooks self-test passed" || {

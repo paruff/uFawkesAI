@@ -10,7 +10,8 @@ top="$(git rev-parse --show-toplevel)"
 
 paths=(src/)
 if [[ -f "$top/.artifact-chain-paths" ]]; then
-  mapfile -t paths < <(grep -vE '^\s*(#|$)' "$top/.artifact-chain-paths" || true)
+  paths=()
+  while IFS= read -r line; do paths+=("$line"); done < <(grep -vE '^\s*(#|$)' "$top/.artifact-chain-paths" || true) # bash 3.2 (macOS) has no mapfile
 fi
 
 case "$mode" in
