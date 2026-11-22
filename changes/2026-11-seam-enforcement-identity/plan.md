@@ -17,3 +17,11 @@ The code is already written and its self-tests pass, awaiting this plan's approv
 
 ## Verification Strategy
 See spec.md: the three self-tests, then the live `--no-verify` PR.
+
+## Verification
+
+- R6.1: `bash scripts/test-sdlc-seam-hooks.sh` (commit and push blocked on an unapproved plan, docs-only passes)
+- R6.2: `bash scripts/test-sdlc-seam-hooks.sh` (Claude Code shim blocks git commit and git push, ignores commit-tree)
+- R6.3: `bash scripts/test-sdlc-seam-hooks.sh` and `bash scripts/test-commit-matcher.sh` (OpenCode plugin, matcher parity)
+- R6.4: throwaway PR pushed with `--no-verify` shows a red `CI Complete`
+- R6a: `bash scripts/test-harness-identity.sh` (parity check and plain-shell identity)
