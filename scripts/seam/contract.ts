@@ -1,5 +1,6 @@
 export type Stage = "intent" | "spec" | "plan" | "build" | "ship" | "incident";
 export type GateStage = "intent" | "spec" | "plan";
+export const GATES: GateStage[] = ["intent", "spec", "plan"];
 export type GateState = "approved" | "rejected" | "pending";
 export interface GateRecord { state: GateState; approver: string | null; commit: string | null }
 export interface ChangeStatus {

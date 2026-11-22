@@ -20,7 +20,8 @@ run_seam() {
     printf '%s' "$cfg" > "$tmp/.sdlc-engine.json"
     export SEAM_CONFIG="$tmp/.sdlc-engine.json"
   fi
-  out="$("$seam" "$@" 2> "$tmp/err")"
+  # the env override is only set on purpose (RUN_ADAPTER), so CI exporting SEAM_ADAPTER cannot mask config errors
+  out="$(env -u SEAM_ADAPTER ${RUN_ADAPTER:+SEAM_ADAPTER="$RUN_ADAPTER"} "$seam" "$@" 2> "$tmp/err")"
   rc=$?
   err="$(cat "$tmp/err")"
   rm -rf "$tmp"
@@ -48,7 +49,7 @@ case_invalid_config() {
   [[ $rc -eq 2 && "$err" == *'missing "engine"'* ]] && expect missing_engine_key ok || expect missing_engine_key bad "rc=$rc err=$err"
 }
 case_adapter_env_overrides() {
-  SEAM_ADAPTER=other run_seam '{"engine":"nope"}' engine
+  RUN_ADAPTER=other run_seam '{"engine":"nope"}' engine
   [[ $rc -eq 2 && "$err" == *"unknown engine: other"* ]] && expect adapter_env ok || expect adapter_env bad "rc=$rc err=$err"
 }
 case_usage() {
@@ -215,6 +216,9 @@ case_conf_ci() {
   sx "$HUMAN" approve demo plan
   sx "$HUMAN" ci --base main
   [[ $rc -eq 0 ]] && expect ci_all_approved ok || expect ci_all_approved bad "rc=$rc err=$err"
+
+  sx "$HUMAN" ci --base nobase
+  [[ $rc -eq 2 && "$err" == *"cannot diff against nobase"* ]] && expect ci_bad_base ok || expect ci_bad_base bad "rc=$rc err=$err"
 
   mkchange other
   sx "$HUMAN" ci --base main

@@ -95,9 +95,12 @@ jobs:
       # Only PRs that touch the seam need the suite (spec R3.3); pushes to main always run it.
       - name: Does this change touch the seam?
         id: seam
+        env:
+          BASE_REF: ${{ github.base_ref }}
+          EVENT: ${{ github.event_name }}
         run: |
-          if [ "${{ github.event_name }}" = "pull_request" ] && \
-            ! git diff --name-only "origin/${{ github.base_ref }}...HEAD" | grep -qE '^(scripts/seam/|scripts/test-sdlc-seam\.sh|\.sdlc-engine\.json|\.agents/schema/sdlc-seam)'; then
+          if [ "$EVENT" = "pull_request" ] && \
+            ! git diff --name-only "origin/$BASE_REF...HEAD" | grep -qE '^(scripts/seam/|scripts/test-sdlc-seam\.sh|\.sdlc-engine\.json|\.agents/schema/sdlc-seam)'; then
             echo "run=false" >> "$GITHUB_OUTPUT"
           else
             echo "run=true" >> "$GITHUB_OUTPUT"

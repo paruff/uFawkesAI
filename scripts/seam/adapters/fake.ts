@@ -2,11 +2,10 @@ import { execFileSync } from "node:child_process";
 import { existsSync, mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { branchName, currentChange } from "../branch.ts";
-import { SeamError } from "../contract.ts";
+import { GATES, SeamError } from "../contract.ts";
 import type { ChangeStatus, GateRecord, GateStage, NextAction, SdlcEngine, Stage } from "../contract.ts";
 
 const DIR = ".sdlc-fake";
-const GATES: GateStage[] = ["intent", "spec", "plan"];
 const SLUG = /^[a-z0-9][a-z0-9-]*$/;
 
 // Second engine, proving the seam is not morsadev-shaped. State is plain git:

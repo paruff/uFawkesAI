@@ -3,22 +3,24 @@ import { existsSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { currentChange, branchName } from "./branch.ts";
 import { loadEngine, resolveConfigPath } from "./config.ts";
-import { SeamError } from "./contract.ts";
+import { GATES, SeamError } from "./contract.ts";
 import type { GateStage, SdlcEngine } from "./contract.ts";
 
 const COMMANDS = ["next", "status", "gate", "new", "approve", "reject", "ci", "engine"];
 const USAGE = `usage: sdlc-seam <${COMMANDS.join("|")}> [args]`;
-const GATES: GateStage[] = ["intent", "spec", "plan"];
 
 function stageArg(s: string | undefined): GateStage {
   if (!GATES.includes(s as GateStage)) throw new SeamError(`stage must be one of ${GATES.join(", ")}`, 2);
   return s as GateStage;
 }
 
-/** Value of `--flag <v>`, or undefined. */
+/** Value of `--flag <v>`, undefined if absent; a missing or flag-like value is a usage error. */
 function flag(args: string[], name: string): string | undefined {
   const i = args.indexOf(name);
-  return i >= 0 ? args[i + 1] : undefined;
+  if (i < 0) return undefined;
+  const v = args[i + 1];
+  if (v === undefined || v.startsWith("--")) throw new SeamError(`${name} needs a value`, 2);
+  return v;
 }
 
 function codePaths(root: string): string[] {
@@ -42,9 +44,15 @@ function gate(engine: SdlcEngine, root: string, args: string[]): void {
 }
 
 function ci(engine: SdlcEngine, root: string, base: string): void {
-  const git = (...a: string[]) => execFileSync("git", a, { cwd: root, encoding: "utf8" }).split("\n").filter(Boolean);
-  const code = git("diff", "--name-only", `${base}...HEAD`, "--", ...codePaths(root));
-  const touched = engine.changesTouchedSince(base);
+  let code: string[];
+  let touched: string[];
+  try {
+    code = execFileSync("git", ["diff", "--name-only", `${base}...HEAD`, "--", ...codePaths(root)], { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }).split("\n").filter(Boolean);
+    touched = engine.changesTouchedSince(base);
+  } catch (e) {
+    if (e instanceof SeamError) throw e;
+    throw new SeamError(`cannot diff against ${base} (shallow clone? fetch it): ${(e as Error).message.split("\n")[0]}`, 2);
+  }
   const problems: string[] = [];
   if (code.length > 0 && touched.length === 0) {
     problems.push(`code paths changed with no change (create one with sdlc-seam new):\n  ${code.join("\n  ")}`);
