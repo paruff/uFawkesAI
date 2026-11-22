@@ -1,7 +1,10 @@
 ---
 change: seam-enforcement-identity
-status: draft
+status: approved
 author: ufawkes-bot@users.noreply.github.com
+approved_by: phil.ruff@gmail.com
+approved_at: 2026-11-22
+approved_sha: 65137e4
 ---
 # Seam phase 2: enforcement and agent identity: spec
 
