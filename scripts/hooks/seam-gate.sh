@@ -4,6 +4,8 @@
 # current branch's change has an unapproved plan. All verdict logic is in scripts/sdlc-seam.
 set -euo pipefail
 unset GIT_INDEX_FILE # pre-commit exports it; the gate reads the real tree
+# CI runs the same check as `sdlc-seam ci` (artifact-chain.yml), and its pre-commit pass has no engine or change branch.
+[[ -n "${CI:-}" ]] && exit 0
 mode="${1:?usage: seam-gate.sh commit|push}"
 seam="$(cd "$(dirname "$0")/.." && pwd)/sdlc-seam"
 top="$(git rev-parse --show-toplevel)"

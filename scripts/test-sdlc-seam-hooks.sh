@@ -2,7 +2,7 @@
 # shellcheck disable=SC2015 # `cond && expect ok || expect bad` is the intended assertion pattern, expect never fails
 # Self-test for scripts/hooks/seam-gate.sh, the git pre-commit and pre-push gate (seam R6.1).
 set -uo pipefail
-unset GIT_INDEX_FILE GIT_DIR GIT_WORK_TREE
+unset GIT_INDEX_FILE GIT_DIR GIT_WORK_TREE CI # CI=true makes the gate defer; only the one case below sets it
 root="$(cd "$(dirname "$0")/.." && pwd)"
 hook="$root/scripts/hooks/seam-gate.sh"
 fails=0
@@ -41,6 +41,10 @@ git commit -q -m docs
 mkdir src && echo x > src/app.ts && git add -A && git commit -q -m feat
 run push
 [[ $rc -ne 0 && "$out" == *demo/plan* ]] && expect push_blocked ok || expect push_blocked bad "rc=$rc out=$out"
+
+out="$(CI=true bash "$hook" push 2>&1)"
+rc=$?
+[[ $rc -eq 0 ]] && expect ci_env_defers_to_sdlc_seam_ci ok || expect ci_env_defers_to_sdlc_seam_ci bad "rc=$rc out=$out"
 
 git switch -q main && git switch -qc scratch/none
 run push
