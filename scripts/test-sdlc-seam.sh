@@ -226,6 +226,15 @@ case_conf_ci() {
   [[ $rc -eq 1 && "$err" == *other/intent* && "$err" != *demo/* ]] && expect ci_two_changes_one_unapproved ok || expect ci_two_changes_one_unapproved bad "rc=$rc err=$err"
 }
 
+case_conf_ci_without_identity() { # CI runners have no git identity; reads must not need one
+  new_repo
+  mkchange demo
+  out="$(cd "$repo" && env -u SEAM_CONFIG -u GIT_AUTHOR_NAME -u GIT_AUTHOR_EMAIL -u GIT_COMMITTER_NAME -u GIT_COMMITTER_EMAIL \
+    GIT_CONFIG_COUNT=1 GIT_CONFIG_KEY_0=user.useConfigOnly GIT_CONFIG_VALUE_0=true "$seam" ci --base main 2>&1)"
+  rc=$?
+  [[ $rc -eq 1 && "$out" == *demo/intent* ]] && expect ci_reads_need_no_identity ok || expect ci_reads_need_no_identity bad "rc=$rc out=$out"
+}
+
 case_morsadev_missing() {
   [[ "${SEAM_ADAPTER:-fake}" == morsadev ]] || return 0
   # a copy of scripts/seam with no node_modules beside it: the engine cannot be found
@@ -240,7 +249,7 @@ case_morsadev_missing() {
   done
 }
 
-CASES=(case_unknown_engine case_missing_config case_invalid_config case_adapter_env_overrides case_usage case_schema_fixtures case_conf_new_status case_conf_approve_reject case_conf_identity case_conf_squash case_conf_gate_branch case_conf_next case_conf_ci case_morsadev_missing)
+CASES=(case_unknown_engine case_missing_config case_invalid_config case_adapter_env_overrides case_usage case_schema_fixtures case_conf_new_status case_conf_approve_reject case_conf_identity case_conf_squash case_conf_gate_branch case_conf_next case_conf_ci case_conf_ci_without_identity case_morsadev_missing)
 for c in "${CASES[@]}"; do "$c"; done
 
 if [[ $fails -ne 0 ]]; then
