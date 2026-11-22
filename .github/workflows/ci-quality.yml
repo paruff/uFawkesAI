@@ -82,6 +82,36 @@ jobs:
       - name: job-finish
         if: always()
         run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+  seam-conformance:
+    name: "🔌 Seam Conformance"
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: job-start
+        run: echo "job-start $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          fetch-depth: 0
+      # Only PRs that touch the seam need the suite (spec R3.3); pushes to main always run it.
+      - name: Does this change touch the seam?
+        id: seam
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ] && \
+            ! git diff --name-only "origin/${{ github.base_ref }}...HEAD" | grep -qE '^(scripts/seam/|scripts/test-sdlc-seam\.sh|\.sdlc-engine\.json|\.agents/schema/sdlc-seam)'; then
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        if: steps.seam.outputs.run == 'true'
+        with:
+          node-version: 22.23.2
+      - name: Conformance suite (fake adapter)
+        if: steps.seam.outputs.run == 'true'
+        run: SEAM_ADAPTER=fake bash scripts/test-sdlc-seam.sh
+      - name: job-finish
+        if: always()
+        run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
   lint-placeholder:
     name: "🔍 Lint (Placeholder)"
     runs-on: ubuntu-latest
@@ -167,6 +197,7 @@ jobs:
       - lint
       - artifact-chain
       - symlink-check
+      - seam-conformance
       - multi-harness-smoke
       - lint-placeholder
       - typecheck
@@ -183,6 +214,7 @@ jobs:
              [ "${{ needs.lint.result }}" == "failure" ] || \
              [ "${{ needs.artifact-chain.result }}" != "success" ] || \
              [ "${{ needs.symlink-check.result }}" == "failure" ] || \
+             [ "${{ needs.seam-conformance.result }}" == "failure" ] || \
              [ "${{ needs.multi-harness-smoke.result }}" == "failure" ] || \
              [ "${{ needs.lint-placeholder.result }}" == "failure" ] || \
              [ "${{ needs.typecheck.result }}" == "failure" ] || \
@@ -202,6 +234,7 @@ jobs:
           echo "| Pre-flight | ${{ needs.preflight.result == 'success' && '✅ Pass' || (needs.preflight.result == 'skipped' && '⏭️ Skipped' || '❌ Fail') }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Lint | ${{ needs.lint.result == 'success' && '✅ Pass' || (needs.lint.result == 'skipped' && '⏭️ Skipped' || '❌ Fail') }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Artifact Chain | ${{ needs.artifact-chain.result == 'success' && '✅ Pass' || '❌ Fail' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Seam Conformance | ${{ needs.seam-conformance.result == 'success' && '✅ Pass' || '❌ Fail' }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Symlinks | ${{ needs.symlink-check.result == 'success' && '✅ Pass' || '❌ Fail' }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Multi-Harness Smoke | ${{ needs.multi-harness-smoke.result == 'success' && '✅ Pass' || '❌ Fail' }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Lint (Placeholder) | ${{ needs.lint-placeholder.result == 'success' && '✅ Pass' || '❌ Fail' }} |" >> $GITHUB_STEP_SUMMARY
