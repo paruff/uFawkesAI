@@ -54,6 +54,14 @@ else
   fi
 fi
 
+# ── 1b) core.hooksPath stays unset: the pre-commit framework owns all hook types (seam R4.1) ──
+
+if [ -n "$(git config --get core.hooksPath || true)" ]; then
+  fail "core.hooksPath is set ($(git config --get core.hooksPath)); it bypasses pre-commit. Run: git config --unset core.hooksPath"
+else
+  pass "core.hooksPath is unset."
+fi
+
 # ── 2) No unfilled placeholders (scripts/check-placeholders.sh, #28) ────────
 
 if [ ! -f AGENTS.md ]; then

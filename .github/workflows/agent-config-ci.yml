@@ -79,6 +79,11 @@ jobs:
             echo "No agent configuration changed in this PR: evals not needed, gate passes." | tee -a "$GITHUB_STEP_SUMMARY"
             echo "changed=false" >>"$GITHUB_OUTPUT"
           fi
+      - name: AGENTS.md sdlc block matches `sdlc sync`
+        run: |
+          npm ci --ignore-scripts
+          bash scripts/test-sdlc-block-drift.sh
+          bash scripts/check-sdlc-block-drift.sh
       - name: Require the API key (no silent skip)
         if: steps.changes.outputs.changed == 'true'
         env:

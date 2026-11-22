@@ -226,7 +226,21 @@ case_conf_ci() {
   [[ $rc -eq 1 && "$err" == *other/intent* && "$err" != *demo/* ]] && expect ci_two_changes_one_unapproved ok || expect ci_two_changes_one_unapproved bad "rc=$rc err=$err"
 }
 
-CASES=(case_unknown_engine case_missing_config case_invalid_config case_adapter_env_overrides case_usage case_schema_fixtures case_conf_new_status case_conf_approve_reject case_conf_identity case_conf_squash case_conf_gate_branch case_conf_next case_conf_ci)
+case_morsadev_missing() {
+  [[ "${SEAM_ADAPTER:-fake}" == morsadev ]] || return 0
+  # a copy of scripts/seam with no node_modules beside it: the engine cannot be found
+  local t="$work/nomod" c
+  mkdir -p "$t/scripts" && cp -R "$here/seam" "$t/scripts/seam"
+  for c in "engine" "status x --json" "next"; do
+    new_repo
+    # shellcheck disable=SC2086
+    err="$(cd "$repo" && SEAM_CONFIG="$repo/.sdlc-engine.json" node "$t/scripts/seam/cli.ts" $c 2>&1 > /dev/null)"
+    rc=$?
+    [[ $rc -eq 2 && "$err" == *"engine morsadev not installed: run npm ci"* ]] && expect "missing_engine_${c%% *}" ok || expect "missing_engine_${c%% *}" bad "rc=$rc err=$err"
+  done
+}
+
+CASES=(case_unknown_engine case_missing_config case_invalid_config case_adapter_env_overrides case_usage case_schema_fixtures case_conf_new_status case_conf_approve_reject case_conf_identity case_conf_squash case_conf_gate_branch case_conf_next case_conf_ci case_morsadev_missing)
 for c in "${CASES[@]}"; do "$c"; done
 
 if [[ $fails -ne 0 ]]; then

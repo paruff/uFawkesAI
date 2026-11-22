@@ -117,6 +117,7 @@ finding in a report does not enforce anything on its own.
 | AI-generated release notes and PR bodies                  | Human review before publishing                                             |
 | AI-generated content in Dojo modules                     | Disclose to learners that AI assisted in authoring                         |
 | opencode sessions in this repository                      | Load `AGENTS.md` and the relevant skill at session start                   |
+| `@morsadev/sdlc` SDLC engine (pinned `1.4.0`, behind the seam) | Only `scripts/seam/adapters/morsadev.ts` and `scripts/seam/setup.sh` call it; `scripts/test-sdlc-seam.sh` must pass on `morsadev`; approvals stay human |
 
 ### Allowed
 

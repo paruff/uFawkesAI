@@ -11,7 +11,7 @@ An implementation of Anthropic's [AI-Native SDLC Playbook](https://claude.com/bl
 
 ## What you get
 
-- `AGENTS.md` — one page of instructions. `CLAUDE.md`, `GEMINI.md`, `.cursorrules` and
+- `AGENTS.md` — the instructions, a page plus the engine's generated block. `CLAUDE.md`, `GEMINI.md`, `.cursorrules` and
   `.github/copilot-instructions.md` are symlinks to it, so Claude Code, Gemini CLI, Cursor,
   Copilot and Codex all load the same file.
 - `.agents/agents/` — four agents, each a boundary that can block, write or change repo state:
