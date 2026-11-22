@@ -29,7 +29,7 @@ agents / commands / hooks / plugin / CI
 
 ## Components
 
-### Component: `scripts/sdlc-seam/contract.ts`
+### Component: `scripts/seam/contract.ts`
 
 - **Purpose:** the seam's types, and the only interface adapters implement.
 - **Runtime/deployed:** no. It runs on workstations and in CI.
@@ -57,14 +57,14 @@ export interface SdlcEngine {
 export class SeamError extends Error { constructor(msg: string, readonly exitCode: 1 | 2) }
 ```
 
-### Component: `scripts/sdlc-seam/cli.ts` plus the `scripts/sdlc-seam` wrapper
+### Component: `scripts/seam/cli.ts` plus the `scripts/sdlc-seam` wrapper
 
 - **Purpose:** argument parsing, adapter loading (`config.ts`), and the
   engine-neutral `gate` and `ci` logic. `ci` reads code paths from
   `.artifact-chain-paths` (default `src/`).
 - **Exit codes:** these are the ones in spec R1.
 
-### Component: `scripts/sdlc-seam/adapters/fake.ts`
+### Component: `scripts/seam/adapters/fake.ts`
 
 - **Purpose:** the second engine that proves the seam (R3.2).
 - **How it works:** artifacts live in `.sdlc-fake/<slug>/`, and approvals
@@ -72,12 +72,12 @@ export class SeamError extends Error { constructor(msg: string, readonly exitCod
   It refuses an approver whose email is in `botIdentities`, or who authored
   the stage's artifact.
 
-### Component: `scripts/sdlc-seam/adapters/morsadev.ts`
+### Component: `scripts/seam/adapters/morsadev.ts`
 
 - **Purpose:** adapter #1. It is the only file that names `sdlc` commands
   or `changes/` (R2.3).
 
-### Component: `scripts/sdlc-seam/setup.sh`
+### Component: `scripts/seam/setup.sh`
 
 - **Purpose:** runs `npx sdlc init`/`sync`, then enforces the R4.1
   overrides: CLAUDE.md is a symlink, the engine's agents are installed as
@@ -169,7 +169,7 @@ goes here, in both harness configs, and in the engine's refusal list.
 | R1 | Every subcommand and exit code; JSON validates against the schema | unit | `scripts/test-sdlc-seam.sh` |
 | R3.1 | new → intent → approve → `gate` 0; reject → `gate` 1; `ci` fails on an unapproved plan | integration | `SEAM_ADAPTER=fake` and `SEAM_ADAPTER=morsadev` `scripts/test-sdlc-seam.sh` |
 | R3.1a | bot-authored artifact plus human approval passes; bot approves → refused; human approves their own artifact → refused | integration | the same, both adapters |
-| R3.3 | Both adapters run on PRs touching `scripts/sdlc-seam/` | ci | `ci-quality.yml` › seam conformance |
+| R3.3 | Both adapters run on PRs touching `scripts/seam/` | ci | `ci-quality.yml` › seam conformance |
 | R4.1 | `setup.sh` twice leaves a clean tree; CLAUDE.md is a symlink; no `sdlc hook` in settings; `core.hooksPath` unset | integration | `scripts/test-sdlc-seam-setup.sh` |
 | R4.1 drift | The AGENTS.md block matches a fresh `sync` | ci | `agent-config-ci.yml` |
 | R6.1–R6.4 | Commit and push blocked on an unapproved plan in each path; a `--no-verify` push is red | integration, live-system | `scripts/test-sdlc-seam-hooks.sh`; a throwaway PR |

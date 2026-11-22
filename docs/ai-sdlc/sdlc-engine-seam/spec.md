@@ -51,7 +51,7 @@ The JSON shape is versioned (`"schema": 1`) and described in
 - R2.1 The adapter is chosen by `.sdlc-engine.json`, for example
   `{"engine": "morsadev", "version": "1.4.0"}`. The engine version is pinned
   exactly in `package.json` devDependencies.
-- R2.2 The adapters live in `scripts/sdlc-seam/adapters/<engine>.ts`, and
+- R2.2 The adapters live in `scripts/seam/adapters/<engine>.ts`, and
   each adapter exports one object that implements the contract.
 - R2.3 The morsadev adapter maps the contract onto `npx sdlc` (using its
   `--json` output where it exists). It is the **only** file in the repo that
@@ -69,7 +69,7 @@ The JSON shape is versioned (`"schema": 1`) and described in
   refused.
 - R3.2 A `fake` adapter (in-memory, commit-backed) passes the same suite.
   This is the proof that the seam is not morsadev-shaped.
-- R3.3 Both adapters run in CI on every PR that touches `scripts/sdlc-seam/`.
+- R3.3 Both adapters run in CI on every PR that touches `scripts/seam/`.
 
 ### R4. Engine install without layout collisions
 
@@ -213,7 +213,7 @@ and in CI:
 | Agent-side | `requesting-code-review` plus the repo `/code-review` (Standards and Spec) | verifier runs both before ship |
 | Deterministic | existing pre-commit, typecheck, lint, unit tests | unchanged |
 | Deterministic | **Semgrep** (OSS rules, `p/typescript`, `p/secrets`) | CI, blocks on ERROR |
-| Deterministic | **Stryker** mutation testing on `scripts/sdlc-seam/` | CI, reported; blocks under a threshold the builder sets from the first run |
+| Deterministic | **Stryker** mutation testing on `scripts/seam/` | CI, reported; blocks under a threshold the builder sets from the first run |
 | Deterministic | `sdlc-seam ci` | required check |
 
 CodeQL is the alternative to Semgrep. The builder picks one, not both, and
@@ -261,7 +261,7 @@ created from the plan.
 
 ## Left to the builder
 
-- Internal layout of `scripts/sdlc-seam/`, and how the change slug is
+- Internal layout of `scripts/seam/`, and how the change slug is
   derived from the branch name.
 - Whether generated skills are committed (R4.2).
 - Semgrep or CodeQL; the Stryker threshold.
