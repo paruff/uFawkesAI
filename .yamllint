@@ -21,3 +21,7 @@ rules:
     spaces: 2
     indent-sequences: true
   document-start: disable
+
+ignore: |
+  node_modules/
+  .agents/skills/sdlc-setup/

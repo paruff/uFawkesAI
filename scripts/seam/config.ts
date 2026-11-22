@@ -4,10 +4,11 @@ import { dirname, join } from "node:path";
 import { SeamError } from "./contract.ts";
 import type { SdlcEngine } from "./contract.ts";
 import { createFakeEngine } from "./adapters/fake.ts";
+import { createMorsadevEngine } from "./adapters/morsadev.ts";
 
 // Adapters register here; each gets the parsed config and the repo root.
 type Config = { botIdentities?: string[] };
-const ADAPTERS: Record<string, (cfg: Config, root: string) => SdlcEngine> = { fake: createFakeEngine };
+const ADAPTERS: Record<string, (cfg: Config, root: string) => SdlcEngine> = { fake: createFakeEngine, morsadev: createMorsadevEngine };
 
 export function resolveConfigPath(): string {
   if (process.env.SEAM_CONFIG) return process.env.SEAM_CONFIG;

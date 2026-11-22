@@ -1,0 +1,58 @@
+{
+  "agents": [
+    "agents-md"
+  ],
+  "commands": {
+    "build": "npm run build",
+    "format": "npm run format",
+    "lint": "npm run lint",
+    "test": "npm test"
+  },
+  "format_on_edit": {},
+  "gates": {},
+  "gates_self_approval": false,
+  "locale": "en",
+  "production_gate": {
+    "approval_env": "RELEASE_APPROVAL",
+    "patterns": [
+      "deploy.*prod",
+      "terraform apply",
+      "kubectl .*--context[= ].*prod"
+    ]
+  },
+  "protected_paths": [
+    "prisma/migrations/**",
+    "drizzle/**",
+    "src/gen/**",
+    "**/*.generated.ts"
+  ],
+  "risk": {
+    "high_risk_paths": []
+  },
+  "roles": {},
+  "secret_patterns_extra": [],
+  "stack": {
+    "language": "typescript",
+    "package_manager": "npm"
+  },
+  "test_globs": [
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/*.spec.ts",
+    "**/*.test.js",
+    "**/*.test.mjs",
+    "**/*.spec.js",
+    "**/__tests__/**",
+    "e2e/**",
+    "tests/**",
+    "test/**"
+  ],
+  "tracker": {
+    "provider": "none"
+  },
+  "vcs": {
+    "default_branch": "feat/seam-morsadev-344",
+    "provider": "github"
+  },
+  "version": 1
+}

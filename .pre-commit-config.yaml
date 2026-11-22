@@ -65,7 +65,7 @@ repos:
       - id: markdownlint
         name: Lint Markdown files
         args: ["--config", ".markdownlint.json", "--fix"]
-        exclude: ^CHANGELOG\.md$
+        exclude: ^(CHANGELOG\.md|SETUP\.md)$
 
   # ============================================================================
   # Security Scanning — Gitleaks (single comprehensive check)

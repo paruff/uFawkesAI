@@ -83,7 +83,11 @@ jobs:
         if: always()
         run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
   seam-conformance:
-    name: "🔌 Seam Conformance"
+    name: "🔌 Seam Conformance (${{ matrix.adapter }})"
+    strategy:
+      fail-fast: false
+      matrix:
+        adapter: [fake, morsadev]
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -100,7 +104,7 @@ jobs:
           EVENT: ${{ github.event_name }}
         run: |
           if [ "$EVENT" = "pull_request" ] && \
-            ! git diff --name-only "origin/$BASE_REF...HEAD" | grep -qE '^(scripts/seam/|scripts/test-sdlc-seam\.sh|\.sdlc-engine\.json|\.agents/schema/sdlc-seam)'; then
+            ! git diff --name-only "origin/$BASE_REF...HEAD" | grep -qE '^(scripts/seam/|package(-lock)?\.json|scripts/test-sdlc-seam\.sh|\.sdlc-engine\.json|\.agents/schema/sdlc-seam)'; then
             echo "run=false" >> "$GITHUB_OUTPUT"
           else
             echo "run=true" >> "$GITHUB_OUTPUT"
@@ -109,9 +113,17 @@ jobs:
         if: steps.seam.outputs.run == 'true'
         with:
           node-version: 22.23.2
-      - name: Conformance suite (fake adapter)
+      - name: Install the pinned engine
+        if: steps.seam.outputs.run == 'true' && matrix.adapter == 'morsadev'
+        run: npm ci --ignore-scripts
+      - name: Conformance suite
         if: steps.seam.outputs.run == 'true'
-        run: SEAM_ADAPTER=fake bash scripts/test-sdlc-seam.sh
+        env:
+          SEAM_ADAPTER: ${{ matrix.adapter }}
+        run: bash scripts/test-sdlc-seam.sh
+      - name: Engine setup is idempotent (R4.1)
+        if: steps.seam.outputs.run == 'true' && matrix.adapter == 'morsadev'
+        run: bash scripts/test-sdlc-seam-setup.sh
       - name: job-finish
         if: always()
         run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ')"

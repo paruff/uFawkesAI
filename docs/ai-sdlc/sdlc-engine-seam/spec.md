@@ -266,3 +266,34 @@ created from the plan.
 - Whether generated skills are committed (R4.2).
 - Semgrep or CodeQL; the Stryker threshold.
 - The exact `fake` adapter storage, as long as it is commit-backed.
+
+## Phase 1 findings (engine 1.4.0, from real `init`/`sync` runs)
+
+- **R4.2 decision: regenerate, do not commit.** The engine's skills, `.sdlc/` runtime files
+  and CI templates are gitignored; `scripts/seam/setup.sh` regenerates them (one copy in
+  `.agents/skills`, which `.claude/skills` symlinks to) and a second run leaves the tree
+  clean (`scripts/test-sdlc-seam-setup.sh`). Committing them fought markdownlint, the
+  license-header hook, yamllint and the orphan check. Committed: `.sdlc/config.json`,
+  the AGENTS.md block and `SETUP.md`. `init`'s one-time scaffold (`evals/`, `lessons/`,
+  `ops/`, `changes/_templates`) is not kept: `sdlc new` works without it.
+- `.sdlc/config.json` sets `agents: ["agents-md"]`: the `claude` target is what writes
+  the `sdlc hook` entries into `.claude/settings.json`, and `.claude/agents/verifier.md`.
+  No stripping step is needed; `setup.sh` still checks and strips as a guard.
+- `sync` keeps an existing `.agents/agents/verifier.md` ("conflict ... kept") unless
+  `--force`; we never force. `researcher`, `simplifier` and `spec-reviewer` land unprefixed,
+  with no collision, but `scripts/check-agents.sh` allows only our four agents, so
+  `setup.sh` deletes them after each sync (not renamed to `sdlc-*`).
+- `init` and `sync` set `core.hooksPath=.sdlc/git-hooks` in the shared `.git/config`
+  (also from a `git worktree`). `setup.sh` unsets it; `preflight.sh` fails if it is set.
+  Run spikes in a separate `git clone`, never a worktree.
+- `CLAUDE.md` stayed a symlink in every run.
+- **The engine reads identity from `git config user.name/email`, not `GIT_AUTHOR_*`.**
+  The adapter passes the session identity through `GIT_CONFIG_COUNT` env config, with the
+  email as the name so two people sharing a display name stay distinct. The engine's agent
+  test is a fixed regex (`bot`, `claude`, `anthropic`, `cursor`, `codex`, `copilot`) with no
+  config key, so the bot refusal list lives in the adapter (`botIdentities`), and the bot
+  email `ufawkes-bot@…` also matches the engine's own regex.
+- The engine exempts `intent` from its self-approval rule; the adapter enforces it for all stages.
+- `status --json` prints one JSON object per line per change (`statuses` = `intent/spec/plan`);
+  `next --json` has `kind`, `change`, `stage`, `command`, `message`. `sdlc new` writes only
+  `intent.md`, so the adapter writes the spec and plan stubs the later gates need.

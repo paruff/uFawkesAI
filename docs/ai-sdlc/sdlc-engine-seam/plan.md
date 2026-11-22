@@ -100,7 +100,7 @@ export class SeamError extends Error { constructor(msg: string, readonly exitCod
 
 ```json
 { "engine": "morsadev", "version": "1.4.0",
-  "botIdentities": ["ufawkes-agent@users.noreply.github.com"] }
+  "botIdentities": ["ufawkes-bot@users.noreply.github.com"] }
 ```
 
 The bot's name and email are the builder's call (R6a.4). Whatever is chosen
