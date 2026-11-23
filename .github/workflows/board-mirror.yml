@@ -27,6 +27,7 @@ jobs:
       # A user-owned Project v2 needs a PAT with `project` scope; GITHUB_TOKEN is only a fallback.
       GH_TOKEN: ${{ secrets.BOARD_TOKEN || github.token }}
       BRANCH: ${{ github.event.pull_request.head.ref || github.ref_name }}
+      MERGED: ${{ github.event.pull_request.merged }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
@@ -37,7 +38,8 @@ jobs:
           node-version: 22.23.2
       - run: npm ci --ignore-scripts
       - name: Mirror
-        if: github.event.action != 'closed' # a closed or merged PR has no board state of its own (R7 defines none)
+        # a PR closed without merging has no board state; a merged one marks a leaf issue Done
+        if: github.event.action != 'closed' || github.event.pull_request.merged == true
         run: |
           case "$BRANCH" in change/*) ;; *) echo "not a change branch"; exit 0 ;; esac
           slug="${BRANCH#change/}"
@@ -45,7 +47,11 @@ jobs:
           dir="$(jq -r .artifactsDir "$RUNNER_TEMP/status.json")"
           issue="$(sed -n '/^---$/,/^---$/s/^issue: *["#]\{0,2\}\([0-9]\+\).*/\1/p' "$dir/intent.md" | head -1)"
           [ -n "$issue" ] || { echo "no 'issue:' in $dir/intent.md front matter; nothing to mirror"; exit 0; }
-          pr_open="$(gh pr list --head "$BRANCH" --state open --json number --jq 'length' --repo "$GITHUB_REPOSITORY")"
           args=()
-          [ "$pr_open" -gt 0 ] && args+=(--pr-open)
+          if [ "$MERGED" = true ]; then
+            args+=(--merged)
+          else
+            pr_open="$(gh pr list --head "$BRANCH" --state open --json number --jq 'length' --repo "$GITHUB_REPOSITORY")"
+            if [ "$pr_open" -gt 0 ]; then args+=(--pr-open); fi
+          fi
           scripts/board-mirror.sh "$RUNNER_TEMP/status.json" "$issue" "${args[@]}"

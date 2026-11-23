@@ -15,11 +15,12 @@ trap 'rm -rf "$t"' EXIT
 cat > "$t/gh" << 'STUB'
 #!/usr/bin/env bash
 echo "$*" >> "$STUB_DIR/calls"
-case "$2" in
-  item-list) cat "$STUB_DIR/items.json" ;;
-  field-list) cat "$STUB_DIR/fields.json" ;;
-  view) echo PVT_proj ;;
-  item-edit)
+case "$1 $2" in
+  "project item-list") cat "$STUB_DIR/items.json" ;;
+  "project field-list") cat "$STUB_DIR/fields.json" ;;
+  "project view") echo PVT_proj ;;
+  "issue view") cat "$STUB_DIR/title" ;;
+  "project item-edit")
     f="" o=""
     while [ $# -gt 0 ]; do case "$1" in --field-id) f="$2" ;; --single-select-option-id) o="$2" ;; --clear) o="" ;; esac; shift; done
     key="$(jq -r --arg f "$f" '.fields[]|select(.id==$f)|.name|ascii_downcase' "$STUB_DIR/fields.json")"
@@ -30,7 +31,7 @@ STUB
 chmod +x "$t/gh"
 cat > "$t/fields.json" << 'J'
 {"fields":[
- {"id":"F_S","name":"Status","options":[{"id":"o1","name":"Ready for agent"},{"id":"o2","name":"Needs human"}]},
+ {"id":"F_S","name":"Status","options":[{"id":"o1","name":"Ready for agent"},{"id":"o2","name":"Needs human"},{"id":"o3","name":"Done"}]},
  {"id":"F_G","name":"Gate","options":[{"id":"g1","name":"intent"},{"id":"g2","name":"spec"},{"id":"g3","name":"plan"},{"id":"g4","name":"PR review"}]}]}
 J
 st() { # <intent> <spec> <plan> -> status json path
@@ -62,6 +63,17 @@ run && [ "$(cur)" = "Ready for agent|" ] && expect "stale Gate is cleared when p
 reset
 st approved approved approved
 run --pr-open && [ "$(cur)" = "Needs human|PR review" ] && expect "open PR -> Needs human, Gate PR review" ok || expect "open PR" bad "$(cur)"
+
+reset
+echo "feat(ci): a leaf issue" > "$t/title"
+st approved approved approved
+run --merged && [ "$(cur)" = "Done|" ] && expect "merged leaf -> Done, no Gate" ok || expect "merged leaf -> Done" bad "$(cur)"
+n="$(edits)"
+run --merged && [ "$(edits)" = "$n" ] && expect "merged leaf second run makes no edits" ok || expect "merged idempotent" bad "edits $n -> $(edits)"
+
+reset
+echo "goal(seam): a goal issue" > "$t/title"
+run --merged && [ "$(cur)" = "Backlog|" ] && [ "$(edits)" = 0 ] && expect "merged goal issue is left for a human" ok || expect "merged goal untouched" bad "$(cur) edits $(edits)"
 
 reset
 echo '{"items":[]}' > "$t/items.json"
