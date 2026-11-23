@@ -27,3 +27,5 @@ ci-*.md
 .agents/skills/policy-*/
 .sdlc/*
 !.sdlc/config.json
+.stryker-tmp/
+reports/mutation/

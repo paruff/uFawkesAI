@@ -40,6 +40,17 @@ Owns: `review`, then `ship` with `@operator`. Superpowers (seam R8.3): `review` 
 4. **Cross-validation** (`cross-validation-runner.sh`) — pairwise consistency between the spec,
    design, build, and test reports and their sources.
 
+## Checklist (spec R9, in order; the order is the gate)
+
+1. `verification-before-completion`: re-run the repo gates (`pre-commit run --all-files`, `npm run verify`) and
+   read the output. A builder claim with no command output is unproven: REQUEST CHANGES.
+2. `requesting-code-review`, then the repo `/code-review` against the base branch (Standards and Spec).
+   Any HIGH finding is REQUEST CHANGES.
+3. CI checks green on the PR: `gh pr checks <n>`. This includes `sdlc-seam ci`, Semgrep (`agent-ci.yml`,
+   blocks on ERROR) and the Stryker mutation job (`ci-quality.yml`, blocks under its threshold).
+   Pending or red is not green.
+4. Only then hand off to `@operator`.
+
 ## Verdict
 
 Return exactly one of:

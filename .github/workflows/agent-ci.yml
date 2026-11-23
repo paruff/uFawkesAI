@@ -70,9 +70,10 @@ jobs:
       # semgrep runs only here (removed from the CDE Space image: its 245 MB
       # engine served no local hook). Bump the pin deliberately. p/ci covers workflow
       # injection, unpinned actions and Dependabot cooldown; exit 1 blocks.
-      - name: Semgrep p/ci — blocking
+      - name: Semgrep p/ci, p/typescript, p/secrets — blocking
         run: |
           pipx run semgrep==1.178.0 scan --config p/ci \
+            --config p/typescript --config p/secrets \
             --metrics=off --disable-version-check --error
       - name: job-finish
         if: always()
