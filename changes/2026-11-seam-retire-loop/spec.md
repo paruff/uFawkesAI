@@ -1,7 +1,10 @@
 ---
 change: seam-retire-loop
-status: draft
+status: approved
 author: ufawkes-bot@users.noreply.github.com
+approved_by: phil.ruff@gmail.com
+approved_at: 2026-11-23
+approved_sha: 6e602ce
 ---
 # Seam phase 3: retire the hand-built loop: spec
 
