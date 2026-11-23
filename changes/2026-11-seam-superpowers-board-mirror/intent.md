@@ -1,12 +1,14 @@
 ---
 change: seam-superpowers-board-mirror
-status: draft            # draft → accepted (Product Owner) | rejected
+status: accepted         # draft → accepted (Product Owner) | rejected
 author: ufawkes-bot@users.noreply.github.com
 origin: idea             # idea | ticket | incident | review
 ticket:
 issue: 356
 created: 2026-11-23
-approved_by:             # who accepted the intent (filled in by the PO or recorded on acceptance)
+approved_by: phil.ruff@gmail.com
+approved_at: 2026-11-23
+approved_sha: f81c051
 ---
 # Intent: Seam phase 4: Superpowers and the board mirror
 
