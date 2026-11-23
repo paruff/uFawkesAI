@@ -5,6 +5,25 @@ All notable changes to uFawkesAI will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.1.0](https://github.com/paruff/uFawkesAI/compare/v3.0.0...v3.1.0) (2026-11-23)
+
+
+### Added
+
+* **ci:** board mirror sets Done on merge for leaf issues ([#380](https://github.com/paruff/uFawkesAI/issues/380)) ([#381](https://github.com/paruff/uFawkesAI/issues/381)) ([47bba5e](https://github.com/paruff/uFawkesAI/commit/47bba5e85b668324e99286b611f2596206457a0f))
+* **seam:** Superpowers pin, stage mapping and board mirror (phase 4) ([#377](https://github.com/paruff/uFawkesAI/issues/377)) ([6f3da3f](https://github.com/paruff/uFawkesAI/commit/6f3da3f5e54a3c139c0b2b0b11a801826a079ba9))
+
+
+### Docs
+
+* **seam:** e2e health change (Claude Code half of [#359](https://github.com/paruff/uFawkesAI/issues/359)) ([#378](https://github.com/paruff/uFawkesAI/issues/378)) ([bcc75ee](https://github.com/paruff/uFawkesAI/commit/bcc75ee65fb0e3bb8faa4222af1c7ff679a97989))
+* **seam:** OpenCode e2e health change (second half of [#359](https://github.com/paruff/uFawkesAI/issues/359)) ([#379](https://github.com/paruff/uFawkesAI/issues/379)) ([6c77296](https://github.com/paruff/uFawkesAI/commit/6c77296000ea69c1493af3a5a35782e2d057f95e))
+
+
+### Chores
+
+* **seam:** retire the hand-built loop (phase 3) ([#375](https://github.com/paruff/uFawkesAI/issues/375)) ([a52f353](https://github.com/paruff/uFawkesAI/commit/a52f353ff923c732532b078a61e034c283c1fa07))
+
 ## [3.0.0](https://github.com/paruff/uFawkesAI/compare/v2.3.1...v3.0.0) (2026-11-23)
 
 
