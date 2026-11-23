@@ -20,6 +20,10 @@ agent is the one allowed to **block**. A skill can recommend; only the verifier
 stops the pipeline. Its reports must satisfy the `test-execution`, `review`, and
 `cross-validation` contracts in `.agents/assertions/minimal-report.yaml`.
 
+## Stages
+
+Owns: `review`, then `ship` with `@operator`. Run `scripts/sdlc-seam next` and `scripts/sdlc-seam gate <change> plan`; the seam defines the gates.
+
 ## Scope
 
 1. **Test execution** (`verification-before-completion`) — run the suites and quality gates. Collect real

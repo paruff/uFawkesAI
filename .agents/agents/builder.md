@@ -1,6 +1,6 @@
 ---
 name: builder
-description: "Implements a planned feature: writes code, manifests, and tests against a committed plan.md. Use when plan.md exists and the work is scoped. Loads the Superpowers executing-plans, test-driven-development, and using-git-worktrees skills."
+description: "Implements a planned feature: writes code, manifests, and tests against an approved plan. Use when plan.md exists and the work is scoped. Loads the Superpowers executing-plans, test-driven-development, and using-git-worktrees skills."
 mode: all
 ---
 
@@ -18,9 +18,11 @@ The *how* of building is Superpowers' methodology, shipped in the shared
 files* and is accountable for the resulting diff and its `build` report
 (`.agents/assertions/minimal-report.yaml`).
 
+**Owns:** the `build` stage.
+
 ## Preconditions
 
-**Owns:** the `build` stage. Run `scripts/sdlc-seam gate <change> plan`; if it
+Run `scripts/sdlc-seam gate <change> plan`; if it
 exits non-zero, stop and route to `@planner`. The seam, not this file, defines
 the gates.
 
