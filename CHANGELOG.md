@@ -5,6 +5,41 @@ All notable changes to uFawkesAI will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.0](https://github.com/paruff/uFawkesAI/compare/v2.3.1...v3.0.0) (2026-11-23)
+
+
+### ⚠ BREAKING CHANGES
+
+* **seam:** artifact-chain.yml runs scripts/sdlc-seam ci. Downstream repos stay on their v2.x ref.
+
+### Added
+
+* **seam:** enforcement and agent identity (phase 2) ([#369](https://github.com/paruff/uFawkesAI/issues/369)) ([33f42bd](https://github.com/paruff/uFawkesAI/commit/33f42bddad7d5590d3bf631ba786b254f11eaf63))
+* **seam:** phase 0, seam contract and fake engine ([#366](https://github.com/paruff/uFawkesAI/issues/366)) ([e4082bf](https://github.com/paruff/uFawkesAI/commit/e4082bfe57bead2e630f28239ba2ebb2a512efdb))
+* **seam:** phase 1, morsadev adapter and engine install ([#367](https://github.com/paruff/uFawkesAI/issues/367)) ([aa46fb6](https://github.com/paruff/uFawkesAI/commit/aa46fb659ac3eaad4450cc3fffabd4f4fa0d8836))
+
+
+### Fixed
+
+* **dora:** query Loki's native OTLP shape in the verify script ([#338](https://github.com/paruff/uFawkesAI/issues/338)) ([0a1343a](https://github.com/paruff/uFawkesAI/commit/0a1343aceef2c19dee5a23d3c6fab668704dec4a))
+* **evals:** point bugfix-first-skill at .agents/workflows ([#374](https://github.com/paruff/uFawkesAI/issues/374)) ([7fe1a45](https://github.com/paruff/uFawkesAI/commit/7fe1a454d3cde1d346ca9c56e22953f3a975210f))
+* **harness:** OpenCode 2.x loads the gate plugin and blocks commits ([#372](https://github.com/paruff/uFawkesAI/issues/372)) ([4f5c747](https://github.com/paruff/uFawkesAI/commit/4f5c7477607b5d7fe42bdb483b58c4e8ec68a634))
+* **hooks:** match git -C/-c and subshell commits in the secret scan ([#332](https://github.com/paruff/uFawkesAI/issues/332)) ([49d6b8b](https://github.com/paruff/uFawkesAI/commit/49d6b8baf7857bd2caf883c5a634a36bf82efba7))
+* **release:** one version in package files, synced by release-please ([#328](https://github.com/paruff/uFawkesAI/issues/328)) ([7491a9c](https://github.com/paruff/uFawkesAI/commit/7491a9c4f4a507db0cceba14c27de029d17e35f8))
+* **seam:** setup.sh keeps the lint-formatted AGENTS.md block ([#368](https://github.com/paruff/uFawkesAI/issues/368)) ([30de03b](https://github.com/paruff/uFawkesAI/commit/30de03ba4e8794e53e275ad96bca7ff1f4f92d18))
+
+
+### Docs
+
+* **ai-sdlc:** intent, spec and plan for the SDLC engine seam ([#365](https://github.com/paruff/uFawkesAI/issues/365)) ([060d317](https://github.com/paruff/uFawkesAI/commit/060d3176d9d2fe23b2f5420e3e0087cf47452a1b))
+
+
+### Chores
+
+* **ci:** one Pipe release, v2.0.1, for every reusable ref ([#309](https://github.com/paruff/uFawkesAI/issues/309)) ([#329](https://github.com/paruff/uFawkesAI/issues/329)) ([dcc3308](https://github.com/paruff/uFawkesAI/commit/dcc3308e55cfbb53243c25c816ac572f527f7be1))
+* drop the shipped open-source-ready chain ([#321](https://github.com/paruff/uFawkesAI/issues/321)) ([#331](https://github.com/paruff/uFawkesAI/issues/331)) ([05b918c](https://github.com/paruff/uFawkesAI/commit/05b918cf923c29496dec7bb53d9cecb4daf0655c))
+* **image:** bump locked toolchain (2026-11-22) ([#339](https://github.com/paruff/uFawkesAI/issues/339)) ([c41eda4](https://github.com/paruff/uFawkesAI/commit/c41eda4cdfa853f88cd056a183954087b4b9dbc5))
+
 ## [2.3.1](https://github.com/paruff/uFawkesAI/compare/v2.3.0...v2.3.1) (2026-11-20)
 
 
