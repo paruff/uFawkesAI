@@ -46,4 +46,6 @@ jobs:
           issue="$(sed -n '/^---$/,/^---$/s/^issue: *["#]\{0,2\}\([0-9]\+\).*/\1/p' "$dir/intent.md" | head -1)"
           [ -n "$issue" ] || { echo "no 'issue:' in $dir/intent.md front matter; nothing to mirror"; exit 0; }
           pr_open="$(gh pr list --head "$BRANCH" --state open --json number --jq 'length' --repo "$GITHUB_REPOSITORY")"
-          scripts/board-mirror.sh "$RUNNER_TEMP/status.json" "$issue" $([ "$pr_open" -gt 0 ] && echo --pr-open)
+          args=()
+          [ "$pr_open" -gt 0 ] && args+=(--pr-open)
+          scripts/board-mirror.sh "$RUNNER_TEMP/status.json" "$issue" "${args[@]}"

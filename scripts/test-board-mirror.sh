@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2015 # `cond && expect ok || expect bad` is the intended assertion pattern, expect never fails
 # Self-test for scripts/board-mirror.sh (seam R7): status transitions against fixture status JSON and a stub gh.
 set -uo pipefail # no -e: expect() counts failures instead of aborting
 root="$(cd "$(dirname "$0")/.." && pwd)"
