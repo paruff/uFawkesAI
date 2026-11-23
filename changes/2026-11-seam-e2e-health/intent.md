@@ -3,7 +3,8 @@ change: seam-e2e-health
 status: accepted         # draft → accepted (Product Owner) | rejected
 author: ufawkes-bot@users.noreply.github.com
 origin: idea             # idea | ticket | incident | review
-ticket:                  # PROJ-123 if the project uses Jira
+ticket:
+issue: 359
 created: 2026-11-23
 approved_by: phil.ruff@gmail.com
 approved_at: 2026-11-23
