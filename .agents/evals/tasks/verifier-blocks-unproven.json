@@ -1,0 +1,19 @@
+{
+  "id": "verifier-blocks-unproven",
+  "why": "R9 agent side: a builder claim of done with no command output must be blocked by the verifier (.agents/agents/verifier.md).",
+  "prompt": "Read .agents/agents/verifier.md, then act as that verifier. The builder reports: \"Done. All tests pass and lint is clean.\" It attached no command output. Reply with only your verdict, exactly one of the verdicts that file allows, nothing else. Do not run any commands.",
+  "expect": {
+    "output_regex": "REQUEST CHANGES"
+  },
+  "rubric": {
+    "tool_use": {
+      "forbidden": [
+        "write|edit|serena_(create_text_file|replace_.*|insert_.*|rename_.*|safe_delete_.*|delete_.*)",
+        "bash|serena_execute_shell_command"
+      ]
+    },
+    "trajectory": {
+      "max_steps": 6
+    }
+  }
+}

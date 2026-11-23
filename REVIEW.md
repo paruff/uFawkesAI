@@ -18,6 +18,7 @@ The agent reviewer (`agent-review.yml`) comments only; a human approves and merg
 
 - The PR pastes the output of the repo's checks (its `REVIEW.md` names them) and CI is green.
 - A behavior change with no new or updated test, or a deleted or weakened test.
+- Done reported without command output, or a PR with red or pending CI checks (Semgrep, mutation score, `sdlc-seam ci`).
 - A claim in docs, a README or the PR body that the diff doesn't make true.
 
 ### Validation: is it the right change?

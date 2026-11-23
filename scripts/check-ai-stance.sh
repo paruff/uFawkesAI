@@ -106,6 +106,8 @@ if [[ -n "$sast_claim" ]]; then
   for wf in .github/workflows/*; do
     [[ -e "$wf" ]] || continue
     case "$(basename "$wf")" in *sast* | *semgrep* | *codeql*) sast_workflow=1 ;; esac
+    # a job that runs the scanner counts too (Semgrep lives in agent-ci.yml)
+    if grep -qiE '^[^#]*(semgrep|github/codeql-action/analyze)' "$wf"; then sast_workflow=1; fi
   done
   if [[ "$sast_workflow" -eq 0 ]]; then
     gap "mentions Semgrep/CodeQL but no workflow runs them — either add the workflow or drop the claim"
