@@ -57,7 +57,13 @@ export function createMorsadevEngine(
   // The engine reads identity from git config, not GIT_AUTHOR_*; hand it the session's identity.
   // The name is the email so two people who share a display name stay distinct to its self-approval check.
   function sdlc(args: string[], exitCode: 1 | 2 = 2): string {
-    const me = who();
+    // Reads (status, ci) must work with no git identity, as on a CI runner; approvals check `who()` strictly.
+    let me = "";
+    try {
+      me = who();
+    } catch {
+      // no identity configured: the engine gets an empty one and only a write would care
+    }
     const env = {
       ...process.env,
       GIT_CONFIG_COUNT: "2",

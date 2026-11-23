@@ -145,6 +145,26 @@ repos:
         stages: [commit-msg]
 
   # ============================================================================
+  # SDLC engine seam gate (spec R6.1): code paths need an approved plan
+  # ============================================================================
+  - repo: local
+    hooks:
+      - id: sdlc-seam-gate
+        name: SDLC gate (plan approved before code)
+        entry: scripts/hooks/seam-gate.sh commit
+        language: script
+        stages: [pre-commit]
+        pass_filenames: false
+        always_run: true
+      - id: sdlc-seam-gate-push
+        name: SDLC gate on push
+        entry: scripts/hooks/seam-gate.sh push
+        language: script
+        stages: [pre-push]
+        pass_filenames: false
+        always_run: true
+
+  # ============================================================================
   # uFawkes Suite Specific Validations
   # ============================================================================
   - repo: local

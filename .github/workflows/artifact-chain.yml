@@ -1,10 +1,9 @@
 name: Artifact Chain
 
-# Enforces the committed AI-SDLC artifact chain on pull requests:
-#   intent.md → spec.md → plan.md → code diff   (docs/ai-sdlc/README.md)
-# Fails when a PR changes src/ without a docs/ai-sdlc/**/plan.md that has a
-# "Verification Strategy" section in the same diff, or when a spec.md has no
-# intent.md in the branch history. Logic: scripts/check-artifact-chain.sh.
+# Enforces the SDLC engine's approval gates on pull requests (seam spec R6.4):
+# a PR that changes code paths (.artifact-chain-paths) needs a change whose
+# intent, spec and plan are all approved. Logic: `scripts/sdlc-seam ci`, so a
+# `--no-verify` push is still red here.
 #
 # Called by ci-quality.yml so its result feeds "✅ CI Complete", the status
 # check the main-protection ruleset requires — a failure blocks the merge.
@@ -29,8 +28,11 @@ jobs:
           fetch-depth: 0 # merge-base and branch history
           persist-credentials: false
 
-      - name: Self-test the checker
-        run: bash scripts/test-artifact-chain.sh
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version: 22.23.2
+      - name: Install the pinned engine
+        run: npm ci --ignore-scripts
 
       # Dependabot and image-lock-bump.yml bump lockfiles, requirements and base
       # images under the code paths, and a bot can't write a plan.md. Everything
@@ -43,8 +45,8 @@ jobs:
           && !(github.event.pull_request.user.login == 'github-actions[bot]'
                && github.event.pull_request.head.ref == 'chore/image-lock-bump')
         env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha }}
-        run: bash scripts/check-artifact-chain.sh "$BASE_SHA" HEAD
+          BASE_REF: ${{ github.base_ref }}
+        run: scripts/sdlc-seam ci --base "origin/$BASE_REF"
 
       - name: job-finish
         if: always()

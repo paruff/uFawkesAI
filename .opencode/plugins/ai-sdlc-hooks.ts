@@ -27,8 +27,24 @@ function isProtected(targetPath: string): boolean {
   return PROTECTED_BASENAME.some((re) => re.test(basename));
 }
 
+// Agent commit identity (seam R6a): a git identity, not a GitHub account. Must equal .claude/settings.json
+// `env` and be in .sdlc-engine.json botIdentities; scripts/check-harness-parity.sh enforces both.
+const BOT_NAME = "ufawkes-bot";
+const BOT_EMAIL = "ufawkes-bot@users.noreply.github.com";
+
 // Gate real commits only: not `git commit-tree`, not prose containing "git commit".
 const GIT_COMMIT = /(^|[;&|(])\s*git\s+(-\S+(\s+[^-\s]\S*)?\s+)*commit(\s|$)/;
+
+const GIT_PUSH = /(^|[;&|(])\s*git\s+(-\S+(\s+[^-\s]\S*)?\s+)*push(\s|$)/;
+
+// SDLC seam gate (spec R6.3): one call to the shared script, no gate logic here.
+function runSeamGate(mode: "commit" | "push"): void {
+  try {
+    execFileSync("bash", [path.join(process.cwd(), "scripts/hooks/seam-gate.sh"), mode], { stdio: "inherit" });
+  } catch {
+    throw new Error(`Blocked git ${mode}: sdlc-seam gate plan failed (see output above)`);
+  }
+}
 
 function runSecretScan(): { exitCode: number; message?: string } {
   const script = path.join(process.cwd(), "scripts/hooks/pre-commit-secret-scan.sh");
@@ -49,6 +65,14 @@ function runSecretScan(): { exitCode: number; message?: string } {
 
 export const AiSdlcHooks: Plugin = async ({ $ }) => {
   return {
+    // Only the agent's shell gets the bot identity; the human's terminal is untouched.
+    "shell.env": async (_input, output) => {
+      output.env.GIT_AUTHOR_NAME = BOT_NAME;
+      output.env.GIT_AUTHOR_EMAIL = BOT_EMAIL;
+      output.env.GIT_COMMITTER_NAME = BOT_NAME;
+      output.env.GIT_COMMITTER_EMAIL = BOT_EMAIL;
+    },
+
     "tool.execute.before": async (input, output) => {
       // Protected path guard
       if (input.tool === "edit" || input.tool === "write") {
@@ -61,7 +85,9 @@ export const AiSdlcHooks: Plugin = async ({ $ }) => {
       // Secret scan on git commit
       if (input.tool === "bash") {
         const command = output.args.command;
+        if (command && GIT_PUSH.test(command)) runSeamGate("push");
         if (command && GIT_COMMIT.test(command)) {
+          runSeamGate("commit");
           const result = runSecretScan();
           if (result.exitCode !== 0) {
             throw new Error(result.message ?? "Secret scan failed");

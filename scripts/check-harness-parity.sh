@@ -29,6 +29,41 @@ say_fail() {
   FAIL=1
 }
 
+# --identity: run only the agent commit identity check (seam R6a.3); the test uses it on a fixture tree.
+ONLY_IDENTITY=0
+[ "${1:-}" = "--identity" ] && ONLY_IDENTITY=1
+
+# 4. Agent commit identity (seam R6a): both harnesses must set the same bot name and email, and
+#    the email must be in .sdlc-engine.json botIdentities so the engine refuses its approvals.
+check_identity() {
+  echo "-- agent commit identity --"
+  local cc_name cc_email oc_name oc_email plugin=.opencode/plugins/ai-sdlc-hooks.ts v
+  cc_name=$(jq -r '.env.GIT_AUTHOR_NAME // empty' .claude/settings.json 2> /dev/null || true)
+  cc_email=$(jq -r '.env.GIT_AUTHOR_EMAIL // empty' .claude/settings.json 2> /dev/null || true)
+  oc_name=$(sed -n 's/^const BOT_NAME = "\(.*\)";$/\1/p' "$plugin" 2> /dev/null || true)
+  oc_email=$(sed -n 's/^const BOT_EMAIL = "\(.*\)";$/\1/p' "$plugin" 2> /dev/null || true)
+  for v in GIT_COMMITTER_NAME:"$cc_name" GIT_COMMITTER_EMAIL:"$cc_email"; do
+    [ "$(jq -r --arg k "${v%%:*}" '.env[$k] // empty' .claude/settings.json 2> /dev/null || true)" = "${v#*:}" ] \
+      || say_fail "$v: .claude/settings.json author and committer identity differ"
+  done
+  if [ -z "$cc_name" ] || [ -z "$cc_email" ]; then
+    say_fail ".claude/settings.json sets no GIT_AUTHOR_NAME/GIT_AUTHOR_EMAIL"
+  elif [ -z "$oc_name" ] || [ -z "$oc_email" ]; then
+    say_fail "$plugin sets no BOT_NAME/BOT_EMAIL"
+  elif [ "$cc_name <$cc_email>" != "$oc_name <$oc_email>" ]; then
+    say_fail "identities differ: claude '$cc_name <$cc_email>' vs opencode '$oc_name <$oc_email>'"
+  elif ! jq -e --arg e "$cc_email" '(.botIdentities // []) | index($e)' .sdlc-engine.json > /dev/null 2>&1; then
+    say_fail "$cc_email is not in .sdlc-engine.json botIdentities (the bot could approve)"
+  else
+    say_ok "both harnesses commit as $cc_name <$cc_email>, listed in botIdentities"
+  fi
+}
+
+if [ "$ONLY_IDENTITY" -eq 1 ]; then
+  check_identity
+  exit $FAIL
+fi
+
 echo "== Harness parity check =="
 
 # 0. Every symlink in the repo must resolve. A dangling harness symlink is
@@ -133,6 +168,8 @@ done
 if [ "$collision_found" -eq 0 ]; then
   say_ok "no command/skill names collide with the known reserved-name list"
 fi
+
+check_identity
 
 echo "=========================="
 if [ "$FAIL" -eq 0 ]; then

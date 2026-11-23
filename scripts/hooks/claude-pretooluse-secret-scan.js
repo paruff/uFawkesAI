@@ -27,6 +27,9 @@ const path = require("node:path");
 // scripts/test-commit-matcher.sh checks this table and that the OpenCode plugin's copy is identical.
 const GIT_COMMIT = /(^|[;&|(])\s*git\s+(-\S+(\s+[^-\s]\S*)?\s+)*commit(\s|$)/;
 
+// Same shape for push; scripts/test-commit-matcher.sh checks both copies match.
+const GIT_PUSH = /(^|[;&|(])\s*git\s+(-\S+(\s+[^-\s]\S*)?\s+)*push(\s|$)/;
+
 function readStdin() {
   try {
     return require("node:fs").readFileSync(0, "utf-8") || "";
@@ -45,11 +48,20 @@ function toolCommand() {
 }
 
 const command = toolCommand();
-if (!GIT_COMMIT.test(command)) {
+const isCommit = GIT_COMMIT.test(command);
+const isPush = GIT_PUSH.test(command);
+if (!isCommit && !isPush) {
   process.exit(0);
 }
 
 const root = process.env.CLAUDE_PROJECT_DIR || process.cwd();
+// SDLC seam gate (spec R6.2): one call, no gate logic here. Exit 2 blocks and feeds stderr to the model.
+const gate = spawnSync("bash", [path.join(root, "scripts/hooks/seam-gate.sh"), isPush ? "push" : "commit"], {
+  stdio: "inherit"
+});
+if (gate.status !== 0) process.exit(2);
+if (!isCommit) process.exit(0);
+
 const result = spawnSync("bash", [path.join(root, "scripts/hooks/pre-commit-secret-scan.sh")], {
   stdio: "inherit"
 });
