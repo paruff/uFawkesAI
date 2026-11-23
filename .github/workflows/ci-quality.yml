@@ -138,7 +138,7 @@ jobs:
         if: always()
         run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
   seam-mutation:
-    # Spec R9. PRs mutate only the seam files they changed; pushes to main mutate all of scripts/seam/.
+    # Spec R9. Runs on PRs that touch the seam and on every push to main; blocks under thresholds.break.
     name: "🧬 Seam Mutation (Stryker)"
     runs-on: ubuntu-latest
     timeout-minutes: 120
@@ -153,21 +153,26 @@ jobs:
           node-version: 22.23.2
       - name: Install the pinned tools
         run: npm ci --ignore-scripts
-      - name: Mutate the seam
+      # The 45 floor was calibrated on the whole tree, so the whole tree is always mutated (R9).
+      - name: Does this change touch the seam?
+        id: seam
         env:
           BASE_REF: ${{ github.base_ref }}
           EVENT: ${{ github.event_name }}
-          SEAM_ADAPTER: fake
         run: |
-          args=()
-          if [ "$EVENT" = "pull_request" ]; then
-            files="$(git diff --name-only --diff-filter=AM "origin/$BASE_REF...HEAD" -- 'scripts/seam/*.ts' 'scripts/seam/**/*.ts' | paste -sd, -)"
-            if [ -z "$files" ]; then echo "no seam source changed, nothing to mutate"; exit 0; fi
-            args=(--mutate "$files")
+          if [ "$EVENT" = "pull_request" ] && \
+            ! git diff --name-only "origin/$BASE_REF...HEAD" | grep -qE '^(scripts/seam/|scripts/test-sdlc-seam\.sh|stryker\.config\.json)'; then
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=true" >> "$GITHUB_OUTPUT"
           fi
-          npx stryker run --concurrency 4 "${args[@]}"
+      - name: Mutate the seam
+        if: steps.seam.outputs.run == 'true'
+        env:
+          SEAM_ADAPTER: fake
+        run: npx stryker run --concurrency 4
       - name: Publish the mutation report
-        if: always()
+        if: always() && steps.seam.outputs.run == 'true'
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: mutation-report

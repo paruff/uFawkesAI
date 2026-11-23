@@ -122,7 +122,7 @@ goes here, in both harness configs, and in the engine's refusal list.
 | Fake engine storage | Commit trailers | JSON state file | Proves "commits are the record" (D3) without morsadev |
 | Downstream safety | New workflow body only in the next major tag | Inputs or a fallback path | `artifact-chain.yml` has no inputs and runs the caller's scripts |
 | Static analysis | Semgrep (decided in #361): `agent-ci.yml` SAST job gains `p/typescript` and `p/secrets` beside `p/ci` | CodeQL | Already in CI and runs in Docker; 0 findings in 72s on 288 files. CodeQL cannot run locally or in `fawkes-space`, so its results could not be checked before a PR |
-| Mutation testing | Stryker `command` runner on `scripts/seam/**/*.ts`, `thresholds.break` 45 (#362) | Unit-level runner | First full run (fake adapter, 688 mutants, 62 min): 50.73%, so break = 50.73 - 5 = 45. `morsadev.ts` scores 4.8% because the fake run does not exercise it; raising that is follow-up work. PRs mutate only changed seam files; pushes to `main` mutate all |
+| Mutation testing | Stryker `command` runner on `scripts/seam/**/*.ts`, `thresholds.break` 45 (#362) | Unit-level runner | First full run (fake adapter, 688 mutants, 62 min): 50.73%, so break = 50.73 - 5 = 45. `morsadev.ts` scores 4.8% because the fake run does not exercise it; raising that is follow-up work. The job mutates the whole tree on PRs that touch the seam and on pushes to `main`, so the floor always applies to the score it was set from |
 
 ## Governance Alignment
 

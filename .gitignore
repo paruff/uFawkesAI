@@ -28,4 +28,4 @@ ci-*.md
 .sdlc/*
 !.sdlc/config.json
 .stryker-tmp/
-reports/
+reports/mutation/
