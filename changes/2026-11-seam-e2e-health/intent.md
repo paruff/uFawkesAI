@@ -13,22 +13,29 @@ approved_sha: 4846ee4
 # Intent: Seam e2e health check (Claude Code)
 
 ## Problem
-<What can't be done today and who it affects, in the words of whoever had the idea.>
+
+Issue 359 needs one change completed intent to ship in Claude Code, to compare its gate verdicts with the OpenCode run.
 
 ## Proposed outcome
-<What "better" looks like once this exists.>
+
+A one-line health note added through the loop, built in Claude Code, committed by the bot, approved by a human.
 
 ## Affected users and systems
-<People, teams, services, APIs.>
+
+Maintainers; the seam gates and the Claude Code hooks.
 
 ## Constraints
-<Security, data, compliance, timelines, technology.>
+
+Bot identity commits, human approvals.
 
 ## How we know it worked
-<Observable signal or metric.>
+
+status --json matches the OpenCode run apart from slug and SHAs.
 
 ## Out of scope
-<What is explicitly not being done.>
+
+Anything beyond a one-line note.
 
 ## Open questions
-- <question>
+
+- None.
