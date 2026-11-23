@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Self-test for scripts/board-mirror.sh (seam R7): status transitions against fixture status JSON and a stub gh.
-set -uo pipefail
+set -uo pipefail # no -e: expect() counts failures instead of aborting
 root="$(cd "$(dirname "$0")/.." && pwd)"
 fails=0
 expect() { if [[ "$2" == ok ]]; then echo "  PASS  $1"; else
@@ -54,6 +54,11 @@ st approved pending pending
 run && [ "$(cur)" = "Needs human|spec" ] && expect "awaiting spec -> Needs human, Gate spec" ok || expect "awaiting spec" bad "$(cur)"
 
 reset
+echo '{"items":[{"id":"I1","content":{"number":356},"status":"Needs human","gate":"PR review"}]}' > "$t/items.json"
+st approved approved approved
+run && [ "$(cur)" = "Ready for agent|" ] && expect "stale Gate is cleared when plan approved" ok || expect "stale Gate cleared" bad "$(cur)"
+
+reset
 st approved approved approved
 run --pr-open && [ "$(cur)" = "Needs human|PR review" ] && expect "open PR -> Needs human, Gate PR review" ok || expect "open PR" bad "$(cur)"
 
@@ -63,4 +68,4 @@ run && expect "issue not on board fails" bad "exit 0" || expect "issue not on bo
 
 echo
 [ "$fails" -eq 0 ] && echo "ALL PASS" || echo "$fails FAILED"
-exit "$fails"
+exit $((fails > 0))

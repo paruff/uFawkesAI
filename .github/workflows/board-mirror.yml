@@ -37,12 +37,13 @@ jobs:
           node-version: 22.23.2
       - run: npm ci --ignore-scripts
       - name: Mirror
+        if: github.event.action != 'closed' # a closed or merged PR has no board state of its own (R7 defines none)
         run: |
           case "$BRANCH" in change/*) ;; *) echo "not a change branch"; exit 0 ;; esac
           slug="${BRANCH#change/}"
           scripts/sdlc-seam status "$slug" --json > "$RUNNER_TEMP/status.json"
           dir="$(jq -r .artifactsDir "$RUNNER_TEMP/status.json")"
-          issue="$(sed -n '/^---$/,/^---$/s/^issue: *#\{0,1\}\([0-9]\+\).*/\1/p' "$dir/intent.md" | head -1)"
+          issue="$(sed -n '/^---$/,/^---$/s/^issue: *["#]\{0,2\}\([0-9]\+\).*/\1/p' "$dir/intent.md" | head -1)"
           [ -n "$issue" ] || { echo "no 'issue:' in $dir/intent.md front matter; nothing to mirror"; exit 0; }
           pr_open="$(gh pr list --head "$BRANCH" --state open --json number --jq 'length' --repo "$GITHUB_REPOSITORY")"
           scripts/board-mirror.sh "$RUNNER_TEMP/status.json" "$issue" $([ "$pr_open" -gt 0 ] && echo --pr-open)

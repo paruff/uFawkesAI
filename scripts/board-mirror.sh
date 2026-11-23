@@ -18,7 +18,7 @@ elif [ "$(jq -r '.gates.plan.state' "$status_json")" = approved ]; then
   want_status="Ready for agent" want_gate=""
 else
   want_status="Needs human"
-  want_gate="$(jq -r '[.gates | to_entries[] | select(.value.state != "approved") | .key][0] // empty' "$status_json")"
+  want_gate="$(jq -r 'first(("intent","spec","plan") as $g | select(.gates[$g].state != "approved") | $g) // empty' "$status_json")"
 fi
 
 items="$("$gh" project item-list "$project" --owner "$owner" --limit 300 --format json)"
