@@ -1,7 +1,10 @@
 ---
 change: seam-verification-stack
-status: draft
+status: approved
 author: ufawkes-bot@users.noreply.github.com
+approved_by: phil.ruff@gmail.com
+approved_at: 2026-11-23
+approved_sha: 6c465ca
 ---
 # Seam verification stack (R9): spec
 
