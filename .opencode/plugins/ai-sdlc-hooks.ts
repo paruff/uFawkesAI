@@ -63,6 +63,17 @@ function runSecretScan(): { exitCode: number; message?: string } {
   }
 }
 
+// Shared by the OpenCode 1.x hook and the 2.x one: throws to block.
+function guardBash(command: string | undefined): void {
+  if (!command) return;
+  if (GIT_PUSH.test(command)) runSeamGate("push");
+  if (GIT_COMMIT.test(command)) {
+    runSeamGate("commit");
+    const result = runSecretScan();
+    if (result.exitCode !== 0) throw new Error(result.message ?? "Secret scan failed");
+  }
+}
+
 export const AiSdlcHooks: Plugin = async ({ $ }) => {
   return {
     // Only the agent's shell gets the bot identity; the human's terminal is untouched.
@@ -82,18 +93,8 @@ export const AiSdlcHooks: Plugin = async ({ $ }) => {
         }
       }
 
-      // Secret scan on git commit
-      if (input.tool === "bash") {
-        const command = output.args.command;
-        if (command && GIT_PUSH.test(command)) runSeamGate("push");
-        if (command && GIT_COMMIT.test(command)) {
-          runSeamGate("commit");
-          const result = runSecretScan();
-          if (result.exitCode !== 0) {
-            throw new Error(result.message ?? "Secret scan failed");
-          }
-        }
-      }
+      // Secret scan and SDLC gate on git commit and push
+      if (input.tool === "bash") guardBash(output.args.command);
     },
 
     "tool.execute.after": async (input, output) => {
@@ -123,4 +124,17 @@ export const AiSdlcHooks: Plugin = async ({ $ }) => {
       };
     }
   };
+};
+
+// OpenCode 2.x loads a default export { id, setup }; the named export above serves 1.x.
+// 2.x calls the tool hook with the tool id ("shell" for bash) and its input. Verified live in
+// scripts/test-opencode-live.sh. shortcut: the 2.x ctx is untyped here, as @opencode-ai/plugin is 1.x.
+type V2Ctx = { tool?: { hook?: (name: string, fn: (t: { tool: string; input?: { command?: string } }) => void) => unknown } };
+export default {
+  id: "ai-sdlc-hooks",
+  setup: (ctx: V2Ctx) => {
+    ctx.tool?.hook?.("execute.before", (t) => {
+      if (t.tool === "bash" || t.tool === "shell") guardBash(t.input?.command);
+    });
+  }
 };
