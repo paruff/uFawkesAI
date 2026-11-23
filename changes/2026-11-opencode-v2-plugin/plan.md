@@ -1,7 +1,10 @@
 ---
 change: opencode-v2-plugin
-status: draft
+status: approved
 author: ufawkes-bot@users.noreply.github.com
+approved_by: phil.ruff@gmail.com
+approved_at: 2026-11-23
+approved_sha: ddad5cd
 ---
 # OpenCode 2.x gate plugin: plan
 
