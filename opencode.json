@@ -57,5 +57,8 @@
       },
       "enabled": false
     }
-  }
+  },
+  "plugin": [
+    "superpowers@git+https://github.com/obra/superpowers.git#v7.0.0"
+  ]
 }

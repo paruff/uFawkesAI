@@ -105,7 +105,7 @@ jobs:
         run: |
           seam_paths='^(scripts/seam/|scripts/hooks/|\.claude/settings\.json|\.opencode/plugins/'
           seam_paths="$seam_paths|scripts/(test-sdlc-seam-hooks|test-commit-matcher|test-harness-identity|check-harness-parity)\.sh"
-          seam_paths="$seam_paths|package(-lock)?\.json|scripts/test-sdlc-seam\.sh|\.sdlc-engine\.json|\.agents/schema/sdlc-seam)"
+          seam_paths="$seam_paths|package(-lock)?\.json|scripts/test-sdlc-seam\.sh|scripts/(test-)?board-mirror\.sh|\.sdlc-engine\.json|\.agents/schema/sdlc-seam)"
           if [ "$EVENT" = "pull_request" ] && \
             ! git diff --name-only "origin/$BASE_REF...HEAD" | grep -qE "$seam_paths"; then
             echo "run=false" >> "$GITHUB_OUTPUT"
@@ -133,6 +133,7 @@ jobs:
           bash scripts/test-sdlc-seam-hooks.sh
           bash scripts/test-commit-matcher.sh
           bash scripts/test-harness-identity.sh
+          bash scripts/test-board-mirror.sh
       - name: job-finish
         if: always()
         run: echo "job-finish $(date -u +'%Y-%m-%dT%H:%M:%SZ')"

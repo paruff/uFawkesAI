@@ -20,6 +20,10 @@ files* and is accountable for the resulting diff and its `build` report
 
 **Owns:** the `build` stage.
 
+Superpowers (seam R8.3): `test-driven-development`, and `systematic-debugging` on a failure.
+The engine's own `sdlc-build` loop may be used as a tool; it does not replace the Superpowers
+skill (R8.4). Where the two conflict, the Superpowers skill wins and the engine's state stays the record.
+
 ## Preconditions
 
 Run `scripts/sdlc-seam gate <change> plan`; if it

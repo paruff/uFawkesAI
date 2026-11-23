@@ -22,7 +22,7 @@ stops the pipeline. Its reports must satisfy the `test-execution`, `review`, and
 
 ## Stages
 
-Owns: `review`, then `ship` with `@operator`. Run `scripts/sdlc-seam next` and `scripts/sdlc-seam gate <change> plan`; the seam defines the gates.
+Owns: `review`, then `ship` with `@operator`. Superpowers (seam R8.3): `review` → `requesting-code-review`, then `receiving-code-review`; `ship` → `verification-before-completion`, then `@operator` runs `finishing-a-development-branch`. The engine's `spec-reviewer` and `verifier` subagents may be used as tools; they do not replace the Superpowers skill (R8.4). Where the two conflict, the Superpowers skill wins and the engine's state stays the record. Run `scripts/sdlc-seam next` and `scripts/sdlc-seam gate <change> plan`; the seam defines the gates.
 
 ## Scope
 
