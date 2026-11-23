@@ -1,10 +1,5 @@
 ---
-description: Execute the plan.md with verification checkpoints
+description: Implement the approved plan through the seam
 agent: builder
 ---
-Read the feature's `docs/ai-sdlc/<feature>/plan.md` first.
-If missing, stop and instruct the user to run `/plan`.
-Implement one phase at a time.
-After each phase, run `/verify` gates.
-Update the plan checklist.
-Ask for checkpoint approval before proceeding.
+Run `scripts/sdlc-seam next`, then load the skill for the stage it names (build: test-driven-development).

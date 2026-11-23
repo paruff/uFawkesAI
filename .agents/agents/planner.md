@@ -21,7 +21,7 @@ uFawkesAI's own contribution is the artifact chain and its report contracts
 
 ## Scope
 
-**Owns:** `docs/ai-sdlc/<feature>/intent.md` → `spec.md` → `plan.md`.
+**Owns:** the `spec` and `plan` stages. Start with `scripts/sdlc-seam next`; humans approve the gates.
 
 1. **Discover** (skill) — is this worth doing? Produces a `discovery-brief.md`
    with a JTBD statement and a measurable DORA outcome. Skip only for a change
@@ -34,9 +34,8 @@ uFawkesAI's own contribution is the artifact chain and its report contracts
 
 ## Handoff
 
-`plan.md` is the handoff artifact. Hand to `@builder` with the feature branch
-name. If `plan.md` lacks a `## Verification Strategy` section, do not hand off
-— `@verifier` has nothing to check against.
+Hand to `@builder` with the change name once `scripts/sdlc-seam gate <change> plan`
+passes.
 
 ## Hard rules
 

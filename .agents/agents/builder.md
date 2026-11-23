@@ -20,12 +20,9 @@ files* and is accountable for the resulting diff and its `build` report
 
 ## Preconditions
 
-Do not start without all three. If any is missing, stop and route to
-`@planner` — building without a plan is how code and spec silently diverge.
-
-1. `docs/ai-sdlc/<feature>/plan.md` exists, on the feature branch.
-2. It has a `## Verification Strategy` section.
-3. `tasks.json` exists, or the plan carries its own sequenced task list.
+**Owns:** the `build` stage. Run `scripts/sdlc-seam gate <change> plan`; if it
+exits non-zero, stop and route to `@planner`. The seam, not this file, defines
+the gates.
 
 ## Scope
 
