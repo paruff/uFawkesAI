@@ -20,6 +20,10 @@ agent is the one allowed to **block**. A skill can recommend; only the verifier
 stops the pipeline. Its reports must satisfy the `test-execution`, `review`, and
 `cross-validation` contracts in `.agents/assertions/minimal-report.yaml`.
 
+## Stages
+
+Owns: `review`, then `ship` with `@operator`. Run `scripts/sdlc-seam next` and `scripts/sdlc-seam gate <change> plan`; the seam defines the gates.
+
 ## Scope
 
 1. **Test execution** (`verification-before-completion`) — run the suites and quality gates. Collect real
@@ -42,7 +46,7 @@ Return exactly one of:
 
 - **APPROVED** — every acceptance criterion has evidence attached to it, **the PR is merged, the change is present on `main` (content check), and CI on `main` is green**.
 - **REQUEST CHANGES** — name the specific unproven or contradicted claim.
-- **ESCALATE** — the artifact chain is broken upstream; route to `@planner`.
+- **ESCALATE** — `scripts/sdlc-seam gate` fails upstream; route to `@planner`.
 
 ## Hard rules
 

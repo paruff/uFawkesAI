@@ -1,9 +1,5 @@
 ---
-description: Test-driven development: write failing tests first, then implement
+description: Test-driven development through the seam
 agent: builder
 ---
-Write tests for the next requirement.
-Run tests and confirm failure first.
-Implement until tests pass.
-Refactor without changing behavior.
-Run `/verify` before completion.
+Run `scripts/sdlc-seam next`, then load the skill for the stage it names (build: test-driven-development).

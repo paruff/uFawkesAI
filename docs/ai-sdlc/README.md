@@ -32,22 +32,14 @@ Shipped chains (`v2.0.0`, `v2.2.0`, `audit-medium-low`, `remove-aidlc`, `cde-spa
 
 ## Enforced in CI
 
-`.github/workflows/artifact-chain.yml` runs `scripts/check-artifact-chain.sh`
-on every PR. Through the CI Quality Gate it feeds `✅ CI Complete`, the check
-`main` requires, so a violation blocks the merge:
+`.github/workflows/artifact-chain.yml` runs `scripts/sdlc-seam ci` on every PR.
+Through the CI Quality Gate it feeds `✅ CI Complete`, the check `main`
+requires, so a violation blocks the merge. A PR that changes the repo's code
+paths needs a change whose intent, spec and plan are all approved.
 
-1. A PR that changes the repo's code paths (`src/` unless the repo lists its
-   own in `.artifact-chain-paths`, see below) must include, **in its own
-   diff**, a `docs/ai-sdlc/**/plan.md` with a `## Verification Strategy`
-   heading.
-2. Every `docs/ai-sdlc/**/spec.md` must have a sibling `intent.md` in the
-   branch history.
+**Code paths.** `src/` unless the repo lists its own in `.artifact-chain-paths`:
+one git pathspec per line, blank lines and `#` comments ignored. An empty file
+is an error, not a pass.
 
-**Code paths.** A repo whose code isn't under `src/` (Jekyll layouts, Compose
-stacks, scripts, manifests) adds `.artifact-chain-paths` at its root: one git
-pathspec per line, blank lines and `#` comments ignored. An empty file is an
-error, not a pass. It's a per-repo file and not a workflow input, so syncing
-the workflow from this template never overwrites it.
-
-Run it locally with `scripts/check-artifact-chain.sh origin/main`;
-`scripts/test-artifact-chain.sh` exercises both rules against throwaway repos.
+Run it locally with `scripts/sdlc-seam ci --base origin/main`;
+`scripts/test-sdlc-seam.sh` exercises it against throwaway repos.

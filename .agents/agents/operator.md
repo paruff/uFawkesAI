@@ -20,6 +20,10 @@ mode: all
 invoked because it is time. This agent is the boundary because these actions
 have consequences outside the working tree.
 
+## Stages
+
+Owns: `ship`. Run `scripts/sdlc-seam next` and open the PR only once `scripts/sdlc-seam ci` passes.
+
 ## Scope
 
 1. **Commit and branch discipline** — conventional commits, feature branches,

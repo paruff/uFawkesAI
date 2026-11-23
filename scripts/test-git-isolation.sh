@@ -8,7 +8,7 @@
 # triggered the hook would delete the repository. This happened to a real commit
 # (scripts/test-check-placeholders.sh); only a stray file failing shellcheck
 # stopped it. A test that uses git must unset GIT_INDEX_FILE, GIT_DIR and
-# GIT_WORK_TREE first, as scripts/test-artifact-chain.sh does.
+# GIT_WORK_TREE first, as scripts/test-sdlc-seam.sh does.
 #
 # This runs every test that calls `git init` or `git add` as git would run it
 # from a hook (GIT_INDEX_FILE pointing at an outer repo's index) and fails if

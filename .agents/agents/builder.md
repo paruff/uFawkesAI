@@ -1,6 +1,6 @@
 ---
 name: builder
-description: "Implements a planned feature: writes code, manifests, and tests against a committed plan.md. Use when plan.md exists and the work is scoped. Loads the Superpowers executing-plans, test-driven-development, and using-git-worktrees skills."
+description: "Implements a planned feature: writes code, manifests, and tests against an approved plan. Use when plan.md exists and the work is scoped. Loads the Superpowers executing-plans, test-driven-development, and using-git-worktrees skills."
 mode: all
 ---
 
@@ -18,14 +18,13 @@ The *how* of building is Superpowers' methodology, shipped in the shared
 files* and is accountable for the resulting diff and its `build` report
 (`.agents/assertions/minimal-report.yaml`).
 
+**Owns:** the `build` stage.
+
 ## Preconditions
 
-Do not start without all three. If any is missing, stop and route to
-`@planner` — building without a plan is how code and spec silently diverge.
-
-1. `docs/ai-sdlc/<feature>/plan.md` exists, on the feature branch.
-2. It has a `## Verification Strategy` section.
-3. `tasks.json` exists, or the plan carries its own sequenced task list.
+Run `scripts/sdlc-seam gate <change> plan`; if it
+exits non-zero, stop and route to `@planner`. The seam, not this file, defines
+the gates.
 
 ## Scope
 
