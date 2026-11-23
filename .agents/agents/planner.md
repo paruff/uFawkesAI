@@ -21,7 +21,7 @@ uFawkesAI's own contribution is the artifact chain and its report contracts
 
 ## Scope
 
-**Owns:** the `intent`, `spec` and `plan` stages, plus discovery. Start with `scripts/sdlc-seam next`; humans approve the gates.
+**Owns:** the `intent`, `spec` and `plan` stages, plus discovery. Superpowers per stage (seam R8.3): `spec` → `brainstorming`; `plan` → `writing-plans`. Start with `scripts/sdlc-seam next`; humans approve the gates.
 
 1. **Discover** (skill) — is this worth doing? Produces a `discovery-brief.md`
    with a JTBD statement and a measurable DORA outcome. Skip only for a change

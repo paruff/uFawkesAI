@@ -59,6 +59,16 @@ check_identity() {
   fi
 }
 
+# 5. Superpowers (seam R8.2): opencode.json must load the plugin pinned to a vX.Y.Z tag, never a branch.
+check_superpowers() {
+  echo "-- superpowers pin --"
+  if jq -e '(.plugin // []) | any(.[]; test("^superpowers@git\\+https://github\\.com/obra/superpowers(\\.git)?#v[0-9]+\\.[0-9]+\\.[0-9]+$"))' opencode.json > /dev/null 2>&1; then
+    say_ok "opencode.json loads Superpowers at a pinned tag"
+  else
+    say_fail "opencode.json plugin array has no superpowers@git+...#vX.Y.Z entry (unpinned or missing)"
+  fi
+}
+
 if [ "$ONLY_IDENTITY" -eq 1 ]; then
   check_identity
   exit $FAIL
@@ -170,6 +180,7 @@ if [ "$collision_found" -eq 0 ]; then
 fi
 
 check_identity
+check_superpowers
 
 echo "=========================="
 if [ "$FAIL" -eq 0 ]; then
