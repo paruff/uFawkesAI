@@ -1,18 +1,28 @@
 #!/usr/bin/env bash
 # Mirror a change's gate state onto its Project #7 item (seam R7, D3). Board-only writes, idempotent.
-# usage: board-mirror.sh <status.json> <issue-number> [--pr-open]
+# usage: board-mirror.sh <status.json> <issue-number> [--pr-open|--merged]
 #   plan approved           -> Status "Ready for agent"
 #   first unapproved gate   -> Status "Needs human", Gate <stage>
 #   --pr-open               -> Status "Needs human", Gate "PR review" (wins over the above)
+#   --merged                -> Status "Done", Gate cleared; a goal issue (title starts "goal(") is left to a human
 # Env: GH (gh binary, tests stub it), PROJECT (default 7), OWNER (default paruff). Auth comes from the gh CLI environment.
 set -euo pipefail
 status_json="${1:?usage: board-mirror.sh <status.json> <issue-number> [--pr-open]}"
 issue="${2:?issue number required}"
-pr_open=0
+pr_open=0 merged=0
 [ "${3:-}" = "--pr-open" ] && pr_open=1
+[ "${3:-}" = "--merged" ] && merged=1
 gh="${GH:-gh}" project="${PROJECT:-7}" owner="${OWNER:-paruff}"
 
-if [ "$pr_open" -eq 1 ]; then
+if [ "$merged" -eq 1 ]; then
+  case "$("$gh" issue view "$issue" --json title --jq .title)" in
+    "goal("*)
+      echo "board-mirror: #$issue is a goal issue; a human closes it"
+      exit 0
+      ;;
+  esac
+  want_status="Done" want_gate=""
+elif [ "$pr_open" -eq 1 ]; then
   want_status="Needs human" want_gate="PR review"
 elif [ "$(jq -r '.gates.plan.state' "$status_json")" = approved ]; then
   want_status="Ready for agent" want_gate=""
