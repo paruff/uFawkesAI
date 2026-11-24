@@ -5,6 +5,18 @@ All notable changes to uFawkesAI will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.2.0](https://github.com/paruff/uFawkesAI/compare/v3.1.0...v3.2.0) (2026-11-24)
+
+
+### Added
+
+* **seam:** verification stack, Semgrep, Stryker, verifier checklist ([#360](https://github.com/paruff/uFawkesAI/issues/360)) ([#382](https://github.com/paruff/uFawkesAI/issues/382)) ([fe6293b](https://github.com/paruff/uFawkesAI/commit/fe6293b2a336a6e40d701e659c6da929dfefb5ea))
+
+
+### Chores
+
+* **image:** bump locked toolchain (2026-11-24) ([#384](https://github.com/paruff/uFawkesAI/issues/384)) ([73464ba](https://github.com/paruff/uFawkesAI/commit/73464ba272bd9c328454678a40a7ba9ecf8f16d6))
+
 ## [3.1.0](https://github.com/paruff/uFawkesAI/compare/v3.0.0...v3.1.0) (2026-11-23)
 
 
