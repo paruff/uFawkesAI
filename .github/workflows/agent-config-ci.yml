@@ -108,6 +108,20 @@ jobs:
       - name: Install OpenCode
         if: steps.changes.outputs.changed == 'true'
         run: npm install -g --allow-scripts=opencode-ai opencode-ai@1.18.32
+      # run-evals.sh keeps the agent's stderr in a temp file, so a crash shows
+      # only as "agent exited 1". One plain prompt here shows why. Never fails.
+      - name: Smoke the eval model (diagnostic)
+        if: steps.changes.outputs.changed == 'true'
+        continue-on-error: true
+        env:
+          GOOGLE_GENERATIVE_AI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
+        run: |
+          opencode --version
+          rc=0
+          cd "$(mktemp -d)"
+          XDG_CONFIG_HOME="$(mktemp -d)" opencode run --model "$EVAL_MODEL" --format json "reply with the word ok" >smoke.out 2>smoke.err || rc=$?
+          echo "exit=$rc"; echo "--- stdout"; head -c 1500 smoke.out; echo; echo "--- stderr"; head -c 1500 smoke.err
       - name: Run evals against this configuration
         if: steps.changes.outputs.changed == 'true'
         env:
