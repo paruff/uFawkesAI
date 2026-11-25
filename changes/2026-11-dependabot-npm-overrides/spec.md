@@ -1,7 +1,10 @@
 ---
 change: dependabot-npm-overrides
-status: draft
+status: approved
 author: ufawkes-bot@users.noreply.github.com
+approved_by: phil.ruff@gmail.com
+approved_at: 2026-11-25
+approved_sha: a237228
 ---
 # Override vulnerable transitive npm dependencies: spec
 
