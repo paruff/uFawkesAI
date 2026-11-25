@@ -120,8 +120,8 @@ jobs:
           opencode --version
           rc=0
           cd "$(mktemp -d)"
-          XDG_CONFIG_HOME="$(mktemp -d)" opencode run --model "$EVAL_MODEL" --format json "reply with the word ok" >smoke.out 2>smoke.err || rc=$?
-          echo "exit=$rc"; echo "--- stdout"; head -c 1500 smoke.out; echo; echo "--- stderr"; head -c 1500 smoke.err
+          XDG_CONFIG_HOME="$(mktemp -d)" opencode run --print-logs --log-level DEBUG --model "$EVAL_MODEL" --format json "reply with the word ok" >smoke.out 2>smoke.err || rc=$?
+          echo "exit=$rc"; echo "--- stdout"; head -c 1500 smoke.out; echo; echo "--- stderr"; grep -E "level=(ERROR|WARN)" smoke.err | head -c 3000
       - name: Run evals against this configuration
         if: steps.changes.outputs.changed == 'true'
         env:
