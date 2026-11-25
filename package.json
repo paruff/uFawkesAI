@@ -23,5 +23,9 @@
     "@stryker-mutator/core": "10.1.1",
     "@types/node": "26.6.6",
     "typescript": "7.0.2"
+  },
+  "overrides": {
+    "qs": "^6.16.1",
+    "minimatch": "^11.0.1"
   }
 }
