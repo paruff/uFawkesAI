@@ -103,9 +103,11 @@ jobs:
         if: steps.changes.outputs.changed == 'true'
         run: bash scripts/test-run-evals.sh
       # Same OpenCode version the CDE Space image pins (tools.lock.json).
+      # npm 12 blocks install scripts unless allowed; without opencode-ai's
+      # postinstall the binary exits 1 ("postinstall script was not run").
       - name: Install OpenCode
         if: steps.changes.outputs.changed == 'true'
-        run: npm install -g opencode-ai@1.18.32
+        run: npm install -g --allow-scripts=opencode-ai opencode-ai@1.18.32
       - name: Run evals against this configuration
         if: steps.changes.outputs.changed == 'true'
         env:
