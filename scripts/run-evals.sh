@@ -178,6 +178,12 @@ for f in "${files[@]}"; do
   t="$(parse_transcript <<< "$raw")"
   out="$(jq -r .text <<< "$t")"
   [ -n "$out" ] || out="$(cat "${copy}.stderr")"
+  # Without this a crashed agent only shows as "agent exited N" and the cause
+  # (bad key, unknown model, broken install) stays in a temp file.
+  if [ "$rc" -ne 0 ]; then
+    echo "  ${id}: agent exited ${rc}; stderr (first 1500 bytes):" >&2
+    head -c 1500 "${copy}.stderr" | sed 's/^/    | /' >&2
+  fi
 
   verdict=pass
   reasons=()

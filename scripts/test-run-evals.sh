@@ -17,12 +17,14 @@ fail=0
 
 # Stub agent: answers with $STUB_REPLY; creates .env when STUB_WRITE_ENV=1;
 # exits with $STUB_EXIT (a harness may exit non-zero when a tool call is blocked).
+# $STUB_STDERR is written to stderr (a crashed harness explains itself there).
 # STUB_FORMAT=opencode|claude emits that harness's JSON transcript with
 # $STUB_STEPS steps and the comma-separated $STUB_TOOLS calls; default: plain text.
 cat > "$tmp/stub.sh" << 'EOF'
 #!/usr/bin/env bash
 [ "${STUB_WRITE_ENV:-0}" = 1 ] && echo "API_KEY=placeholder" > .env
 [ -n "${STUB_COUNT_FILE:-}" ] && echo run >> "$STUB_COUNT_FILE"
+[ -n "${STUB_STDERR:-}" ] && echo "$STUB_STDERR" >&2
 # STUB_STALL_ONCE=<marker>: the first call anywhere stalls like a hung provider
 # call, later ones answer normally (a transient stall, not a broken agent).
 if [ -n "${STUB_STALL_ONCE:-}" ] && [ ! -e "$STUB_STALL_ONCE" ]; then
@@ -83,6 +85,20 @@ expect() {
   fi
 }
 
+# saw <label> <present|absent> <text>: checks the last expect's combined output.
+saw() {
+  local label="$1" mode="$2" text="$3" found=0
+  grep -qF -- "$text" "$tmp/out.txt" && found=1
+  if { [ "$mode" = present ] && [ "$found" = 1 ]; } || { [ "$mode" = absent ] && [ "$found" = 0 ]; }; then
+    pass=$((pass + 1))
+    printf '  ok   %s\n' "$label"
+  else
+    fail=$((fail + 1))
+    printf '  FAIL %s: "%s" should be %s in the output\n' "$label" "$text" "$mode"
+    sed 's/^/       /' "$tmp/out.txt"
+  fi
+}
+
 echo "== run-evals gate =="
 expect "wrong answer drops below baseline -> red" 1 STUB_REPLY="@planner"
 expect "agent writes protected .env -> red" 1 STUB_REPLY="@builder" STUB_WRITE_ENV=1
@@ -103,6 +119,11 @@ fi
 expect "ignore_agent_exit: blocked agent, no .env -> green" 0 EVAL_TASKS="$tmp/outcome" STUB_EXIT=1
 expect "ignore_agent_exit: .env still written -> red" 1 EVAL_TASKS="$tmp/outcome" STUB_EXIT=1 STUB_WRITE_ENV=1
 expect "default: non-zero agent exit still red without the opt-in" 1 STUB_REPLY="@builder" STUB_EXIT=1
+# A crashed agent must explain itself in the log, not only in a temp file.
+expect "non-zero agent exit shows the agent's stderr" 1 STUB_REPLY="@builder" STUB_EXIT=1 STUB_STDERR="boom: model not found"
+saw "  the stderr of the failed agent is printed" present "boom: model not found"
+expect "agent stderr on a passing run stays out of the log" 0 STUB_REPLY="@builder" STUB_STDERR="harmless warning"
+saw "  no stderr is printed when the agent exits 0" absent "harmless warning"
 expect "stalled agent hits EVAL_TASK_TIMEOUT -> red, not a hang" 1 STUB_REPLY="@builder" STUB_SLEEP=5 EVAL_TASK_TIMEOUT=1
 
 # A timeout is a provider stall, not a verdict on the configuration: it gets one
