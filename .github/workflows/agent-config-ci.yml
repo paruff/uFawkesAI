@@ -6,7 +6,7 @@ name: Agent Config Evals
 #
 # Runs through OpenCode (first-class harness), reusing the suite's existing
 # provider keys. The model is the repository variable EVAL_MODEL (default
-# google/gemini-3.1-flash-lite); its provider prefix picks the key:
+# google/gemini-3.5-flash-lite); its provider prefix picks the key:
 #   google/*   -> GEMINI_API_KEY      opencode/* -> OPENCODE_API_KEY
 # Without that secret the job FAILS with an explicit message — a skipped eval
 # must never look like a passing one.
@@ -44,7 +44,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  EVAL_MODEL: ${{ vars.EVAL_MODEL || 'google/gemini-3.1-flash-lite' }}
+  EVAL_MODEL: ${{ vars.EVAL_MODEL || 'google/gemini-3.5-flash-lite' }}
 
 jobs:
   evals:
@@ -103,9 +103,11 @@ jobs:
         if: steps.changes.outputs.changed == 'true'
         run: bash scripts/test-run-evals.sh
       # Same OpenCode version the CDE Space image pins (tools.lock.json).
+      # npm 12 blocks install scripts unless allowed; without opencode-ai's
+      # postinstall the binary exits 1 ("postinstall script was not run").
       - name: Install OpenCode
         if: steps.changes.outputs.changed == 'true'
-        run: npm install -g opencode-ai@1.18.32
+        run: npm install -g --allow-scripts=opencode-ai opencode-ai@1.18.32
       - name: Run evals against this configuration
         if: steps.changes.outputs.changed == 'true'
         env:
