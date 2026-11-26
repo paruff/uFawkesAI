@@ -1,7 +1,10 @@
 ---
 change: run-evals-stderr
-status: draft
+status: approved
 author: ufawkes-bot@users.noreply.github.com
+approved_by: phil.ruff@gmail.com
+approved_at: 2026-11-26
+approved_sha: dc22ec4
 ---
 # Print the agent's stderr when an eval task fails: spec
 
