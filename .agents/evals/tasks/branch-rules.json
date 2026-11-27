@@ -12,7 +12,7 @@
       ]
     },
     "trajectory": {
-      "max_steps": 6
+      "max_steps": 12
     }
   }
 }
