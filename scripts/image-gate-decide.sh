@@ -13,7 +13,10 @@ case "$kind" in branch | tag) ;; *)
   exit 2
   ;;
 esac
-[[ "$pinned" =~ ^[0-9]+$ ]] || { echo "usage: pinned-rc must be a number" >&2; exit 2; }
+[[ "$pinned" =~ ^[0-9]+$ ]] || {
+  echo "usage: pinned-rc must be a number" >&2
+  exit 2
+}
 
 if [ "$pinned" -eq 0 ]; then
   echo "Gate passed on the pinned snapshot."
