@@ -5,6 +5,25 @@ All notable changes to uFawkesAI will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.3.0](https://github.com/paruff/uFawkesAI/compare/v3.2.0...v3.3.0) (2026-11-27)
+
+
+### Added
+
+* **image:** gate a fresh apt snapshot to tell a stale lock from a real CVE ([#390](https://github.com/paruff/uFawkesAI/issues/390)) ([c3b3b5b](https://github.com/paruff/uFawkesAI/commit/c3b3b5bc42178e75dfe344942562aa2f6691bcdc))
+
+
+### Fixed
+
+* **ci:** make the agent config evals run again (npm 12, model id) ([#387](https://github.com/paruff/uFawkesAI/issues/387)) ([f3e1081](https://github.com/paruff/uFawkesAI/commit/f3e108189b93592a3dd82ea6e2e674797e95488e))
+* **deps:** override qs, minimatch, zod, effect to patched versions ([#385](https://github.com/paruff/uFawkesAI/issues/385)) ([9d14a17](https://github.com/paruff/uFawkesAI/commit/9d14a1755fa5d17cdc430b40fcd349c1b2420ed6))
+* **evals:** point the default model and baseline at gemini-3.5-flash-lite ([#389](https://github.com/paruff/uFawkesAI/issues/389)) ([f9673d6](https://github.com/paruff/uFawkesAI/commit/f9673d6530830ffc318046e36fd4b7a7a8dd0bc8))
+* **evals:** print the agent's stderr when it exits non-zero ([#388](https://github.com/paruff/uFawkesAI/issues/388)) ([d3fae10](https://github.com/paruff/uFawkesAI/commit/d3fae10158d324a507cfb6f5fbc1b6fce71f7e08))
+* **evals:** retry crashes and step overruns once, never wrong answers ([#393](https://github.com/paruff/uFawkesAI/issues/393)) ([1e2b748](https://github.com/paruff/uFawkesAI/commit/1e2b748e2cb91a5030d6ff3597ad6c533e09d6e3))
+* **evals:** show the agent's stdout tail when stderr is empty ([#394](https://github.com/paruff/uFawkesAI/issues/394)) ([f6567dd](https://github.com/paruff/uFawkesAI/commit/f6567dd8928bee275384ec6c948fa65b8aab10b7))
+* **image:** upgrade libzstd1 and bump the apt snapshot to 20261127 ([#391](https://github.com/paruff/uFawkesAI/issues/391)) ([fe077dc](https://github.com/paruff/uFawkesAI/commit/fe077dcd21a2f9dcff2add9d0b0f81f8e698ad66))
+* **seam:** stop AGENTS.md naming agents the repo deletes ([#392](https://github.com/paruff/uFawkesAI/issues/392)) ([e401c99](https://github.com/paruff/uFawkesAI/commit/e401c999aa3cbb68bb01d3d8f7310d7262598c02))
+
 ## [3.2.0](https://github.com/paruff/uFawkesAI/compare/v3.1.0...v3.2.0) (2026-11-24)
 
 
