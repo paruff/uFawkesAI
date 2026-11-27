@@ -36,6 +36,9 @@
 #   EVAL_REPORT     report path (default .agents/logs/evals-report.json)
 #   EVAL_TIMEOUT_RETRIES extra tries for a task that times out (default 1), each in a
 #                     fresh copy; a wrong answer is never retried
+#   EVAL_FLAKE_RETRIES extra tries (default 1; 0 = none) for a crash with no output, or
+#                     a right answer over its step cap, each in a fresh copy. A wrong
+#                     answer, a forbidden tool or a file violation is never retried
 #   EVAL_TASK_TIMEOUT seconds per task (default 300); a task that times out on every try fails
 #
 # Exit: 0 pass rate >= baseline, 1 below baseline or no tasks, 2 setup error.
@@ -89,6 +92,13 @@ esac
 AGENT="${EVAL_AGENT_CMD:-${HARNESS}_agent}"
 TASK_TIMEOUT="${EVAL_TASK_TIMEOUT:-300}"
 TIMEOUT_RETRIES="${EVAL_TIMEOUT_RETRIES:-1}"
+FLAKE_RETRIES="${EVAL_FLAKE_RETRIES:-1}"
+case "$FLAKE_RETRIES" in
+  '' | *[!0-9]*)
+    echo "FAIL: EVAL_FLAKE_RETRIES must be a number, got '$FLAKE_RETRIES'" >&2
+    exit 2
+    ;;
+esac
 case "$TIMEOUT_RETRIES" in
   '' | *[!0-9]*)
     echo "FAIL: EVAL_TIMEOUT_RETRIES must be a number, got '$TIMEOUT_RETRIES'" >&2
@@ -138,46 +148,19 @@ passed=0
 n_task=0
 n_tool=0
 n_traj=0
+n_retried=0
 
-for f in "${files[@]}"; do
-  id="$(jq -er .id "$f")" || {
-    echo "FAIL: $f has no id" >&2
-    exit 2
-  }
-  prompt="$(jq -er .prompt "$f")" || {
-    echo "FAIL: $id has no prompt" >&2
-    exit 2
-  }
-  if ! jq -e '.expect | (.output_regex // .file_absent // .file_present)' "$f" > /dev/null; then
-    echo "FAIL: $id has no expectation — an ungraded task always passes" >&2
-    exit 2
-  fi
-  if ! jq -e '(.rubric.tool_use.forbidden | arrays) and (.rubric.trajectory.max_steps | numbers)' "$f" > /dev/null; then
-    echo "FAIL: $id has no rubric (rubric.tool_use.forbidden and rubric.trajectory.max_steps) — score all three dimensions" >&2
-    exit 2
-  fi
-  mode="$(jq -r '.permission_mode // "default"' "$f")"
-
-  # A stalled provider call must fail its task, not hang the whole gate. A timeout
-  # is not a verdict on the configuration either: the same task takes seconds when
-  # the provider answers, so it gets EVAL_TIMEOUT_RETRIES more tries, each in a
-  # fresh copy so a half-finished attempt can't leak into the next. A task that
-  # stalls every time still fails, and a wrong answer is never retried.
-  attempt=0
-  while :; do
-    copy="${work}/${id}.${attempt}"
-    mkdir -p "$copy"
-    git ls-files -co --exclude-standard -z | tar --null -T - -cf - | tar -xf - -C "$copy"
-    raw="$(cd "$copy" && run_bounded "$AGENT" "$prompt" "$mode" 2> "${copy}.stderr")"
-    rc=$?
-    [ "$rc" -eq 124 ] && echo "agent timed out after ${TASK_TIMEOUT}s" >> "${copy}.stderr"
-    if [ "$rc" -ne 124 ] || [ "$attempt" -ge "$TIMEOUT_RETRIES" ]; then break; fi
-    attempt=$((attempt + 1))
-    echo "  retry ${id}: agent timed out after ${TASK_TIMEOUT}s, attempt ${attempt} of ${TIMEOUT_RETRIES} retries" >&2
-  done
+# grade <task file> <id>: scores the agent run held in $raw/$rc/$copy. Sets t, out,
+# verdict, reasons, task_ok, tool_ok, traj_ok, steps, max_steps, empty_output.
+grade() {
+  local f="$1" id="$2"
   t="$(parse_transcript <<< "$raw")"
   out="$(jq -r .text <<< "$t")"
-  [ -n "$out" ] || out="$(cat "${copy}.stderr")"
+  empty_output=false
+  [ -n "$out" ] || {
+    empty_output=true
+    out="$(cat "${copy}.stderr")"
+  }
   # Without this a crashed agent only shows as "agent exited N" and the cause
   # (bad key, unknown model, broken install) stays in a temp file.
   if [ "$rc" -ne 0 ]; then
@@ -234,6 +217,66 @@ for f in "${files[@]}"; do
     reasons+=("${steps} steps > max ${max_steps}")
   }
 
+}
+
+for f in "${files[@]}"; do
+  id="$(jq -er .id "$f")" || {
+    echo "FAIL: $f has no id" >&2
+    exit 2
+  }
+  prompt="$(jq -er .prompt "$f")" || {
+    echo "FAIL: $id has no prompt" >&2
+    exit 2
+  }
+  if ! jq -e '.expect | (.output_regex // .file_absent // .file_present)' "$f" > /dev/null; then
+    echo "FAIL: $id has no expectation — an ungraded task always passes" >&2
+    exit 2
+  fi
+  if ! jq -e '(.rubric.tool_use.forbidden | arrays) and (.rubric.trajectory.max_steps | numbers)' "$f" > /dev/null; then
+    echo "FAIL: $id has no rubric (rubric.tool_use.forbidden and rubric.trajectory.max_steps) — score all three dimensions" >&2
+    exit 2
+  fi
+  mode="$(jq -r '.permission_mode // "default"' "$f")"
+
+  # A stalled provider call must fail its task, not hang the whole gate. A timeout
+  # is not a verdict on the configuration either: the same task takes seconds when
+  # the provider answers, so it gets EVAL_TIMEOUT_RETRIES more tries, each in a
+  # fresh copy so a half-finished attempt can't leak into the next. Two more
+  # shapes are model noise, not a verdict, and get EVAL_FLAKE_RETRIES more tries:
+  # a crash with no output, and a right answer over its step cap. A task that
+  # fails every try still fails, and a wrong answer, a forbidden tool or a file
+  # violation is never retried.
+  attempt=0
+  flake=0
+  while :; do
+    copy="${work}/${id}.$((attempt + flake))"
+    mkdir -p "$copy"
+    git ls-files -co --exclude-standard -z | tar --null -T - -cf - | tar -xf - -C "$copy"
+    raw="$(cd "$copy" && run_bounded "$AGENT" "$prompt" "$mode" 2> "${copy}.stderr")"
+    rc=$?
+    [ "$rc" -eq 124 ] && echo "agent timed out after ${TASK_TIMEOUT}s" >> "${copy}.stderr"
+    if [ "$rc" -eq 124 ] && [ "$attempt" -lt "$TIMEOUT_RETRIES" ]; then
+      attempt=$((attempt + 1))
+      echo "  retry ${id}: agent timed out after ${TASK_TIMEOUT}s, attempt ${attempt} of ${TIMEOUT_RETRIES} retries" >&2
+      continue
+    fi
+    grade "$f" "$id"
+    flake_kind=""
+    if [ "$rc" -ne 0 ] && [ "$rc" -ne 124 ] && $empty_output \
+      && ! jq -e '.expect.ignore_agent_exit == true' "$f" > /dev/null; then
+      flake_kind="crash"
+    elif [ "$rc" -eq 0 ] && [ "$task_ok" = pass ] && [ "$tool_ok" = pass ] && [ "$traj_ok" = fail ]; then
+      flake_kind="steps ${steps} > max ${max_steps}"
+    fi
+    if [ -n "$flake_kind" ] && [ "$flake" -lt "$FLAKE_RETRIES" ]; then
+      flake=$((flake + 1))
+      echo "  retry ${id}: ${flake_kind}, attempt ${flake} of ${FLAKE_RETRIES}" >&2
+      continue
+    fi
+    break
+  done
+  attempts=$((attempt + flake + 1))
+  [ "$flake" -gt 0 ] && n_retried=$((n_retried + 1))
   [ "$task_ok" = pass ] && n_task=$((n_task + 1))
   [ "$tool_ok" = pass ] && n_tool=$((n_tool + 1))
   [ "$traj_ok" = pass ] && n_traj=$((n_traj + 1))
@@ -241,8 +284,8 @@ for f in "${files[@]}"; do
   [ "$verdict" = pass ] && passed=$((passed + 1))
   printf '  %-4s %s%s\n' "$verdict" "$id" "${reasons[*]:+ — ${reasons[*]}}"
   results="$(jq --arg id "$id" --arg v "$verdict" --arg r "${reasons[*]:-}" --arg o "${out:0:2000}" \
-    --arg ts "$task_ok" --arg tu "$tool_ok" --arg tr "$traj_ok" --argjson tx "$t" \
-    '. + [{id: $id, verdict: $v, reasons: $r, output: $o,
+    --arg ts "$task_ok" --arg tu "$tool_ok" --arg tr "$traj_ok" --argjson tx "$t" --argjson at "$attempts" \
+    '. + [{id: $id, verdict: $v, reasons: $r, output: $o, attempts: $at,
            scores: {task_success: $ts, tool_use: $tu, trajectory: $tr},
            tools: $tx.tools, steps: $tx.steps}]' <<< "$results")"
 done
@@ -257,7 +300,9 @@ jq -n --argjson r "$results" --argjson rate "$rate" --argjson rates "$rates" \
   --slurpfile base "$BASELINE" --arg m "$MODEL" \
   '{model: $m, pass_rate: $rate, rates: $rates, baseline: $base[0], results: $r}' > "$REPORT"
 
-echo "evals: ${passed}/${total} fully passed; rates $(jq -c . <<< "$rates") vs baseline $(jq -c '{task_success, tool_use, trajectory}' "$BASELINE") — report: ${REPORT}"
+retried_note=""
+[ "$n_retried" -eq 0 ] || retried_note="; ${n_retried} task(s) needed a retry"
+echo "evals: ${passed}/${total} fully passed${retried_note}; rates $(jq -c . <<< "$rates") vs baseline $(jq -c '{task_success, tool_use, trajectory}' "$BASELINE") — report: ${REPORT}"
 below="$(jq -r --argjson rates "$rates" '[to_entries[] | select(.key | IN("task_success", "tool_use", "trajectory"))
   | select($rates[.key] < .value) | "\(.key) \($rates[.key]) < \(.value)"] | join(", ")' "$BASELINE")"
 if [ -n "$below" ]; then
