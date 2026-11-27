@@ -1,11 +1,13 @@
 ---
 change: image-gate-fresh-snapshot
-status: draft            # draft → accepted (Product Owner) | rejected
+status: accepted         # draft → accepted (Product Owner) | rejected
 author: ufawkes-bot@users.noreply.github.com
 origin: idea             # idea | ticket | incident | review
 ticket:                  # PROJ-123 if the project uses Jira
 created: 2026-11-27
-approved_by:             # who accepted the intent (filled in by the PO or recorded on acceptance)
+approved_by: phil.ruff@gmail.com
+approved_at: 2026-11-27
+approved_sha: 11a0093
 ---
 # Intent: Image gate: tell a stale lock from a real CVE
 
