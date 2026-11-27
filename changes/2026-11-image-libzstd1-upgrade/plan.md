@@ -12,5 +12,6 @@ author: ufawkes-bot@users.noreply.github.com
 
 ## Verification
 
+- R1, R2: diff review of the Dockerfile; step 1's probe shows both `InRelease` URLs for 20261127 return 200.
 - R3: the branch dispatch's Trivy gate passes; the run before this change failed on `libzstd1` (run 45974255378).
 - R4: verify-tools and the determinism rebuild pass in the same run.
