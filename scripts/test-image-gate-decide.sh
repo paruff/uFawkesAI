@@ -10,7 +10,7 @@ check() { # check <label> <want-exit> <want-text|-> <args...>
   shift 3
   local out rc=0
   out="$(bash scripts/image-gate-decide.sh "$@" 2>&1)" || rc=$?
-  if [ "$rc" -ne "$want" ] || { [ "$text" != - ] && ! grep -qF -- "$text" <<<"$out"; }; then
+  if [ "$rc" -ne "$want" ] || { [ "$text" != - ] && ! grep -qF -- "$text" <<< "$out"; }; then
     echo "  FAIL $label (exit $rc, want $want, text '$text'): $out"
     failures=$((failures + 1))
   else
