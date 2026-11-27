@@ -28,7 +28,7 @@
 # Env:
 #   EVAL_HARNESS    claude (default) or opencode
 #   EVAL_MODEL      model (default: claude-haiku-4-5-20251001 for claude,
-#                   google/gemini-3.1-flash-lite for opencode)
+#                   google/gemini-3.5-flash-lite for opencode)
 #   EVAL_AGENT_CMD  agent command; called as: $EVAL_AGENT_CMD <prompt> <permission_mode>
 #                   in the task's copy. Default is the harness's CLI. Tests stub it.
 #   EVAL_TASKS      task dir (default .agents/evals/tasks)
@@ -80,7 +80,7 @@ parse_transcript() {
 }
 case "$HARNESS" in
   claude) MODEL="${EVAL_MODEL:-claude-haiku-4-5-20251001}" ;;
-  opencode) MODEL="${EVAL_MODEL:-google/gemini-3.1-flash-lite}" ;;
+  opencode) MODEL="${EVAL_MODEL:-google/gemini-3.5-flash-lite}" ;;
   *)
     echo "FAIL: EVAL_HARNESS must be claude or opencode, got '$HARNESS'" >&2
     exit 2
