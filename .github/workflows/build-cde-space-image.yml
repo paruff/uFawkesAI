@@ -95,6 +95,7 @@ jobs:
         run: |
           bash scripts/test-image-lock-bump.sh
           bash scripts/test-image-lock-refresh.sh
+          bash scripts/test-image-gate-decide.sh
 
       # Per-arch GHA cache: later runs and the publish job reuse these layers.
       - name: Build ai (core is its build stage)
@@ -132,18 +133,39 @@ jobs:
             | tee -a "$GITHUB_STEP_SUMMARY"
 
       # Report-only on PRs/pushes (a newly published CVE must not block
-      # unrelated work); the gate fails on weekly and manual runs so fixable
-      # CVEs in repo-controlled packages surface.
+      # unrelated work). Weekly/manual/tag runs gate the pinned image; when that
+      # fails, today's apt snapshot is built and gated too (diagnostic only,
+      # never published) so a stale lock is told apart from a finding no
+      # snapshot fixes (scripts/image-gate-decide.sh).
       - name: Trivy — report whole image, gate repo-controlled packages
         env:
           GATE_EXIT: ${{ env.SCHEDULED == 'true' && '1' || '0' }}
+          ARCH: ${{ matrix.arch }}
         run: |
-          mkdir -p scan-out
-          docker run --rm --user root \
-            -v /var/run/docker.sock:/var/run/docker.sock \
-            -v "$PWD/images/devsecops:/devsecops:ro" -v "$PWD/scan-out:/out" \
-            fawkes-space-ai:ci \
-            /devsecops/scan.sh fawkes-space-ai:ci "$GATE_EXIT"
+          mkdir -p scan-out scan-out-fresh
+          scan() { # scan <image> <gate exit code> <out dir>
+            docker run --rm --user root \
+              -v /var/run/docker.sock:/var/run/docker.sock \
+              -v "$PWD/images/devsecops:/devsecops:ro" -v "$PWD/$3:/out" \
+              "$1" /devsecops/scan.sh "$1" "$2"
+          }
+          pinned_rc=0
+          scan fawkes-space-ai:ci "$GATE_EXIT" scan-out || pinned_rc=$?
+          [ "$pinned_rc" -eq 0 ] && exit 0
+          kind=branch
+          case "$GITHUB_REF" in refs/tags/*) kind=tag ;; esac
+          today="$(date -u +%Y%m%d)T000000Z"
+          fresh_rc=unavailable
+          if curl -fsSIL -o /dev/null "https://snapshot.debian.org/archive/debian/${today}/dists/trixie/InRelease" \
+            && curl -fsSIL -o /dev/null "https://snapshot.debian.org/archive/debian-security/${today}/dists/trixie-security/InRelease"; then
+            (cd images/devsecops && TAG=fresh docker buildx bake ai --load \
+              --allow=fs.read=../../opencode --allow=fs.read=../../.agents/agents \
+              --set "*.args.APT_SNAPSHOT=${today}" \
+              --set "*.cache-from=type=gha,scope=devsecops-${ARCH}")
+            fresh_rc=0
+            scan fawkes-space-ai:fresh 1 scan-out-fresh || fresh_rc=$?
+          fi
+          bash scripts/image-gate-decide.sh "$kind" "$pinned_rc" "$fresh_rc"
       - name: Trivy report to summary
         if: always()
         # No report when the scan itself did not run; that failure is the scan step's.
