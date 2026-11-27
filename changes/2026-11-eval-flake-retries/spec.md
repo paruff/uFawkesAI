@@ -1,7 +1,10 @@
 ---
 change: eval-flake-retries
-status: draft
+status: approved
 author: ufawkes-bot@users.noreply.github.com
+approved_by: phil.ruff@gmail.com
+approved_at: 2026-11-27
+approved_sha: 89dc296
 ---
 # Evals: retry flakes, never wrong answers: spec
 
