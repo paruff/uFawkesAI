@@ -7,7 +7,7 @@
 # downloaded tool pinned by SHA-256 in tools.lock.json, Python deps
 # hash-locked, Node deps from package-lock.json.
 
-ARG APT_SNAPSHOT=20261124T000000Z
+ARG APT_SNAPSHOT=20261127T000000Z
 
 # ── base: Debian pinned to an apt snapshot ─────────────────────────────────
 # Digest pinned in FROM itself so Dependabot's docker updater can bump it.
@@ -48,10 +48,11 @@ ENV LANG=C.UTF-8 \
 # safe.directory: CI checkouts are owned by a different UID than the container user.
 # zlib1g is named so apt upgrades the base image's copy to the security fix (CVE-2026-85091);
 # drop it once the base digest above already carries 1.3.1-1+deb13u1.
+# Likewise libzstd1 (CVE-2026-124851): drop it once the base carries 1.5.7+dfsg-1+deb13u1.
 # hadolint ignore=DL3008
 RUN apt-get update \
  && apt-get install -y --no-install-recommends \
-      bash ca-certificates curl git make openssh-client python3 xz-utils zlib1g \
+      bash ca-certificates curl git make openssh-client python3 xz-utils zlib1g libzstd1 \
  && rm -rf /var/lib/apt/lists/* \
  && git config --system --add safe.directory '*'
 
