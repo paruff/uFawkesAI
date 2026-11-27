@@ -23,7 +23,9 @@ out="$(check)" && expect inside_edit_fails bad || { [[ "$out" == *"Anything may 
 
 # The engine's sentence names agents the repo deletes; the fixup rewrites it and the drift check expects the rewrite.
 cp "$root/AGENTS.md.bak" "$root/AGENTS.md"
+# shellcheck disable=SC2016 # backticks are literal text of the sentence, not command substitution
 old='For clean-context reviews (verifier, spec-reviewer, simplifier, researcher), use `.agents/agents/<name>.md`.'
+# shellcheck disable=SC2016 # backticks are literal text of the sentence, not command substitution
 new='For a clean-context review, use `.agents/agents/verifier.md`.'
 sed -i.sed "s|${new//|/\\|}|${old//|/\\|}|" "$root/AGENTS.md" && rm -f "$root/AGENTS.md.sed"
 out="$(check)" && expect engine_sentence_restored_fails bad || { [[ "$out" == *"clean-context review"* ]] && expect engine_sentence_restored_fails ok || expect engine_sentence_restored_fails bad; }

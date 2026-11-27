@@ -11,7 +11,9 @@
 set -euo pipefail
 
 file="${1:?usage: $0 <AGENTS.md>}"
+# shellcheck disable=SC2016 # backticks are literal text of the sentence, not command substitution
 old='For clean-context reviews (verifier, spec-reviewer, simplifier, researcher), use `.agents/agents/<name>.md`.'
+# shellcheck disable=SC2016 # backticks are literal text of the sentence, not command substitution
 new='For a clean-context review, use `.agents/agents/verifier.md`.'
 
 sed -i.fixup "/<!-- ai-sdlc:start/,/<!-- ai-sdlc:end -->/ s|${old}|${new}|" "$file"
