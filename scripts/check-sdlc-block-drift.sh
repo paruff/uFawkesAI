@@ -16,6 +16,7 @@ tmp="$(mktemp -d)"
 trap 'rm -rf "$tmp"' EXIT
 git ls-files -co --exclude-standard -z | xargs -0 tar -cf - | tar -xf - -C "$tmp"
 (cd "$tmp" && git init -q && node "$ENGINE" sync > /dev/null)
+bash "$PWD/scripts/seam/agents-block-fixup.sh" "$tmp/AGENTS.md"
 
 [[ -n "$(block AGENTS.md)" ]] || {
   echo "AGENTS.md has no ai-sdlc block" >&2
