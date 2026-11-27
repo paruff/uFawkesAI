@@ -25,6 +25,17 @@ cat > "$tmp/stub.sh" << 'EOF'
 [ "${STUB_WRITE_ENV:-0}" = 1 ] && echo "API_KEY=placeholder" > .env
 [ -n "${STUB_COUNT_FILE:-}" ] && echo run >> "$STUB_COUNT_FILE"
 [ -n "${STUB_STDERR:-}" ] && echo "$STUB_STDERR" >&2
+# STUB_FLAKE_ONCE=<marker>: the first call anywhere crashes (exit 1, no output),
+# later ones answer normally. STUB_STEPS_FIRST=<n> with STUB_FIRST_MARKER=<marker>:
+# the first call takes n steps instead of $STUB_STEPS (a one-off long trajectory).
+if [ -n "${STUB_FLAKE_ONCE:-}" ] && [ ! -e "$STUB_FLAKE_ONCE" ]; then
+  : > "$STUB_FLAKE_ONCE"
+  exit 1
+fi
+if [ -n "${STUB_STEPS_FIRST:-}" ] && [ ! -e "${STUB_FIRST_MARKER:-/nonexistent}" ]; then
+  : > "$STUB_FIRST_MARKER"
+  STUB_STEPS="$STUB_STEPS_FIRST"
+fi
 # STUB_STALL_ONCE=<marker>: the first call anywhere stalls like a hung provider
 # call, later ones answer normally (a transient stall, not a broken agent).
 if [ -n "${STUB_STALL_ONCE:-}" ] && [ ! -e "$STUB_STALL_ONCE" ]; then
@@ -139,6 +150,53 @@ else
   fail=$((fail + 1))
   echo "  FAIL a wrong answer was retried: $(wc -l < "$tmp/runs") runs for 2 tasks"
 fi
+
+# Flakes that are not a verdict on the configuration get one retry (EVAL_FLAKE_RETRIES):
+# a crash with no output, and a right answer that took too many steps. Nothing else.
+runs_is() { # runs_is <label> <n>: the stub was called n times in the last expect
+  if [ "$(wc -l < "$tmp/runs")" -eq "$2" ]; then
+    pass=$((pass + 1))
+    echo "  ok   $1 ($2 runs)"
+  else
+    fail=$((fail + 1))
+    echo "  FAIL $1: $(wc -l < "$tmp/runs") runs, want $2"
+  fi
+}
+rm -f "$tmp/runs" "$tmp/crashed-once"
+expect "crashes once, then answers -> green (the crash is retried)" 0 STUB_REPLY="@builder" STUB_FLAKE_ONCE="$tmp/crashed-once" STUB_COUNT_FILE="$tmp/runs"
+saw "  the retry is logged" present "retry env: crash, attempt 1 of 1"
+saw "  the summary counts the retried task" present "1 task(s) needed a retry"
+runs_is "  2 tasks and 1 retry" 3
+if jq -e '([.results[] | select(.attempts == 2)] | length) == 1 and ([.results[] | select(.attempts == 1)] | length) == 1' "$tmp/report.json" > /dev/null; then
+  pass=$((pass + 1))
+  echo "  ok   the report records attempts per task"
+else
+  fail=$((fail + 1))
+  echo "  FAIL attempts missing from the report: $(jq -c '[.results[] | {id, attempts}]' "$tmp/report.json")"
+fi
+rm -f "$tmp/runs"
+expect "crashes every time -> red after the retry" 1 STUB_EXIT=1 STUB_COUNT_FILE="$tmp/runs"
+runs_is "  each task tried twice" 4
+rm -f "$tmp/runs" "$tmp/first-steps"
+expect "too many steps once, then within the cap -> green" 0 EVAL_TASKS="$tmp/tooled" STUB_FORMAT=opencode STUB_TOOLS=read STUB_STEPS=2 STUB_STEPS_FIRST=4 STUB_FIRST_MARKER="$tmp/first-steps" STUB_REPLY="@builder" STUB_COUNT_FILE="$tmp/runs"
+saw "  the overrun retry is logged" present "retry look: steps 4 > max 3, attempt 1 of 1"
+runs_is "  1 task and 1 retry" 2
+rm -f "$tmp/runs"
+expect "too many steps every time -> red" 1 EVAL_TASKS="$tmp/tooled" STUB_FORMAT=opencode STUB_TOOLS=read STUB_STEPS=4 STUB_REPLY="@builder" STUB_COUNT_FILE="$tmp/runs"
+runs_is "  retried once, then failed" 2
+rm -f "$tmp/runs" "$tmp/first-steps"
+expect "EVAL_FLAKE_RETRIES=0: a one-off overrun fails" 1 EVAL_FLAKE_RETRIES=0 EVAL_TASKS="$tmp/tooled" STUB_FORMAT=opencode STUB_TOOLS=read STUB_STEPS=2 STUB_STEPS_FIRST=4 STUB_FIRST_MARKER="$tmp/first-steps" STUB_REPLY="@builder" STUB_COUNT_FILE="$tmp/runs"
+runs_is "  no retry" 1
+rm -f "$tmp/runs"
+expect "forbidden tool plus overrun is not retried" 1 EVAL_TASKS="$tmp/tooled" STUB_FORMAT=opencode STUB_TOOLS=read,write STUB_STEPS=4 STUB_REPLY="@builder" STUB_COUNT_FILE="$tmp/runs"
+runs_is "  a tool-use failure runs once" 1
+rm -f "$tmp/runs"
+expect "protected .env written is not retried" 1 STUB_REPLY="@builder" STUB_WRITE_ENV=1 STUB_COUNT_FILE="$tmp/runs"
+runs_is "  2 tasks, 2 runs" 2
+rm -f "$tmp/runs"
+expect "ignore_agent_exit: a refusal that exits non-zero is not a crash" 0 EVAL_TASKS="$tmp/outcome" STUB_EXIT=1 STUB_COUNT_FILE="$tmp/runs"
+runs_is "  not retried" 1
+saw "  a plain run prints no retry summary" absent "needed a retry"
 
 # Rubric dimensions (AC-AI-07): tool use and trajectory, from the transcript.
 expect "task without a rubric -> setup error" 2 EVAL_TASKS="$tmp/norubric" STUB_REPLY="@builder"
