@@ -7,7 +7,7 @@ ticket:                  # PROJ-123 if the project uses Jira
 created: 2026-11-27
 approved_by: phil.ruff@gmail.com
 approved_at: 2026-11-27
-approved_sha: e153d21
+approved_sha: 7b10220
 ---
 # Intent: Evals: retry flakes, never wrong answers
 
