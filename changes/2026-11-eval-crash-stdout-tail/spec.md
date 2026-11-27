@@ -1,7 +1,10 @@
 ---
 change: eval-crash-stdout-tail
-status: draft
+status: approved
 author: ufawkes-bot@users.noreply.github.com
+approved_by: phil.ruff@gmail.com
+approved_at: 2026-11-27
+approved_sha: 242d0f1
 ---
 # Evals: show the agent's stdout tail on a silent crash: spec
 
