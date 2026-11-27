@@ -107,5 +107,5 @@ gh project item-edit 7 --owner paruff --url <issue url> --field Status --value "
 - Test-lock: while `sdlc lock status` is ON, do not edit `**/*.test.ts`, `**/*.test.tsx`, `**/*.spec.ts`, `**/*.test.js`, `**/*.test.mjs`, `**/*.spec.js`, `**/__tests__/**`, `e2e/**`, `tests/**`, `test/**`.
 - Git hooks (pre-commit) check the same on commit: if they block, fix the change; never use `--no-verify`.
 
-When the user asks for a stage (by name or with `/sdlc-<stage>`), read and follow the matching skill. For clean-context reviews (verifier, spec-reviewer, simplifier, researcher), use `.agents/agents/<name>.md`.
+When the user asks for a stage (by name or with `/sdlc-<stage>`), read and follow the matching skill. For a clean-context review, use `.agents/agents/verifier.md`.
 <!-- ai-sdlc:end -->

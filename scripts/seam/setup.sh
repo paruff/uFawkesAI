@@ -26,6 +26,8 @@ cfg="$(jq -S '.agents = ["agents-md"] | .gates_self_approval = false' .sdlc/conf
 
 cp AGENTS.md "$agents_copy"
 node "$ENGINE" sync > /dev/null
+# the engine's sentence names agents this repo deletes (see the script)
+bash scripts/seam/agents-block-fixup.sh AGENTS.md
 # sync writes the block without the blank lines markdownlint adds; keep the committed copy when only those differ
 block() { sed -n '/<!-- ai-sdlc:start/,/<!-- ai-sdlc:end -->/p' "$1"; }
 if diff -qB <(block "$agents_copy") <(block AGENTS.md) > /dev/null; then cp "$agents_copy" AGENTS.md; fi
