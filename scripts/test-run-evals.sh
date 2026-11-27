@@ -135,6 +135,22 @@ expect "non-zero agent exit shows the agent's stderr" 1 STUB_REPLY="@builder" ST
 saw "  the stderr of the failed agent is printed" present "boom: model not found"
 expect "agent stderr on a passing run stays out of the log" 0 STUB_REPLY="@builder" STUB_STDERR="harmless warning"
 saw "  no stderr is printed when the agent exits 0" absent "harmless warning"
+# A harness that reports its error on stdout (opencode --format json) leaves stderr
+# empty: show the bounded tail of stdout instead, so the crash still explains itself.
+expect "non-zero exit, empty stderr: the stdout tail is shown" 1 STUB_REPLY="fatal: provider error" STUB_EXIT=1
+saw "  the header says stderr was empty" present "stderr empty, stdout (last 1500 bytes):"
+saw "  the stdout of the failed agent is printed" present "fatal: provider error"
+filler="$(printf 'x%.0s' $(seq 1 2000))"
+expect "stdout tail is bounded to the last 1500 bytes" 1 STUB_REPLY="HEADMARK${filler}TAILMARK" STUB_EXIT=1
+saw "  the end of stdout is kept" present "TAILMARK"
+saw "  the start of a long stdout is dropped" absent "HEADMARK"
+expect "non-zero exit with no output at all says so" 1 STUB_REPLY="" STUB_EXIT=1
+saw "  the empty crash is named" present "agent exited 1; no output on stderr or stdout"
+expect "non-zero exit with stderr content prints stderr only" 1 STUB_REPLY="stdout-only-text" STUB_EXIT=1 STUB_STDERR="boom: real cause"
+saw "  stderr is printed" present "boom: real cause"
+saw "  stdout is not printed when stderr has content" absent "stderr empty, stdout"
+expect "passing run prints neither stream" 0 STUB_REPLY="@builder" STUB_STDERR=""
+saw "  no crash block on a passing run" absent "agent exited"
 expect "stalled agent hits EVAL_TASK_TIMEOUT -> red, not a hang" 1 STUB_REPLY="@builder" STUB_SLEEP=5 EVAL_TASK_TIMEOUT=1
 
 # A timeout is a provider stall, not a verdict on the configuration: it gets one

@@ -162,10 +162,19 @@ grade() {
     out="$(cat "${copy}.stderr")"
   }
   # Without this a crashed agent only shows as "agent exited N" and the cause
-  # (bad key, unknown model, broken install) stays in a temp file.
+  # (bad key, unknown model, broken install) stays in a temp file. opencode
+  # --format json reports its errors on stdout, so when stderr is empty show the
+  # tail of stdout (the error comes last).
   if [ "$rc" -ne 0 ]; then
-    echo "  ${id}: agent exited ${rc}; stderr (first 1500 bytes):" >&2
-    head -c 1500 "${copy}.stderr" | sed 's/^/    | /' >&2
+    if [ -s "${copy}.stderr" ]; then
+      echo "  ${id}: agent exited ${rc}; stderr (first 1500 bytes):" >&2
+      head -c 1500 "${copy}.stderr" | sed 's/^/    | /' >&2
+    elif [ -n "$raw" ]; then
+      echo "  ${id}: agent exited ${rc}; stderr empty, stdout (last 1500 bytes):" >&2
+      printf '%s\n' "$raw" | tail -c 1500 | sed 's/^/    | /' >&2
+    else
+      echo "  ${id}: agent exited ${rc}; no output on stderr or stdout" >&2
+    fi
   fi
 
   verdict=pass
