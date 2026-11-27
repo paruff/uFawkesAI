@@ -4,7 +4,7 @@ status: approved
 author: ufawkes-bot@users.noreply.github.com
 approved_by: phil.ruff@gmail.com
 approved_at: 2026-11-27
-approved_sha: 89dc296
+approved_sha: 941823d
 ---
 # Evals: retry flakes, never wrong answers: spec
 
